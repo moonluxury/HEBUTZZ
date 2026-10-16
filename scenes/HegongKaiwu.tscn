@@ -1,0 +1,495 @@
+[gd_scene format=3 uid="uid://bt5oivctayi1v"]
+
+[ext_resource type="Script" uid="uid://dutr0fx312kg0" path="res://scripts/hegong_kaiwu.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://dmvxlpfd6713q" path="res://themes/minimal_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" uid="uid://caymb4jk8vl0h" path="res://assets/search_icon.svg" id="3_search_icon"]
+[ext_resource type="Texture2D" uid="uid://bq2u3v7iiw1rm" path="res://assets/hegong_kaiwu_campus_bg.png" id="4_campus_bg"]
+[ext_resource type="Script" uid="uid://bbre6o03s1x3i" path="res://scripts/hegong_search_results.gd" id="5_results"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_transparent"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_search_card"]
+content_margin_left = 24.0
+content_margin_top = 24.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
+bg_color = Color(1, 1, 1, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.86, 0.89, 0.95, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0.0352941, 0.172549, 0.529412, 0.08)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input"]
+content_margin_left = 24.0
+content_margin_right = 24.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.84, 0.87, 0.93, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input_focus"]
+content_margin_left = 24.0
+content_margin_right = 24.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.0352941, 0.172549, 0.529412, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blue_button"]
+content_margin_left = 24.0
+content_margin_right = 24.0
+bg_color = Color(0.0352941, 0.172549, 0.529412, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blue_button_hover"]
+content_margin_left = 24.0
+content_margin_right = 24.0
+bg_color = Color(0.054902, 0.227451, 0.662745, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+content_margin_left = 32.0
+content_margin_top = 32.0
+content_margin_right = 32.0
+content_margin_bottom = 32.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.9, 0.92, 0.96, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0.0352941, 0.172549, 0.529412, 0.08)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nav_inactive"]
+bg_color = Color(1, 1, 1, 0)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icon"]
+bg_color = Color(0.9, 0.94, 1, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_back"]
+content_margin_left = 24.0
+content_margin_right = 24.0
+bg_color = Color(1, 1, 1, 0.75)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.32, 0.48, 0.78, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_back_hover"]
+content_margin_left = 24.0
+content_margin_right = 24.0
+bg_color = Color(0.92, 0.95, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0352941, 0.172549, 0.529412, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="HegongKaiwu" type="Control" unique_id=1377237868]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1273019108]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.968627, 0.972549, 0.988235, 1)
+
+[node name="PageMargin" type="MarginContainer" parent="." unique_id=698408715]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PageColumn" type="VBoxContainer" parent="PageMargin" unique_id=1900710062]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Header" type="VBoxContainer" parent="PageMargin/PageColumn" unique_id=404630109]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="PageMargin/PageColumn/Header" unique_id=607400813]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_font_sizes/font_size = 42
+text = "河工开物"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="PageMargin/PageColumn/Header" unique_id=1625155222]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.22, 0.35, 0.62, 1)
+theme_override_font_sizes/font_size = 36
+text = "A Curated Repository of Study Resources."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SearchBarBackground" type="PanelContainer" parent="PageMargin/PageColumn" unique_id=1421360841]
+custom_minimum_size = Vector2(0, 280)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_transparent")
+
+[node name="CampusBackground" type="TextureRect" parent="PageMargin/PageColumn/SearchBarBackground" unique_id=784197477]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_campus_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="SearchBarMargin" type="MarginContainer" parent="PageMargin/PageColumn/SearchBarBackground" unique_id=928470811]
+layout_mode = 2
+theme_override_constants/margin_left = 320
+theme_override_constants/margin_top = 72
+theme_override_constants/margin_right = 320
+theme_override_constants/margin_bottom = 72
+
+[node name="SearchCard" type="PanelContainer" parent="PageMargin/PageColumn/SearchBarBackground/SearchBarMargin" unique_id=235443647]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_search_card")
+
+[node name="SearchRow" type="HBoxContainer" parent="PageMargin/PageColumn/SearchBarBackground/SearchBarMargin/SearchCard" unique_id=1408528591]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="CategoryButton" type="Button" parent="PageMargin/PageColumn/SearchBarBackground/SearchBarMargin/SearchCard/SearchRow" unique_id=202136792]
+custom_minimum_size = Vector2(280, 64)
+layout_mode = 2
+tooltip_text = "悬停展开内容类型"
+theme_override_colors/font_color = Color(0.11, 0.15, 0.25, 1)
+theme_override_colors/font_pressed_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_colors/font_hover_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_input")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_input_focus")
+theme_override_styles/hover = SubResource("StyleBoxFlat_input_focus")
+theme_override_styles/focus = SubResource("StyleBoxFlat_input_focus")
+text = "全部类型  ﹀"
+
+[node name="SearchEdit" type="LineEdit" parent="PageMargin/PageColumn/SearchBarBackground/SearchBarMargin/SearchCard/SearchRow" unique_id=658212360]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.11, 0.15, 0.25, 1)
+theme_override_colors/font_placeholder_color = Color(0.66, 0.7, 0.78, 1)
+theme_override_colors/caret_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_input")
+theme_override_styles/focus = SubResource("StyleBoxFlat_input_focus")
+placeholder_text = "搜索标题、课程、知识点或正文内容"
+clear_button_enabled = true
+
+[node name="SearchButton" type="Button" parent="PageMargin/PageColumn/SearchBarBackground/SearchBarMargin/SearchCard/SearchRow" unique_id=1579323933]
+custom_minimum_size = Vector2(200, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_blue_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_blue_button_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_blue_button_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_blue_button")
+text = "搜索"
+icon = ExtResource("3_search_icon")
+
+[node name="ContentMargin" type="MarginContainer" parent="PageMargin/PageColumn" unique_id=614598860]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 32
+
+[node name="ContentRow" type="HBoxContainer" parent="PageMargin/PageColumn/ContentMargin" unique_id=316785511]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="AnnouncementCard" type="PanelContainer" parent="PageMargin/PageColumn/ContentMargin/ContentRow" unique_id=2058891329]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="AnnouncementColumn" type="VBoxContainer" parent="PageMargin/PageColumn/ContentMargin/ContentRow/AnnouncementCard" unique_id=1014800673]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SubmissionButton" type="Button" parent="PageMargin/PageColumn/ContentMargin/ContentRow/AnnouncementCard/AnnouncementColumn" unique_id=490540764]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_nav_inactive")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_blue_button_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_blue_button_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_nav_inactive")
+text = "◇   征稿公告"
+
+[node name="ReportButton" type="Button" parent="PageMargin/PageColumn/ContentMargin/ContentRow/AnnouncementCard/AnnouncementColumn" unique_id=1082505563]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_nav_inactive")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_blue_button_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_blue_button_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_nav_inactive")
+text = "◇   举报公告"
+
+[node name="AnnouncementSpacer" type="Control" parent="PageMargin/PageColumn/ContentMargin/ContentRow/AnnouncementCard/AnnouncementColumn" unique_id=1591982680]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="ArticleCard" type="PanelContainer" parent="PageMargin/PageColumn/ContentMargin/ContentRow" unique_id=1870952784]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="ArticleColumn" type="VBoxContainer" parent="PageMargin/PageColumn/ContentMargin/ContentRow/ArticleCard" unique_id=2027698180]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="ArticleHeader" type="HBoxContainer" parent="PageMargin/PageColumn/ContentMargin/ContentRow/ArticleCard/ArticleColumn" unique_id=977358959]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="ArticleIcon" type="PanelContainer" parent="PageMargin/PageColumn/ContentMargin/ContentRow/ArticleCard/ArticleColumn/ArticleHeader" unique_id=805232921]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_icon")
+
+[node name="IconLabel" type="Label" parent="PageMargin/PageColumn/ContentMargin/ContentRow/ArticleCard/ArticleColumn/ArticleHeader/ArticleIcon" unique_id=1335895957]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_font_sizes/font_size = 42
+text = "▣"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ArticleTitle" type="Label" parent="PageMargin/PageColumn/ContentMargin/ContentRow/ArticleCard/ArticleColumn/ArticleHeader" unique_id=38902661]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.08, 0.12, 0.21, 1)
+theme_override_font_sizes/font_size = 42
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ArticleDivider" type="ColorRect" parent="PageMargin/PageColumn/ContentMargin/ContentRow/ArticleCard/ArticleColumn" unique_id=1528211880]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.86, 0.89, 0.94, 1)
+
+[node name="ContentLabel" type="RichTextLabel" parent="PageMargin/PageColumn/ContentMargin/ContentRow/ArticleCard/ArticleColumn" unique_id=1454875022]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.13, 0.17, 0.25, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 42
+
+[node name="SearchResults" type="VBoxContainer" parent="PageMargin/PageColumn/ContentMargin/ContentRow/ArticleCard/ArticleColumn" unique_id=1458971293]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("5_results")
+
+[node name="TipsCard" type="PanelContainer" parent="PageMargin/PageColumn/ContentMargin/ContentRow" unique_id=830550027]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="TipsColumn" type="VBoxContainer" parent="PageMargin/PageColumn/ContentMargin/ContentRow/TipsCard" unique_id=1401315447]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TipsTitle" type="Label" parent="PageMargin/PageColumn/ContentMargin/ContentRow/TipsCard/TipsColumn" unique_id=1924892454]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_font_sizes/font_size = 42
+text = "◇  广告位"
+vertical_alignment = 1
+
+[node name="Tip1" type="Label" parent="PageMargin/PageColumn/ContentMargin/ContentRow/TipsCard/TipsColumn" unique_id=1000084564]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.23, 0.32, 1)
+theme_override_font_sizes/font_size = 42
+text = "校园内容推广"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TipDivider1" type="ColorRect" parent="PageMargin/PageColumn/ContentMargin/ContentRow/TipsCard/TipsColumn" unique_id=1924067487]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.88, 0.9, 0.94, 1)
+
+[node name="Tip2" type="Label" parent="PageMargin/PageColumn/ContentMargin/ContentRow/TipsCard/TipsColumn" unique_id=1536241196]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.23, 0.32, 1)
+theme_override_font_sizes/font_size = 42
+text = "面向校内组织、课程团队
+与校园活动开放"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TipDivider2" type="ColorRect" parent="PageMargin/PageColumn/ContentMargin/ContentRow/TipsCard/TipsColumn" unique_id=875464579]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.88, 0.9, 0.94, 1)
+
+[node name="Tip3" type="Label" parent="PageMargin/PageColumn/ContentMargin/ContentRow/TipsCard/TipsColumn" unique_id=1291572840]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.23, 0.32, 1)
+theme_override_font_sizes/font_size = 42
+text = "品牌展示位预留"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TipDivider3" type="ColorRect" parent="PageMargin/PageColumn/ContentMargin/ContentRow/TipsCard/TipsColumn" unique_id=1559848282]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.88, 0.9, 0.94, 1)
+
+[node name="Tip5" type="Label" parent="PageMargin/PageColumn/ContentMargin/ContentRow/TipsCard/TipsColumn" unique_id=239309735]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.23, 0.32, 1)
+theme_override_font_sizes/font_size = 42
+text = "广告合作 
+团队主页：http://81.70.80.234/
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TipsSpacer" type="Control" parent="PageMargin/PageColumn/ContentMargin/ContentRow/TipsCard/TipsColumn" unique_id=1215595398]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="FooterMargin" type="MarginContainer" parent="PageMargin/PageColumn" unique_id=1581868778]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 24
+
+[node name="FooterColumn" type="VBoxContainer" parent="PageMargin/PageColumn/FooterMargin" unique_id=284079294]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="FooterDivider" type="ColorRect" parent="PageMargin/PageColumn/FooterMargin/FooterColumn" unique_id=455204888]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.84, 0.87, 0.92, 1)
+
+[node name="StatusRow" type="HBoxContainer" parent="PageMargin/PageColumn/FooterMargin/FooterColumn" unique_id=347743000]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatusLabel" type="Label" parent="PageMargin/PageColumn/FooterMargin/FooterColumn/StatusRow" unique_id=119895230]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.26, 0.31, 0.41, 1)
+theme_override_font_sizes/font_size = 42
+text = "共找到 1 条内容"
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="PageMargin/PageColumn/FooterMargin/FooterColumn/StatusRow" unique_id=883355956]
+custom_minimum_size = Vector2(220, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_colors/font_pressed_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_colors/font_hover_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_back")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_back_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_back_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_back")
+text = "⌂  返回首页"

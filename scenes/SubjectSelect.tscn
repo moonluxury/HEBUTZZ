@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://briijgus8x1uc"]
+
+[ext_resource type="Script" uid="uid://dysundcaaf0pb" path="res://scripts/subject_select.gd" id="1_subject_select"]
+[ext_resource type="Theme" path="res://themes/minimal_theme.tres" id="2_theme"]
+
+[node name="SubjectSelect" type="Control" unique_id=867346414]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_subject_select")
+
+[node name="Background" type="ColorRect" parent="." unique_id=235868508]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.968627, 0.972549, 0.988235, 1)
+
+[node name="PageMargin" type="MarginContainer" parent="." unique_id=223264778]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = 96.0
+offset_right = -5.0
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 250
+theme_override_constants/margin_top = 140
+theme_override_constants/margin_right = 250
+theme_override_constants/margin_bottom = 140
+
+[node name="PageColumn" type="VBoxContainer" parent="PageMargin" unique_id=529779532]
+layout_mode = 2
+theme_override_constants/separation = 200
+
+[node name="Title" type="Label" parent="PageMargin/PageColumn" unique_id=2124834621]
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 78
+text = "选择课程"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonCenter" type="CenterContainer" parent="PageMargin/PageColumn" unique_id=1355072664]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="ButtonColumn" type="VBoxContainer" parent="PageMargin/PageColumn/ButtonCenter" unique_id=932316383]
+custom_minimum_size = Vector2(1500, 0)
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="MarxismButton" type="Button" parent="PageMargin/PageColumn/ButtonCenter/ButtonColumn" unique_id=832214068]
+custom_minimum_size = Vector2(1500, 130)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 52
+text = "马克思主义原理"
+
+[node name="MaoButton" type="Button" parent="PageMargin/PageColumn/ButtonCenter/ButtonColumn" unique_id=281805193]
+custom_minimum_size = Vector2(1500, 130)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 52
+text = "毛泽东思想和中国特色社会主义"
+
+[node name="XiButton" type="Button" parent="PageMargin/PageColumn/ButtonCenter/ButtonColumn" unique_id=1192336098]
+custom_minimum_size = Vector2(1500, 130)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 52
+text = "习近平新时代中国特色社会主义思想概论"
+
+[node name="BackButtonContainer" type="CenterContainer" parent="PageMargin/PageColumn" unique_id=1947648174]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="PageMargin/PageColumn/BackButtonContainer" unique_id=1596502781]
+custom_minimum_size = Vector2(760, 90)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "返回首页"

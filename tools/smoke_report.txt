@@ -1,0 +1,10 @@
+SMOKE: starting
+题库加载：540 道
+题型统计：single=190 multiple=160 judge=190 max_options=4
+主页面：加载成功，总题数=540
+答题页：手机布局，总题库=540，跳题输入框可用
+跳题：跳转到第 10 题，current_index=9
+选项乱序：通过
+判题反馈：回答正确 / 正确答案：C
+错题收藏：收藏和移出通过
+SMOKE: PASS

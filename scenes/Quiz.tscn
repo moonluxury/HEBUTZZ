@@ -1,0 +1,596 @@
+[gd_scene format=3 uid="uid://ddgb75qke1elw"]
+
+[ext_resource type="Script" uid="uid://b5m005ug6ntso" path="res://scripts/quiz.gd" id="1_quiz"]
+[ext_resource type="Theme" uid="uid://dmvxlpfd6713q" path="res://themes/minimal_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" path="res://assets/hebut_logo.svg" id="3_logo"]
+
+[sub_resource type="StyleBoxFlat" id="Style_header"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 1
+border_color = Color(0.91, 0.93, 0.96, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0.035, 0.173, 0.529, 0.07)
+shadow_size = 18
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="StyleBoxFlat" id="Style_badge"]
+bg_color = Color(0.0352941, 0.172549, 0.529412, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.035, 0.173, 0.529, 0.2)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="Style_option"]
+content_margin_left = 32.0
+content_margin_right = 24.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.89, 0.92, 0.96, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_option_hover"]
+content_margin_left = 32.0
+content_margin_right = 24.0
+bg_color = Color(0.975, 0.984, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.035, 0.173, 0.529, 0.34)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_primary"]
+bg_color = Color(0.0352941, 0.172549, 0.529412, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0.035, 0.173, 0.529, 0.18)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="Style_primary_hover"]
+bg_color = Color(0.055, 0.23, 0.68, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_outline"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.87, 0.9, 0.95, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_outline_hover"]
+bg_color = Color(0.965, 0.976, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.035, 0.173, 0.529, 0.38)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_list"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_list_selected"]
+bg_color = Color(0.0352941, 0.172549, 0.529412, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="Style_empty"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.035, 0.173, 0.529, 0.09)
+shadow_size = 18
+
+[node name="Quiz" type="Control" unique_id=487793776]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_quiz")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1912526503]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.965, 0.976, 0.994, 1)
+
+[node name="PageMargin" type="MarginContainer" parent="." unique_id=318876500]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PageColumn" type="VBoxContainer" parent="PageMargin" unique_id=1950433092]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Header" type="PanelContainer" parent="PageMargin/PageColumn" unique_id=1153066027]
+custom_minimum_size = Vector2(0, 156)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_header")
+
+[node name="HeaderMargin" type="MarginContainer" parent="PageMargin/PageColumn/Header" unique_id=644753612]
+layout_mode = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 22
+
+[node name="HeaderRow" type="HBoxContainer" parent="PageMargin/PageColumn/Header/HeaderMargin" unique_id=1738596050]
+layout_mode = 2
+
+[node name="BrandRow" type="HBoxContainer" parent="PageMargin/PageColumn/Header/HeaderMargin/HeaderRow" unique_id=466553287]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+
+[node name="UniversityLogo" type="TextureRect" parent="PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/BrandRow" unique_id=447960035]
+self_modulate = Color(0.0352941, 0.172549, 0.529412, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(360, 104)
+layout_mode = 2
+texture = ExtResource("3_logo")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="BrandDivider" type="ColorRect" parent="PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/BrandRow" unique_id=1292141348]
+custom_minimum_size = Vector2(2, 64)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.64, 0.7, 0.82, 1)
+
+[node name="TitleColumn" type="VBoxContainer" parent="PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/BrandRow" unique_id=351333864]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/BrandRow/TitleColumn" unique_id=2132434440]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_font_sizes/font_size = 42
+text = "河工开物题库"
+
+[node name="ModeLabel" type="Label" parent="PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/BrandRow/TitleColumn" unique_id=559141377]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.39, 0.45, 0.56, 1)
+theme_override_font_sizes/font_size = 42
+text = "总题库答题"
+
+[node name="TimeRow" type="HBoxContainer" parent="PageMargin/PageColumn/Header/HeaderMargin/HeaderRow" unique_id=1336170096]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 16
+
+[node name="ClockIcon" type="Label" parent="PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/TimeRow" unique_id=1863323262]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_font_sizes/font_size = 42
+text = "◷"
+
+[node name="TimeColumn" type="VBoxContainer" parent="PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/TimeRow" unique_id=1887531443]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="TimeLabel" type="Label" parent="PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/TimeRow/TimeColumn" unique_id=1061122840]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.06, 0.11, 0.2, 1)
+theme_override_font_sizes/font_size = 42
+text = "14:30:25"
+horizontal_alignment = 2
+
+[node name="DateLabel" type="Label" parent="PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/TimeRow/TimeColumn" unique_id=900733092]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.39, 0.45, 0.56, 1)
+theme_override_font_sizes/font_size = 42
+text = "2025年05月20日  星期二"
+horizontal_alignment = 2
+
+[node name="ContentMargin" type="MarginContainer" parent="PageMargin/PageColumn" unique_id=1284701500]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="Body" type="HBoxContainer" parent="PageMargin/PageColumn/ContentMargin" unique_id=391431427]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="LeftCard" type="PanelContainer" parent="PageMargin/PageColumn/ContentMargin/Body" unique_id=1158306364]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.35
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="LeftColumn" type="VBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard" unique_id=518587936]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="QuestionMargin" type="MarginContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn" unique_id=1635505978]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 72
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 72
+theme_override_constants/margin_bottom = 32
+
+[node name="QuestionArea" type="VBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin" unique_id=2115710450]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="TopBar" type="HBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea" unique_id=771788982]
+custom_minimum_size = Vector2(0, 68)
+layout_mode = 2
+theme_override_constants/separation = 28
+
+[node name="ProgressLabel" type="Label" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/TopBar" unique_id=749411986]
+visible = false
+custom_minimum_size = Vector2(68, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_badge")
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TypeLabel" type="Label" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/TopBar" unique_id=1249325431]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.42, 0.46, 0.54, 1)
+theme_override_font_sizes/font_size = 42
+text = "单选题"
+vertical_alignment = 1
+
+[node name="QuestionScroll" type="ScrollContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea" unique_id=247396352]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll" unique_id=2124065995]
+custom_minimum_size = Vector2(1440, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 26
+
+[node name="QuestionLabel" type="RichTextLabel" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content" unique_id=243859371]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.04, 0.09, 0.18, 1)
+theme_override_font_sizes/normal_font_size = 42
+fit_content = true
+scroll_active = false
+
+[node name="Option1" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content" unique_id=2014667300]
+custom_minimum_size = Vector2(0, 106)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.1, 0.19, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_option")
+theme_override_styles/pressed = SubResource("Style_option_hover")
+theme_override_styles/hover = SubResource("Style_option_hover")
+theme_override_styles/focus = SubResource("Style_option")
+text = "○    A. 中华文化"
+alignment = 0
+autowrap_mode = 2
+
+[node name="Option2" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content" unique_id=2047515380]
+custom_minimum_size = Vector2(0, 106)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.1, 0.19, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_option")
+theme_override_styles/pressed = SubResource("Style_option_hover")
+theme_override_styles/hover = SubResource("Style_option_hover")
+theme_override_styles/focus = SubResource("Style_option")
+text = "○    B. 中国文化"
+alignment = 0
+autowrap_mode = 2
+
+[node name="Option3" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content" unique_id=221834304]
+custom_minimum_size = Vector2(0, 106)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.1, 0.19, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_option")
+theme_override_styles/pressed = SubResource("Style_option_hover")
+theme_override_styles/hover = SubResource("Style_option_hover")
+theme_override_styles/focus = SubResource("Style_option")
+text = "○    C. 优秀文化"
+alignment = 0
+autowrap_mode = 2
+
+[node name="Option4" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content" unique_id=1856422018]
+custom_minimum_size = Vector2(0, 106)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.1, 0.19, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_option")
+theme_override_styles/pressed = SubResource("Style_option_hover")
+theme_override_styles/hover = SubResource("Style_option_hover")
+theme_override_styles/focus = SubResource("Style_option")
+text = "○    D. 传统文化"
+alignment = 0
+autowrap_mode = 2
+
+[node name="Option5" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content" unique_id=1524198992]
+custom_minimum_size = Vector2(0, 106)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.1, 0.19, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_option")
+theme_override_styles/pressed = SubResource("Style_option_hover")
+theme_override_styles/hover = SubResource("Style_option_hover")
+theme_override_styles/focus = SubResource("Style_option")
+text = "○    E. 其他"
+alignment = 0
+autowrap_mode = 2
+
+[node name="Option6" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content" unique_id=38553551]
+custom_minimum_size = Vector2(0, 106)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.1, 0.19, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_option")
+theme_override_styles/pressed = SubResource("Style_option_hover")
+theme_override_styles/hover = SubResource("Style_option_hover")
+theme_override_styles/focus = SubResource("Style_option")
+text = "○    F. 其他"
+alignment = 0
+autowrap_mode = 2
+
+[node name="SubmitRow" type="HBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content" unique_id=2109488985]
+layout_mode = 2
+theme_override_constants/separation = 28
+
+[node name="SubmitButton" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/SubmitRow" unique_id=234319954]
+custom_minimum_size = Vector2(260, 76)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_primary")
+theme_override_styles/hover = SubResource("Style_primary_hover")
+text = "提交答案"
+
+[node name="ResultLabel" type="Label" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/SubmitRow" unique_id=665075404]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 42
+vertical_alignment = 1
+
+[node name="AnswerLabel" type="Label" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content" unique_id=145290702]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.1, 0.19, 1)
+theme_override_font_sizes/font_size = 42
+
+[node name="FooterDivider" type="ColorRect" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn" unique_id=126485637]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+color = Color(0.9, 0.92, 0.95, 1)
+
+[node name="BottomNavContainer" type="MarginContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn" unique_id=107555434]
+custom_minimum_size = Vector2(0, 154)
+layout_mode = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 30
+
+[node name="BottomNav" type="HBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer" unique_id=1564217283]
+layout_mode = 2
+theme_override_constants/separation = 34
+
+[node name="PrevPositionKeeper" type="MarginContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer/BottomNav" unique_id=623152006]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PrevButton" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer/BottomNav/PrevPositionKeeper" unique_id=968366405]
+custom_minimum_size = Vector2(250, 90)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.06, 0.12, 0.22, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_outline")
+theme_override_styles/hover = SubResource("Style_outline_hover")
+text = "‹   上一题"
+
+[node name="NextButton" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer/BottomNav" unique_id=775248556]
+custom_minimum_size = Vector2(250, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_primary")
+theme_override_styles/hover = SubResource("Style_primary_hover")
+text = "下一题   ›"
+
+[node name="WrongToggle" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer/BottomNav" unique_id=1127820614]
+custom_minimum_size = Vector2(275, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.06, 0.12, 0.22, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_outline")
+theme_override_styles/hover = SubResource("Style_outline_hover")
+text = "♡   加入错题库"
+
+[node name="HomeButton" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer/BottomNav" unique_id=616299434]
+custom_minimum_size = Vector2(250, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.06, 0.12, 0.22, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_outline")
+theme_override_styles/hover = SubResource("Style_outline_hover")
+text = "⌂   返回首页"
+
+[node name="RightCard" type="PanelContainer" parent="PageMargin/PageColumn/ContentMargin/Body" unique_id=253852641]
+custom_minimum_size = Vector2(520, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="RightMargin" type="MarginContainer" parent="PageMargin/PageColumn/ContentMargin/Body/RightCard" unique_id=621712580]
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 52
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 42
+
+[node name="RightColumn" type="VBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin" unique_id=993930363]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="HeaderRow" type="HBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="HeaderTitleColumn" type="VBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn/HeaderRow"]
+custom_minimum_size = Vector2(88, 0)
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="QuestionNumbersTitle" type="Label" parent="PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn/HeaderRow/HeaderTitleColumn" unique_id=871822766]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.04, 0.09, 0.18, 1)
+theme_override_font_sizes/font_size = 42
+text = "题号"
+
+[node name="TitleUnderline" type="ColorRect" parent="PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn/HeaderRow/HeaderTitleColumn" unique_id=351469842]
+custom_minimum_size = Vector2(70, 6)
+layout_mode = 2
+size_flags_horizontal = 0
+color = Color(0.0352941, 0.172549, 0.529412, 1)
+
+[node name="JumpRowContainer" type="HBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn/HeaderRow" unique_id=1030144668]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="JumpRow" type="HBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn/HeaderRow/JumpRowContainer" unique_id=2114970769]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="JumpInput" type="LineEdit" parent="PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn/HeaderRow/JumpRowContainer/JumpRow" unique_id=329394570]
+custom_minimum_size = Vector2(180, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.06, 0.12, 0.22, 1)
+theme_override_colors/font_placeholder_color = Color(0.42, 0.46, 0.54, 1)
+theme_override_colors/caret_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_font_sizes/font_size = 26
+placeholder_text = "跳转到题号"
+alignment = 1
+max_length = 4
+
+[node name="JumpButton" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn/HeaderRow/JumpRowContainer/JumpRow" unique_id=315980068]
+custom_minimum_size = Vector2(104, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 26
+text = "搜索"
+
+[node name="QuestionNumberList" type="ItemList" parent="PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn" unique_id=46228645]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.04, 0.09, 0.18, 1)
+theme_override_colors/font_hovered_color = Color(0.0352941, 0.172549, 0.529412, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 15
+theme_override_font_sizes/font_size = 42
+theme_override_styles/panel = SubResource("Style_list")
+theme_override_styles/selected = SubResource("Style_list_selected")
+theme_override_styles/selected_focus = SubResource("Style_list_selected")
+allow_reselect = true
+max_columns = 5
+same_column_width = true
+fixed_column_width = 76
+fixed_icon_size = Vector2i(0, 62)
+icon_mode = 0
+
+[node name="EmptyState" type="CenterContainer" parent="." unique_id=106253954]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EmptyColumn" type="VBoxContainer" parent="EmptyState" unique_id=1685884098]
+custom_minimum_size = Vector2(920, 360)
+layout_mode = 2
+theme_override_constants/separation = 48
+
+[node name="EmptyLabel" type="Label" parent="EmptyState/EmptyColumn" unique_id=680890157]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.04, 0.09, 0.18, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_empty")
+text = "题库暂无题目"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="EmptyState/EmptyColumn" unique_id=29653557]
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_primary")
+theme_override_styles/hover = SubResource("Style_primary_hover")
+text = "返回首页"

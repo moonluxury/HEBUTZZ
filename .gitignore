@@ -1,0 +1,17 @@
+.godot/
+/.godot_appdata/
+/android-sdk/
+/downloads/
+/export_templates/
+/build/
+/gongdazhengzhi.zip
+*.translation
+*.log
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+export_credentials.cfg

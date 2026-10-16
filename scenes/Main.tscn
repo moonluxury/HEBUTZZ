@@ -1,0 +1,131 @@
+[gd_scene format=3 uid="uid://dkmjh7uuk7t46"]
+
+[ext_resource type="Script" uid="uid://b4ev3rlx2kd1k" path="res://scripts/main_menu.gd" id="1_main"]
+[ext_resource type="Theme" uid="uid://dmvxlpfd6713q" path="res://themes/minimal_theme.tres" id="2_theme"]
+[ext_resource type="Material" path="res://materials/campus_brand_text_material.tres" id="3_brand_material"]
+
+[node name="Main" type="Control" unique_id=269594469]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_main")
+
+[node name="Background" type="ColorRect" parent="." unique_id=73432892]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.968627, 0.972549, 0.988235, 1)
+
+[node name="PageMargin" type="MarginContainer" parent="." unique_id=328874231]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 220
+theme_override_constants/margin_top = 180
+theme_override_constants/margin_right = 220
+theme_override_constants/margin_bottom = 180
+
+[node name="PageColumn" type="VBoxContainer" parent="PageMargin" unique_id=183876047]
+layout_mode = 2
+theme_override_constants/separation = 70
+alignment = 1
+
+[node name="Title" type="Label" parent="PageMargin/PageColumn" unique_id=1089930810]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 84
+text = "河工开物"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SubtitleRow" type="HBoxContainer" parent="PageMargin/PageColumn" unique_id=918024684]
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+alignment = 1
+
+[node name="WelcomeLabel" type="Label" parent="PageMargin/PageColumn/SubtitleRow" unique_id=1761481960]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 58
+text = "欢迎来到"
+vertical_alignment = 1
+
+[node name="BrandLabel" type="Label" parent="PageMargin/PageColumn/SubtitleRow" unique_id=717953970]
+material = ExtResource("3_brand_material")
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 58
+text = "河工开物"
+vertical_alignment = 1
+
+[node name="ButtonCenter" type="CenterContainer" parent="PageMargin/PageColumn" unique_id=1304074602]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+
+[node name="ButtonRow" type="HBoxContainer" parent="PageMargin/PageColumn/ButtonCenter" unique_id=1011548009]
+layout_mode = 2
+theme_override_constants/separation = 120
+
+[node name="AllButton" type="Button" parent="PageMargin/PageColumn/ButtonCenter/ButtonRow" unique_id=335276139]
+custom_minimum_size = Vector2(570, 140)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 56
+text = "总题库"
+
+[node name="WrongButton" type="Button" parent="PageMargin/PageColumn/ButtonCenter/ButtonRow" unique_id=1969723101]
+custom_minimum_size = Vector2(570, 140)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 56
+text = "错题库"
+
+[node name="FeatureCenter" type="CenterContainer" parent="PageMargin/PageColumn" unique_id=580838878]
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+
+[node name="FeatureRow" type="HBoxContainer" parent="PageMargin/PageColumn/FeatureCenter" unique_id=923944109]
+layout_mode = 2
+theme_override_constants/separation = 120
+
+[node name="KaiwuButton" type="Button" parent="PageMargin/PageColumn/FeatureCenter/FeatureRow" unique_id=1649515590]
+custom_minimum_size = Vector2(570, 120)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 52
+text = "河工开物"
+
+[node name="SpiritButton" type="Button" parent="PageMargin/PageColumn/FeatureCenter/FeatureRow" unique_id=1287478012]
+custom_minimum_size = Vector2(570, 120)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 52
+text = "我的精灵"
+
+[node name="WrongStatusMargin" type="MarginContainer" parent="PageMargin/PageColumn" unique_id=1221292059]
+layout_mode = 2
+theme_override_constants/margin_top = 30
+
+[node name="WrongStatus" type="Label" parent="PageMargin/PageColumn/WrongStatusMargin" unique_id=1085580709]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = 47
+theme_override_font_sizes/font_size = 46
+text = "马克思主义原理错题：0 道
+毛泽东思想和中国特色社会主义错题：0 道
+习近平新时代中国特色社会主义思想概论错题：0 道"
+horizontal_alignment = 1
+vertical_alignment = 1
