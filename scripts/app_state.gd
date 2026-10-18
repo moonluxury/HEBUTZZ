@@ -20,6 +20,9 @@ var spirit_progress := {
 }
 var _spirit_save_elapsed := 0.0
 var _last_interaction_msec := -10000
+var program_drafts: Dictionary = {}
+var _draft_save_timer: Timer
+const PROGRAM_DRAFTS_PATH := "user://python_code_drafts_v2.json"
 
 const MIN_FONT_SCALE := 0.7
 const MAX_FONT_SCALE := 1.8
@@ -56,6 +59,21 @@ const SUBJECTS := {
 		"question_path": "res://data/questions.json",
 		"wrong_path": "user://wrong_questions.json",
 	},
+	"matlab": {
+		"title": "MATLAB",
+		"question_path": "res://data/questions_matlab.json",
+		"wrong_path": "user://wrong_questions_matlab.json",
+	},
+	"python": {
+		"title": "Python",
+		"question_path": "res://data/questions_python.json",
+		"wrong_path": "user://wrong_questions_python_v2.json",
+	},
+	"cpp": {
+		"title": "C++",
+		"question_path": "res://data/questions_cpp.json",
+		"wrong_path": "user://wrong_questions_cpp.json",
+	},
 }
 
 
@@ -66,7 +84,29 @@ func get_subject() -> Dictionary:
 func _ready() -> void:
 	_migrate_legacy_user_data()
 	_load_spirit_progress()
+	if FileAccess.file_exists(PROGRAM_DRAFTS_PATH):
+		var saved = JSON.parse_string(FileAccess.get_file_as_string(PROGRAM_DRAFTS_PATH))
+		if typeof(saved) == TYPE_DICTIONARY:
+			program_drafts = saved
+	_draft_save_timer = Timer.new()
+	_draft_save_timer.one_shot = true
+	_draft_save_timer.wait_time = 0.6
+	_draft_save_timer.timeout.connect(_save_program_drafts)
+	add_child(_draft_save_timer)
 	_fit_window_to_current_screen.call_deferred()
+
+
+func set_program_draft(key: String, code: String) -> void:
+	program_drafts[key] = code
+	_draft_save_timer.start()
+
+
+func _save_program_drafts() -> void:
+	if program_drafts.is_empty():
+		return
+	var file := FileAccess.open(PROGRAM_DRAFTS_PATH, FileAccess.WRITE)
+	if file != null:
+		file.store_string(JSON.stringify(program_drafts))
 
 
 func _migrate_legacy_user_data() -> void:
@@ -155,6 +195,7 @@ func _process(delta: float) -> void:
 
 
 func _exit_tree() -> void:
+	_save_program_drafts()
 	_save_spirit_progress()
 
 

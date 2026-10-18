@@ -1,5 +1,11 @@
 extends Control
 
+const FillAnswer = preload("res://scripts/fill_answer.gd")
+const OutputAnswer = preload("res://scripts/output_answer.gd")
+const ProgramEditor = preload("res://scripts/program_editor.gd")
+const CODE_FONT = preload("res://themes/code_font.tres")
+const HEART_ICON = preload("res://assets/quiz_icons/heart.png")
+const HEART_FILLED_ICON = preload("res://assets/quiz_icons/heart_filled.png")
 const DISPLAY_LETTERS := ["A", "B", "C", "D", "E", "F"]
 const CORRECT_COLOR := Color(0.05, 0.55, 0.22)
 const WRONG_COLOR := Color(0.86, 0.15, 0.15)
@@ -43,6 +49,12 @@ var question_states := {}
 var current_index := 0
 var shuffled_options: Array = []
 var selected_indices: Array = []
+var entered_answers: Array[String] = []
+var fill_inputs: Array[LineEdit] = []
+var output_input: TextEdit
+var program_editor: VBoxContainer
+var question_images: VBoxContainer
+var reference_revealed := false
 var has_answered := false
 var button_tweens := {}
 var header_hover_timer: Timer
@@ -83,6 +95,7 @@ var number_underline_tween: Tween
 	$PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/Option6,
 ]
 @onready var submit_button: Button = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/SubmitRow/SubmitButton
+@onready var fill_answers_box: VBoxContainer = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/FillAnswers
 @onready var result_label: Label = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/SubmitRow/ResultLabel
 @onready var answer_label: Label = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/AnswerLabel
 @onready var footer_divider: ColorRect = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/FooterDivider
@@ -95,6 +108,13 @@ var number_underline_tween: Tween
 
 
 func _ready() -> void:
+	# Use the Python question font throughout all six course quiz pages.
+	theme = theme.duplicate()
+	theme.default_font = CODE_FONT
+	for button in [prev_button, next_button, wrong_toggle, home_button]:
+		button.clip_text = true
+		button.alignment = HORIZONTAL_ALIGNMENT_RIGHT if button == next_button else HORIZONTAL_ALIGNMENT_LEFT
+		button.resized.connect(_align_footer_icons.call_deferred)
 	randomize()
 	page_margin.modulate.a = 0.0
 	_update_clock()
@@ -104,6 +124,10 @@ func _ready() -> void:
 	clock_timer.timeout.connect(_update_clock)
 	add_child(clock_timer)
 	_load_data()
+	question_images = VBoxContainer.new()
+	question_images.name = "QuestionImages"
+	question_label.get_parent().add_child(question_images)
+	question_label.get_parent().move_child(question_images, question_label.get_index() + 1)
 	title_label.text = "%s题库" % str(_subject()["title"])
 	_connect_controls()
 	_setup_header_hover()
@@ -125,6 +149,7 @@ func _ready() -> void:
 	_app_state().font_scale_changed.connect(_on_font_scale_changed)
 	_app_state().color_mode_changed.connect(_on_color_mode_changed)
 	_app_state().apply_font_scale(self)
+	_scale_footer_icons()
 	_app_state().apply_color_mode(self)
 	_apply_quiz_palette()
 	_setup_button_interactions()
@@ -135,7 +160,6 @@ func _setup_header_hover() -> void:
 	header_panel.custom_minimum_size = Vector2(0, HEADER_COLLAPSED_HEIGHT)
 	header_panel.clip_contents = true
 	header_panel.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	header_panel.tooltip_text = "悬停显示题库信息"
 	header_margin.modulate.a = 0.0
 	header_margin.hide()
 	header_panel.mouse_entered.connect(_expand_header)
@@ -370,6 +394,7 @@ func _populate_question_numbers() -> void:
 	question_number_list.clear()
 	for index in questions.size():
 		question_number_list.add_item(str(index + 1))
+		question_number_list.set_item_tooltip_enabled(index, false)
 	_refresh_question_number_states()
 	call_deferred("_fit_question_number_columns")
 
@@ -384,9 +409,6 @@ func _refresh_question_number_states() -> void:
 			is_answered = bool(state.get("answered", false))
 		if is_answered:
 			item_color = DARK_ACCENT if _is_dark_mode() else HEBUT_BLUE
-			question_number_list.set_item_tooltip(index, "第 %d 题 · 已答题" % (index + 1))
-		else:
-			question_number_list.set_item_tooltip(index, "第 %d 题" % (index + 1))
 		if index == current_index:
 			item_color = DARK_ACCENT if _is_dark_mode() else HEBUT_BLUE
 		question_number_list.set_item_custom_fg_color(index, item_color)
@@ -455,6 +477,12 @@ func _is_valid_question(value: Variant) -> bool:
 	if typeof(value) != TYPE_DICTIONARY:
 		return false
 	var question: Dictionary = value
+	if question.get("type", "") == "fill":
+		return question.has("stem") and FillAnswer.is_valid(question)
+	if question.get("type", "") == "output":
+		return question.has("stem") and OutputAnswer.is_valid(question)
+	if question.get("type", "") == "program":
+		return question.has("stem") and question.has("reference_code")
 	return (
 		question.has("stem")
 		and question.has("options")
@@ -465,17 +493,21 @@ func _is_valid_question(value: Variant) -> bool:
 
 func _show_question() -> void:
 	var question: Dictionary = questions[current_index]
-	shuffled_options = question["options"].duplicate(true)
-	shuffled_options.shuffle()
+	shuffled_options = question.get("options", []).duplicate(true)
+	if not question.get("preserve_option_order", false):
+		shuffled_options.shuffle()
 	_restore_current_question_state()
 	progress_label.text = str(current_index + 1)
 	title_label.text = "%s题库" % str(_subject()["title"])
 	mode_label.text = "错题库答题" if _app_state().quiz_mode == "wrong" else "总题库答题"
 	type_label.text = question["type_label"]
 	question_label.text = "%d. %s" % [question["id"], question["stem"]]
-	submit_button.visible = question["type"] == "multiple"
+	_build_fill_inputs()
+	_build_question_images(question.get("images", []))
+	submit_button.visible = question["type"] in ["multiple", "fill", "output"]
 	submit_button.disabled = has_answered
 	question_label.scroll_to_line(0)
+	question_scroll.set_deferred("scroll_vertical", 0)
 
 	for index in option_buttons.size():
 		var button := option_buttons[index]
@@ -502,13 +534,21 @@ func _show_question() -> void:
 
 func _restore_current_question_state() -> void:
 	selected_indices.clear()
+	entered_answers.clear()
 	has_answered = false
+	reference_revealed = false
+	if _is_program_question():
+		entered_answers.append(str(_app_state().program_drafts.get(str(questions[current_index].get("source_id", "")), "")))
 	var state_key := _question_state_key(current_index)
 	if not question_states.has(state_key):
 		return
 
 	var state: Dictionary = question_states[state_key]
-	has_answered = bool(state.get("answered", false))
+	has_answered = bool(state.get("answered", false)) and not _is_program_question()
+	reference_revealed = bool(state.get("reference_revealed", false))
+	entered_answers.clear()
+	for answer in state.get("fill_answers", []):
+		entered_answers.append(str(answer))
 	var selected_keys: Array = state.get("selected_keys", [])
 	for index in shuffled_options.size():
 		if selected_keys.has(str(shuffled_options[index].get("key", ""))):
@@ -521,7 +561,9 @@ func _save_current_question_state() -> void:
 		selected_keys.append(str(shuffled_options[index].get("key", "")))
 	question_states[_question_state_key(current_index)] = {
 		"selected_keys": selected_keys,
+		"fill_answers": entered_answers.duplicate(),
 		"answered": has_answered,
+		"reference_revealed": reference_revealed,
 		"correct": _is_selection_correct() if has_answered else false,
 	}
 
@@ -533,7 +575,7 @@ func _question_state_key(index: int) -> String:
 
 
 func _on_option_pressed(index: int) -> void:
-	if has_answered or index >= shuffled_options.size():
+	if _is_text_question() or has_answered or index >= shuffled_options.size():
 		return
 	if questions[current_index]["type"] == "multiple":
 		if selected_indices.has(index):
@@ -555,7 +597,20 @@ func _on_option_pressed(index: int) -> void:
 func _submit_multiple_answer() -> void:
 	if has_answered:
 		return
-	if selected_indices.is_empty():
+	if _is_output_question():
+		if entered_answers[0].strip_edges().is_empty():
+			result_label.add_theme_color_override("font_color", _wrong_feedback_color())
+			result_label.text = "请输入程序输出"
+			output_input.grab_focus()
+			return
+	elif _is_fill_question():
+		for index in fill_inputs.size():
+			if entered_answers[index].strip_edges().is_empty():
+				result_label.add_theme_color_override("font_color", _wrong_feedback_color())
+				result_label.text = "请填写第 %d 空" % (index + 1)
+				fill_inputs[index].grab_focus()
+				return
+	elif selected_indices.is_empty():
 		result_label.add_theme_color_override("font_color", _wrong_feedback_color())
 		result_label.text = "请至少选择一个选项"
 		return
@@ -564,6 +619,10 @@ func _submit_multiple_answer() -> void:
 
 func _reveal_answer() -> void:
 	has_answered = true
+	for field in fill_inputs:
+		field.editable = false
+	if output_input != null:
+		output_input.editable = false
 	var correct := _is_selection_correct()
 	_app_state().register_quiz_answer(correct)
 	_save_current_question_state()
@@ -575,7 +634,7 @@ func _reveal_answer() -> void:
 
 
 func _refresh_answer_feedback() -> void:
-	if not has_answered:
+	if not has_answered or _is_program_question():
 		result_label.text = ""
 		answer_label.text = ""
 		return
@@ -585,7 +644,208 @@ func _refresh_answer_feedback() -> void:
 		"font_color",
 		_correct_feedback_color() if correct else _wrong_feedback_color(),
 	)
-	answer_label.text = "正确答案：%s" % _correct_display_text()
+	if _is_output_question():
+		answer_label.text = "%s：\n%s\n\n%s" % [
+			str(questions[current_index].get("answer_title", "参考输出（原资料）")),
+			"\n或\n".join(questions[current_index]["answers"]),
+			str(questions[current_index].get("explanation", "")),
+		]
+	elif _is_fill_question():
+		var lines: Array[String] = ["参考答案（原资料）：" if questions[current_index].get("language", "") == "cpp" else "参考答案："]
+		var blanks: Array = questions[current_index]["blanks"]
+		for index in blanks.size():
+			lines.append("（%d）%s" % [index + 1, " 或 ".join(blanks[index]["answers"])])
+		var explanation := str(questions[current_index].get("explanation", ""))
+		if not explanation.is_empty():
+			lines.append(explanation)
+		answer_label.text = "\n".join(lines)
+	else:
+		var answer_title := "参考答案（原资料）" if questions[current_index].get("language", "") in ["cpp", "python"] else "正确答案"
+		answer_label.text = "%s：%s" % [answer_title, _correct_display_text()]
+		var explanation := str(questions[current_index].get("explanation", ""))
+		if not explanation.is_empty():
+			answer_label.text += "\n\n" + explanation
+
+
+func _is_fill_question() -> bool:
+	return (
+		current_index >= 0 and current_index < questions.size()
+		and questions[current_index].get("type", "") == "fill"
+	)
+
+
+func _is_output_question() -> bool:
+	return (
+		current_index >= 0 and current_index < questions.size()
+		and questions[current_index].get("type", "") == "output"
+	)
+
+
+func _is_text_question() -> bool:
+	return _is_fill_question() or _is_output_question() or _is_program_question()
+
+
+func _is_program_question() -> bool:
+	return current_index >= 0 and current_index < questions.size() and questions[current_index].get("type", "") == "program"
+
+
+func _build_question_images(paths: Array) -> void:
+	for child in question_images.get_children():
+		question_images.remove_child(child)
+		child.queue_free()
+	question_images.visible = not paths.is_empty()
+	for path in paths:
+		var picture := TextureRect.new()
+		picture.texture = load(str(path))
+		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		picture.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		picture.resized.connect(_fit_question_image.bind(picture))
+		question_images.add_child(picture)
+		_fit_question_image.call_deferred(picture)
+
+
+func _fit_question_image(picture: TextureRect) -> void:
+	if is_instance_valid(picture) and picture.texture != null and picture.size.x > 0:
+		var display_width := minf(picture.size.x, picture.texture.get_width() * 3.0)
+		picture.custom_minimum_size.y = ceilf(display_width * picture.texture.get_height() / picture.texture.get_width())
+
+
+func _build_fill_inputs() -> void:
+	for child in fill_answers_box.get_children():
+		fill_answers_box.remove_child(child)
+		child.queue_free()
+	fill_inputs.clear()
+	output_input = null
+	program_editor = null
+	fill_answers_box.visible = _is_text_question()
+	if not _is_text_question():
+		return
+	if _is_program_question():
+		program_editor = ProgramEditor.new()
+		fill_answers_box.add_child(program_editor)
+		program_editor.configure(questions[current_index], entered_answers[0], reference_revealed)
+		program_editor.draft_changed.connect(_on_program_draft_changed.bind(str(questions[current_index]["source_id"])))
+		program_editor.reference_toggled.connect(_on_program_reference_toggled)
+		_app_state().apply_font_scale(program_editor)
+		_app_state().apply_color_mode(program_editor)
+		program_editor.apply_palette(_is_dark_mode())
+		return
+	if _is_output_question():
+		_build_output_input()
+		return
+	var blanks: Array = questions[current_index]["blanks"]
+	while entered_answers.size() < blanks.size():
+		entered_answers.append("")
+	for index in blanks.size():
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 18)
+		fill_answers_box.add_child(row)
+		var label := Label.new()
+		label.text = "（%d）" % (index + 1)
+		label.add_theme_font_size_override("font_size", 40)
+		row.add_child(label)
+		var field := LineEdit.new()
+		field.custom_minimum_size = Vector2(0, 80)
+		field.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		field.placeholder_text = "填写第 %d 空" % (index + 1)
+		field.text = entered_answers[index]
+		field.editable = not has_answered
+		field.add_theme_font_override("font", CODE_FONT)
+		field.add_theme_font_size_override("font_size", 40)
+		field.text_changed.connect(_on_fill_text_changed.bind(index))
+		field.text_submitted.connect(_on_fill_enter.bind(index))
+		row.add_child(field)
+		fill_inputs.append(field)
+	_app_state().apply_font_scale(fill_answers_box)
+	_app_state().apply_color_mode(fill_answers_box)
+	_style_fill_inputs()
+
+
+func _build_output_input() -> void:
+	if entered_answers.is_empty():
+		entered_answers.append("")
+	var hint := Label.new()
+	hint.text = str(questions[current_index].get("answer_prompt", "填写程序输出（Enter 换行，点击下方按钮提交）"))
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	hint.add_theme_font_size_override("font_size", 34)
+	fill_answers_box.add_child(hint)
+	output_input = TextEdit.new()
+	output_input.name = "OutputInput"
+	output_input.custom_minimum_size = Vector2(0, 280)
+	output_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	output_input.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	output_input.placeholder_text = "在这里填写输出结果，可输入多行"
+	output_input.text = entered_answers[0]
+	output_input.editable = not has_answered
+	output_input.add_theme_font_override("font", CODE_FONT)
+	output_input.add_theme_font_size_override("font_size", 40)
+	output_input.text_changed.connect(_on_output_text_changed)
+	fill_answers_box.add_child(output_input)
+	_app_state().apply_font_scale(fill_answers_box)
+	_app_state().apply_color_mode(fill_answers_box)
+	_style_fill_inputs()
+
+
+func _on_output_text_changed() -> void:
+	if has_answered or output_input == null:
+		return
+	entered_answers[0] = output_input.text
+	_save_current_question_state()
+	result_label.text = ""
+
+
+func _on_program_draft_changed(code: String, source_id: String) -> void:
+	_app_state().set_program_draft(source_id, code)
+	if not _is_program_question() or questions[current_index]["source_id"] != source_id:
+		return
+	entered_answers[0] = code
+	_save_current_question_state()
+
+
+func _on_program_reference_toggled(revealed: bool) -> void:
+	reference_revealed = revealed
+	_save_current_question_state()
+
+
+func _on_fill_text_changed(text: String, index: int) -> void:
+	if has_answered:
+		return
+	entered_answers[index] = text
+	_save_current_question_state()
+	result_label.text = ""
+
+
+func _on_fill_enter(_text: String, index: int) -> void:
+	if index + 1 < fill_inputs.size():
+		fill_inputs[index + 1].grab_focus()
+	else:
+		_submit_multiple_answer()
+
+
+func _style_fill_inputs() -> void:
+	if program_editor != null:
+		program_editor.apply_palette(_is_dark_mode())
+	var accent := DARK_ACCENT if _is_dark_mode() else HEBUT_BLUE
+	var border := DARK_BORDER if _is_dark_mode() else OPTION_BORDER
+	var background_color := DARK_OPTION if _is_dark_mode() else Color.WHITE
+	for field in fill_inputs:
+		field.add_theme_color_override("font_color", _ink_color())
+		field.add_theme_color_override("font_uneditable_color", _ink_color())
+		field.add_theme_color_override("caret_color", _ink_color())
+		field.add_theme_color_override("font_placeholder_color", DARK_MUTED if _is_dark_mode() else LIGHT_MUTED)
+		field.add_theme_stylebox_override("normal", _jump_input_style(background_color, border, 2))
+		field.add_theme_stylebox_override("read_only", _jump_input_style(background_color, border, 2))
+		field.add_theme_stylebox_override("focus", _jump_input_style(background_color, accent, 2))
+	if output_input != null:
+		output_input.add_theme_color_override("font_color", _ink_color())
+		output_input.add_theme_color_override("font_readonly_color", _ink_color())
+		output_input.add_theme_color_override("caret_color", _ink_color())
+		output_input.add_theme_color_override("font_placeholder_color", DARK_MUTED if _is_dark_mode() else LIGHT_MUTED)
+		output_input.add_theme_color_override("selection_color", Color(accent, 0.26))
+		output_input.add_theme_stylebox_override("normal", _jump_input_style(background_color, border, 2))
+		output_input.add_theme_stylebox_override("read_only", _jump_input_style(background_color, border, 2))
+		output_input.add_theme_stylebox_override("focus", _jump_input_style(background_color, accent, 2))
 
 
 func _refresh_all_option_visuals() -> void:
@@ -662,11 +922,23 @@ func _set_option_color(button: Button, color: Color) -> void:
 		"font_focus_color",
 		"font_hover_pressed_color",
 		"font_disabled_color",
+		"icon_normal_color",
+		"icon_hover_color",
+		"icon_pressed_color",
+		"icon_focus_color",
+		"icon_hover_pressed_color",
+		"icon_disabled_color",
 	]:
 		button.add_theme_color_override(color_name, color)
 
 
 func _is_selection_correct() -> bool:
+	if _is_program_question():
+		return false
+	if _is_output_question():
+		return OutputAnswer.is_correct(questions[current_index]["answers"], entered_answers[0], str(questions[current_index].get("answer_mode", "literal")))
+	if _is_fill_question():
+		return FillAnswer.is_correct(questions[current_index]["blanks"], entered_answers, str(questions[current_index].get("language", "python")))
 	var selected_keys := []
 	for index in selected_indices:
 		selected_keys.append(str(shuffled_options[index]["key"]))
@@ -702,7 +974,10 @@ func _option_display_text(index: int) -> String:
 		marker = "✓"
 	elif has_answered and selected_indices.has(index):
 		marker = "×"
-	return "%s    %s. %s" % [marker, DISPLAY_LETTERS[index], shuffled_options[index]["text"]]
+	var option_text := str(shuffled_options[index]["text"])
+	if questions[current_index].get("language", "") == "python" and "\n" in option_text:
+		return "%s  %s.\n%s" % [marker, DISPLAY_LETTERS[index], option_text]
+	return "%s  %s. %s" % [marker, DISPLAY_LETTERS[index], option_text]
 
 
 func _refresh_option_text() -> void:
@@ -733,7 +1008,8 @@ func _toggle_wrong_current() -> void:
 
 func _update_wrong_button() -> void:
 	var is_collected := wrong_ids.has(str(questions[current_index]["id"]))
-	wrong_toggle.text = "♥   已加入错题库" if is_collected else "♡   加入错题库"
+	wrong_toggle.text = "已加入错题库" if is_collected else "加入错题库"
+	wrong_toggle.icon = HEART_FILLED_ICON if is_collected else HEART_ICON
 	var is_dark := _is_dark_mode()
 	var background := DARK_OPTION if is_dark else Color.WHITE
 	var border := (
@@ -766,6 +1042,7 @@ func _update_wrong_button() -> void:
 		text_color,
 		DARK_ACCENT if is_dark else HEBUT_BLUE,
 	)
+	_align_footer_icons.call_deferred()
 
 
 func _action_button_style(background: Color, border: Color) -> StyleBoxFlat:
@@ -804,7 +1081,6 @@ func _jump_from_search() -> void:
 
 func _update_jump_search_hint() -> void:
 	jump_input.placeholder_text = "跳转到题号"
-	jump_input.tooltip_text = "请输入 1 至 %d 之间的题号" % questions.size()
 
 
 func _on_question_number_selected(index: int) -> void:
@@ -852,7 +1128,30 @@ func _subject() -> Dictionary:
 
 func _on_font_scale_changed(_scale: float) -> void:
 	_app_state().apply_font_scale(self)
+	_scale_footer_icons()
 	_position_current_number_underline.call_deferred()
+
+
+func _scale_footer_icons() -> void:
+	jump_button.add_theme_constant_override("icon_max_width", roundi(32.0 * jump_button.get_theme_font_size("font_size") / 26.0))
+	# These textures preserve the original icon glyphs, independently of text fonts.
+	for button in [prev_button, next_button, wrong_toggle, home_button]:
+		var scale: float = button.get_theme_font_size("font_size") / 42.0
+		button.add_theme_constant_override("icon_max_width", roundi(button.icon.get_width() / 3.0 * scale))
+		button.add_theme_constant_override("h_separation", roundi(30.0 * scale))
+	_align_footer_icons.call_deferred()
+
+
+func _align_footer_icons() -> void:
+	for button in [prev_button, next_button, wrong_toggle, home_button]:
+		var text_width: float = button.get_theme_font("font").get_string_size(button.text, HORIZONTAL_ALIGNMENT_LEFT, -1, button.get_theme_font_size("font_size")).x
+		var content_width: float = text_width + button.get_theme_constant("icon_max_width") + button.get_theme_constant("h_separation")
+		var inset := maxf(12.0, (button.size.x - content_width) / 2.0)
+		for state_name in ["normal", "hover", "pressed", "focus", "disabled"]:
+			var style: StyleBox = button.get_theme_stylebox(state_name).duplicate()
+			style.content_margin_left = inset if button != next_button else 0.0
+			style.content_margin_right = inset if button == next_button else 0.0
+			button.add_theme_stylebox_override(state_name, style)
 
 
 func _on_color_mode_changed(_is_dark: bool) -> void:
@@ -885,6 +1184,7 @@ func _ink_color() -> Color:
 
 
 func _refresh_interaction_colors() -> void:
+	_style_fill_inputs()
 	_set_option_color(submit_button, Color.WHITE)
 	_apply_primary_button_style(jump_button, _is_dark_mode())
 	_apply_footer_button_style(prev_button, _is_dark_mode())
@@ -1069,7 +1369,7 @@ func _jump_input_style(
 
 
 func _apply_primary_button_style(button: Button, is_dark: bool) -> void:
-	var normal_color := DARK_ACCENT.darkened(0.20) if is_dark else HEBUT_BLUE
+	var normal_color := DARK_ACCENT.darkened(0.20) if is_dark and button != jump_button else HEBUT_BLUE
 	var hover_color := normal_color.lightened(0.10)
 	_set_option_color(button, Color.WHITE)
 	for state_name in ["normal", "focus"]:
@@ -1144,6 +1444,12 @@ func _set_button_state_colors(
 	button.add_theme_color_override("font_hover_color", hover_color)
 	button.add_theme_color_override("font_pressed_color", hover_color)
 	button.add_theme_color_override("font_hover_pressed_color", hover_color)
+	button.add_theme_color_override("icon_normal_color", normal_color)
+	button.add_theme_color_override("icon_focus_color", normal_color)
+	button.add_theme_color_override("icon_disabled_color", normal_color.darkened(0.20))
+	button.add_theme_color_override("icon_hover_color", hover_color)
+	button.add_theme_color_override("icon_pressed_color", hover_color)
+	button.add_theme_color_override("icon_hover_pressed_color", hover_color)
 
 
 func _correct_feedback_color() -> Color:

@@ -3,6 +3,11 @@
 [ext_resource type="Script" uid="uid://b5m005ug6ntso" path="res://scripts/quiz.gd" id="1_quiz"]
 [ext_resource type="Theme" uid="uid://dmvxlpfd6713q" path="res://themes/minimal_theme.tres" id="2_theme"]
 [ext_resource type="Texture2D" path="res://assets/hebut_logo.svg" id="3_logo"]
+[ext_resource type="Texture2D" path="res://assets/quiz_icons/previous.png" id="4_previous"]
+[ext_resource type="Texture2D" path="res://assets/quiz_icons/next.png" id="5_next"]
+[ext_resource type="Texture2D" path="res://assets/quiz_icons/heart.png" id="6_heart"]
+[ext_resource type="Texture2D" path="res://assets/quiz_icons/home.png" id="7_home"]
+[ext_resource type="Texture2D" path="res://assets/quiz_icons/search.svg" id="8_search"]
 
 [sub_resource type="StyleBoxFlat" id="Style_header"]
 bg_color = Color(1, 1, 1, 1)
@@ -310,6 +315,7 @@ theme_override_colors/default_color = Color(0.04, 0.09, 0.18, 1)
 theme_override_font_sizes/normal_font_size = 42
 fit_content = true
 scroll_active = false
+selection_enabled = true
 
 [node name="Option1" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content" unique_id=2014667300]
 custom_minimum_size = Vector2(0, 106)
@@ -389,6 +395,11 @@ text = "○    F. 其他"
 alignment = 0
 autowrap_mode = 2
 
+[node name="FillAnswers" type="VBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+
 [node name="SubmitRow" type="HBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content" unique_id=2109488985]
 layout_mode = 2
 theme_override_constants/separation = 28
@@ -412,6 +423,7 @@ vertical_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.05, 0.1, 0.19, 1)
 theme_override_font_sizes/font_size = 42
+autowrap_mode = 3
 
 [node name="FooterDivider" type="ColorRect" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn" unique_id=126485637]
 custom_minimum_size = Vector2(0, 1)
@@ -441,7 +453,9 @@ theme_override_colors/font_color = Color(0.06, 0.12, 0.22, 1)
 theme_override_font_sizes/font_size = 42
 theme_override_styles/normal = SubResource("Style_outline")
 theme_override_styles/hover = SubResource("Style_outline_hover")
-text = "‹   上一题"
+text = "上一题"
+icon = ExtResource("4_previous")
+expand_icon = true
 
 [node name="NextButton" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer/BottomNav" unique_id=775248556]
 custom_minimum_size = Vector2(250, 90)
@@ -451,7 +465,10 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 42
 theme_override_styles/normal = SubResource("Style_primary")
 theme_override_styles/hover = SubResource("Style_primary_hover")
-text = "下一题   ›"
+text = "下一题"
+icon = ExtResource("5_next")
+icon_alignment = 2
+expand_icon = true
 
 [node name="WrongToggle" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer/BottomNav" unique_id=1127820614]
 custom_minimum_size = Vector2(275, 90)
@@ -461,7 +478,9 @@ theme_override_colors/font_color = Color(0.06, 0.12, 0.22, 1)
 theme_override_font_sizes/font_size = 42
 theme_override_styles/normal = SubResource("Style_outline")
 theme_override_styles/hover = SubResource("Style_outline_hover")
-text = "♡   加入错题库"
+text = "加入错题库"
+icon = ExtResource("6_heart")
+expand_icon = true
 
 [node name="HomeButton" type="Button" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer/BottomNav" unique_id=616299434]
 custom_minimum_size = Vector2(250, 90)
@@ -471,7 +490,9 @@ theme_override_colors/font_color = Color(0.06, 0.12, 0.22, 1)
 theme_override_font_sizes/font_size = 42
 theme_override_styles/normal = SubResource("Style_outline")
 theme_override_styles/hover = SubResource("Style_outline_hover")
-text = "⌂   返回首页"
+text = "返回首页"
+icon = ExtResource("7_home")
+expand_icon = true
 
 [node name="RightCard" type="PanelContainer" parent="PageMargin/PageColumn/ContentMargin/Body" unique_id=253852641]
 custom_minimum_size = Vector2(520, 0)
@@ -541,7 +562,10 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 26
-text = "搜索"
+theme_override_constants/icon_max_width = 32
+icon = ExtResource("8_search")
+icon_alignment = 1
+expand_icon = true
 
 [node name="QuestionNumberList" type="ItemList" parent="PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn" unique_id=46228645]
 layout_mode = 2

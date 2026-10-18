@@ -1,0 +1,138 @@
+{
+  "version": "python-v2-two-documents",
+  "sources": [
+    {
+      "path": "C:\\Users\\Legion\\Desktop\\编程2.docx",
+      "sha256": "26712f36dbc56b5337e85520c04b515d26d8648e7a6e9e8dffa3a14e58f4ce07"
+    },
+    {
+      "path": "C:\\Users\\Legion\\Desktop\\编程大题1.docx",
+      "sha256": "5c210b46be7506a7036fafce0bfa2d3ed5a2f81f2e933a457c2d5aa27388cea2"
+    }
+  ],
+  "total": 890,
+  "types": {
+    "single": 714,
+    "output": 35,
+    "fill": 25,
+    "program": 116
+  },
+  "coverage": {
+    "screenshot_choices": 372,
+    "text_choice_versions": 342,
+    "output": 35,
+    "fill": 25,
+    "programs_document_numbered": 107,
+    "programs_document_unnumbered": 1,
+    "extra_programs": 8
+  },
+  "excluded_non_questions": [
+    {
+      "source": "编程2.docx",
+      "image": 70,
+      "reason": "Python 保留字知识表，不是题目。"
+    }
+  ],
+  "duplicate_policy": "保留原文中的重复版本，未用相似度合并或丢弃题目。",
+  "answer_policy": "选择题按原资料参考答案；35道输出题按展示代码校验；编程题可主动运行自己的代码并查看参考代码，运行成功不代表自动判题通过。",
+  "presentation": "所有890题均为文字；372道图片选择题、成绩表、级数和星号图形均已转写，不再展示题目截图。",
+  "old_bank": "旧100题全部替换；旧Python错题文件保留但新题库使用独立v2错题文件。",
+  "issues": [
+    {
+      "source_id": "py-v2-fill-1",
+      "issue": "原文末尾打印语句截断，显示结果简化为 print(s)；乘数字符 1 按循环变量 i 修复。"
+    },
+    {
+      "source_id": "py-v2-fill-3",
+      "issue": "原文 i=1+1 按上下文修复为 i=i+1。"
+    },
+    {
+      "source_id": "py-v2-fill-7",
+      "issue": "原资料字典内容缺失，保留占位提示；这不影响两处运算符填空。"
+    },
+    {
+      "source_id": "py-v2-fill-10",
+      "issue": "原文 n%1 按循环因子 i 修复为 n%i。"
+    },
+    {
+      "source_id": "py-v2-fill-12",
+      "issue": "原片段未处理 n<2 的情况；填空按现有片段作答。"
+    },
+    {
+      "source_id": "py-v2-fill-18",
+      "issue": "原文多行合并且 sum/s、i/1 混用；按给出的求和式恢复变量与换行。"
+    },
+    {
+      "source_id": "py-v2-fill-19",
+      "issue": "原题文字末项为 19，而代码末项为 10；本题按所列代码练习，两者不影响本空答案。"
+    },
+    {
+      "source_id": "py-v2-fill-20",
+      "issue": "原文 uc=8 按计数器初始化修复为 0。"
+    },
+    {
+      "source_id": "py-v2-fill-22",
+      "issue": "原资料具体成绩缺失，未补造学生和分数；三个空均可从给定逻辑确定。"
+    },
+    {
+      "source_id": "py-v2-fill-23",
+      "issue": "原循环条件及年份判断损坏，按题面范围整理；保留原资料提供的每 8 个换行这一空。"
+    },
+    {
+      "source_id": "py-v2-fill-24",
+      "issue": "原参考 mul/=i 有误，应累乘阶乘 mul*=i；求和初值按题面首项 1 修复。"
+    },
+    {
+      "source_id": "py-v2-fill-25",
+      "issue": "原文 r*=1 按阶乘定义修复为 r*=i。"
+    },
+    {
+      "source_id": "py-v2-program-1",
+      "issue": "原参考代码第 4 行存在语法或缩进问题，保留原文供核对。"
+    },
+    {
+      "source_id": "py-v2-program-7",
+      "issue": "原参考代码第 17 行存在语法或缩进问题，保留原文供核对。"
+    },
+    {
+      "source_id": "py-v2-program-11",
+      "issue": "题干缺少嫌疑人的陈述；保留残题并标注。"
+    },
+    {
+      "source_id": "py-v2-program-15",
+      "issue": "原参考代码第 7 行存在语法或缩进问题，保留原文供核对。"
+    },
+    {
+      "source_id": "py-v2-program-23",
+      "issue": "原参考代码第 8 行存在语法或缩进问题，保留原文供核对。"
+    },
+    {
+      "source_id": "py-v2-program-30",
+      "issue": "原参考代码第 20 行存在语法或缩进问题，保留原文供核对。"
+    },
+    {
+      "source_id": "py-v2-program-31",
+      "issue": "原题要求判断数字是否互不相同，但所附参考程序是成绩分级，两者不对应，请勿据此判定解答。"
+    },
+    {
+      "source_id": "py-v2-program-33",
+      "issue": "原参考代码第 8 行存在语法或缩进问题，保留原文供核对。"
+    },
+    {
+      "source_id": "py-v2-program-41",
+      "issue": "原参考代码第 8 行存在语法或缩进问题，保留原文供核对。"
+    },
+    {
+      "source_id": "py-v2-program-49",
+      "issue": "原参考代码第 6 行存在语法或缩进问题，保留原文供核对。"
+    },
+    {
+      "source_id": "py-v2-program-56",
+      "issue": "原参考代码第 15 行存在语法或缩进问题，保留原文供核对。"
+    },
+    {
+      "source_id": "py-v2-program-67",
+      "issue": "原参考代码第 8 行存在语法或缩进问题，保留原文供核对。"
+    }
+  ]
+}

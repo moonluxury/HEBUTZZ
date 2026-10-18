@@ -1,0 +1,7190 @@
+{
+  "images": [
+    {
+      "number": 1,
+      "stem": "关于数据组织的维度，哪个选项的描述是错误的?",
+      "options": [
+        "高维数据由键值对类型的数据构成，采用对象方式组织",
+        "数据组织存在维度，字典类型用于表示一维和二维数据",
+        "一维数据采用线性方式组织，对应于数学中的数组和集合等概念",
+        "二维数据采用表格方式组织，对应于数学中的矩阵"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 2,
+      "stem": "下面不适用穷举算法进行计算的是",
+      "options": [
+        "百元买百鸡问题",
+        "找出某个范围内的所有素数",
+        "破译由数字构成的密码",
+        "计算一个整数所有位的数值之和"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 3,
+      "stem": "以下关于模块化设计描述错误的是：",
+      "options": [
+        "模块间关系尽可能简单，模块之间耦合度低",
+        "高耦合度的特点是复用较为困难",
+        "应尽可能合理划分功能块，功能块内部耦合度低",
+        "应尽可能合理划分功能块，功能块内部耦合度高"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 4,
+      "stem": "下面不适用迭代思想计算的是?",
+      "options": [
+        "判断 n 是否是素数",
+        "x 的 n 次幂",
+        "x 的阶乘",
+        "斐波那契数列的第 n 项"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 5,
+      "stem": "给定列表 ls = [1, 2, 3, \"1\", \"2\", \"3\"]，其元素包含 2 种数据类型，哪个选项是列表 ls 的数据组织维度？",
+      "options": [
+        "二维数据",
+        "一维数据",
+        "多维数据",
+        "高维数据"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 6,
+      "stem": "选项中说法不正确的是",
+      "options": [
+        "C语言是静态语言，Python 语言是脚本语言",
+        "编译是将源代码转换成目标代码的过程",
+        "解释是将源代码逐条转换成目标代码同时逐条运行目标代码的过程",
+        "静态语言采用解释方式执行，脚本语言采用编译方式执行"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 7,
+      "stem": "结构化程序设计主要强调的是",
+      "options": [
+        "程序的可移植性",
+        "程序的规模",
+        "程序的执行效率",
+        "程序的易读性"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 8,
+      "stem": "计算机中信息处理和信息储存用",
+      "options": [
+        "二进制代码",
+        "十进制代码",
+        "十六进制代码",
+        "ASCII代码"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 9,
+      "stem": "以下关于程序设计语言的描述，错误的选项是：",
+      "options": [
+        "Python 语言是一种脚本编程语言",
+        "汇编语言是直接操作计算机硬件的编程语言",
+        "程序设计语言经历了机器语言、汇编语言、脚本语言三个阶段",
+        "编译和解释的区别是一次性翻译程序还是每次执行时都要翻译程序"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 10,
+      "stem": "以下关于程序设计语言的描述，错误的选项是：",
+      "options": [
+        "Python 语言是一种脚本编程语言",
+        "汇编语言是直接操作计算机硬件的编程语言",
+        "程序设计语言经历了机器语言、汇编语言、脚本语言三个阶段",
+        "编译和解释的区别是一次性翻译程序还是每次执行时都要翻译程序"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 11,
+      "stem": "以下选项中，不属于IPO模式一部分的是",
+      "options": [
+        "Program(程序）",
+        "Process(处理）",
+        "Output(输出）",
+        "Input(输入）"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 12,
+      "stem": "以下选项中，不是 Python 语言特点的是",
+      "options": [
+        "变量声明：Python 语言具有使用变量需要先定义类型然后再使用的特点",
+        "平台无关：Python 程序可以在任何安装了解释器的操作系统环境中执行",
+        "黏性扩展：Python 语言能够集成 C、C++ 等语言编写的代码",
+        "强制可读：Python 语言通过强制缩进来体现语句间的逻辑关系"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 13,
+      "stem": "计算机技术的演进过程中，人工智能时代主要解决的问题是：",
+      "options": [
+        "计算能力问题",
+        "交互问题",
+        "数据问题",
+        "人类的问题"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 14,
+      "stem": "以下选项不属于 Python 语言特点的是：",
+      "options": [
+        "支持中文",
+        "平台无关",
+        "语法简洁",
+        "执行高效"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 15,
+      "stem": "关于Python 语言的特点，以下选项描述正确的是",
+      "options": [
+        "Python 语言不支持面向对象",
+        "Python 语言是解释型语言",
+        "Python 语言是编译型语言",
+        "Python 语言是非跨平台语言"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 16,
+      "stem": "关于Python程序格式框架的描述，以下选项中错误的是",
+      "options": [
+        "Python 语言的缩进可以采用Tab键实现",
+        "Python 单层缩进代码属于之前最邻近的一行非缩进代码，多层缩进代码根据缩进关系决定所属范围",
+        "判断、循环、函数等语法形式能够通过缩进包含一批Python代码，进而表达对应的语义",
+        "Python 语言不采用严格的“缩进”来表明程序的格式框架"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 17,
+      "stem": "如果你的Python程序陷入了无限循环，可以使用哪个组合键中断循环?",
+      "options": [
+        "CTRL+C",
+        "CTRL+D",
+        "CTRL+X",
+        "CTRL+V"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 18,
+      "stem": "Python 中随解释器直接安装到操作系统中的功能模块称为：",
+      "options": [
+        "系统库",
+        "第三方库",
+        "附加库",
+        "标准库"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 19,
+      "stem": "关于Python语言的特点，以下选项中描述错误的是",
+      "options": [
+        "Python 语言是非开源语言",
+        "Python 语言是跨平台语言",
+        "Python 语言是多模型语言",
+        "Python 语言是脚本语言"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 20,
+      "stem": "以下选项中使 Python 脚本程序转变为可执行程序的第三方库是：",
+      "options": [
+        "pygame",
+        "PyQt5",
+        "PyInstaller",
+        "random"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 21,
+      "stem": "python 源程序执行的方式",
+      "options": [
+        "编译执行",
+        "解释执行",
+        "直接执行",
+        "边编译边执行"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 22,
+      "stem": "下面哪个不是 Python 合法的标识符",
+      "options": [
+        "int32",
+        "40XL",
+        "self",
+        "__name__"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 23,
+      "stem": "IDLE 环境的退出命令是",
+      "options": [
+        "exit()",
+        "回车键",
+        "close()",
+        "esc()"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 24,
+      "stem": "Python 中需要经过安装才能使用的功能模块称为：",
+      "options": [
+        "系统库",
+        "第三方库",
+        "附加库",
+        "标准库"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 25,
+      "stem": "下面关于Python相关工具描述错误的是",
+      "options": [
+        "IDLE是Python解释器自带的一个简易IDE，体积小巧，但功能也相当完备，具备代码编辑、运行、调试等功能",
+        "ipython可以看作是一个增强的Python Interpreter支持变器自动补全，自动缩进，内置了许多很有用的功能和函数。",
+        "jupyter notebook是一个基于浏览器的交互式程序编写和运行环境，通过切换后台的内核，支持多种语言。",
+        "pycharm是集成式的Python开发环境，功能强大、完善，但是需要购买才能够使用。"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 26,
+      "stem": "关于Python的数字类型，以下选项中描述错误的是",
+      "options": [
+        "Python 整数类型提供了 4 种进制表示：十进制、二进制、八进制和十六进制",
+        "Python 语言要求所有浮点数必须带有小数部分",
+        "Python 语言中，复数类型中实数部分和虚数部分的数值都是浮点类型，复数的虚数部分通过后缀“C”或者“c”来表示",
+        "Python 语言提供 int、float、complex 等数字类型"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 27,
+      "stem": "关于 Python Interpreter 和 IDE 的描述错误的是",
+      "options": [
+        "Interpreter 指能够翻译并执行 Python 代码的程序",
+        "IDE 指集成了编辑器、解释器、调试器等一系列编程工具的程序集合",
+        "IDE 必须借助 Interpreter 才能运行代码",
+        "安装了 IDE 就无需再安装 Interpreter 了，可以直接编写和运行代码"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 28,
+      "stem": "关于Python语言的注释，以下选项中描述错误的是",
+      "options": [
+        "Python 语言的单行注释以 # 开头",
+        "Python 语言的单行注释以单引号 ' 开头",
+        "Python 语言的多行注释以 '''（三个单引号）开头和结尾",
+        "Python 语言有两种注释方式：单行注释和多行注释"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 29,
+      "stem": "已知 a = 1，表达式 a == 0 + True 的结果为",
+      "options": [
+        "1",
+        "True",
+        "False",
+        "0"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 30,
+      "stem": "下面哪个是Python 的关键词",
+      "options": [
+        "False",
+        "In",
+        "For",
+        "elseif"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 31,
+      "stem": "下列表达式的运算结果是：\n\n>>> a = 100\n>>> b = False\n>>> a * b > -1",
+      "options": [
+        "True",
+        "1",
+        "0",
+        "False"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 32,
+      "stem": "以下选项中不是Python 语言的保留字的是：",
+      "options": [
+        "except",
+        "do",
+        "pass",
+        "while"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 33,
+      "stem": "关于Python的输入输出描述错误的是?",
+      "options": [
+        "input 函数负责从键盘输入数据，默认所有数据均作为字符串处理",
+        "print() 函数负责输出数据到屏幕上，所有数据在输出之前必须转换为字符串才能输出",
+        "数据类型转换函数比如 int、float 等配合 input 函数可以将输入数据转化为需要的数据类型，比如 i = int(input(\"pls input a number:\")) 就可以将输入数据转换为整数赋值给 i",
+        "print 输出时，end 参数可以设置结束符，默认为换行符，sep 参数可以设置多个输出项的分隔符，默认为空格"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 34,
+      "stem": "执行 Age = input(\"请输入年龄：\")，用户键盘输入 19 后，Age 变量的类型：",
+      "options": [
+        "int",
+        "float",
+        "str",
+        "complex"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 35,
+      "stem": "表达式 eval('500/10') 的结果是：",
+      "options": [
+        "'500/10'",
+        "500/10",
+        "50",
+        "50.0"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 36,
+      "stem": "下面代码的输出结果是\n\nx = 12.34\nprint(type(x))",
+      "options": [
+        "<class 'int'>",
+        "<class 'float'>",
+        "<class 'bool'>",
+        "<class 'complex'>"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 37,
+      "stem": "下面哪个不是Python 合法的标识符",
+      "options": [
+        "true",
+        "a+b",
+        "_p3",
+        "in"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 38,
+      "stem": "以下不是Python 语言关键字的选项是：",
+      "options": [
+        "return",
+        "def",
+        "in",
+        "define"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 39,
+      "stem": "表达式 type(eval('45')) 的结果是：",
+      "options": [
+        "<class 'float'>",
+        "<class 'str'>",
+        "None",
+        "<class 'int'>"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 40,
+      "stem": "下面代码的输出结果是：\n\n>>> TempStr = \"Pi=3.141593\"\n>>> eval(TempStr[3:-1])",
+      "options": [
+        "3.14159",
+        "3.141593",
+        "Pi=3.14",
+        "3.1416"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 41,
+      "stem": "下面关于代码缩进的描述错误的是",
+      "options": [
+        "python 中缩进是代表逻辑的不同的缩进级别代表语句块的开始和结束，所以不要随意缩进",
+        "python代码中可以使用空格或者TAB来进行缩进，属于同一语句块的语句必须使用相同的缩进量",
+        "代码中的缩进是代表逻辑的，但仅仅是方便人类阅读和理解而已，对于解释器来说，缩进并没有什么意义",
+        "python 中对于代码缩进的量并没有硬性规定只要同级别的缩进量相同即可"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 42,
+      "stem": "关于Python 内存管理，下列说法错误的是",
+      "options": [
+        "变量不必事先声明",
+        "变量无须先创建和赋值而直接使用",
+        "变量无须指定类型",
+        "可以使用del释放资源"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 43,
+      "stem": "a = 11，x = a % 2 == 0，则 x 的值为：",
+      "options": [
+        "True",
+        "1",
+        "0",
+        "False"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 44,
+      "stem": "以下对 Python 程序缩进格式描述错误的选项是：",
+      "options": [
+        "不需要缩进的代码顶行写，前面不能留空白",
+        "缩进是用来格式美化 Python 程序的",
+        "严格的缩进可以约束程序结构，可以多层缩进",
+        "缩进可以用 tab 键实现，也可以用多个空格实现"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 45,
+      "stem": "以下关于同步赋值语句描述错误的选项是:",
+      "options": [
+        "同步赋值能够使得赋值过程变得更简洁",
+        "判断多个单一赋值语句是否相关的方法是看其功能上是否相关或相同",
+        "设X，y表示一个点的坐标，则x=a；y=b两条语句可以用x，y=a，b一条语句来赋值",
+        "多个无关的单一赋值语句组合成同步赋值语句，会提高程序可读性"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 46,
+      "stem": "关于赋值语句，以下选项中描述错误的是",
+      "options": [
+        "在 Python 语言中，有一种赋值语句，可以同时给多个变量赋值",
+        "设 x = \"alice\"; y = \"kate\"，执行 x, y = y, x 可以实现变量 x 和 y 值的互换",
+        "设 a = 10; b = 20，执行\na, b = a, a + b\nprint(a, b)\n\n和\na = b\nb = a + b\nprint(a, b)\n\n之后，得到同样的输出结果：10 30",
+        "在 Python 语言中，“=”表示赋值，即将“=”右侧的计算结果赋值给左侧变量，包含“=”的语句称为赋值语句"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 47,
+      "stem": "以下选项中，输出结果是False的是",
+      "options": [
+        ">>> 5 is not 4",
+        ">>> 5 != 4",
+        ">>> False != 0",
+        ">>> 5 is 5"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 48,
+      "stem": "Python 中对变量描述错误的选项是：",
+      "options": [
+        "Python 不需要显式声明变量类型，在第一次变量赋值时由值决定变量的类型",
+        "变量通过变量名访问",
+        "变量必须在创建和赋值后使用",
+        "变量Pl与变量Pi被看作相同的变量"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 49,
+      "stem": "下面代码中，m 的结果是\n\nfor m in range(1,20)\n    print(m)",
+      "options": [
+        "19",
+        "20",
+        "21",
+        "以上都不对，有语法错误"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 50,
+      "stem": "关于Python程序格式框架的描述，以下选项中错误的是",
+      "options": [
+        "Python 语言不采用严格的“缩进”来表明程序的格式框架",
+        "Python 单层缩进代码属于之前最邻近的一行非缩进代码，多层缩进代码根据缩进关系决定所属范围",
+        "Python 语言的缩进可以采用Tab键实现",
+        "判断、循环、函数等语法形式能够通过缩进包含一批Python代码，进而表达对应的语义"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 51,
+      "stem": "以下不是Python 语言关键字的选项是：",
+      "options": [
+        "None",
+        "as",
+        "raise",
+        "function"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 52,
+      "stem": "以下关于 Python 程序语法元素的描述，错误的选项是：",
+      "options": [
+        "段落格式有助于提高代码可读性和可维护性",
+        "虽然 Python 支持中文变量名，但从兼容性角度考虑还是不要用中文名",
+        "true 并不是 Python 的保留字",
+        "并不是所有的 if、while、def、class 语句后面都要用 : 结尾"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 53,
+      "stem": "关于Python 注释，以下选项中描述错误的是",
+      "options": [
+        "Python 注释语句不被解释器过滤掉，也不被执行",
+        "注释可以辅助程序调试",
+        "注释可用于标明作者和版权信息",
+        "注释用于解释代码原理或者用途"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 54,
+      "stem": "表达式 1001 == 0x3e7 的结果是：",
+      "options": [
+        "false",
+        "False",
+        "true",
+        "True"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 55,
+      "stem": "当键盘输入 3 的时候，以下程序的输出结果是：\n\nr = input(\"请输入半径：\")\nar = 3.1415 * r * r\nprint(\"{:.0f}\".format(ar))",
+      "options": [
+        "28",
+        "28.27",
+        "29",
+        "Type Error"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 56,
+      "stem": "以下选项中符合Python 语言变量命名规则的是",
+      "options": [
+        "*1",
+        "3_1",
+        "AI!",
+        "Templist"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 57,
+      "stem": "关于eval函数，以下选项中描述错误的是",
+      "options": [
+        "eval 函数的作用是将输入的字符串转为 Python 语句，并执行该语句",
+        "如果用户希望输入一个数字，并用程序对这个数字进行计算，可以采用 eval(input(<输入提示字符串>)) 组合",
+        "执行 eval(\"Hello\") 和执行 eval(\"'Hello'\") 得到相同的结果",
+        "eval 函数的定义为：eval(source, globals=None, locals=None, /)"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 58,
+      "stem": "print(100-25*3%4) 应该输出什么？",
+      "options": [
+        "1",
+        "97",
+        "25",
+        "0"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 59,
+      "stem": "下列哪个语句在 Python 中是非法的？",
+      "options": [
+        "a, b = b, a",
+        "a += b",
+        "a = (3+4)**2",
+        "a=(b=c)"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 60,
+      "stem": "Python 语言语句块的标记是",
+      "options": [
+        "分号",
+        "逗号",
+        "缩进",
+        "/"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 61,
+      "stem": "表达式print(float(complex(10+5j).imag)）的结果是：",
+      "options": [
+        "10错",
+        "5.0",
+        "10.0",
+        "5"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 62,
+      "stem": "以下选项，不是Python 保留字的选项是：",
+      "options": [
+        "del",
+        "pass",
+        "not",
+        "string"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 63,
+      "stem": "下面关于标识符的描述错误的是",
+      "options": [
+        "标识符命名要做到见名知义，增加程序的可读写",
+        "标识特命名不可以使用关键字，但可以和内置函数重名，此时函数功能失效，比如pow=5",
+        "标识符不允许全部大写，但允许小写或者大小写混合，例如轮峰法命名myName是允许的",
+        "单独的_是合法的标识符，通常用于命名无意义的场景中，比如for in range(1,100）"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 64,
+      "stem": "下面代码的执行结果是\n\n>>> s = \"11+5in\"\n>>> eval(s[1:-2])",
+      "options": [
+        "6",
+        "11+5",
+        "执行错误",
+        "16"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 65,
+      "stem": "如果Python程序执行时，产生了“unexpected indent”的错误，其原因是",
+      "options": [
+        "代码中使用了错误的关键字",
+        "代码中缺少”：”符号",
+        "代码里的语句嵌套层次太多",
+        "代码中出现了缩进不匹配的问题"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 66,
+      "stem": "关于 Python 语句 P = -P，以下选项中描述正确的是",
+      "options": [
+        "P 和 P 的负数相等",
+        "P 和 P 的绝对值相等",
+        "给 P 赋值为它的负数",
+        "P 的值为 0"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 67,
+      "stem": "以下Python 语句运行结果异常的选项是：",
+      "options": [
+        ">>> PI, r = 3.14, 4",
+        ">>> a = 1\n>>> b = a = a + 1",
+        ">>> a",
+        ">>> x = True\n>>> int(x)"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 68,
+      "stem": "关于Python程序中与“缩进”有关的说法中，以下选项中正确的是",
+      "options": [
+        "缩进统一为4个空格",
+        "缩进是非强制性的，仅为了提高代码可读性",
+        "缩进在程序中长度统一且强制使用",
+        "缩进可以用在任何语句之后，表示语句间的包含关系"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 69,
+      "stem": "以下选项中值为 False 的是",
+      "options": [
+        "'abc' < 'abcd'",
+        "' ' < 'a'",
+        "'Hello' > 'hello'",
+        "'abcd' < 'ad'"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 71,
+      "stem": "以下选项中，不是Python 语言基本控制结构的是",
+      "options": [
+        "程序异常",
+        "循环结构",
+        "跳转结构",
+        "顺序结构"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 72,
+      "stem": "Python语言中，以下表达式输出结果为11的选项是：",
+      "options": [
+        "print(\"1+1\")",
+        "print(1+1)",
+        "print(eval(\"1+1\"))",
+        "print(eval(\"1\"+\"1\"))"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 73,
+      "stem": "以下选项中不可用作Python 标识符的是",
+      "options": [
+        "3.14",
+        "姓名",
+        "__Name__",
+        "Pi"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 74,
+      "stem": "表达式 'y' < 'x' == False 的结果是：",
+      "options": [
+        "True",
+        "Error",
+        "None",
+        "False"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 75,
+      "stem": "关于赋值运算的描述错误的是?",
+      "options": [
+        "python支持解包赋值，即将多个以逗号分隔的序列依次赋值给对应的变量，比如a,b=649,319",
+        "所有的二元数值运算符均支持和赋值运算符结合形成复合赋值运算，例如 //= 和 **= 是合法的运算符",
+        "python中两个数据交换必须通过第三方变量来进行",
+        "python支持链式赋值，形如a=b=c=d=e=0"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 76,
+      "stem": "Python 语言提供的 3 个基本数字类型是",
+      "options": [
+        "整数类型、浮点数类型、复数类型",
+        "整数类型、二进制类型、浮点数类型",
+        "整数类型、二进制类型、复数类型",
+        "整数类型、二进制类型、浮点数类型"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 77,
+      "stem": "表达式 print(\"{:.2f}\".format(20-2**3+10/3**2*5)) 的结果是：",
+      "options": [
+        "17.55",
+        "67.56",
+        "17.56",
+        "12.22"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 78,
+      "stem": "以下程序的输出结果是：\n\nfor i in reversed(range(10, 0, -2)):\n    print(i,end=\" \")",
+      "options": [
+        "0 2 4 6 8 10",
+        "12345678910",
+        "2 4 6 8 10",
+        "9 8 7 6 5 4 3 2 1 0"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 79,
+      "stem": "关于Python 语言的浮点数类型，以下选项中描述错误的是",
+      "options": [
+        "浮点数类型表示带有小数的类型",
+        "Python 语言要求所有浮点数必须带有小数部分",
+        "小数部分不可以为0",
+        "浮点数类型与数学中实数的概念一致"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 80,
+      "stem": "以下关于随机运算函数库的描述，错误的是：",
+      "options": [
+        "random 库里提供的不同类型的随机数函数是基于random.random（）函数扩展的",
+        "伪随机数是计算机按一定算法产生的，可预见的数，所以是“伪”随机数",
+        "Python 内置的random 库主要用于产生各种伪随机数序列",
+        "uniform(a,b)产生一个a到b之间的随机整数"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 81,
+      "stem": "关于数学函数的描述错误的是",
+      "options": [
+        "数学函数是内置函数，不需要引入其它库，比如 abs、pow、sqrt 等都是可以直接使用的",
+        "可以利用 pow 函数中的第二个参数来实现开方运算，比如 pow(8,1/3) 结果就是 2.0",
+        "可以利用round 函数来四合五入保留小数位数，也可以在print输出时利用格式化来进行，同样也是四舍五入",
+        "int 函数在进行数据转换时不是四舍五入，是直接抛弃掉小数部分的"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 82,
+      "stem": "一元二次方程求根的表达式正确的是",
+      "options": [
+        "x1=(-b+sqrt(b^2-4*a*c))/2/a",
+        "x1=(-b+sqrt(b*b-4*a*c))/2/a",
+        "x1=(-b+(b^2-4*a*c)**0.5)/2/a",
+        "x1=(-b+(b^2-4*a*c)**0.5)/2*a"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 83,
+      "stem": "下面代码的输出结果是\n\nx=0b1010\nprint(x)",
+      "options": [
+        "16",
+        "256",
+        "1024",
+        "10"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 84,
+      "stem": "对浮点数四舍五入的函数：",
+      "options": [
+        "ceil()",
+        "floor()",
+        "round()",
+        "trunc()"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 85,
+      "stem": "下面代码的输出结果是\n\nx=10\ny=3\nprint(x%y,x**y)",
+      "options": [
+        "3 1000",
+        "1 30",
+        "3 30",
+        "1 1000"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 86,
+      "stem": "运行以下程序\n\nx = eval(input())\ny = eval(input())\nprint(abs(x+y))\n\n从键盘输入 1+2 与 4j，则输出结果是：",
+      "options": [
+        "5",
+        "<class 'complex'>",
+        "<class 'float'>",
+        "5.0"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 87,
+      "stem": "random库的seed(a）函数的作用是：",
+      "options": [
+        "生成一个[0.0,1.0)之间的随机小数",
+        "生成一个k比特长度的随机整数",
+        "设置初始化随机数种子a",
+        "生成一个随机整数"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 88,
+      "stem": "random 库的randint(a,b）函数的作用是",
+      "options": [
+        "生成一个a和b之间的随机整数，不包含a和b",
+        "生成一个a和b之间的随机整数，包含a和b",
+        "生成一个a和b之间的随机整数，仅包含a",
+        "生成一个a和b之间的随机整数，仅包含b"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 89,
+      "stem": "下面代码的输出结果是\n\nfor n in range(400,500):\n    i = n // 100\n    j = n // 10 % 10\n    k = n % 10\n    if n == i ** 3 + j ** 3 + k ** 3:\n        print(n)",
+      "options": [
+        "407",
+        "408",
+        "153",
+        "159"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 90,
+      "stem": "下面关于range函数的描述错误的是",
+      "options": [
+        "range(m,n)产生的序列最小值为m，最大值为n，步长值为1",
+        "range(m,n,s) 产生的序列最小值为 m，步长为 s，但不超过 n，也不会是 n",
+        "如果 for 循环中 range() 产生的序列为空，比如 range(2020,2020) 则循环体一次也不执行",
+        "range(m,n,s)的第三个参数s可以为负值，此时产生的是递减序列"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 91,
+      "stem": "关于python 中的数值描述错误的是？",
+      "options": [
+        "数学上的实数在python 中使用float数据类型来表达，这种数据类型的计算结果是存在不确定尾数的，故不能直接使用==来判定相等",
+        "可以用科学技术法来描述float数据类型，例如1e-6表示的是10的-6次幂",
+        "range(min,max)可以产生一个依次增1的数值序列，其范围是[min，max]闭区间",
+        "bool 数据类型可以参与数学运算，此时True转化1，False 会转化为0"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 92,
+      "stem": "定义x=2.6，表达式int(x)的结果是：",
+      "options": [
+        "3",
+        "2.6",
+        "2.0",
+        "2"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 93,
+      "stem": "下面代码的输出结果是\n\nprint(round(0.1 + 0.2,1) == 0.3)",
+      "options": [
+        "True",
+        "0",
+        "1",
+        "False"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 94,
+      "stem": "下面代码的执行结果\n\na = 10.99\nprint(complex(a))",
+      "options": [
+        "10.99+j",
+        "10.99",
+        "0.99",
+        "(10.99+0j)"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 95,
+      "stem": "以下选项中，正确地描述了浮点数0.0和整数0相同性的是",
+      "options": [
+        "它们使用相同的计算机指令处理方法",
+        "它们具有相同的数据类型",
+        "它们具有相同的值",
+        "它们使用相同的硬件执行单元"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 96,
+      "stem": "下面代码的输出结果是\n\nx = 0o1010\nprint(x)",
+      "options": [
+        "520",
+        "1024",
+        "32768",
+        "10"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 97,
+      "stem": "运行以下程序，输出结果的是：\n>>>5/2",
+      "options": [
+        "3",
+        "2",
+        "2.5",
+        "2.50"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 98,
+      "stem": "表达式divmod(20，3）的结果是：",
+      "options": [
+        "6,2",
+        "6",
+        "2",
+        "(6,2)"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 99,
+      "stem": "以下关于random 库的描述，正确的是：",
+      "options": [
+        "设定相同种子，每次调用随机函数生成的随机数不相同",
+        "通过 from random import *引入random随机库的部分函数",
+        "uniform(0,1) 与 uniform(0.0,1.0) 的输出结果不同，前者输出随机整数，后者输出随机小数",
+        "randint(a,b)是生成一个[a,b]之间的整数"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 100,
+      "stem": "以下表达式是十六进制整数的选项是：",
+      "options": [
+        "0b16",
+        "'0x61'",
+        "1010",
+        "0x3F"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 101,
+      "stem": "以下关于随机运算函数库的描述，错误的是：",
+      "options": [
+        "random 库里提供的不同类型的随机数函数是基于random.random（）函数扩展的",
+        "伪随机数是计算机按一定算法产生的，可预见的数，所以是“伪”随机数",
+        "Python 内置的random 库主要用于产生各种伪随机数序列",
+        "uniform(a,b)产生一个a到b之间的随机整数"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 102,
+      "stem": "下列Python 语句计算错误的是",
+      "options": [
+        "-23//5=-5",
+        "7.8//2.5=3.0",
+        "round(3.45,1)=3",
+        "log(e)=1.0"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 103,
+      "stem": "以下对数值运算操作符描述错误的选项是：",
+      "options": [
+        "Python 数值运算操作符需要引用第三方库 math",
+        "Python 数值运算操作符也叫做内置操作符",
+        "Python 二元数学操作符都有与之对应的增强赋值操作符",
+        "Python 提供了9个基本的数值运算操作符"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 104,
+      "stem": "关于 Python 整数类型，以下选项描述正确的是：",
+      "options": [
+        "3.14 不是整数类型的数值",
+        "type(100) 表达式结果可能是 <class 'int'>，也可能是 <class 'float'>",
+        "oct(100) 表达式结果获得十六进制数",
+        "hex(100) 表达式结果获得八进制数"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 105,
+      "stem": "关于Python语言数值操作符，以下选项中描述错误的是",
+      "options": [
+        "x//y表示x与y之整数商，即不大于x与y之商的最大整数",
+        "x**y表示x的y次幂，其中，y必须是整数",
+        "x%y表示x与y之商的余数，也称为模运算",
+        "x/y表示x与y之商"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 106,
+      "stem": "以下程序的不可能输出结果是：\nfrom random import*\nprint(sample({1,2,3,4,5},2))",
+      "options": [
+        "[1,2,3]",
+        "[1,2]",
+        "[4,2]",
+        "[5,1]"
+      ],
+      "answer": "A",
+      "note": "原题使用旧版 Python 的 sample(set, k) 写法；本软件的 Python 3.13 要求传入序列，例如 list(...)。原选项与参考答案仍按资料保留。"
+    },
+    {
+      "number": 107,
+      "stem": "以下程序的不可能输出结果是：\nfrom random import *\nprint(round(random(),2))",
+      "options": [
+        "0.47",
+        "0.54",
+        "1.87",
+        "0.27"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 108,
+      "stem": "如果要把x转换为复数，使用哪个函数?",
+      "options": [
+        "int(x)",
+        "char(x)",
+        "float(x)",
+        "complex(x)"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 109,
+      "stem": "下面代码的输出结果是\n\nsum = 1.0\nfor num in range(1,4):\n    sum += num\n\nprint(sum)",
+      "options": [
+        "6",
+        "7.0",
+        "1.0",
+        "7"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 110,
+      "stem": "下面代码的输出结果是\n\nx=3.1415926\nprint(round(x,2), round(x))",
+      "options": [
+        "3 3.14",
+        "2 2",
+        "6.28 3",
+        "3.14 3"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 111,
+      "stem": "以下选项中，属于Python语言中合法的二进制整数是",
+      "options": [
+        "0B1010",
+        "0B1019",
+        "0bC3F",
+        "0b1708"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 112,
+      "stem": "设一年356天，第1天的能力值为基数记为1.0。当好好学习时能力值相比前一天会提高干分之五。以下选项中，不能获得持续努力1年后的能力值的是",
+      "options": [
+        "1.005**365",
+        "pow((1.0 +0.005),365)",
+        "1.005//365",
+        "pow(1.0+ 0.005,365)"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 113,
+      "stem": "下面代码的输出结果是\n\nx = 0x0101\nprint(x)",
+      "options": [
+        "101",
+        "257",
+        "65",
+        "5"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 114,
+      "stem": "关于time库的描述，以下选项中错误的是",
+      "options": [
+        "time 库提供获取系统时间并格式化输出功能",
+        "time.sleep(s)的作用是休眠s秒",
+        "time.perf_counter()返回一个固定的时间计数值",
+        "time 库是Python 中处理时间的标准库"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 115,
+      "stem": "下面代码的执行结果是\n\nx = 2\nx *= 3 + 5**2\nprint(x)",
+      "options": [
+        "15",
+        "56",
+        "8192",
+        "13"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 116,
+      "stem": "关于Python语言的变量，以下选项中说法正确的是",
+      "options": [
+        "随时声明、随时使用、随时释放",
+        "随时命名、随时赋值、随时使用",
+        "随时声明、随时赋值、随时变换类型",
+        "随时命名、随时赋值、随时变换类型"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 117,
+      "stem": "运行以下程序，输出的Python数据类型是：\n>>>type(abs(-3+4j))",
+      "options": [
+        "字符串类型",
+        "浮点数类型",
+        "整数类型",
+        "复数类型"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 118,
+      "stem": "以下程序的输出结果是：\n\nchs = \"|'\\'-'|\"\nfor i in range(6):\n    for ch in chs[i]:\n        print(ch,end='')",
+      "options": [
+        "| \\ -",
+        "|\\-|",
+        "\"|'-'|\"",
+        "|'\\'-'|"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 119,
+      "stem": "s = \"Python\"，能够显示输出 Python 的选项是：",
+      "options": [
+        "print(s[0:-1])",
+        "print(s[-1:0])",
+        "print(s[:6])",
+        "print(s[:])"
+      ],
+      "answer": "D",
+      "note": "原资料 C、D 两项均可输出 Python，原题标注单选，参考答案按资料保留。"
+    },
+    {
+      "number": 120,
+      "stem": "同时去掉字符串左边和右边空格的函数是：",
+      "options": [
+        "center()",
+        "count()",
+        "format()",
+        "strip()"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 121,
+      "stem": "以下哪个字符在字符串输出时能起到换行的作用：",
+      "options": [
+        "'\\t'",
+        "'\\a'",
+        "'\\n'",
+        "'\\0'"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 122,
+      "stem": "下列关于字符串操作函数描述错误的是?",
+      "options": [
+        "join 方法可以将一个字符序列用特定连接符连接成一个字符串",
+        "isupper()、islower() 判断函数只能对单个字符的字符串进行大小写判定",
+        "startswith() 函数用来判定字符串是否以特定字符串开始",
+        "strip() 函数可以去除字符串左右两侧的指定字符，不仅仅是单个，可以是多个，例如 s = \"reboot 2020 pls\"，则 s.strip(\"pls\") 返回的结果是 \"reboot 2020\""
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 123,
+      "stem": "关于Python 字符编码，以下选项中描述错误的是：",
+      "options": [
+        "chr(x)和ord（x）函数用于在单字符和UNICODE 编码值之间进行转换",
+        "print(chr(65))输出A",
+        "print(ord('a'))输出97",
+        "Python 字符编码使用ASCIl编码"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 124,
+      "stem": "以下程序的输出结果是：\n\nfor i in \"Summer\":\n    if i == \"m\":\n        break\n        print(i)",
+      "options": [
+        "无输出",
+        "mm",
+        "mmer",
+        "m"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 125,
+      "stem": "以下程序的输出结果是\n\nj = ''\nfor i in \"12345\":\n    j += i + ','\nprint(j)",
+      "options": [
+        "1,2,3,4,5",
+        "12345",
+        "'1,2,3,4,5,'",
+        "1,2,3,4,5,"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 126,
+      "stem": "以下程序的输出结果是\n\ns = \"python\\n编程\\t很\\t容易\\t学\"\nprint(len(s))",
+      "options": [
+        "20",
+        "12",
+        "5",
+        "16"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 127,
+      "stem": "关于字符串修改下列描述错误的是",
+      "options": [
+        "形如s[0:3]=\"new\"的代码并不能将字符串s的前三个字符更改为new",
+        "所有的字符串操作函数都无法对原字符串做任何更改而是返回新字符串",
+        "replace函数可以替换原字符串中的子串为新字符串，比如s=\"I would be graduated from my university in 2020 summer”则s.replace(\"university\",\"home\")后s的值应该\n为\"I would be graduated from my home in2020 summer\"",
+        "虽然用函数无法对原字符串做修改，但是可以通过赋值运算将运算后的结果赋值给原字符串从而间接完成修改"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 128,
+      "stem": "下面关于字符串的描述错误的是",
+      "options": [
+        "python3 的字符串可以是由任意 UNICODE字符组成的",
+        "字符串的定界符可以是单引号，双引号，三单引号，三双引号，其中后两种支持多行书写",
+        "三单引号或者三双引号是注释的定界符，注释不参与解释执行过程",
+        "字符串中不能有单引号或者双引号，否则会和定界符冲突，确实需要包含的话只能使用转义形式"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 129,
+      "stem": "设 str = 'python'，想把字符串的第一个字母大写，其他字母还是小写，正确的选项是：",
+      "options": [
+        "print(str[0].upper()+str[1:])",
+        "print(str[1].upper()+str[-1:1])",
+        "print(str[0].upper()+str[1:-1])",
+        "print(str[1].upper()+str[2:])"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 130,
+      "stem": "已知字符串 s='I can see green.'，可使用以下哪个语句改变 s 的值，去除其中的英文句号 '.'：",
+      "options": [
+        "s.replace('', '.')",
+        "s.replace('.', '')",
+        "s=s.replace('.', '')",
+        "s=s.replace('', '.')"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 131,
+      "stem": "已知字符串 s='I can see green.'，可使用以下哪个语句改变 s 的值，去除其中的英文句号 '.'：",
+      "options": [
+        "s.replace('', '.')",
+        "s.replace('.', '')",
+        "s=s.replace('.', '')",
+        "s=s.replace('', '.')"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 132,
+      "stem": "当需要在字符串中使用特殊字符时，Python使用（）作为转义字符。",
+      "options": [
+        "\\",
+        "/",
+        "#",
+        "%"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 133,
+      "stem": "以下关于字符串类型的操作的描述，错误的是",
+      "options": [
+        "str.replace(x,y)方法把字符串str中所有的x子串都替换成y",
+        "想把一个字符串str所有的字符都大写用str.upper()",
+        "想获取字符串str的长度，用字符串处理函数str.1en()",
+        "设x=’aa”，则执行x“3的结果是aaaaaa"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 134,
+      "stem": "已知字符串 s='I am Tommy'，则以下哪个字符串的方法能从 s 中提取所有单词：",
+      "options": [
+        "split",
+        "insert",
+        "join",
+        "index"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 135,
+      "stem": "s = \"the sky is blue\"，表达式 print(s[-4:], s[:-4]) 的结果是：",
+      "options": [
+        "the sky is blue",
+        "blue is sky the",
+        "sky is blue the",
+        "blue the sky is"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 136,
+      "stem": "以下关于Python字符串的描述中，错误的是",
+      "options": [
+        "字符串是字符的序列，可以按照单个字符或者字符片段进行索引",
+        "字符串包括两种序号体系：正向递增和反向递减",
+        "Python 字符串提供区间访问方式，采用[N:M]格式，表示字符串中从N到M的索引子字符串（包含N和M）",
+        "字符串是用一对双引号””或者单引号括起来的零个或者多个字符"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 137,
+      "stem": "以下程序的输出结果是：\n\ns1 = \"QQ\"\ns2 = \"Wechat\"\nprint(\"{:*<10}{:=>10}\".format(s1,s2))",
+      "options": [
+        "********QQWechat====",
+        "QQWechat",
+        "*QQ Wechat====",
+        "QQ********====Wechat"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 138,
+      "stem": "下列关于字符串format函数的描述错误的是",
+      "options": [
+        "format 后的参数排列顺序必须按照格式字符串中槽 {} 的排列顺序依次一一对应",
+        "对数值进行有效位数的保留是遵循四舍五入原则的，比如对 3.1415926 进行 {:.3f} 的结果是 3.142 而不是 3.141",
+        "可以在槽中通过在格式引导符冒号 : 后添加特定字符引导整数以特定进制输出，比如 {:x} 会输出 16 进制结果，d 则会输出十进制，b 输出二进制，o 输出八进制",
+        "无论参数是什么类型，format后的结果总是字符串"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 139,
+      "stem": "下面代码的执行结果是\n\ns = \"11+5in\"\neval(s[1:-2])",
+      "options": [
+        "6",
+        "11+5",
+        "执行错误",
+        "16"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 140,
+      "stem": "以下关于Python字符串的描述中，错误的是",
+      "options": [
+        "字符串是字符的序列，可以按照单个字符或者字符片段进行索引",
+        "字符串包括两种序号体系：正向递增和反向递减",
+        "Python 字符串提供区间访问方式，采用[N:M]格式，表示字符串中从N到M的索引子字符串（包含N和M）",
+        "字符串是用一对双引号””或者单引号括起来的零个或者多个字符"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 141,
+      "stem": "关于Python 字符编码，以下选项中描述错误的是：",
+      "options": [
+        "chr(x)和ord（x）函数用于在单字符和UNICODE 编码值之间进行转换",
+        "print(chr(65))输出A",
+        "print(ord('a'))输出97",
+        "Python 字符编码使用ASCIl编码"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 142,
+      "stem": "\"ab\" + \"c\"*2 结果是：",
+      "options": [
+        "abc2",
+        "abcabc",
+        "abcc",
+        "ababcc"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 143,
+      "stem": "执行以下程序，输入 \"93python22\"，输出结果是：\n\nw = input(\"输入数字和字母字符串：\")\nfor x in w:\n    if '0' <= x <= '9':\n        continue\n    else:\n        w.replace(x, '')\nprint(w)",
+      "options": [
+        "python9322",
+        "python",
+        "93python22",
+        "9322"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 144,
+      "stem": "下列程序的运行结果是\n\n>>> s = 'PYTHON'\n>>> \"{0:3}\".format(s)",
+      "options": [
+        "'PYTH'",
+        "'PYTHON'",
+        "' PYTHON'",
+        "'PYT'"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 145,
+      "stem": "关于字符串索引和切片操作描述错误的是",
+      "options": [
+        "索引指的是访问单个字符的形式，比如s[1]指的就是访问字符串s中的第一个字符",
+        "切片指的是访问字符串中子串的形式，即访问一个区间，例如s[start:end:sep]表示的是访问从start 下标开始，到end 下标结束(不包括end)，间隔为sep-1的字符序列",
+        "索引和切片操作并不会对原字符串有任何影响，返回的是新的字符序列。",
+        "可以利用切片操作将字符串反向，例如s=S[::-1]即可将s逆序。"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 146,
+      "stem": "以下代码的输出结果是：\n\nprint('{:*^10.4}'.format('Flower'))",
+      "options": [
+        "**Flower**",
+        "Flower",
+        "Flow",
+        "***Flow***"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 147,
+      "stem": "给出如下代码：\n\nTempStr = \"Hello World\"\n\n以下选项中可以输出 \"World\" 子串的是",
+      "options": [
+        "print(TempStr[-4:-1])",
+        "print(TempStr[-5:-1])",
+        "print(TempStr[-5:])",
+        "print(TempStr[-5:0])"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 148,
+      "stem": "以下程序的输出结果是：\n\nastr = '0\\n'\nbstr = 'A\\ta\\n'\nprint(\"{}{}\".format(astr,bstr))",
+      "options": [
+        "0\na\ta",
+        "0\nA\tA",
+        "A\ta",
+        "0\nA\ta"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 149,
+      "stem": "关于字符串下列说法错误的是",
+      "options": [
+        "字符应该视为长度为1的字符串",
+        "字符串以\\0标志字符串的结束",
+        "既可以用单引号，也可以用双引号创建字符\n串",
+        "在三引号字符串中可以包含换行回车等特殊\n字符"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 150,
+      "stem": "以下程序的输出结果是：\n\nimport time\nt = time.gmtime()\nprint(time.strftime(\"%Y-%m-%d %H:%M:%S\",t))",
+      "options": [
+        "系统当前的日期",
+        "系统当前的时间",
+        "系统出错",
+        "系统当前的日期与时间"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 151,
+      "stem": "运行以下程序，输出结果是：\n\nprint(\" love \".join([\"Everyday\",\"Yourself\",\"Python\",]))",
+      "options": [
+        "Everyday love Yourself",
+        "Everyday love Python",
+        "love Yourself love Python",
+        "Everyday love Yourself love Python"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 152,
+      "stem": "字符串 s = \"I love Python\"，以下程序的输出结果是：\n\ns = \"I love Python\"\nls = s.split()\nls.reverse()\nprint(ls)",
+      "options": [
+        "'Python', 'love', 'I'",
+        "Python love I",
+        "None",
+        "['Python', 'love', 'I']"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 153,
+      "stem": "如下代码：\n\nstr1 = \"Welcome to Python\"\nstr2 = \"Python\"\nprint(str1.find(str2))\n\n打印的结果是",
+      "options": [
+        "10",
+        "11",
+        "12",
+        "-1"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 154,
+      "stem": "下面代码的输出结果是\n\nweekstr = \"星期一星期二星期三星期四星期五星期六星期日\"\nweekid = 3\nprint(weekstr[weekid*3: weekid*3+3])",
+      "options": [
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期一"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 155,
+      "stem": "如果 name = \"全国计算机等级考试二级Python\"，以下选项中输出错误的是",
+      "options": [
+        ">>> print(name[:])\n全国计算机等级考试二级Python",
+        ">>> print(name[11:])\nPython",
+        ">>> print(name[:11])\n全国计算机等级考试二级",
+        ">>> print(name[0], name[8], name[-1])\n全 试"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 156,
+      "stem": "关于Python字符串，以下选项中描述错误的是",
+      "options": [
+        "可以使用datatype0测试字符串的类型",
+        "输出带有引号的字符串，可以使用转义字符",
+        "字符串是一个字符序列，字符串中的编号叫“索引”",
+        "字符串可以保存在变量中，也可以单独存在"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 157,
+      "stem": "二维列表 ls=[[1,2,3],[4,5,6],[7,8,9]]，哪个选项能获取其中元素 5",
+      "options": [
+        "ls[-2][-1]",
+        "ls[1][1]",
+        "ls[-1][-1]",
+        "ls[4]"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 158,
+      "stem": "序列s，哪个选项对s.index（x）的描述是正确的？",
+      "options": [
+        "返回序列s中元素x所有出现位置的序号",
+        "返回序列s中元素x第一次出现的序号",
+        "返回序列s中x的长度",
+        "返回序列s中序号为x的元素"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 159,
+      "stem": "ls = [3.5, \"Python\", [10, \"LIST\"], 3.6]，ls[2][-1][1] 的运行结果是",
+      "options": [
+        "I",
+        "P",
+        "Y",
+        "L"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 160,
+      "stem": "以下程序的输出结果是：\n\nls1 = [1,2,3,4,5]\nls2 = [3,4,5,6,7,8]\ncha1 = []\nfor i in ls2:\n    if i not in ls1:\n        cha1.append(i)\nprint(cha1)",
+      "options": [
+        "(6, 7, 8)",
+        "(1,2,6,7,8)",
+        "[1,2,6,7,8]",
+        "[6, 7, 8]"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 161,
+      "stem": "下程序的输出结果是：\n\na = [\"a\",\"b\",\"c\"]\nb = a[::-1]\nprint(b)",
+      "options": [
+        "['c', 'b', 'a']",
+        "'c', 'b', 'a'",
+        "'a', 'b', 'c'",
+        "['a', 'b', 'c']"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 162,
+      "stem": "range(5) 产生的序列为：",
+      "options": [
+        "1,2,3,4,5",
+        "0,1,2,3,4,5",
+        "0,1,2,3,4",
+        "1,2,3,4"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 163,
+      "stem": "下面代码的输出结果是\n\na = [[1,2,3], [4,5,6], [7,8,9]]\ns = 0\nfor c in a:\n    for j in range(3):\n        s += c[j]\nprint(s)",
+      "options": [
+        "0",
+        "45",
+        "24",
+        "以上答案都不对"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 164,
+      "stem": "下面代码的输出结果是\n\nlistV = list(range(5))\nprint(2 in listV)",
+      "options": [
+        "False",
+        "0",
+        "-1",
+        "True"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 165,
+      "stem": "以下不是程序输出结果的选项是：\n\nimport random as r\nls1 = [12,34,56,78]\nr.shuffle(ls1)\nprint(ls1)",
+      "options": [
+        "[12, 78, 56, 34]",
+        "[56, 12, 78, 34]",
+        "[12, 34, 56, 78]",
+        "[12, 78, 34, 56]"
+      ],
+      "answer": "C",
+      "note": "原题 shuffle 可产生四个选项中的任意排列，题意与参考答案存在冲突。"
+    },
+    {
+      "number": 166,
+      "stem": "以下程序的输出结果是：\n\nlcat = [\"狮子\",\"猎豹\",\"虎猫\",\"花豹\",\"孟加拉虎\",\"美洲豹\",\"雪豹\"]\nfor s in lcat:\n    if \"豹\" in s:\n        print(s,end=\"\")\n        continue",
+      "options": [
+        "猎豹\n花豹\n美洲豹\n雪豹",
+        "猎豹花豹美洲豹雪豹",
+        "雪豹",
+        "猎豹"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 167,
+      "stem": "已知列表 lst=[1,2,3]，则执行表达式 lst[1]='a' 后：",
+      "options": [
+        "报错",
+        "lst 的值为 [1,'a',3]",
+        "lst 的值为 [1,a,3]",
+        "lst 的值为 [1,2,3]"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 168,
+      "stem": "列表1s，哪个选项对1s.append(x）的描述是正确的?",
+      "options": [
+        "向1s中增加元素，如果x是一个列表，\n则可以同时增加多个元素",
+        "向列表15最前面增加一个元素x",
+        "替换列表1s最后一个元素为x",
+        "只能向列表1s最后增加一个元素x"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 169,
+      "stem": "以下程序的输出结果是：\n\nframe = [[1,2,3],[4,5,6],[7,8,9]]\nrgb = frame[::-1]\nprint(rgb)",
+      "options": [
+        "[[1, 2, 3], [4, 5, 6]]",
+        "[[7, 8, 9]]",
+        "[[1,2,3],[4,5,6],[7,8,9]]",
+        "[[7, 8, 9], [4, 5, 6], [1, 2, 3]]"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 170,
+      "stem": "下面代码的执行结果是：\n\nls = [\"2020\", \"20.20\", \"Python\"]\nls.append(2020)\nls.append([2020, \"2020\"])\nprint(ls)",
+      "options": [
+        "['2020', '20.20', 'Python', 2020]",
+        "['2020', '20.20', 'Python', 2020, [2020, '2020']]",
+        "['2020', '20.20', 'Python', 2020, ['2020']]",
+        "['2020', '20.20', 'Python', 2020, 2020, '2020']"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 171,
+      "stem": "下面代码的输出结果是\n\ns = [\"seashell\",\"gold\",\"pink\",\"brown\",\"purple\",\"tomato\"]\nprint(s[1:4:2])",
+      "options": [
+        "['gold', 'pink', 'brown']",
+        "['gold', 'pink']",
+        "['gold', 'pink', 'brown', 'purple', 'tomato']",
+        "['gold', 'brown']"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 172,
+      "stem": "以下程序的输出结果是：\n\nls = list({'shandong':200, 'hebei':300, 'beijing':400})\nprint(ls)",
+      "options": [
+        "['300','200','400']",
+        "['shandong', 'hebei', 'beijing']",
+        "[300,200,400]",
+        "'shandong', 'hebei', 'beijing'"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 173,
+      "stem": "list = (-2,7,9,-1,0)，则执行 sorted(list, key = lambda x:abs()) 后，list 为：",
+      "options": [
+        "[0,-1,-2,7,9]",
+        "[0,1,2,7,9]",
+        "(-2,7,9,-1,0)",
+        "(2,7,9,1,0)"
+      ],
+      "answer": "C",
+      "note": "原题 lambda 中 abs() 缺少参数，会运行报错；参考答案按资料保留。"
+    },
+    {
+      "number": 174,
+      "stem": "已知 id(ls1) = 4404896968，以下程序的输出结果是：\n\nls1 = [1,2,3,4,5]\nls2 = ls1\nls3 = ls1.copy()\nprint(id(ls2),id(ls3))",
+      "options": [
+        "4404896968 4404896904",
+        "4404896904 4404896968",
+        "4404896968 4404896968",
+        "4404896904 4404896904"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 175,
+      "stem": "a=[1,3,5,7]; b=a.copy(); b[0:2]=0,1 后，a 的值为",
+      "options": [
+        "[1,3,5,7]",
+        "[1,1,5,7]",
+        "[0,1,5,7]",
+        "程序出错"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 176,
+      "stem": "对于列表 ls 的操作，以下选项中描述错误的是",
+      "options": [
+        "ls.copy() 生成一个新列表，复制 ls 的所有元素",
+        "ls.sort() 将列表 ls 的元素按照升序排列",
+        "ls.clear() 删除 ls 的最后一个元素",
+        "ls.append(x) 在 ls 最后增加一个元素 x"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 177,
+      "stem": "计算列表 ls 中的元素个数应使用",
+      "options": [
+        "ls.count()",
+        "count(ls)",
+        "ls.len()",
+        "len(ls)"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 178,
+      "stem": "已知列表Ist=[5,3,2,4,1]，则以下能够改变列表st中的元素顺序，使其按照值从大到小排列的表达式是：",
+      "options": [
+        "lst.reverse()",
+        "lst.sort(reverse=True)",
+        "sorted(lst,reverse=True)",
+        "lst[::-1]"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 179,
+      "stem": "以下程序的输出结果是：\n\nx = ['90','87','90']\nn = 90\nprint(x.count(n))",
+      "options": [
+        "1",
+        "2",
+        "None",
+        "0"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 180,
+      "stem": "alist=[3,4,5,7,9,12,13,15,17]\nblist=alist[3:7:2]\nprint(blist)\n\n上述代码的输出结果是",
+      "options": [
+        "[5,9]",
+        "[7,12]",
+        "[7,12,15]",
+        "上述答案都不正确"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 181,
+      "stem": "以下程序不可能的输出结果是：\n\nfrom random import *\nx = [30,45,50,90]\nprint(choice(x))",
+      "options": [
+        "30",
+        "45",
+        "90",
+        "55"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 182,
+      "stem": "给出如下代码\n\nimport random as ran\nlistV = []\nran.seed(100)\nfor i in range(10):\n    i = ran.randint(100,999)\n    listV.append(i)\n\n以下选项中能输出随机列表元素最大值的是",
+      "options": [
+        "print(listV.max())",
+        "print(listV.pop(i))",
+        "print(max(listV))",
+        "print(listV.reverse(i))"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 183,
+      "stem": "关于Python的列表，描述错误的选项是",
+      "options": [
+        "Python 列表是包含0个或者多个对象引用的有序序列",
+        "Python列表用中括号自表示",
+        "Python列表是一个可以修改数据项的序列类\n型",
+        "Python列表的长度不可变的"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 184,
+      "stem": "通过列表中的那种方法可以根据指定值查找第一个匹配的列表元素的位置。",
+      "options": [
+        "index",
+        "find",
+        "search",
+        "at"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 185,
+      "stem": "下面代码的输出结果是\n\ns = [\"seashell\",\"gold\",\"pink\",\"brown\",\"purple\",\"tomato\"]\nprint(s[4:])",
+      "options": [
+        "['purple']",
+        "['seashell', 'gold', 'pink', 'brown']",
+        "['gold', 'pink', 'brown', 'purple', 'tomato']",
+        "['purple', 'tomato']"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 186,
+      "stem": "已知以下程序段，要想输出结果为 1,2,3，应该使用的表达式是：\n\nx = [1,2,3]\nz = []\nfor y in x:\n    z.append(str(y))",
+      "options": [
+        "print(z)",
+        "print(\",\".join(x))",
+        "print(x)",
+        "print(\",\".join(z))"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 187,
+      "stem": "关于Python的组合数据类型，以下选项中描述错误的是:",
+      "options": [
+        "组合数据类型可以分为3类：序列类型、集合类型和映射类型",
+        "序列类型是二维元素向量，元素之间存在先后关系，通过序号访问",
+        "Python的str、tuple和list类型都属于序列类型",
+        "Python 组合数据类型能够将多个同类型或不同类型的数据组织起来，通过单一的表示使数据操作更有序、更容易"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 188,
+      "stem": "studs=[[\"zhang3\",5],[\"li4\",7],[\"wang5\",3]]，studs.sort(reverse=True, key=lambda x:x[1]) 后，studs 的值为",
+      "options": [
+        "[[\"zhang3\",5],[\"wang5\",3],[\"li4\",7]]",
+        "[[\"zhang3\",5],[\"li4\",7],[\"wang5\",3]]",
+        "[[\"li4\",7],[\"wang5\",3],[\"zhang3\",5]]",
+        "[[\"li4\",7],[\"zhang3\",5],[\"wang5\",3]]"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 189,
+      "stem": "序列s，哪个选项对s.index（x）的描述是正确的？",
+      "options": [
+        "返回序列s中元素x所有出现位置的序号",
+        "返回序列s中元素x第一次出现的序号",
+        "返回序列s中x的长度",
+        "返回序列s中序号为x的元素"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 190,
+      "stem": "以下程序的输出结果是：\n\nls = [\"石山羊\",\"一角鲸\",\"南极雪海燕\",\"竖琴海豹\",\"山雀\"]\nls.remove(\"山雀\")\nstr = \"\"\nprint(\"极地动物有\",end=\"\")\nfor s in ls:\n    str = str + s + \",\"\nprint(str[:-1],end=\"。\")",
+      "options": [
+        "极地动物有石山羊,一角鲸,南极雪海燕,竖琴海豹,山雀",
+        "极地动物有石山羊,一角鲸,南极雪海燕,竖琴海豹。",
+        "极地动物有石山羊,一角鲸,南极雪海燕,竖琴海豹",
+        "极地动物有石山羊,一角鲸,南极雪海燕,竖琴海豹,山雀。"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 191,
+      "stem": "以下程序的输出结果是：\n\ndat=['1', '2', '3', '0', '0', '0']\nfor item in dat:\n    if item == '0':\n        dat.remove(item)\nprint(dat)",
+      "options": [
+        "['1', '2', '3']",
+        "['1', '2', '3', '0', '0']",
+        "['1', '2', '3', '0', '0', '0']",
+        "['1', '2', '3', '0']"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 192,
+      "stem": "以下程序的输出结果是：\n\nss = list(set(\"jzzszyj\"))\nss.sort()\nprint(ss)",
+      "options": [
+        "['z', 'j', 's', 'y']",
+        "['j', 's', 'y', 'z']",
+        "['j', 'z', 'z', 's', 'z', 'y', 'j']",
+        "['j', 'j', 's', 'y', 'z', 'z', 'z']"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 193,
+      "stem": "以下不是Python序列类型的是：",
+      "options": [
+        "元组类型",
+        "列表类型",
+        "数组类型",
+        "字符串类型"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 194,
+      "stem": "已知列表 lst=['a','b','c',1]，则以下不能够删除值为 1 的元素的表达式为：",
+      "options": [
+        "lst.remove(1)",
+        "lst.pop()",
+        "lst.remove(-1)",
+        "lst.pop(3)"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 195,
+      "stem": "已知列表 lst=['ab','aa','abc','bcd']，则表达式 lst.count('a') 的值为：",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "0"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 196,
+      "stem": "已知列表 lst_score=[90,91,89,100,95]，则执行表达式 lst_score[1]=92 后",
+      "options": [
+        "lst_score 的值为 [90,92,89,100,95]",
+        "lst_score 的值为 [90,91,89,100,95]",
+        "报错",
+        "lst_score 的值为 [92,91,89,100,95]"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 197,
+      "stem": "以下关于列表操作的描述，错误的是：",
+      "options": [
+        "通过 add 方法可以向列表添加元素",
+        "通过 extend 方法可以将另一个列表中的元素逐一添加到列表中",
+        "通过 insert(index,object) 方法在指定位置 index 前插入元素 object",
+        "通过 append 方法可以向列表添加元素"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 198,
+      "stem": "以下程序的输出结果是：\n\nls = [\"浣熊\",\"豪猪\",\"艾草松鸡\",\"棉尾兔\",\"叉角羚\"]\nx = \"豪猪\"\nprint(ls.index(x,0))",
+      "options": [
+        "0",
+        "-4",
+        "1",
+        "-3"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 199,
+      "stem": "已知列表 lst=[1,2,3,4,5]，则以下表达式不能正确执行的是：",
+      "options": [
+        "max(lst)",
+        "min(lst)",
+        "sum(lst)",
+        "round(lst)"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 200,
+      "stem": "以下关于组合数据类型的描述，正确的是：",
+      "options": [
+        "利用组合数据类型可以将多个数据用一个类型来表示和处理",
+        "序列类似和集合类型中的元素都是可以重复的",
+        "一个映射类型变量中的关键字可以是不同类型的数据",
+        "集合类型中的元素是有序的"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 201,
+      "stem": "下面代码的执行结果是\n\nls=[[1,2,3],[[4,5],6],[7,8]]\nprint(len(ls))",
+      "options": [
+        "3",
+        "4",
+        "8",
+        "1"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 202,
+      "stem": "studs=[[\"zhang3\",5],[\"li4\",7],[\"wang5\",3]]，sorted(studs, reverse=True) 后，studs 的值为",
+      "options": [
+        "[[\"zhang3\",5],[\"wang5\",3],[\"li4\",7]]",
+        "[[\"zhang3\",5],[\"li4\",7],[\"wang5\",3]]",
+        "[[\"li4\",7],[\"wang5\",3],[\"zhang3\",5]]",
+        "[[\"li4\",7],[\"zhang3\",5],[\"wang5\",3]]"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 203,
+      "stem": "以下程序的输出结果是：\n\nx = [90,87,93]\ny = [\"zhang\", \"wang\", \"zhao\"]\nprint(list(zip(y,x)))",
+      "options": [
+        "('zhang', 90), ('wang', 87), ('zhao', 93)",
+        "[['zhang', 90], ['wang', 87], ['zhao', 93]]",
+        "[('zhang', 90), ('wang', 87), ('zhao', 93)]",
+        "['zhang', 90], ['wang', 87], ['zhao', 93]"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 204,
+      "stem": "给出如下代码（原图字符串右侧部分被截断）：\n\ns = list(\"巴老爷有八十八棵芭蕉树，来了八十八个把式要在巴老爷八…\n老爷拔了八十八棵芭蕉树，不让八十八个把式在八十八棵芭蕉树下住。八…\n烧了八十八棵芭蕉树，巴老爷在八十八棵树边哭。\")\n\n以下选项中能输出字符“八”出现次数的是",
+      "options": [
+        "print(s.index(\"八\"))",
+        "print(s.index(\"八\"),6)",
+        "print(s.index(\"八\"),6,len(s))",
+        "print(s.count(\"八\"))"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 205,
+      "stem": "元组变量 t=(\"cat\", \"dog\", \"tiger\", \"human\")，t[::-1] 的结果是",
+      "options": [
+        "{'human', 'tiger', 'dog', 'cat'}",
+        "['human', 'tiger', 'dog', 'cat']",
+        "运行出错",
+        "('human', 'tiger', 'dog', 'cat')"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 206,
+      "stem": "已知 t=tuple(range(0,10))，则 print(t[-1:3:-2]) 的结果是",
+      "options": [
+        "[9,7,5]",
+        "(9,7,5)",
+        "[9,7,5,3]",
+        "(9,7,5,3)"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 207,
+      "stem": "关于Python的元组类型，以下选项错误的是",
+      "options": [
+        "元组一旦创建就不能被修改",
+        "元组中元素必须是相同类型",
+        "一个元组可以作为另一个元组的元素，可以采用多级索引获取信息",
+        "元组采用逗号和圆括号（可选）来表示"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 208,
+      "stem": "下面代码的输出结果是\n\nd = {\"大海\":\"蓝色\", \"天空\":\"灰色\", \"大地\":\"黑色\"}\nprint(d[\"大地\"], d.get(\"大地\", \"黄色\"))",
+      "options": [
+        "黑色 黄色",
+        "黑色 黑色",
+        "黑的 灰色",
+        "黑色 蓝色"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 209,
+      "stem": "关于字典描述正确的是",
+      "options": [
+        "字典是由于若干键值对构成的",
+        "字典中键与值均可以更改",
+        "字典中键必须不唯一",
+        "字典中值必须唯一"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 210,
+      "stem": "以下程序的输出结果是：\n\nd = {\"zhang\":\"China\", \"Jone\":\"America\", \"Natan\":\"Japan\"}\nfor k in d:\n    print(k, end=\"\")",
+      "options": [
+        "zhangJoneNatan",
+        "zhang:China Jone:America Natan:Japan",
+        "\"zhang\" \"Jone\" \"Natan\"",
+        "ChinaAmericaJapan"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 211,
+      "stem": "使用字典中的什么方法可以删除指定键的元素",
+      "options": [
+        "pop",
+        "remove",
+        "del",
+        "delete"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 212,
+      "stem": "字典访问正确的是",
+      "options": [
+        "字典不能通过键访问",
+        "字典可以通过数组下标访问",
+        "对字典不存在的键进行访问会出错",
+        "对字典不存在的键进行访问不会出错，仅仅是结果为空"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 213,
+      "stem": "以下关于字典操作的描述，错误的是：",
+      "options": [
+        "del 用于删除字典或者元素",
+        "clear 用于清空字典中的数据",
+        "1en 方法可以计算字典中键值对的个数",
+        "keys 方法可以获取字典的值列表"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 214,
+      "stem": "给出如下代码（原图部分代码在右侧被截断，以下以 … 标示）：\n\nMonthandFlower={\"1月\":\"梅花\",\"2月\":\"杏花\",\"3月\":\"桃花\", …,\n    \"5月\":\"石榴花\",\"6月\":\"莲花\",\"7月\":\"玉簪花\",\"8月\":\"桂花\", …,\n    \"9月\":\"菊花\",\"10月\":\"芙蓉花\",\"11月\":\"山茶花\",\"12月\":\"水仙花\"}\nn = input(\"请输入1—12的月份：\")\nprint(n + \"月份之代表花：\" + MonthandFlower.get(str(n)+\"月\", …))\n\n以下选项中描述正确的是",
+      "options": [
+        "代码实现了获取一个整数（1-12）来表示月份，输出该月份对应的代表花名",
+        "MonthandFlower 是列表类型变量",
+        "MonthandFlower 是一个元组",
+        "MonthandFlower 是集合类型变量"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 215,
+      "stem": "关于字典描述正确的是",
+      "options": [
+        "字典中不能通过键找到值",
+        "字典中也可以通过值找到对应的键",
+        "字典中如果不存在的键进行赋值会出错",
+        "字典中如果不存在的键进行赋值会增加该条目"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 216,
+      "stem": "以下关于字典类型的描述，错误的是：",
+      "options": [
+        "字典类型是一种无序的对象集合，通过键来存取",
+        "字典类型可以在原来的变量上增加或缩短",
+        "字典类型可以包含列表和其他数据类型，支持嵌套的字典",
+        "字典类型中的数据可以进行分片和合并操作"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 217,
+      "stem": "以下关于字典操作的描述，错误的是：",
+      "options": [
+        "del 用于删除字典或者元素",
+        "clear 用于清空字典中的数据",
+        "1en 方法可以计算字典中键值对的个数",
+        "keys 方法可以获取字典的值列表"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 218,
+      "stem": "以下程序的输出结果是：\n\ndict = {'Name': 'baby', 'Age': 7}\nprint(dict.items())",
+      "options": [
+        "[('Age', 7), ('Name', 'baby')]",
+        "('Age', 7), ('Name', 'baby')",
+        "dict_items([('Age', 7), ('Name', 'baby')])",
+        "'Age':7, 'Name': 'baby'"
+      ],
+      "answer": "C",
+      "note": "原资料输出键顺序与现代 Python 插入顺序不同，保留原选项。"
+    },
+    {
+      "number": 219,
+      "stem": "以下选项中，不是建立字典的方式是",
+      "options": [
+        "d = {[1,2]:1, [3,4]:3}",
+        "d = {(1,2):1, (3,4):3}",
+        "d = {'张三':1, '李四':2}",
+        "d = {1:[1,2], 3:[3,4]}"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 220,
+      "stem": "以下关于组合类型的描述，错误的是：",
+      "options": [
+        "可以用大括号创建字典，用中括号增加新元素",
+        "嵌套的字典数据类型可以用来表达高维数据",
+        "字典的pop函数可以返回一个键对应的值，并删除该键值对",
+        "空字典和空集合都可以用大括号来创建"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 221,
+      "stem": "以下不能创建一个字典的语句是",
+      "options": [
+        "dict1={}",
+        "dict2={3:5}",
+        "dict3={[1,2,3]:\"uestc\"}",
+        "dict4={(1,2,3):\"uestc\"}"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 222,
+      "stem": "假设将单词保存在变量 word 中，使用一个字典类型 counts={}，统计单词出现的次数可采用以下代码：",
+      "options": [
+        "counts[word]=count[word]+1",
+        "counts[word]=1",
+        "counts[word]=count.get(word,1)+1",
+        "counts[word]=count.get(word,0)+1"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 223,
+      "stem": "以下不是组合数据类型的是：",
+      "options": [
+        "引用类型",
+        "序列类型",
+        "映射类型",
+        "集合类型"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 224,
+      "stem": "字典 d={'Name':'Kate','No':'1001','Age':'20'}，表达式 len(d) 的值为",
+      "options": [
+        "3",
+        "6",
+        "19",
+        "22"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 225,
+      "stem": "运行以下程序，当从键盘上输入 {1:\"清华大学\",2:\"北京大学\"}，运行结果是：\n\nx = eval(input())\nprint(type(x))",
+      "options": [
+        "<class 'int'>",
+        "<class 'dict'>",
+        "出错",
+        "<class 'list'>"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 226,
+      "stem": "以下关于字典类型的描述，正确的是：",
+      "options": [
+        "不能使用d={}这种形式创建新字典，它创建的是空集合",
+        "表达式for xin d:中，假设d是字典，则x是字典中的键值对",
+        "字典类型的键可以是列表和其他数据类型",
+        "字典类型的值可以是任意数据类型的对象"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 227,
+      "stem": "以下程序的输出结果是：\n\nd = {\"zhang\":\"China\", \"Jone\":\"America\", \"Natan\":\"Japan\"}\nprint(max(d),min(d))",
+      "options": [
+        "Japan America",
+        "zhang:China Jone:America",
+        "China America",
+        "zhang Jone"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 228,
+      "stem": "给定字典d，哪个选项对xin d的描述是正确的？",
+      "options": [
+        "判断x是否是在字典d中以键或值方式存在",
+        "x是一个二元元组，判断x是否是字典d中的键值对",
+        "判断x是否是字典d中的键",
+        "判断x是否是字典d中的值"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 229,
+      "stem": "给出如下代码（原图字典右侧被截断，以下以 … 标示）：\n\nDictColor = {\"seashell\":\"海贝色\", \"gold\":\"金色\", \"pink\":\"粉…\", …}\n\n以下选项中能输出“海贝色”的是",
+      "options": [
+        "print(DictColor.keys())",
+        "print(DictColor[\"海贝色\"])",
+        "print(DictColor.values())",
+        "print(DictColor[\"seashell\"])"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 230,
+      "stem": "班级管理系统中，宜作为键的是",
+      "options": [
+        "姓名",
+        "学号",
+        "班级",
+        "性别"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 231,
+      "stem": "给定字典d，哪个选项对d.values()的描述是正确的？",
+      "options": [
+        "返回一个元组类型，包括字典d中所有值",
+        "返回一个集合类型，包括字典d中所有值",
+        "返回一种 dict_values类型，包括字典d中所有值",
+        "返回一个列表类型，包括字典d中所有值"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 232,
+      "stem": "字典 d={'Name':'Kate','No':'1001','Age':'20'}，表达式 len(d) 的值为",
+      "options": [
+        "12",
+        "9",
+        "6",
+        "3"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 233,
+      "stem": "创建空字典需要使用",
+      "options": [
+        "[]",
+        "{:}",
+        "()",
+        "dict()"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 234,
+      "stem": "以下选项中不属于组合数据类型的是",
+      "options": [
+        "变体类型",
+        "字典类型",
+        "映射类型",
+        "序列类型"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 235,
+      "stem": "哪个选项是下面代码的输出结果？\n\nd = {'a': 1, 'B': 2, 'b': '3'}\nprint(d['b'])",
+      "options": [
+        "{'b':2}",
+        "2",
+        "1",
+        "3"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 236,
+      "stem": "以下程序的输出结果是：\n\nss = set(\"htslbht\")\nss = sorted(ss)\nfor i in ss:\n    print(i,end='')",
+      "options": [
+        "htslbht",
+        "bhlst",
+        "tsblh",
+        "hhlstt"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 237,
+      "stem": "以下表达式，正确定义了一个集合数据对象的是：",
+      "options": [
+        "x = {200, 'flg', 20.3}",
+        "x = (200, 'flg', 20.3)",
+        "x = [200, 'flg', 20.3]",
+        "x = {'flg':20.3}"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 238,
+      "stem": "S 和 T 是两个集合，哪个选项对 S^T 的描述是正确的？",
+      "options": [
+        "S 和 T 的并运算，包括在集合 S 和 T 中的所有元素",
+        "S 和 T 的差运算，包括在集合 S 但不在 T 中的元素",
+        "S 和 T 的补运算，包括集合 S 和 T 中的非相同元素",
+        "S 和 T 的交运算，包括同时在集合 S 和 T 中的元素"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 239,
+      "stem": "定义a是一个空集合的正确方法是",
+      "options": [
+        "a={}",
+        "a=[]",
+        "a=()",
+        "a=set()"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 240,
+      "stem": "下面不能创建一个集合的语句是：",
+      "options": [
+        "s1 = set()",
+        "s2 = set(\"abcd\")",
+        "s3 = (1, 2, 3, 4)",
+        "s4 = frozenset((3,2,1))"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 241,
+      "stem": "s1={1,3,5}，s2={4,5,6}，则执行 s1.update(s2) 后",
+      "options": [
+        "s2={1,3,4,5,6}",
+        "s2={1,3,4,5,5,6}",
+        "s1={1,3,4,5,6}",
+        "s1={1,3,4,5,5,6}"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 242,
+      "stem": "集合与字典的区别在于",
+      "options": [
+        "集合有键，字典无键",
+        "集合无键，字典有键",
+        "集合采用[]，字典采用()",
+        "集合可以采用下标方式访问，字典只能通过键访问"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 243,
+      "stem": "Python 的 eval() 函数的功能是将字符串参数当成有效的表达式来求值并返回计算结果。\n执行下面的代码：\n\nx = 1\ny = 2\nprint(eval(input(\"输入计算公式：\")))\n\n然后从键盘输入 x+y，输出的结果是：",
+      "options": [
+        "x+y",
+        "3",
+        "输出错误信息",
+        "None"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 244,
+      "stem": "给出下面代码：\n\na = input(\"\").split(\",\")\nx = 0\nwhile x < len(a):\n    print(a[x],end=\"\")\n    x += 1\n\n代码执行时，从键盘获得：Python语言,是,脚本,语言\n则代码的输出结果是",
+      "options": [
+        "执行代码出错",
+        "Python语言,是,脚本,语言",
+        "Python语言是脚本语言",
+        "无输出"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 245,
+      "stem": "下面代码的输出结果是\n\nprint(0.1 + 0.2 == 0.3)",
+      "options": [
+        "True",
+        "False",
+        "true",
+        "false"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 246,
+      "stem": "拟在屏幕上打印输出 Hello World，以下选项中正确的是：",
+      "options": [
+        "print('Hello World')",
+        "printf(\"Hello World\")",
+        "printf('Hello World')",
+        "print(Hello World)"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 247,
+      "stem": "Python 通过什么来判断当前程序是否在选择结构中?",
+      "options": [
+        "括号",
+        "缩进",
+        "冒号",
+        "花括号"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 248,
+      "stem": "设 x = 10; y = 20，下列语句能正确运行结束的是：",
+      "options": [
+        "max = x > y ? x : y",
+        "if(x>y) print(x)",
+        "min = x if x < y else y",
+        "while True: pass"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 249,
+      "stem": "对于分支结构的描述错误的是",
+      "options": [
+        "如果 if elif else 后边的语句只有一句时，可以不用换行书写，例如 if thisyear == 2020: print(\"bad time\")",
+        "if 90<=x<=100: 表达的是 x 如果属于 [90,100] 这个闭区间",
+        "当双分支的操作较为简单时，可以使用其简洁表达形式，例如 print(\"bad time\" if thisyear == 2020 else \"good time\")",
+        "if a>b>c: 等价于 if a>b and a>c:"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 250,
+      "stem": "以下语句执行后 a、b、c 的值是：\n\na = \"watermelon\"\nb = \"strawberry\"\nc = \"cherry\"\nif a > b:\n    c = a\n    a = b\n    b = c",
+      "options": [
+        "watermelon strawberry cherry",
+        "watermelon cherry strawberry",
+        "strawberry cherry watermelon",
+        "strawberry watermelon watermelon"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 251,
+      "stem": "关于分支结构，以下选项中描述不正确的是",
+      "options": [
+        "if 语句中条件部分可以使用任何能够产生True 和False 的语句和函数",
+        "二分支结构有一种紧凑形式，使用保留字if 和elif 实现",
+        "多分支结构用于设置多个判断条件以及对应的多条执行路径",
+        "if 语句中语句块执行与否依赖于条件判断"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 252,
+      "stem": "关于a or b的描述错误的是",
+      "options": [
+        "如果a=True,b=True,则a or b等于True",
+        "如果a=True,b=False，则a orb等于True",
+        "如果a=True,b=True,则a or b等于False",
+        "如果a=False,b=False，则a or b等于False"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 253,
+      "stem": "关于Python 的分支结构，以下选项中描述错误的是",
+      "options": [
+        "分支结构使用if保留字",
+        "Python 中 if-else 语句用来形成二分支结构",
+        "Python 中 if-elif-else 语句描述多分支结构",
+        "分支结构可以向已经执行过的语句部分跳转"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 254,
+      "stem": "以下关于Python 的控制结构，错误的是：",
+      "options": [
+        "每个if条件后要使用冒号：",
+        "elif 可以单独使用",
+        "Python 中的pass是空语句，一般用作占位语句",
+        "在Python中，没有switch-case 语句"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 255,
+      "stem": "下列哪个语句在Python 中是非法的?",
+      "options": [
+        "x = y = z = 1",
+        "x = (y = z + 1)",
+        "x, y = y, x",
+        "x += y"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 256,
+      "stem": "在循环中使用（）语句可以跳出循环体。",
+      "options": [
+        "break",
+        "continue",
+        "while",
+        "for"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 257,
+      "stem": "以下关于循环结构的描述，错误的是：",
+      "options": [
+        "遍历循环使用for<循环变量>in<循环结构>语句，其中循环结构不能是文件",
+        "使用range（）函数可以指定for循环的次数",
+        "for i in range(5)表示循环5次，i的值是从0到4",
+        "用字符串做循环结构的时候，循环的次数是字符串的长度"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 258,
+      "stem": "给出如下代码：\n\nwhile True:\n    guess = eval(input())\n    if guess == 0x452//2:\n        break\n\n作为输入能够结束程序运行的是",
+      "options": [
+        "553",
+        "0x452",
+        "\"0x452//2\"",
+        "break"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 259,
+      "stem": "以下代码段，不会输出 A,B,C, 的选项是：",
+      "options": [
+        "for i in range(3):\n    print(chr(65+i),end=\",\")",
+        "for i in [0,1,2]:\n    print(chr(65+i),end=\",\")",
+        "i = 0\nwhile i < 3:\n    print(chr(i+65),end=\",\")\n    i += 1\n    continue",
+        "i = 0\nwhile i < 3:\n    print(chr(i+65),end=\",\")\n    break\n    i += 1"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 260,
+      "stem": "关于Python循环结构，以下选项中描述错误的是",
+      "options": [
+        "遍历循环中的遍历结构可以是字符串、文件、组合数据类型和range0函数等",
+        "break 用来跳出最内层 for 或者 while 循环脱离该循环后程序从循环代码后继续执行",
+        "每个continue语句只有能力跳出当前层次的循环",
+        "Python 通过for、while 等保留字提供遍历循环和无限循环结构"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 261,
+      "stem": "给出如下代码\n\nimport random\nnum = random.randint(1,10)\nwhile True:\n    if num >= 9:\n        break\n    else:\n        num = random.randint(1,10)\n\n以下选项中描述错误的是",
+      "options": [
+        "这段代码的功能是程序自动猜数字",
+        "import random 代码是可以省略的",
+        "while True: 创建了一个永远执行的循环",
+        "random.randint(1,10) 生成 [1,10] 之间的整数"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 262,
+      "stem": "下面程序的结果是（ ）\n\ni = 1\nsum = 0\nwhile i < 11:\n    sum += i\n    i += 1\nprint(sum)",
+      "options": [
+        "10",
+        "55",
+        "100",
+        "11"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 263,
+      "stem": "关于Python 循环结构，以下选项中描述错误的是",
+      "options": [
+        "遍历循环中的遍历结构可以是字符串、文件组合数据类型和range（）函数等",
+        "break 用来结束当前当次语句，但不跳出当前的循环体",
+        "continue 只结束本次循环",
+        "Python通过for、while 等保留字构建循环结构"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 264,
+      "stem": "以下关于循环结构的描述，错误的是：",
+      "options": [
+        "遍历循环的循环次数由遍历结构中的元素个数来体现",
+        "非确定次数的循环的次数是根据条件判断来决定的",
+        "非确定次数的循环用while 语句来实现，确定次数的循环用for或者while 语句来实现",
+        "遍历循环对循环的次数是不确定的"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 265,
+      "stem": "关于循环结构的描述错误的是",
+      "options": [
+        "for结构适合特定次数的循环，即在编程阶段就已知次数或者循环之前可以通过计算得到次数的场景",
+        "while 结构适合循环次数未知但知道循环进行或者终止的条件的场景",
+        "不能使用while True:的形式来构造死循环否则程序会无法退出",
+        "for ..in.….的结构中，in关键字后边必须是可迭代对象，比如字符串或者range 函数产生的数值序列"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 266,
+      "stem": "下列关于break和continue 的描述错误的是",
+      "options": [
+        "二者都会终止循环，不过break是退出整个循环，continue是终止本轮循环进入下一轮",
+        "当循环嵌套时，break如果在内层循环内则只能退出最内层循环",
+        "在while 或者for循环中如果使用break退出，则不会执行其后的else语句",
+        "continue 是终止循环继续运行for 或者while 结构后的语句"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 267,
+      "stem": "for i in range(1,10,3)：在循环结束后打印i值，结果为",
+      "options": [
+        "7",
+        "10",
+        "13",
+        "9"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 268,
+      "stem": "下列用于判断素数的程序，错误的是（原图题干未完整显示）：",
+      "options": [
+        "for i in range(2,n):\n    if n%i == 0:\n        break\nif i == n-1:\n    print(\"yes\")\nelse:\n    print(\"no\")",
+        "for i in range(2,n):\n    if n%i == 0:\n        print(\"no\")\n        break\nelse:\n    print(\"yes\")",
+        "isprime = True\nfor i in range(2,n):\n    if n%i == 0:\n        isprime = False\n        break\nif isprime:\n    print(\"yes\")\nelse:\n    print(\"no\")",
+        "for i in range(2,n):\n    if n%i == 0:\n        print(\"no\")\n    else:\n        print(\"yes\")"
+      ],
+      "answer": "D",
+      "note": "原图顶部题干缺失；展示的是根据现有选项整理的主题提示，不能视为完整原题。"
+    },
+    {
+      "number": 269,
+      "stem": "执行以下程序，输入 qp，输出结果是：\n\nk = 0\nwhile True:\n    s = input('请输入q退出：')\n    if s == 'q':\n        k += 1\n        continue\n    else:\n        k += 2\n        break\nprint(k)",
+      "options": [
+        "2",
+        "请输入q退出：",
+        "3",
+        "1"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 270,
+      "stem": "ls = [1,2,3,4,5,6]，以下关于循环结构的描述，错误的是：",
+      "options": [
+        "表达式 for i in range(len(ls)) 的循环次数跟 for i in ls 的循环次数是一样的",
+        "表达式 for i in range(len(ls)) 跟 for i in ls 的循环中，i 的值是一样的",
+        "表达式 for i in range(len(ls)) 的循环次数跟 for i in range(1,len(ls)+1) 的循环次数是一样的",
+        "表达式 for i in range(len(ls)) 的循环次数跟 for i in range(0,len(ls)) 的循环次数是一样的"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 271,
+      "stem": "for 或者while与else 搭配使用时，关于执行e1se 语句块描述正确的是",
+      "options": [
+        "仅循环非正常结束后执行（以break结束）",
+        "仅循环正常结束后执行",
+        "总会执行",
+        "永不执行"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 272,
+      "stem": "以下关于程序控制结构描述错误的是:",
+      "options": [
+        "分支结构包括单分支结构和二分支结构",
+        "二分支结构组合形成多分支结构",
+        "Python里，能用分支结构写出循环的算法",
+        "程序由三种基本结构组成"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 273,
+      "stem": "以下关于分支和循环结构的描述，错误的是：",
+      "options": [
+        "python 的在分支和循环语句里使用例如x<=y<=z的表达式是合法的",
+        "分支结构的中的代码块是用冒号来标记的",
+        "二分支结构的<表达式1>if<条件>else<表达式2>形式，适合用来控制程序分支",
+        "while 循环如果设计不小心会出现死循环"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 274,
+      "stem": "以下程序的输出结果是\n\nx = 10\nwhile x:\n    x -= 1\n    if not x%2:\n        print(x,end=\"\")\nelse:\n    print(x)",
+      "options": [
+        "86420",
+        "975311",
+        "97531",
+        "864200"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 275,
+      "stem": "下面代码的输出结果是\n\nfor s in \"HelloWorld\":\n    if s==\"W\":\n        continue\n    print(s,end=\"\")",
+      "options": [
+        "Hello",
+        "World",
+        "HelloWorld",
+        "Helloorld"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 276,
+      "stem": "下面程序中 print 语句执行了多少次\n\nfor i in range(0,5):\n    for j in range(1,1):\n        print(i*j)",
+      "options": [
+        "5",
+        "6",
+        "0",
+        "以上都不对"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 277,
+      "stem": "打擂法利用循环结构查找某个序列的最大值过程中，共有 5 次比较，请问该程序是几个数中找最大值？",
+      "options": [
+        "4个数中找最大值",
+        "5个数中找最大值",
+        "6个数中找最大值",
+        "7个数中找最大值"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 278,
+      "stem": "关于Python的1ambda 函数，以下选项中描述错误的是",
+      "options": [
+        "可以使用1ambda 函数定义列表的排序规则",
+        "f=lambda x,y:x+y 执行后，f的类型为数字类型",
+        "lambda 函数将函数名作为函数结果返回",
+        "1ambda 用于定义简单的、能够在一行内表示的函数"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 279,
+      "stem": "下面代码的输出结果是：\n\ndef change(a,b):\n    a = 10\n    b += a\n\na = 4\nb = 5\nchange(a,b)\nprint(a,b)",
+      "options": [
+        "10 5",
+        "4 15",
+        "10 15",
+        "4 5"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 280,
+      "stem": "以下程序的输出结果是：\n\nab = 4\n\ndef myab(ab, xy):\n    ab = pow(ab,xy)\n    print(ab,end=\" \")\n\nmyab(ab,2)\nprint(ab)",
+      "options": [
+        "4 4",
+        "16 16",
+        "16 4",
+        "4 16"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 281,
+      "stem": "以下关于函数的描述，正确的是：",
+      "options": [
+        "函数的全局变量是列表类型的时候，函数内部不可以直接引用该全局变量",
+        "如果函数内部定义了跟外部的全局变量同名的组合数据类型的变量，则函数内部引用的变量不确定",
+        "函数的简单数据类型全局变量在函数内部使用的时候，需要在显式声明为全局变量",
+        "python 的函数里引用一个组合数据类型变量，就会创建一个该类型对象"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 282,
+      "stem": "def chanageInt(number2):\n    number2 = number2+1\n    print(\"changeInt: number2= \",number2)\n\n调用\n\nnumber1 = 2\nchanageInt(number1)\nprint(\"number:\",number1)\n\n打印结果哪项是正确",
+      "options": [
+        "changeInt: number2= 3 number: 2",
+        "changeInt: number2= 3 number: 3",
+        "number: 2 changeInt: number2= 3",
+        "number: 2 changeInt: number2= 2"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 283,
+      "stem": "如果函数中没有 return 语句或者 return 语句不带任何返回值，那么该函数的返回值为",
+      "options": [
+        "None",
+        "void",
+        "int",
+        "NULL"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 284,
+      "stem": "以下关于函数说法错误的是：",
+      "options": [
+        "函数通过函数名来调用",
+        "函数可以看做是一段具有名字的子程序",
+        "函数是一段具有特定功能的、可重用的语句组",
+        "对函数的使用必须了解其内部实现原理"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 285,
+      "stem": "以下关于 Python 函数对变量的作用，错误的是：",
+      "options": [
+        "简单数据类型在函数内部用 global 保留字声明后，函数退出后该变量保留",
+        "全局变量指在函数之外定义的变量，在程序执行全过程有效",
+        "简单数据类型变量仅在函数内部创建和使用，函数退出后变量被释放",
+        "对于组合数据类型的全局变量，如果在函数内部没有被真实创建的同名变量，则函数内部不可以直接使用并修改全局变量的值"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 286,
+      "stem": "以下关于函数的描述，错误的是：",
+      "options": [
+        "函数是一种功能抽象",
+        "使用函数的目的只是为了增加代码用",
+        "函数名可以是任何有效的Python标识符",
+        "使用函数后，代码的维护难应降低了"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 287,
+      "stem": "以下代码执行的输出结果是：\n\nls = []\ndef func(a,b):\n    ls.append(b)\n    return a * b\ns = func(\"Hello!\",2)\nprint(s,ls)",
+      "options": [
+        "出错",
+        "Hello!Hello!",
+        "Hello!Hello! [2]",
+        "Hello!Hello! []"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 288,
+      "stem": "以下关于函数参数和返回值的描述，正确的是",
+      "options": [
+        "采用名称传参的时候，实参的顺序需要和形参的顺序一致",
+        "可选参数传递指的是没有传入对应参数值的时候，就不使用该参数",
+        "函数能同时返回多个参数值，需要形成一个列表来返回",
+        "Python支持按照位置传参也支持名称传参，但不支持地址传参"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 289,
+      "stem": "执行以下代码，运行结果\n\ndef split(s):\n    return s.split(\"a\")\ns = \"Happy birthday to you!\"\nprint(split(s))",
+      "options": [
+        "['H', 'ppy birthd', 'y to you!']",
+        "\"Happy birthday to you!\"",
+        "运行出错",
+        "['Happy', 'birthday', 'to', 'you!']"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 290,
+      "stem": "Python 中，函数定义可以不包括以下：",
+      "options": [
+        "一对圆括号",
+        "关键字 def",
+        "函数名",
+        "可选参数列表"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 291,
+      "stem": "以下对递归描述错误的是：",
+      "options": [
+        "书写简单",
+        "代码执行效率高",
+        "一定要有基例",
+        "递归程序都可以有非递归的编写方法"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 292,
+      "stem": "关于Python函数，以下选项中描述错误的是",
+      "options": [
+        "函数是一段可重用的语句组。",
+        "函数通过函数名进行调用。",
+        "每次使用函数需要提供相同的参数作为输入",
+        "函数是一段具有特定功能的语句组。"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 293,
+      "stem": "以下程序的输出结果是：\n\ndef func(a,*b):\n    for item in b:\n        a += item\n    return a\nm = 0\nprint(func(m,1,1,2,3,5,7,12,21,33))",
+      "options": [
+        "33",
+        "0",
+        "7",
+        "85"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 294,
+      "stem": "关于形参和实参的描述，以下选项中正确的是",
+      "options": [
+        "参数列表中给出要传入函数内部的参数，这类参数称为形式参数，简称形参",
+        "函数调用时，实参默认采用按照位置顺序的方式传递给函数，Python也提供了按照形参名称输入实参的方式",
+        "程序在调用时，将形参复制给函数的实参",
+        "函数定义中参数列表里面的参数是实际参数，简称实参"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 295,
+      "stem": "以下程序的输出结果是：\n\ndef fun1(a,b,*args):\n    print(a)\n    print(b)\n    print(args)\n\nfun1(1,2,3,4,5,6)",
+      "options": [
+        "1\n2\n[3, 4, 5, 6]",
+        "1,2,3,4,5,6",
+        "1\n2\n3, 4, 5, 6",
+        "1\n2\n(3, 4, 5, 6)"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 296,
+      "stem": "函数如下：\n\ndef showNnumber(numbers):\n    for n in numbers:\n    print(n)\n\n下面哪些在调用函数时会报错",
+      "options": [
+        "showNumer([2,4,5])",
+        "showNnumber('abcesf')",
+        "showNnumber(3.4)",
+        "showNnumber((12,4,5))"
+      ],
+      "answer": "C",
+      "note": "原图函数名拼写与选项 A 不一致，且 print(n) 缺少循环体缩进；保留原文。"
+    },
+    {
+      "number": 297,
+      "stem": "以下程序的输出结果是：\n\ndef calu(x = 3, y = 2, z = 10):\n    return(x ** y * z)\nh = 2\nw = 3\nprint(calu(h,w))",
+      "options": [
+        "90",
+        "70",
+        "60",
+        "80"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 298,
+      "stem": "以下程序的输出结果是：\n\ndef test(b = 2, a = 4):\n    global z\n    z += a * b\n    return z\nz = 10\nprint(z, test())",
+      "options": [
+        "18 None",
+        "10 18",
+        "UnboundLocalError",
+        "18 18"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 299,
+      "stem": "关于 Python 的 lambda 函数，以下选项中描述错误的是",
+      "options": [
+        "lambda 函数将函数名作为函数结果返回",
+        "f = lambda x,y:x+y 执行后，f 的类型为数字类型",
+        "lambda 用于定义简单的、能够在一行内表示的函数",
+        "可以使用 lambda 函数定义列表的排序规则"
+      ],
+      "answer": "B",
+      "note": "原题 A、B 的表述均存在问题，参考答案按资料保留。"
+    },
+    {
+      "number": 300,
+      "stem": "以下关于python 函数使用的描述，错误的是",
+      "options": [
+        "函数定义是使用函数的第一步",
+        "函数被调用后才能执行",
+        "函数执行结束后，程序执行流程会自动返回到函数被调用的语句之后",
+        "Python 程序里一定要有一个主函数"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 301,
+      "stem": "关于函数的可变参数，可变参数 *args 传入函数时存储的类型是",
+      "options": [
+        "list",
+        "set",
+        "dict",
+        "tuple"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 302,
+      "stem": "下面代码实现的功能描述的是\n\ndef fact(n):\n    if n==0:\n        return 1\n    else:\n        return n*fact(n-1)\n\nnum = eval(input(\"请输入一个整数：\"))\nprint(fact(abs(int(num))))",
+      "options": [
+        "接受用户输入的整数n，输出n的阶乘值",
+        "接受用户输入的整数n，判断n是否是素数\n并输出结论",
+        "接受用户输入的整数n，判断n是否是水仙\n花数",
+        "接受用户输入的整数n，判断n是否是完数\n并输出结论"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 303,
+      "stem": "关于以下程序输出的两个值的描述正确的是：\n\nda = [1,2,3]\nprint(id(da))\ndef getda(st):\n    fa = da.copy()\n    print(id(fa))\ngetda(da)",
+      "options": [
+        "两个值相等",
+        "每次执行的结果不确定",
+        "首次不相等",
+        "两个值不相等"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 304,
+      "stem": "以下程序的输出结果是：\n\ndef f(x, y = 0, z = 0):\n    pass\nf(1, , 3)",
+      "options": [
+        "pass",
+        "None",
+        "not",
+        "出错"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 305,
+      "stem": "以下关于函数参数传递的描述错误的是",
+      "options": [
+        "定义函数的时候，可选参数必须写在非可选参数的后面",
+        "函数的实参位置可变需要形参定义和实参调用时都要给出名称",
+        "调用函数时，可变数量参数被当做元组类型传递到函数中",
+        "Python 支持可变数量的参数，实参用”*参数名”表示"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 306,
+      "stem": "关于Python的全局变量和局部变量，以下选项中描述错误的是：",
+      "options": [
+        "局部变量指在函数内部使用的变量，当函数退出时，变量依然存在，下次函数调用可以继续使用。",
+        "使用global保留字声明简单数据类型变量后，该变量作为全局变量使用。",
+        "简单数据类型变量无论是否与全局变量重名，仅在函数内部创建和使用，函数退出后变量被释放。",
+        "全局变量指在函数之外定义的变量，一般没有缩进，在程序执行全过程有效。"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 307,
+      "stem": "关于局部变量和全局变量，以下选项中描述错误的是",
+      "options": [
+        "局部变量和全局变量是不同的变量，但可以使用global保留字在函数内部使用全局变量",
+        "局部变量是函数内部的占位符，与全局变量可能重名但不同",
+        "函数运算结束后，局部变量不会被释放",
+        "局部变量为组合数据类型且未创建，等同于全局变量"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 308,
+      "stem": "以下程序的输出结果是：\n\ndef hub(ss, x = 2.0, y = 4.0):\n    ss += x * y\nss = 10\nprint(ss, hub(ss, 3))",
+      "options": [
+        "22.0 None",
+        "10 None",
+        "22 None",
+        "10.0 22.0"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 309,
+      "stem": "以下程序的输出结果是：\n\nimg1 = [12,34,56,78]\nimg2 = [1,2,3,4,5]\ndef displ():\n    print(img1)\ndef modi():\n    img1 = img2\nmodi()\ndispl()",
+      "options": [
+        "[1,2,3,4,5]",
+        "([12, 34, 56, 78])",
+        "([1,2,3,4,5])",
+        "[12, 34, 56, 78]"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 310,
+      "stem": "如果函数没有使用return语句，则函数返回的是?",
+      "options": [
+        "0",
+        "None 对象",
+        "任意正整数",
+        "错误！函数必须有返回值。"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 311,
+      "stem": "假设函数中不包括g1obal保留字，对于改变参数值的方法，以下选项中错误的是",
+      "options": [
+        "参数是int 类型时，不改变原参数的值",
+        "参数是组合类型（可变对象）时，改变原参数的值",
+        "参数的值是否改变与函数中对变量的操作有关，与参数类型无关",
+        "参数是1ist类型时，改变原参数的值"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 312,
+      "stem": "下面代码的输出结果是\n\nls = [\"F\",\"f\"]\n\ndef fun(a):\n    ls.append(a)\n    return\n\nfun(\"C\")\nprint(ls)",
+      "options": [
+        "['F', 'f']",
+        "['C']",
+        "出错",
+        "['F', 'f', 'C']"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 313,
+      "stem": "执行以下代码，运行错误的是：\n\ndef fun(x,y=\"Name\",z=\"No\"):\n    pass",
+      "options": [
+        "fun(1,2,3)",
+        "fun(1,,3)",
+        "fun(1)",
+        "fun(1,2)"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 314,
+      "stem": "以下关于python内置函数的描述，错误的是",
+      "options": [
+        "id()返回一个变量的一个编号，是其在内存中的地址",
+        "al1(1s)返回True，如果1s的每个元素都是True",
+        "type()返回一个对象的类型",
+        "sorted()对一个序列类型数据进行排序，将排序后的结果写回到该变量中"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 315,
+      "stem": "关于函数的描述，错误的选项是",
+      "options": [
+        "Python 使用del保留字定义一个函数",
+        "函数能完成特定的功能，对函数的使用不需要了解函数内部实现原理，只要了解函数的输入输出方式即可。",
+        "函数是一段具有特定功能的、可重用的语句组",
+        "使用函数的主要目的是减低编程难度和代码重用"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 316,
+      "stem": "以下程序的输出结果是：\n\ndef fun1():\n    print(\"in fun1()\")\n    fun2()\nfun1()\ndef fun2():\n    print(\"in fun2()\")\n    fun1()\nfun2()",
+      "options": [
+        "in fun1()\nin fun2()",
+        "in fun1()",
+        "死循环",
+        "出错"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 317,
+      "stem": "以下关于python内置函数的描述，错误的是",
+      "options": [
+        "hash()返回一个可计算哈希的类型的数据的哈希值",
+        "id（)返回一个数据的一个编号，跟其在内存中的地址无关",
+        "sorted()对一个序列类型数据进行排序",
+        "type()返回一个数据对应的类型"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 318,
+      "stem": "下面哪个选项对于函数的定义是错误的？",
+      "options": [
+        "def vfunc(*a,b):",
+        "def vfunc(a,b=2):",
+        "def vfunc(a,b):",
+        "def vfunc(a,*b):"
+      ],
+      "answer": "A",
+      "note": "现代 Python 允许 *args 后接仅限关键字参数，原题参考答案与当前语法规则不一致。"
+    },
+    {
+      "number": 319,
+      "stem": "关于random.uniform(a，b)的作用描述，以下选项中正确的是",
+      "options": [
+        "生成一个[a，b]之间的随机实数",
+        "生成一个均值为a，方差为b的正态分布",
+        "生成一个（a,b)之间的随机数",
+        "生成一个[a，b]之间的随机整数"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 320,
+      "stem": "如果当前时间是 2018 年 5 月 1 日 10 点 10 分 9 秒，则下面代码的输出结果是\n\nimport time\nprint(time.strftime(\"%Y=%m-%d@%H>%M>%S\", time.gmtime()))",
+      "options": [
+        "2018=05-01@10>10>09",
+        "2018=5-1 10>10>9",
+        "True@True",
+        "2018=5-1@10>10>9"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 321,
+      "stem": "以下关于Python 内置库、标准库和第三方库的描述，错误的是：",
+      "options": [
+        "第三方库需要单独安装才能使用",
+        "内置库里的函数不需要import就可以调用",
+        "第三方库有多种安装方式，最常用的是pip工具",
+        "第三方库发布方法和标准库一样，是跟python 安装包一起发布的"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 322,
+      "stem": "关于import 引用，以下选项中描述错误的是",
+      "options": [
+        "使用 import turtle.引入turtle库",
+        "可以使用 from turtle import setup 引入turtle库",
+        "使用 import turtle as t 引入turtle 库取别名为t",
+        "import保留字用于导入模块或者模块中的对象"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 323,
+      "stem": "关于random库，以下选项中描述错误的是",
+      "options": [
+        "设定相同种子，每次调用随机函数生成的随机数相同",
+        "通过from random import*可以引入random 随机库",
+        "通过import random 可以引入random 随机库",
+        "生成随机数之前必须要指定随机数种子"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 324,
+      "stem": "导入模块的方式错误的是",
+      "options": [
+        "import mo",
+        "from mo import *",
+        "import mo as m",
+        "import m from mo"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 325,
+      "stem": "执行如下代码：\nimport time\nprint(time.time())\n以下选项中描述错误的是",
+      "options": [
+        "time 库是Python的标准库",
+        "可使用time.ctime（），显示为更可读的形式",
+        "time.sleep(5)推迟调用线程的运行，单位为毫秒",
+        "输出自1970年1月1日00：00:00AM以来的秒数"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 326,
+      "stem": "以下程序的输出结果是：\n\nimport time\nt = time.gmtime()\nprint(time.strftime(\"%Y-%m-%d %H:%M:%S\",t))",
+      "options": [
+        "系统当前的日期",
+        "系统当前的时间",
+        "系统出错",
+        "系统当前的日期与时间"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 327,
+      "stem": "Python 文件读取方法read(size)的含义是：",
+      "options": [
+        "CSV文件的每一行是一维数据，可以使用Python 中的列表类型表示从头到尾读取文件所有内容",
+        "从文件中读取一行数据",
+        "从文件中读取多行数据",
+        "从文件中读取指定size大小的数据，如果size为负数或者空，则读取到文件结束"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 328,
+      "stem": "以下选项中用于 Python 中文件定位的操作方法是：",
+      "options": [
+        "writelines()",
+        "write()",
+        "seek()",
+        "open()"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 329,
+      "stem": "以下选项不是Python文件读操作的是：",
+      "options": [
+        "read()",
+        "readline()",
+        "readtext()",
+        "readlines()"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 330,
+      "stem": "运行以下程序后，文件 result.txt 中的内容为：\n\nf=open('./result.txt','w')\nf.write('hello\\nworld')\nf.close()",
+      "options": [
+        "hello\nworld",
+        "helloworld",
+        "hello\nn\nworld",
+        "hello\n\\n\nworld"
+      ],
+      "answer": "A",
+      "note": "原图仅显示 A 选项；其余选项据同文文字版补录。"
+    },
+    {
+      "number": 331,
+      "stem": "执行如下代码（列表最后一项据同文诗句补全）：\n\nfname = input(\"请输入要写入的文件：\")\nfo = open(fname,\"w+\")\nls = [\"清明时节雨纷纷，\",\"路上行人欲断魂，\",\"借问酒家何处有？\",\"牧童遥指杏花村。\"]\nfo.writelines(ls)\nfo.seek(0)\nfor line in fo:\n    print(line)\nfo.close()\n\n以下选项中描述错误的是",
+      "options": [
+        "fo.writelines(1s)将元素全为字符串的1s列表写入文件",
+        "fo.seek(e)这行代码如果省略，也能打印输出文件内容",
+        "代码主要功能为向文件写入一个列表类型，并打印输出结果",
+        "执行代码时，从键盘输入清明，txt，则清明，txt被创建"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 332,
+      "stem": "关于Python文件打开模式的描述，以下选项中描述错误的是",
+      "options": [
+        "覆盖写模式w",
+        "追加写模式a",
+        "创建写模式n",
+        "只读模式r"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 333,
+      "stem": "以下程序输出到文件 text.csv 里的结果是：\n\nfo = open(\"text.csv\",'w')\nx = [90,87,93]\nfo.write(\",\".join(str(x)))\nfo.close()",
+      "options": [
+        "[90,87,93]",
+        "90,87,93",
+        ",9,0,,, ,8,7,,, ,9,3,",
+        "[,9,0,,, ,8,7,,, ,9,3,]"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 334,
+      "stem": "以下哪些文件的方法可以将文本文件中的内容一次性读出：",
+      "options": [
+        "readlines",
+        "readline",
+        "writeline",
+        "read(1024)"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 335,
+      "stem": "关于Python文件的+打开模式，哪个选项的描述是正确的?",
+      "options": [
+        "只读模式",
+        "覆盖写模式",
+        "追加写模式",
+        "与r/w/a/x一同使用，在原功能基础上增加同时读写功能"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 336,
+      "stem": "关于 CSV 文件的描述，以下选项中错误的是",
+      "options": [
+        "CSV 文件的每一行是一维数据，可以使用 Python 中的列表类型表示",
+        "CSV 文件通过多种编码表示字符",
+        "整个 CSV 文件是一个二维数据",
+        "CSV 文件格式是一种通用的文件格式，应用于程序之间转移表格数据"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 337,
+      "stem": "以下程序输出到文件 text.csv 里的结果是：\n\nfo = open(\"text.csv\",'w')\nx = [90,87,93]\nz = []\nfor y in x:\n    z.append(str(y))\nfo.write(\",\".join(z))\nfo.close()",
+      "options": [
+        "[90,87,93]",
+        "90,87,93",
+        "'[90,87,93]'",
+        "'90,87,93'"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 338,
+      "stem": "关于文件关闭的close（）方法，哪个选项的描述是正确的？",
+      "options": [
+        "如果文件是只读方式打开，仅在这种情况下可以不用close（）方法关闭文件",
+        "文件处理结束之后，一定要用close（）方法关闭文件",
+        "文件处理遵循严格的“打开-操作-关闭”模式",
+        "文件处理后可以不用close（)方法关闭文件，程序退出时会默认关闭"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 339,
+      "stem": "关于以下代码的描述，错误的选项是\n\nwith open('abc.txt','r+') as f:\n    lines = f.readlines()\nfor item in lines:\n    print(item)",
+      "options": [
+        "执行代码后，abc.txt文件未关闭，必须通过close0函数关闭",
+        "打印输出abc.txt文件内容",
+        "item是字符串类型",
+        "lines是列表类型"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 340,
+      "stem": "以下选项对文件描述错误的是：",
+      "options": [
+        "文件可以包含任何内容",
+        "文件是存储在辅助存储器上的数据序列",
+        "文件是数据的集合和抽象",
+        "文件是程序的集合和抽象"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 341,
+      "stem": "关于CSV文件的描述，哪个选项的描述是错误的?",
+      "options": [
+        "整个CSV文件是一个二维数据",
+        "CSV文件格式是一种通用的、相对简单的文件格式，应用于程序之间转移表格数据",
+        "CSV文件的每一行是一维数据，可以使用Python 中的列表类型表示",
+        "CSV文件通过多种编码表示字符"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 342,
+      "stem": "已知文本文件对象 f，以下哪些语句能实现将整数 1—10 中所有的偶数写入文件，且一行一个数。",
+      "options": [
+        "f.writelines(['2','4','6','8','10\\n'])",
+        "f.write('2\\n4\\n6\\n8\\n10\\n')",
+        "f.writelines(['2','4','6','8','10'])",
+        "f.writelines([2,4,6,8,10])"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 343,
+      "stem": "以下程序的输出结果是：\n\nfo = open('text.txt','w+')\nx,y = 'this is a test','hello'\nfo.write('{}+{}\\n'.format(x,y))\nprint(fo.read())\nfo.close()",
+      "options": [
+        "this is a test hello",
+        "this is a test+hello",
+        "this is a test,hello.",
+        "this is a test"
+      ],
+      "answer": "B",
+      "note": "原代码写入后未把文件位置移回开头，fo.read() 读取为空；原选项缺少相应答案。"
+    },
+    {
+      "number": 344,
+      "stem": "以下选项中，不是 Python 对文件的打开模式的是：",
+      "options": [
+        "'w'",
+        "'+'",
+        "'c'",
+        "'r'"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 345,
+      "stem": "Python 对文件操作采用的统一步骤是：",
+      "options": [
+        "打开—读写—写入",
+        "操作—读取—写入",
+        "打开—读取—写入—关闭",
+        "打开—操作—关闭"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 346,
+      "stem": "以下关于Python文件的描述，错误的是：",
+      "options": [
+        "open函数的参数处理模式b’表示以二进制数据处理文件",
+        "open函数的参数处理模式’+’表示可以对文件进行读和写操作",
+        "readline函数表示读取文件的一行，返回一个字符串",
+        "open 函数的参数处理模式’a’表示追加方式打开文件，删除已有内容"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 347,
+      "stem": "以下关于 Python 文件对象 f 的描述，错误的选项是",
+      "options": [
+        "f.closed 文件关闭属性，当文件关闭时，值为 False",
+        "f.writable() 用于判断文件是否可写",
+        "f.readable() 用于判断文件是否可读",
+        "f.seekable() 判断文件是否支持随机访问"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 348,
+      "stem": "以下选项中，对文件的描述错误的是",
+      "options": [
+        "文件中可以包含任何数据内容",
+        "文本文件和二进制文件都是文件",
+        "文本文件不能用二进制文件方式读入",
+        "文件是一个存储在辅助存储器上的数据序列"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 349,
+      "stem": "以下关于文件的描述，错误的是：",
+      "options": [
+        "二进制文件和文本文件的操作步骤都是“打开-操作-关闭”",
+        "open()打开文件之后，文件的内容并没有在内存中",
+        "open()只能打开一个已经存在的文件",
+        "文件读写之后，要调用c10se（）才能确保文件被保存在磁盘中了"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 350,
+      "stem": "有一个文件记录了 1000 个人的高考成绩总分，每一行信息长度是 20 个字节，要想只读取最后 10 行的内容，不可能用到的函数是：",
+      "options": [
+        "seek()",
+        "readline()",
+        "open()",
+        "read()"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 351,
+      "stem": "以下关于文件的描述错误的选项是：",
+      "options": [
+        "readlines()函数读入文件内容后返回一个列表，元素划分依据是文本文件中的换行符",
+        "read()一次性读入文本文件的全部内容后返回一个字符串",
+        "readline()函数读入文本文件的一行，返回一个字符串",
+        "二进制文件和文本文件都是可以用文本编辑器编辑的文件"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 352,
+      "stem": "对于Python文件，以下描述正确的是：",
+      "options": [
+        "根据不同类型的文件，打开方式只能是文本或者二进制中的一种",
+        "当文件以二进制文件方式打开时，读取按照字符串方式",
+        "同一个文件可以既采用文本方式打开，也可以采用二进制方式打开",
+        "当文件以文本方式打开时，读取按照字节流方式"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 353,
+      "stem": "在对Csv文件进行写操作时，可通过设置以下哪个参数来避免出现空行：",
+      "options": [
+        "newline",
+        "newlines",
+        "enter",
+        "encoding"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 354,
+      "stem": "当文本文件中包含了中文字符时，需要进行以下哪些操作：",
+      "options": [
+        "改为拼音或者英文",
+        "删除文本文件中的中文字符",
+        "留意文本文件保存时的编码方式，代码中设置open 函数中的encoding参数",
+        "不需要做任何操作"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 355,
+      "stem": "以下程序的功能是（原图第一行字符串右侧被截断，以 … 标示缺失）：\n\ns = \"What\\'s a package, project, or release?We use a number of terms…\"\ns = s.lower()\nfor ch in '\\\\,?.:()':\n    s = s.replace(ch,\" \")\nwords = s.split()\n\ncounts = {}\nfor word in words:\n    counts[word] = counts.get(word,0)+1\n\nitems = list(counts.items())\nitems.sort(key=lambda x:x[1],reverse=True)\nfo = open(\"wordnum.txt\",\"w\",encoding=\"utf-8\")\nfor i in range(10):\n    word,count = items[i]\n    fo.writelines(word + \":\" + str(count) + \"\\n\")\nfo.close()",
+      "options": [
+        "统计字符串s中所有单词的出现次数，将单词和次数写入wordnum.txt文件",
+        "统计字符串s中所有字母的出现次数，将单词和次数写入wordnum.txt文件",
+        "统计输出字符串5中前10个字母的出现次数，将单词和次数写入wordnum.txt 文件",
+        "统计字符串5中前10个高插单词的出现次数将单词和次数写入wordnum.txt 支件"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 356,
+      "stem": "设 city.csv 文件内容如下：\n\n巴哈马,巴林,孟加拉国,巴巴多斯\n白俄罗斯,比利时,伯利兹\n\n下面代码的执行结果是：\n\nf = open(\"city.csv\", \"r\")\nls = f.read().split(\",\")\nf.close()\nprint(ls)",
+      "options": [
+        "['巴哈马', '巴林', '孟加拉国', '巴巴多斯\\n白俄罗斯', '比利时', '伯利兹']",
+        "['巴哈马, 巴林, 孟加拉国, 巴巴多斯, 白俄罗斯, 比利时, 伯利兹']",
+        "['巴哈马', '巴林', '孟加拉国', '巴巴多斯', '\\n', '白俄罗斯', '比利时', '伯利兹']",
+        "['巴哈马', '巴林', '孟加拉国', '巴巴多斯', '白俄罗斯', '比利时', '伯利兹']"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 357,
+      "stem": "以下关于文件的描述错误的选项是：",
+      "options": [
+        "readlines()函数读入文件内容后返回一个列表，元素划分依据是文本文件中的换行符",
+        "read()一次性读入文本文件的全部内容后返回一个字符串",
+        "readline()函数读入文本文件的一行，返回一个字符串",
+        "二进制文件和文本文件都是可以用文本编辑器编辑的文件"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 358,
+      "stem": "以下关于CSV文件说法正确的是：",
+      "options": [
+        "使用writer 对象对CSV文件进行写操作后不需要关闭文件。",
+        "python的csv模块是第三方模块，需要单独安装",
+        "reader 对象中的每个元素都是一个字符串，对应了CSV文件中的一行",
+        "CSv 文件主要用来存储表格数据"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 359,
+      "stem": "关于 Python 文件处理，以下选项中描述错误的是",
+      "options": [
+        "Python 能处理 JPG 图像文件",
+        "Python 不可以处理 PDF 文件",
+        "Python 能处理 CSV 文件",
+        "Python 能处理 Excel 文件"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 360,
+      "stem": "给出如下代码：\n\nfname = input(\"请输入要打开的文件：\")\nfo = open(fname, \"r\")\nfor line in fo.readlines():\n    print(line,end='')\nfo.close()\n\n关于上述代码的描述，以下选项中错误的是",
+      "options": [
+        "通过 fo.readlines() 方法将文件的全部内容读入一个字典 fo",
+        "通过 fo.readlines() 方法将文件的全部内容读入一个列表 fo",
+        "上述代码可以优化为：\nfname = input(\"请输入要打开的文件：\")\nfo = open(fname, \"r\")\nfor line in fo:\n    print(line,end='')\nfo.close()",
+        "用户输入文件路径，以文本文件方式读入文件内容并逐行打印"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 361,
+      "stem": "运行以下程序：\n\ntry:\n    num = eval(input(\"请输入一个列表：\"))\n    num.reverse()\n    print(num)\nexcept:\n    print(\"输入的不是列表\")\n\n从键盘上输入 1,2,3，则输出的结果是：",
+      "options": [
+        "[1,2,3]",
+        "[3,2,1]",
+        "输入的不是列表",
+        "运算错误"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 362,
+      "stem": "以下选项中Python 用于异常处理结构中用来捕获特定类型的异常的保留字是",
+      "options": [
+        "except",
+        "do",
+        "pass",
+        "while"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 363,
+      "stem": "以下程序的输出结果是：\n\ns=''\ntry:\n    for i in range(1, 10, 2):\n        s.append(i)\nexcept:\n    print('error')\nprint(s)",
+      "options": [
+        "1 3 5 7 9",
+        "[1, 3, 5, 7, 9]",
+        "2, 4, 6, 8, 10",
+        "error"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 364,
+      "stem": "关于程序的异常处理，以下选项中描述错误的是：",
+      "options": [
+        "程序异常发生经过妥善处理可以继续执行",
+        "异常语句可以与else和finally保留字配合使",
+        "编程语言中的异常和错误是完全相同的概念",
+        "Python通过try、except等保留字提供异常处理功能"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 365,
+      "stem": "以下关于异常处理的描述，错误的选项是：",
+      "options": [
+        "Python 通过try、except 等保留字提供异常处理功能",
+        "ZeroDivisionError 是一个变量末命名错误",
+        "NameError 是一种异常类型",
+        "异常语句可以与else 和 finally 语句配合使用"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 366,
+      "stem": "用户输入整数的时候不合规导致程序出错，为了不让程序异常中断，需要用到的语句是：",
+      "options": [
+        "try-except 语句",
+        "eval 语句",
+        "循环语句",
+        "if 语句"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 367,
+      "stem": "对以下程序描述错误的是\n\ntry:\n    # 语句块1\nexcept IndexError as i:\n    # 语句块2",
+      "options": [
+        "改程序对异常处理了，因此一定不会终止程序",
+        "改程序对异常处理了，不一定不会因异常引发终止",
+        "语句块1，如果抛出IndexError 异常，不会因为异常终止程序",
+        "语句块2不一定会执行"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 368,
+      "stem": "以下程序的输出结果是：\n\ns = 0\ndef fun(num):\n    try:\n        s += num\n        return s\n    except:\n        return 0\n    return 5\nprint(fun(2))",
+      "options": [
+        "0",
+        "2",
+        "UnboundLocalError",
+        "5"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 369,
+      "stem": "执行下列语句，程序会抛出什么异常：\n\nx = 5\ny = '6'\nx = x + y",
+      "options": [
+        "TypeError",
+        "IOError",
+        "NameError",
+        "AttributeError"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 370,
+      "stem": "以下Python 语言关键字在异常处理结构中用来捕获特定类型异常的选项是：",
+      "options": [
+        "for",
+        "except",
+        "in",
+        "lambda"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 371,
+      "stem": "以下关于异常处理的描述，正确的是：",
+      "options": [
+        "Python 中允许利用raise 语句由程序主动引发异常",
+        "Python中，可以用异常处理捕获程序中的所有错误",
+        "引发一个不存在索引的列表元素会引发NameError 错误",
+        "try语句中有except 子句就不能有finally 子句"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 372,
+      "stem": "当用户输入 abc 时，下面代码的输出结果是\n\ntry:\n    n = 0\n    n = input(\"请输入一个整数：\")\n    def pow10(n):\n        return n**10\nexcept:\n    print(\"程序执行错误\")",
+      "options": [
+        "输出：abc",
+        "程序没有任何输出",
+        "输出：0",
+        "输出：程序执行错误"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 373,
+      "stem": "执行以下程序，输入 la，输出结果是：\n\nla = 'python'\ntry:\n    s = eval(input('请输入整数：'))\n    ls = s*2\n    print(ls)\nexcept:\n    print('请输入整数')",
+      "options": [
+        "la",
+        "请输入整数",
+        "pythonpython",
+        "python"
+      ],
+      "answer": "C"
+    }
+  ],
+  "text_versions": {
+    "py-v2-text-1": {
+      "stem": "选项中说法不正确的是",
+      "options": [
+        "C语言是静态语言，Python 语言是脚本语言",
+        "编译是将源代码转换成目标代码的过程",
+        "解释是将源代码逐条转换成目标代码同时逐条运行目标代码的过程",
+        "静态语言采用解释方式执行，脚本语言采用编译方式执行"
+      ]
+    },
+    "py-v2-text-2": {
+      "stem": "给定列表ls=[1,2,3,””1””,””2””,””3””]其元素包含2种数据类型，哪个选项是列表ls的数据组织维度？",
+      "options": [
+        "二维数据",
+        "一维数据",
+        "多维数据",
+        "高维数据"
+      ]
+    },
+    "py-v2-text-3": {
+      "stem": "以下关于模块化设计描述错误的是：",
+      "options": [
+        "模块间关系尽可能简单，模块之间耦合度低",
+        "高耦合度的特点是复用较为困难",
+        "应尽可能合理划分功能块，功能块内部耦合度低",
+        "应尽可能合理划分功能块，功能块内部耦合度高"
+      ]
+    },
+    "py-v2-text-4": {
+      "stem": "下面不适用迭代思想计算的是?",
+      "options": [
+        "判断n是否是素数",
+        "x的n次幂",
+        "x的阶乘",
+        "麦波那契数列的第n项"
+      ]
+    },
+    "py-v2-text-5": {
+      "stem": "以下关于程序设计语言的描述，错误的选项是：",
+      "options": [
+        "Python 语言是一种脚本编程语言",
+        "汇编语言是直接操作计算机硬件的编程语言",
+        "程序设计语言经历了机器语言、汇编语言、脚本语言三个阶段",
+        "编译和解释的区别是一次性翻译程序还是每次执行时都要翻译程序"
+      ]
+    },
+    "py-v2-text-6": {
+      "stem": "以下选项中，不属于IPO模式一部分的是",
+      "options": [
+        "Program(程序）",
+        "Process(处理）",
+        "Output(输出）",
+        "Input(输入）"
+      ]
+    },
+    "py-v2-text-7": {
+      "stem": "计算机中信息处理和信息储存用",
+      "options": [
+        "二进制代码",
+        "十进制代码",
+        "十六进制代码",
+        "ASCII代码"
+      ]
+    },
+    "py-v2-text-8": {
+      "stem": "结构化程序设计主要强调的是",
+      "options": [
+        "程序的可移植性",
+        "程序的规模",
+        "程序的执行效率",
+        "程序的易读性"
+      ]
+    },
+    "py-v2-text-9": {
+      "stem": "以下选项中说法不正确的是",
+      "options": [
+        "解释是将源代码逐条转换成目标代码同时逐条运行目标代码的过程",
+        "编译是将源代码转换成目标代码的过程",
+        "C语言是静态语言，Python 语言是脚本语言",
+        "静态语言采用解释方式执行，脚本语言采用编译方式执行"
+      ]
+    },
+    "py-v2-text-10": {
+      "stem": "下面不适用穷举算法进行计算的是",
+      "options": [
+        "百元买百鸡问题",
+        "找出某个范围内的所有素数",
+        "破译由数字构成的密码",
+        "计算一个整数所有位的数值之和"
+      ]
+    },
+    "py-v2-text-11": {
+      "stem": "关于数据组织的维度，哪个选项的描述是错误的?",
+      "options": [
+        "高维数据由键值对类型的数据构成，采用对象方式组织",
+        "数据组织存在维度，字典类型用于表示一维和二维数据",
+        "一维数据采用线性方式组织，对应于数学中的数组和集合等概念",
+        "二维数据采用表格方式组织，对应于数学中的矩阵"
+      ]
+    },
+    "py-v2-text-12": {
+      "stem": "Python 中需要经过安装才能使用的功能模块称为：",
+      "options": [
+        "系统库",
+        "第三方库",
+        "附加库",
+        "标准库"
+      ]
+    },
+    "py-v2-text-13": {
+      "stem": "计算机技术的演进过程中，人工智能时代主要解决的问题是：",
+      "options": [
+        "计算能力问题",
+        "交互问题",
+        "数据问题",
+        "人类的问题"
+      ]
+    },
+    "py-v2-text-14": {
+      "stem": "如果你的Python程序陷入了无限循环，可以使用哪个组合键中断循环?",
+      "options": [
+        "CTRL+C",
+        "CTRL+D",
+        "CTRL+X",
+        "CTRL+V"
+      ]
+    },
+    "py-v2-text-15": {
+      "stem": "python 源程序执行的方式",
+      "options": [
+        "编译执行",
+        "解释执行",
+        "直接执行",
+        "边编译边执行"
+      ]
+    },
+    "py-v2-text-16": {
+      "stem": "Python 中随解释器直接安装到操作系统中的功能模块称为：",
+      "options": [
+        "系统库",
+        "第三方库",
+        "附加库",
+        "标准库"
+      ]
+    },
+    "py-v2-text-17": {
+      "stem": "关于Python 语言的特点，以下选项描述正确的是",
+      "options": [
+        "Python 语言不支持面向对象",
+        "Python 语言是解释型语言",
+        "Python 语言是编译型语言",
+        "Python 语言是非跨平台语言"
+      ]
+    },
+    "py-v2-text-18": {
+      "stem": "下面关于Python相关工具描述错误的是",
+      "options": [
+        "IDLE是Python解释器自带的一个简易IDE，体积小巧，但功能也相当完备，具备代码编辑、运行、调试等功能",
+        "ipython可以看作是一个增强的Python Interpreter支持变器自动补全，自动缩进，内置了许多很有用的功能和函数。",
+        "jupyter notebook是一个基于浏览器的交互式程序编写和运行环境，通过切换后台的内核，支持多种语言。",
+        "pycharm是集成式的Python开发环境，功能强大、完善，但是需要购买才能够使用。"
+      ]
+    },
+    "py-v2-text-19": {
+      "stem": "关于Python程序格式框架的描述，以下选项中错误的是",
+      "options": [
+        "Python 语言的缩进可以采用Tab键实现",
+        "Python 单层缩进代码属于之前最邻近的一行非缩进代码，多层缩进代码根据缩进关系决定所属范围",
+        "判断、循环、函数等语法形式能够通过缩进包含一批Python代码，进而表达对应的语义",
+        "Python 语言不采用严格的“缩进”来表明程序的格式框架"
+      ]
+    },
+    "py-v2-text-20": {
+      "stem": "关于Python的数字类型，以下选项中描述错误的是",
+      "options": [
+        "Python 整数类型提供了4种进制表示：十进制、一进制、八进制和十六进制",
+        "Python 语言要求所有浮点数必须带有小数部分",
+        "Python语言中，复数类型中实数部分和虚数部分的数值都是浮点类型，复数的虚数部分通过后缀“C”或者“c”来",
+        "Python 语言提供int、float、complex等数字类型"
+      ]
+    },
+    "py-v2-text-21": {
+      "stem": "关于Python语言的特点，以下选项中描述错误的是",
+      "options": [
+        "Python 语言是非开源语言",
+        "Python 语言是跨平台语言",
+        "Python 语言是多模型语言",
+        "Python 语言是脚本语言"
+      ]
+    },
+    "py-v2-text-22": {
+      "stem": "关于Python 内存管理，下列说法错误的是",
+      "options": [
+        "变量不必事先声明",
+        "变量无须先创建和赋值而直接使用",
+        "变量无须指定类型",
+        "可以使用del释放资源"
+      ]
+    },
+    "py-v2-text-23": {
+      "stem": "表达式type(eva1(“45））的结果是:",
+      "options": [
+        "<class 'float'>",
+        "<class 'str'>",
+        "None",
+        "<class 'int'>"
+      ]
+    },
+    "py-v2-text-24": {
+      "stem": "关于Python语言的变量，以下选项中说法正确的是",
+      "options": [
+        "随时声明、随时使用、随时释放",
+        "随时命名、随时赋值、随时使用",
+        "随时声明、随时赋值、随时变换类型",
+        "随时命名、随时赋值、随时变换类型"
+      ]
+    },
+    "py-v2-text-25": {
+      "stem": "关于Python语句p=-p，以下选项中描述正确的是",
+      "options": [
+        "P和P的负数相等",
+        "P和P的绝对值相等",
+        "给赋值为它的负数",
+        "P的值为0"
+      ]
+    },
+    "py-v2-text-26": {
+      "stem": "执行Age=input（””请输入年龄：””），用户健盘输入19后，Age变量的类型：",
+      "options": [
+        "int",
+        "float",
+        "str",
+        "complex"
+      ]
+    },
+    "py-v2-text-27": {
+      "stem": "以下选项中符合Python 语言变量命名规则的是",
+      "options": [
+        "*1",
+        "3_1",
+        "AI!",
+        "Templist"
+      ]
+    },
+    "py-v2-text-28": {
+      "stem": "运行以下程序，输出的Python数据类型是：\n>>>type(abs(-3+4j))",
+      "options": [
+        "字符串类型",
+        "浮点数类型",
+        "整数类型",
+        "复数类型"
+      ]
+    },
+    "py-v2-text-29": {
+      "stem": "关于赋值语句，以下选项中描述错误的是",
+      "options": [
+        "在Python语言中，有一种赋值语句，可以同时给多个变量赋值",
+        "设x=“alice”;y =\"kate”，执行x，y=y，x可以实现变量x和y值的互换",
+        "设a-10;b=820，执行\na,b=a,a+b\nprint(a,b)\n和\na=b\nb=a+b\nprint(a,b)\n之后，得到同样的输出结果：10 30",
+        "在Python 语言中，“=”表示赋值，即将”=”右侧的计算结果赋值给左侧变量，包含“=”的语句称为赋值语句"
+      ]
+    },
+    "py-v2-text-30": {
+      "stem": "Python 语言语句块的标记是",
+      "options": [
+        "分号",
+        "逗号",
+        "缩进",
+        "/"
+      ]
+    },
+    "py-v2-text-31": {
+      "stem": "关于Python程序中与“缩进”有关的说法中，以下选项中正确的是",
+      "options": [
+        "缩进统一为4个空格",
+        "缩进是非强制性的，仅为了提高代码可读性",
+        "缩进在程序中长度统一且强制使用",
+        "缩进可以用在任何语句之后，表示语句间的包含关系"
+      ]
+    },
+    "py-v2-text-32": {
+      "stem": "下面代码的输出结果是\nX=12.34\nprint(type(x))",
+      "options": [
+        "<class \"int'>",
+        "<class 'float'>",
+        "<class \"bool'>",
+        "<class \"complex'>"
+      ]
+    },
+    "py-v2-text-33": {
+      "stem": "关于赋值运算的描述错误的是?",
+      "options": [
+        "python支持解包赋值，即将多个以逗号分隔的序列依次赋值给对应的变量，比如a,b=649,319",
+        "所有的二元数值运算符均支持和赋值运算符结合形成复合赋值运算，例如/∥=和*=是合法的运算符",
+        "python中两个数据交换必须通过第三方变量来进行",
+        "python支持链式赋值，形如a=b=c=d=e=0"
+      ]
+    },
+    "py-v2-text-34": {
+      "stem": "关于Python语言的注释，以下选项中描述错误的是",
+      "options": [
+        "Python 语言的单行注释以#开头",
+        "Python 语言的单行注释以单引号’开头",
+        "Python 语言的多行注释以（三个单引号）开头和结尾",
+        "Python 语言有两种注释方式：单行注释和多行注释"
+      ]
+    },
+    "py-v2-text-35": {
+      "stem": "以下Python 语句运行结果异常的选项是：",
+      "options": [
+        ">>>PI,r=3.14,4",
+        ">>>a=1\n>>>b=a=a+1",
+        ">>>a",
+        ">>>x= True\n  >>>int(x)"
+      ]
+    },
+    "py-v2-text-36": {
+      "stem": "已知a=1，表达式：a==0+True 的结果为",
+      "options": [
+        "1",
+        "True",
+        "False",
+        "0"
+      ]
+    },
+    "py-v2-text-37": {
+      "stem": "表达式print(float(complex(10+5j).imag)）的结果是：",
+      "options": [
+        "10错",
+        "5.0",
+        "10.0",
+        "5"
+      ]
+    },
+    "py-v2-text-38": {
+      "stem": "下面关于标识符的描述错误的是",
+      "options": [
+        "标识符命名要做到见名知义，增加程序的可读写",
+        "标识特命名不可以使用关键字，但可以和内置函数重名，此时函数功能失效，比如pow=5",
+        "标识符不允许全部大写，但允许小写或者大小写混合，例如轮峰法命名myName是允许的",
+        "单独的_是合法的标识符，通常用于命名无意义的场景中，比如for in range(1,100）"
+      ]
+    },
+    "py-v2-text-39": {
+      "stem": "下面关于代码缩进的描述错误的是",
+      "options": [
+        "python 中缩进是代表逻辑的不同的缩进级别代表语句块的开始和结束，所以不要随意缩进",
+        "python代码中可以使用空格或者TAB来进行缩进，属于同一语句块的语句必须使用相同的缩进量",
+        "代码中的缩进是代表逻辑的，但仅仅是方便人类阅读和理解而已，对于解释器来说，缩进并没有什么意义",
+        "python 中对于代码缩进的量并没有硬性规定只要同级别的缩进量相同即可"
+      ]
+    },
+    "py-v2-text-40": {
+      "stem": "Python 中对变量描述错误的选项是：",
+      "options": [
+        "Python 不需要显式声明变量类型，在第一次变量赋值时由值决定变量的类型",
+        "变量通过变量名访问",
+        "变量必须在创建和赋值后使用",
+        "变量Pl与变量Pi被看作相同的变量"
+      ]
+    },
+    "py-v2-text-41": {
+      "stem": "下面哪个不是Python 合法的标识符",
+      "options": [
+        "true错",
+        "a+b错",
+        "_p3",
+        "in"
+      ]
+    },
+    "py-v2-text-42": {
+      "stem": "以下选项中不可用作Python 标识符的是",
+      "options": [
+        "3.14",
+        "姓名",
+        "Name.",
+        "Pi"
+      ]
+    },
+    "py-v2-text-43": {
+      "stem": "以下选项中不是Python 语言的保留字的是：",
+      "options": [
+        "except",
+        "do",
+        "pass",
+        "while"
+      ]
+    },
+    "py-v2-text-44": {
+      "stem": "下面代码的输出结果是：\nTempStr=\"Pi=3.141593\"\neval(TempStr[3:-1])",
+      "options": [
+        "3.14159",
+        "3.141593",
+        "Pi=3.14",
+        "3.1416"
+      ]
+    },
+    "py-v2-text-45": {
+      "stem": "表达式“y<'x”==False的结果是：",
+      "options": [
+        "True",
+        "Error",
+        "None",
+        "False"
+      ]
+    },
+    "py-v2-text-46": {
+      "stem": "以下关于Python 程序语法元素的描述，错误的选项是：",
+      "options": [
+        "段陪格式有助于提高代码可读性和可维护性",
+        "虽然Python支持中文变量名，但从兼容性角度考虑还是不要用中文各",
+        "true 并不是Python的保留字",
+        "并不是所有的if、while、def、class 语句后面都要用：结尾\n关于Python的输入输出描述错误的是？（）\nA input 函数负责从键盘输入数据，默认所有数据均作为字符串处理\n\nD print 给出时，end 会数可以Q置结束待，默认为换行行，sep参放可以设置多个输出项的分需行，默认为空格"
+      ]
+    },
+    "py-v2-text-47": {
+      "stem": "下面代码的执行结果是\n>>>5=“11+5in\"\n>>>eval(s[1:-2])",
+      "options": [
+        "6",
+        "11+5",
+        "执行错误",
+        "16"
+      ]
+    },
+    "py-v2-text-48": {
+      "stem": "以下选项，不是Python 保留字的选项是：",
+      "options": [
+        "del",
+        "pass",
+        "not",
+        "string"
+      ]
+    },
+    "py-v2-text-49": {
+      "stem": "以下关于同步赋值语句描述错误的选项是:",
+      "options": [
+        "同步赋值能够使得赋值过程变得更简洁",
+        "判断多个单一赋值语句是否相关的方法是看其功能上是否相关或相同",
+        "设X，y表示一个点的坐标，则x=a；y=b两条语句可以用x，y=a，b一条语句来赋值",
+        "多个无关的单一赋值语句组合成同步赋值语句，会提高程序可读性"
+      ]
+    },
+    "py-v2-text-50": {
+      "stem": "以下选项中值为False的是",
+      "options": [
+        "'abc'<’abcd'",
+        "''<'a’",
+        "'Hello'>'hello’",
+        "’abcd’<'ad’"
+      ]
+    },
+    "py-v2-text-51": {
+      "stem": "表达式1001=0x3e7的结果是",
+      "options": [
+        "false错",
+        "False",
+        "true",
+        "True"
+      ]
+    },
+    "py-v2-text-52": {
+      "stem": "以下不是Python 语言关键字的选项是：",
+      "options": [
+        "None",
+        "as",
+        "raise",
+        "function"
+      ]
+    },
+    "py-v2-text-53": {
+      "stem": "下列表达式的运算结果是\na=100\nb=False\na*b>-1",
+      "options": [
+        "False",
+        "1",
+        "0",
+        "True"
+      ]
+    },
+    "py-v2-text-54": {
+      "stem": "Python 语言提供的3个基本数字类型是",
+      "options": [
+        "整数类型、浮点数类型、复数类型",
+        "整数类型、二进制类型、浮点数类型",
+        "整数类型、二进制类型、复数类型",
+        "整数类型、二进制类型、浮点数类型"
+      ]
+    },
+    "py-v2-text-55": {
+      "stem": "如果Python程序执行时，产生了“unexpected indent”的错误，其原因是",
+      "options": [
+        "代码中使用了错误的关键字",
+        "代码中缺少”：”符号",
+        "代码里的语句嵌套层次太多",
+        "代码中出现了缩进不匹配的问题"
+      ]
+    },
+    "py-v2-text-56": {
+      "stem": "关于eval函数，以下选项中描述错误的是",
+      "options": [
+        "eval 函数的作用是将输入的字符串转为Python语句，并执行该语句",
+        "如果用户希望输入一个数字，并用程序对这个数字进行计算，可以采用eval(input（《输入提示字符串>）)组合",
+        "执行eval(“Hel1o”)和执行eval(\"“Hel1o~）得到相同的结果",
+        "eval 函数的定义为：eval(source,globals-None,locals-None,/)"
+      ]
+    },
+    "py-v2-text-57": {
+      "stem": "关于Python的输入输出描述错误的是?",
+      "options": [
+        "input函数负责从健品输入数据，默认所有数据均作为字符串处理",
+        "print0函数负责输出数据到屏幕上，所有数据在输出之前必须转换为字符串才能输出",
+        "数据类型转换函数比如int,float等配合input 函数可以将输入数据转化为需要的数据类型，比如1int(input(\"pls inpu",
+        "pint输出时，end参数可以设置结来符，默认为换行符，sep参数可以设置多个输出项的分隔符，默认为空格"
+      ]
+    },
+    "py-v2-text-58": {
+      "stem": "Python语言中，以下表达式输出结果为11的选项是：",
+      "options": [
+        "print(\"1+1\")",
+        "print(1+1)",
+        "print(eval(\"1+1\"))",
+        "print(eval(\"1\"+\"1\"))"
+      ]
+    },
+    "py-v2-text-59": {
+      "stem": "拟在屏幕上打印输出Hel1o World，以下选项中正确的是",
+      "options": [
+        "print('Hello world\")",
+        "printf(\"Hello World\")",
+        "printf('Hello world')",
+        "print(Hello world)"
+      ]
+    },
+    "py-v2-text-60": {
+      "stem": "当键盘输入3的时候，以下程序的输出结果是：\nr=input(\"请输入半径：\"）\nar =3.1415*r*n\nprint(\"{:.0f}\".format(ar))",
+      "options": [
+        "28",
+        "28.27",
+        "29",
+        "Type Error"
+      ]
+    },
+    "py-v2-text-61": {
+      "stem": "以下选项中，输出结果是False的是",
+      "options": [
+        ">>>5is not 4",
+        ">>>5！=4错",
+        ">>>False !=0",
+        ">>>5is 5"
+      ]
+    },
+    "py-v2-text-62": {
+      "stem": "print(100-25*3%4）应该输出什么?",
+      "options": [
+        "1",
+        "97",
+        "25",
+        "0"
+      ]
+    },
+    "py-v2-text-63": {
+      "stem": "表达式eval(\"500/10)的结果是：",
+      "options": [
+        "‘500/10’",
+        "500/10",
+        "50",
+        "50.0"
+      ]
+    },
+    "py-v2-text-64": {
+      "stem": "关于Python 注释，以下选项中描述错误的是",
+      "options": [
+        "Python 注释语句不被解释器过滤掉，也不被执行",
+        "注释可以辅助程序调试",
+        "注释可用于标明作者和版权信息",
+        "注释用于解释代码原理或者用途"
+      ]
+    },
+    "py-v2-text-65": {
+      "stem": "以下选项中，不是Python 语言基本控制结构的是",
+      "options": [
+        "程序异常",
+        "循环结构",
+        "跳转结构",
+        "顺序结构"
+      ]
+    },
+    "py-v2-text-66": {
+      "stem": "下面哪个是Python 的关键词",
+      "options": [
+        "False",
+        "In",
+        "For",
+        "elseif"
+      ]
+    },
+    "py-v2-text-67": {
+      "stem": "表达式print(\"{:.2f}\".format(20-2**3+10/3**2*5））的结果是：",
+      "options": [
+        "17.55",
+        "67.56",
+        "17.56",
+        "12.22"
+      ]
+    },
+    "py-v2-text-68": {
+      "stem": "以下不是Python 语言关键字的选项是：",
+      "options": [
+        "return",
+        "def",
+        "in",
+        "define"
+      ]
+    },
+    "py-v2-text-69": {
+      "stem": "下面代码的输出结果是\nx=10\ny=3\nprint(x%y,x**y）",
+      "options": [
+        "3 1000",
+        "1 30",
+        "3 30",
+        "1 1000"
+      ]
+    },
+    "py-v2-text-70": {
+      "stem": "以下程序的不可能输出结果是：\nfrom random import *\nprint(round(random(),2))",
+      "options": [
+        "0.47",
+        "0.54",
+        "1.87",
+        "0.27"
+      ]
+    },
+    "py-v2-text-71": {
+      "stem": "以下表达式是十六进制整数的选项是：",
+      "options": [
+        "0b16",
+        "’0x61’",
+        "1010",
+        "0x3F"
+      ]
+    },
+    "py-v2-text-72": {
+      "stem": "下面代码的输出结果是\nX=3.1415926\nprint(round(x,2),round(x))",
+      "options": [
+        "3 3.14",
+        "2 2",
+        "6.28 3",
+        "3.14 3"
+      ]
+    },
+    "py-v2-text-73": {
+      "stem": "对浮点数四舍五入的函数：",
+      "options": [
+        "ceil()",
+        "floor()",
+        "round()",
+        "trunc()"
+      ]
+    },
+    "py-v2-text-74": {
+      "stem": "设一年356天，第1天的能力值为基数记为1.0。当好好学习时能力值相比前一天会提高干分之五。以下选项中，不能获得持续努力1年后的能力值的是",
+      "options": [
+        "1.005**365",
+        "pow((1.0 +0.005),365)",
+        "1.005//365",
+        "pow(1.0+ 0.005,365)"
+      ]
+    },
+    "py-v2-text-75": {
+      "stem": "random库的seed(a）函数的作用是：",
+      "options": [
+        "生成一个[0.0,1.0)之间的随机小数",
+        "生成一个k比特长度的随机整数",
+        "设置初始化随机数种子a",
+        "生成一个随机整数"
+      ]
+    },
+    "py-v2-text-76": {
+      "stem": "以下选项中，属于Python语言中合法的二进制整数是",
+      "options": [
+        "0B1010",
+        "0B1019",
+        "0bC3F",
+        "0b1708"
+      ]
+    },
+    "py-v2-text-77": {
+      "stem": "表达式divmod(20，3）的结果是：",
+      "options": [
+        "6,2",
+        "6",
+        "2",
+        "(6,2)"
+      ]
+    },
+    "py-v2-text-78": {
+      "stem": "下面代码的输出结果是\nx=16\ny=3\nprint(divmod(x,y))",
+      "options": [
+        "(1,3)",
+        "3,1",
+        "1,3",
+        "(3,1)"
+      ]
+    },
+    "py-v2-text-79": {
+      "stem": "定义x=2.6，表达式int(x)的结果是：",
+      "options": [
+        "3",
+        "2.6",
+        "2.0",
+        "2"
+      ]
+    },
+    "py-v2-text-80": {
+      "stem": "关于Python语言数值操作符，以下选项中描述错误的是",
+      "options": [
+        "x//y表示x与y之整数商，即不大于x与y之商的最大整数",
+        "x**y表示x的y次幂，其中，y必须是整数",
+        "x%y表示x与y之商的余数，也称为模运算",
+        "x/y表示x与y之商"
+      ]
+    },
+    "py-v2-text-81": {
+      "stem": "关于time 库的描述，以下选项中错误的是：",
+      "options": [
+        "time 库提供获取系统时间并格式化输出功能",
+        "time.sleep(s)的作用是休眠s秒",
+        "time.perf_counter()返回一个固定的时间计数值",
+        "time 库是Python中处理时间的标准库"
+      ]
+    },
+    "py-v2-text-82": {
+      "stem": "下面代码的输出结果是\nx=0x0101\nprint(x)",
+      "options": [
+        "101",
+        "257",
+        "65",
+        "5"
+      ]
+    },
+    "py-v2-text-83": {
+      "stem": "关于数学函数的描述错误的是",
+      "options": [
+        "数学函数是内置函数，不需要引入其它库，比如 abs,pow,sqt等都是可以直接使用的",
+        "可以利用pow 函数中的第二个参数来实现开方运算，比如pow(8.1/3）结果就是2.0",
+        "可以利用round 函数来四合五入保留小数位数，也可以在print输出时利用格式化来进行，同样也是四舍五入",
+        "int 函数在进行数据转换时不是四舍五入，是直接抛弃掉小数部分的"
+      ]
+    },
+    "py-v2-text-84": {
+      "stem": "假设x=5.6878，如果要对x千分位四舍五入：",
+      "options": [
+        "int(x,3)",
+        "ceil(x,2)",
+        "round(x,3)",
+        "round(x,2)"
+      ]
+    },
+    "py-v2-text-85": {
+      "stem": "以下关于random 库的描述，正确的是：",
+      "options": [
+        "设定相同种子，每次调用随机函数生成的随机数不相同",
+        "通过from random import*引入random随机库的部分函数",
+        "uniform(e,1)与 uniform(0.0,1.9)的输出结果不同，前者输出随机整数，后者输出随机小数",
+        "randint(a,b)是生成一个[a,b]之间的整数"
+      ]
+    },
+    "py-v2-text-86": {
+      "stem": "运行以下程序，输出结果的是：\n>>>5/2",
+      "options": [
+        "3",
+        "2",
+        "2.5",
+        "2.50"
+      ]
+    },
+    "py-v2-text-87": {
+      "stem": "下面代码输出结果是\nfor n in range(400,500):\ni=n//100\nj=n // 10 % 10\nk=n % 10\nif n=i **3+j**3+k **3：\nprint(n)",
+      "options": [
+        "407",
+        "408",
+        "153",
+        "159"
+      ]
+    },
+    "py-v2-text-88": {
+      "stem": "以下选项中，正确地描述了浮点数0.0和整数0相同性的是",
+      "options": [
+        "它们使用相同的计算机指令处理方法",
+        "它们具有相同的数据类型",
+        "它们具有相同的值",
+        "它们使用相同的硬件执行单元"
+      ]
+    },
+    "py-v2-text-89": {
+      "stem": "以下关于随机运算函数库的描述，错误的是：",
+      "options": [
+        "random 库里提供的不同类型的随机数函数是基于random.random（）函数扩展的",
+        "伪随机数是计算机按一定算法产生的，可预见的数，所以是“伪”随机数",
+        "Python 内置的random 库主要用于产生各种伪随机数序列",
+        "uniform(a,b)产生一个a到b之间的随机整数"
+      ]
+    },
+    "py-v2-text-90": {
+      "stem": "一元汇次方程求根的表达式正确的是",
+      "options": [
+        "x1=(-brsqrt(b^2-4*a*())/2/a",
+        "x1=(-b+sgrt(b*b-4*a*())/2/a",
+        "x1=(-b+(b/2-4*a*c)**0.5)/2/a",
+        "×1=(-b+(b^2-4*a*c)**0.5)/2*a"
+      ]
+    },
+    "py-v2-text-91": {
+      "stem": "下面代玛的执行结果\na =10.99\nprint(complex(a))",
+      "options": [
+        "10.99+j",
+        "10.99",
+        "0.99",
+        "(10.99+0j)"
+      ]
+    },
+    "py-v2-text-92": {
+      "stem": "下列Python 语句计算错误的是",
+      "options": [
+        "-23//5=-5",
+        "7.8//2.5=3.0",
+        "round(3.45,1)=3",
+        "1og(e)=1.0"
+      ]
+    },
+    "py-v2-text-93": {
+      "stem": "以下对数值运算操作符描述错误的选项是：",
+      "options": [
+        "Python 数值运算操作符需要引用第二方库math",
+        "Python 数值运算操作符也叫做内置操作符",
+        "Python 二元数学操作符都有与之对应的增强赋值操作符",
+        "Python 提供了9个基本的数值运算操作符"
+      ]
+    },
+    "py-v2-text-94": {
+      "stem": "以下程序的不可能输出结果是：\nfrom random import*\nprint(sample({1,2,3,4,5},2))",
+      "options": [
+        "[1,2,3]",
+        "[1,2]",
+        "[4,2]",
+        "[5,1]"
+      ]
+    },
+    "py-v2-text-95": {
+      "stem": "关于python 中的数值描述错误的是？",
+      "options": [
+        "数学上的实数在python 中使用float数据类型来表达，这种数据类型的计算结果是存在不确定尾数的，故不能直接使用==来判定相等",
+        "可以用科学技术法来描述float数据类型，例如1e-6表示的是10的-6次幂",
+        "range(min,max)可以产生一个依次增1的数值序列，其范围是[min，max]闭区间",
+        "bool 数据类型可以参与数学运算，此时True转化1，False 会转化为0"
+      ]
+    },
+    "py-v2-text-96": {
+      "stem": "下面代码的输出结果是\nX=001010\nprint(x)",
+      "options": [
+        "520",
+        "1924",
+        "32768",
+        "10"
+      ]
+    },
+    "py-v2-text-97": {
+      "stem": "关于Python 语言的浮点数类型，以下选项中描述错误的是",
+      "options": [
+        "浮点数类型表示带有小数的类型",
+        "Python 语言要求所有浮点数必须带有小数部分",
+        "小数部分不可以为0",
+        "浮点数类型与数学中实数的概念一致"
+      ]
+    },
+    "py-v2-text-98": {
+      "stem": "运行以下程序\nx=eval(input())\ny=eval(input())\nprint(abs(x+y))\n从键盘输入1+2与4j，则输出结果是：",
+      "options": [
+        "5",
+        "<class 'complex'>",
+        "<class 'float'>",
+        "5.0"
+      ]
+    },
+    "py-v2-text-99": {
+      "stem": "random 库的randint(a,b）函数的作用是",
+      "options": [
+        "生成一个a和b之间的随机整数，不包含a和b",
+        "生成一个a和b之间的随机整数，包含a和b",
+        "生成一个a和b之间的随机整数，仅包含a",
+        "生成一个a和b之间的随机整数，仅包含b"
+      ]
+    },
+    "py-v2-text-100": {
+      "stem": "下面代码的输出结果是\nX=0x0101\nprint(x)",
+      "options": [
+        "101",
+        "257",
+        "65",
+        "5"
+      ]
+    },
+    "py-v2-text-101": {
+      "stem": "如果要把x转换为复数，使用哪个函数?",
+      "options": [
+        "int(x)",
+        "char(x)",
+        "float(x)",
+        "complex(x)"
+      ]
+    },
+    "py-v2-text-102": {
+      "stem": "下面关于range函数的描述错误的是",
+      "options": [
+        "range(m,n)产生的序列最小值为m，最大值为n，步长值为1",
+        "range(m,n,s)产生的序列最小值为m，步长为5，但不超过n，也不会是n",
+        "如果for 循环中range0产生的序列为空，比如range(2020,2020)则循环体一次也不执行",
+        "range(m,n,s)的第三个参数s可以为负值，此时产生的是递减序列"
+      ]
+    },
+    "py-v2-text-103": {
+      "stem": "以下程序的输出结果是：\nfor i in reversed(range(10,0,-2)):\nprint(i,end=\"\")",
+      "options": [
+        "0 2 4 6 8 10",
+        "12345678910",
+        "2 4 6 8 10",
+        "9 8 7 6 5 4 3 2 1 0"
+      ]
+    },
+    "py-v2-text-104": {
+      "stem": "设str='python'，想把字符串的第一个字\n母大写，其他字母还是小写，正确的选项是：",
+      "options": [
+        "print(str[0].upper()+str[1:])",
+        "print(str[1].upper()+str[-1:1])",
+        "print(str[0].upper()+str[1:-1])",
+        "print(str[1].upper()+str[2:])"
+      ]
+    },
+    "py-v2-text-105": {
+      "stem": "给出如下代码，可以输出python 的是\ns ='Python is wonderful!'",
+      "options": [
+        "print(s[:-14])",
+        "print(s[0:6].lower())",
+        "print(s[0:6])",
+        "print(s[-21:-14].lower)"
+      ]
+    },
+    "py-v2-text-106": {
+      "stem": "s=“Python”，能够显示输出Python的选项是：",
+      "options": [
+        "print(s[0:-1])",
+        "print(s[-1:0])",
+        "print(s[:6])",
+        "print(s[:])"
+      ]
+    },
+    "py-v2-text-107": {
+      "stem": "以下程序的输出结果是：\nastr ='0\\n'\nbstr ='A\\ta\\n\nprint(\"{}{}\".format(astr,bstr))",
+      "options": [
+        "0\na  a",
+        "0\nA  A",
+        "A  a",
+        "0\nA  a"
+      ]
+    },
+    "py-v2-text-108": {
+      "stem": "以下程序的输出结果是\ns=“python\\n编程\\t很\\t容易\\t学”\nprint(len(s))",
+      "options": [
+        "20",
+        "12",
+        "5",
+        "16"
+      ]
+    },
+    "py-v2-text-109": {
+      "stem": "关于字符串下列说法错误的是",
+      "options": [
+        "字符应该视为长度为1的字符串",
+        "字符串以\\0标志字符串的结束",
+        "既可以用单引号，也可以用双引号创建字符\n串",
+        "在三引号字符串中可以包含换行回车等特殊\n字符"
+      ]
+    },
+    "py-v2-text-110": {
+      "stem": "下列程序的运行结果是\n>>>5='PYTHON\n>>>“{0:3}\".format(5)",
+      "options": [
+        "'PYTH",
+        "'PYTHON",
+        "TPYTHON",
+        "'PYT"
+      ]
+    },
+    "py-v2-text-111": {
+      "stem": "如果 name = \"全国计算机等级考试二级Python\"，以下选项中输出错误的是",
+      "options": [
+        ">>> print(name[:])\n全国计算机等级考试二级Python",
+        ">>> print(name[11:])\nPython",
+        ">>> print(name[:11])\n全国计算机等级考试二级",
+        ">>> print(name[0], name[8], name[-1])\n全 试"
+      ],
+      "note": "文字版缺少选项或标号，已据同文图片版补全，并整理识别错误与缩进。"
+    },
+    "py-v2-text-112": {
+      "stem": "关于Python字符串，以下选项中描述错误的是",
+      "options": [
+        "可以使用datatype0测试字符串的类型",
+        "输出带有引号的字符串，可以使用转义字符",
+        "字符串是一个字符序列，字符串中的编号叫“索引”",
+        "字符串可以保存在变量中，也可以单独存在"
+      ]
+    },
+    "py-v2-text-113": {
+      "stem": "关于字符串修改下列描述错误的是",
+      "options": [
+        "形如s[0:3]=\"new\"的代码并不能将字符串s的前三个字符更改为new",
+        "所有的字符串操作函数都无法对原字符串做任何更改而是返回新字符串",
+        "replace函数可以替换原字符串中的子串为新字符串，比如s=\"I would be graduated from my university in 2020 summer”则s.replace(\"university\",\"home\")后s的值应该\n为\"I would be graduated from my home in2020 summer\"",
+        "虽然用函数无法对原字符串做修改，但是可以通过赋值运算将运算后的结果赋值给原字符串从而间接完成修改"
+      ]
+    },
+    "py-v2-text-114": {
+      "stem": "以下哪个字符在字符串输出时能起到换行的作用：",
+      "options": [
+        "t",
+        "\\a",
+        "n",
+        "\\0"
+      ]
+    },
+    "py-v2-text-115": {
+      "stem": "同时去掉字符串左边和右边空格的函数是：",
+      "options": [
+        "center()",
+        "count()",
+        "format()",
+        "strip()"
+      ]
+    },
+    "py-v2-text-116": {
+      "stem": "关于字符串索引和切片操作描述错误的是",
+      "options": [
+        "索引指的是访问单个字符的形式，比如s[1]指的就是访问字符串s中的第一个字符",
+        "切片指的是访问字符串中子串的形式，即访问一个区间，例如s[start:end:sep]表示的是访问从start 下标开始，到end 下标结束(不包括end)，间隔为sep-1的字符序列",
+        "索引和切片操作并不会对原字符串有任何影响，返回的是新的字符序列。",
+        "可以利用切片操作将字符串反向，例如s=S[::-1]即可将s逆序。"
+      ]
+    },
+    "py-v2-text-117": {
+      "stem": "下面关于字符串的描述错误的是",
+      "options": [
+        "python3 的字符串可以是由任意 UNICODE字符组成的",
+        "字符串的定界符可以是单引号，双引号，三单引号，三双引号，其中后两种支持多行书写",
+        "三单引号或者三双引号是注释的定界符，注释不参与解释执行过程",
+        "字符串中不能有单引号或者双引号，否则会和定界符冲突，确实需要包含的话只能使用转义形式"
+      ]
+    },
+    "py-v2-text-118": {
+      "stem": "关于Python 字符编码，以下选项中描述错误的是：",
+      "options": [
+        "chr(x)和ord（x）函数用于在单字符和UNICODE 编码值之间进行转换",
+        "print(chr(65))输出A",
+        "print(ord('a'))输出97",
+        "Python 字符编码使用ASCIl编码"
+      ]
+    },
+    "py-v2-text-119": {
+      "stem": "以下关于字符串类型的操作的描述，错误的是",
+      "options": [
+        "str.replace(x,y)方法把字符串str中所有的x子串都替换成y",
+        "想把一个字符串str所有的字符都大写用str.upper()",
+        "想获取字符串str的长度，用字符串处理函数str.1en()",
+        "设x=’aa”，则执行x“3的结果是aaaaaa"
+      ]
+    },
+    "py-v2-text-120": {
+      "stem": "以下关于Python字符串的描述中，错误的是",
+      "options": [
+        "字符串是字符的序列，可以按照单个字符或者字符片段进行索引",
+        "字符串包括两种序号体系：正向递增和反向递减",
+        "Python 字符串提供区间访问方式，采用[N:M]格式，表示字符串中从N到M的索引子字符串（包含N和M）",
+        "字符串是用一对双引号””或者单引号括起来的零个或者多个字符"
+      ]
+    },
+    "py-v2-text-121": {
+      "stem": "str1 =\"welcome to python\"\nstr2=\"Python\"\nprint (str1.find(str2))\n打印的结果是",
+      "options": [
+        "10",
+        "11",
+        "12",
+        "-1"
+      ]
+    },
+    "py-v2-text-122": {
+      "stem": "给出如下代码：\nTempStr =\"Hello world\"\n以下选项中可以输出\"World\"子串的是",
+      "options": [
+        "print(Tempstr[-4:-1])",
+        "print(TempStr[-5:-1])",
+        "print(Tempstr[-5:])",
+        "print(TempStr[-5:0])"
+      ]
+    },
+    "py-v2-text-123": {
+      "stem": "执行以下程序，输入93python22，输出结果\n是：\nw=input(”请输入数字和字母构成的字符串：”）\nfor x in w:\n  if\"0\"<=x<='9’：\n    continue\n  else:\n    w.replace(x,\")\nprint(w)",
+      "options": [
+        "python9322",
+        "python",
+        "93python22",
+        "9322"
+      ]
+    },
+    "py-v2-text-124": {
+      "stem": "已知字符串s='Iam Tommy”，则以下哪个字符串的方法能从s中提取所有单词：",
+      "options": [
+        "split",
+        "insert",
+        "join",
+        "index"
+      ]
+    },
+    "py-v2-text-125": {
+      "stem": "以下程序的输出结果是\nj=”\nfor i in \"12345\":\nj+=i+’，’\nprint(j)",
+      "options": [
+        "1,2,3,4,5",
+        "12345",
+        "'1,2,3,4,5，’",
+        "1,2,3,4,5，"
+      ]
+    },
+    "py-v2-text-126": {
+      "stem": "以下程序的输出结果是：\nfor i in \"Summer\":\n  if i==“m\":\n    break\n    print(i)",
+      "options": [
+        "无输出",
+        "mm",
+        "mmer",
+        "m"
+      ]
+    },
+    "py-v2-text-127": {
+      "stem": "下列关于字符串format函数的描述错误的是",
+      "options": [
+        "format 后的参数排列顺序必须按照格式字符串中槽0的排列顺序依次一一 对应",
+        "对数值进行有效位数的保留是遵循四舍五入原则的，比如对3.1415926进行{.3f}的结果是3.142而不是3.141",
+        "可以在槽中通过在格式引导符冒号：后添加特定字符引导整数以特定进制输出，比如{x}会输出16进制结果，d则会输出十进制，b输出二进制，o输出八进制",
+        "无论参数是什么类型，format后的结果总是字符串"
+      ]
+    },
+    "py-v2-text-128": {
+      "stem": "当需要在字符串中使用特殊字符时，Python使用（）作为转义字符。",
+      "options": [
+        "\\",
+        "/",
+        "#",
+        "%"
+      ]
+    },
+    "py-v2-text-129": {
+      "stem": "下列关于字符串操作函数描述错误的是?",
+      "options": [
+        "join 方法可以将一个字符序列用特定连接符连接成一个字符串",
+        "isupper0 islower0判断函数只能对单个字符的字符串进行大小写判定",
+        "startswith0函数用来判定字符串是否以特定字符串开始",
+        "strip0 函数可以去除字符串左右两侧的指定字符，不仅仅是单个，可以是多个，例如s=\"reboot 2020 pls\"，则s.strip(\"pls\")返回的结果是\"reboot 2020"
+      ]
+    },
+    "py-v2-text-130": {
+      "stem": "以下程序的输出结果是：\ns1=\"QQ”\ns2=\"Wechat\"\nprint(\"{:*<10}{:=>10}\".format(s1,s2))",
+      "options": [
+        "********QQWechat====",
+        "QQwechat",
+        "*QQ Wechat====",
+        "QQ********====Wechat"
+      ]
+    },
+    "py-v2-text-131": {
+      "stem": "str =\"python语言程序设计”，表达式str.isnumeric()的结果是：",
+      "options": [
+        "True",
+        "1",
+        "False",
+        "0"
+      ]
+    },
+    "py-v2-text-132": {
+      "stem": "字符串s=\"love Python\"，以下程序的输出结果是：\ns=\"I love Python\"\n1s=s.split()\n1s,reverse()\nprint(1s)",
+      "options": [
+        "'Python',‘love','I'",
+        "Python love I",
+        "None",
+        "['Python',‘love',\"I']"
+      ]
+    },
+    "py-v2-text-133": {
+      "stem": "下面代码的输出结果是\ns =[\"seashel1\",\"gold\",\"pink\",\"brown\",\"pu\nprint(s[1:4:2])",
+      "options": [
+        "['gold','pink',\"brown']",
+        "['gold','pink']",
+        "['gold','pink',\"broun','purple,tomato']",
+        "['gold',\"brown']"
+      ]
+    },
+    "py-v2-text-134": {
+      "stem": "studs=[[\"zhang3\",5],[\"1i4\",7],[\"wang5\",3]],sorted(studs,reverse=True)后，studs 的值为",
+      "options": [
+        "[[\"zhang3\",5],[\"wang5\",3],[\"1i4,7]]",
+        "[[\"zhang3\",5],[\"114\",7],[\"wang5\",3]]",
+        "[[\"1i4\",7],[\"wang5\",3],[\"zhang3\",5]]",
+        "[[\"114\",7],[\"zhang3\",5],[\"wang5\",3]]"
+      ]
+    },
+    "py-v2-text-135": {
+      "stem": "列表1s，哪个选项对1s.append(x）的描述是正确的?",
+      "options": [
+        "向1s中增加元素，如果x是一个列表，\n则可以同时增加多个元素",
+        "向列表15最前面增加一个元素x",
+        "替换列表1s最后一个元素为x",
+        "只能向列表1s最后增加一个元素x"
+      ]
+    },
+    "py-v2-text-136": {
+      "stem": "studs=[[\"zhang3\",5],[\"1i4\",7]，[\"wang5\",3]],studs.sort(reverse=True,key=lambdax:x[1])后，studs 的值为",
+      "options": [
+        "[[\"zhang3\",5],[\"wang5\",3],[\"114\",7]]",
+        "[[\"zhang3\",5],[\"li4\",7],[\"wang5\"，3]]",
+        "[[\"1i4\",7],[\"wang5\",3],[\"zhang3\",5]]",
+        "[[\"1i4\",7],[\"zhang3\",5],[\"wang5\",3]]"
+      ]
+    },
+    "py-v2-text-137": {
+      "stem": "以下程序的输出结果是：\nL2=[[1,2,3,4],[5,6,7,8]]\nL2.sort(reverse =True)\nprint(L2)",
+      "options": [
+        "[5,6,7,8],[1,2,3,4]",
+        "[[8,7,6,5],[4,3,2,1]]",
+        "[8,7,6,5],[4,3,2,1]",
+        "[[5,6,7,8],[1,2,3,4]]"
+      ]
+    },
+    "py-v2-text-138": {
+      "stem": "下程序的输出结果是：\na=[\"a\",\"b\",\"c\"]\nb= a[::-1]\nprint(b)",
+      "options": [
+        "['c','b','a']",
+        "'c','b','a",
+        "'a','b','c'",
+        "['a','b','c']"
+      ]
+    },
+    "py-v2-text-139": {
+      "stem": "下面代码的输出结果是\na=[5,1,3,4]\nprint(sorted(a,reverse =True))",
+      "options": [
+        "[5,1,3,4]",
+        "[5,4,3,1]",
+        "[4,3,1,5]",
+        "[1,3,4,5]"
+      ]
+    },
+    "py-v2-text-140": {
+      "stem": "以下程序的输出结果是：\nframe=[[1,2,3],[4,5,6],[7,8,9]]\nrgb=frame[::-1]\nprint(rgb)",
+      "options": [
+        "[[1,2,3],[4,5,6]]",
+        "[[7,8,9]]",
+        "[[1,2,3],[4,5,6],[7,8,9]]",
+        "[[7,8,9],[4,5,6]，[1,2,3]]"
+      ]
+    },
+    "py-v2-text-141": {
+      "stem": "关于Python的列表，描述错误的选项是",
+      "options": [
+        "Python 列表是包含0个或者多个对象引用的有序序列",
+        "Python列表用中括号自表示",
+        "Python列表是一个可以修改数据项的序列类\n型",
+        "Python列表的长度不可变的"
+      ]
+    },
+    "py-v2-text-142": {
+      "stem": "已知列表1st_score=[90,91,89，100,95]，则执行表达式1st_score[1]=92后",
+      "options": [
+        "lst score的值为[90,92,89,100,95]",
+        "lst score的值为[99,91,89,100,95]",
+        "报错",
+        "lst _score的值为[92,91,89,100,95]"
+      ]
+    },
+    "py-v2-text-143": {
+      "stem": "以下程序的输出结果是：\nS=\"\nls=[1,2,3,4]\nfor l in 1s:\n  5 += str(1)\nprint(5)",
+      "options": [
+        "1,2,3,4",
+        "4321",
+        "4,3,2,1",
+        "1234"
+      ]
+    },
+    "py-v2-text-144": {
+      "stem": "已知列表 lst=[1,2,3]，则执行表达式 lst[1]='a' 后：",
+      "options": [
+        "报错",
+        "lst 的值为 [1,'a',3]",
+        "lst 的值为 [1,a,3]",
+        "lst 的值为 [1,2,3]"
+      ],
+      "note": "文字版缺少选项或标号，已据同文图片版补全，并整理识别错误与缩进。"
+    },
+    "py-v2-text-145": {
+      "stem": "对于列表Is的操作，以下选项中描述错误的是",
+      "options": [
+        "Is.copy)生成一个新列表，复制Is的所有元素",
+        "Is.sort)将列表Is的元紫按照升序排列",
+        "Is.clear0删除Is的最后一个元素",
+        "Is.append(x)在Is最后增加一个元紫"
+      ]
+    },
+    "py-v2-text-146": {
+      "stem": "已知列表1st=[1，2，3，4，5]，则以下表达式不能正确执行的是",
+      "options": [
+        "max(1st)",
+        "min(lst)",
+        "sum(lst)",
+        "round(lst)"
+      ]
+    },
+    "py-v2-text-147": {
+      "stem": "range(1,10,3)产生的序列为：",
+      "options": [
+        "1,4,7,16",
+        "1,2,3,4,5,6,7,8,9,10",
+        "1,4,7",
+        "4,7"
+      ]
+    },
+    "py-v2-text-148": {
+      "stem": "以下程序的输出结果是：\n1s1=[1,2,3,4,5]\n1s2=[3,4,5,6,7,8]\ncha1=[]\nfor i in 1s2:\n   if i not in 1s1:\n     cha1.append(i)\nprint(cha1)",
+      "options": [
+        "(6,7,8)",
+        "(1,2,6,7，8)",
+        "[1,2,6,7,8]",
+        "[6,7,8]"
+      ]
+    },
+    "py-v2-text-149": {
+      "stem": "以下程序的输出结果是：\nss=list(set(\"jzzszyj\"))\nss.sort()\nprint(ss)",
+      "options": [
+        "[z\",j，'s'，y]",
+        "[\"j\"，“s\"，\"y'，z']",
+        "[\"j\",z',z','5',z,y,j]",
+        "['j，j，'s',y\"，z,z，z]"
+      ]
+    },
+    "py-v2-text-150": {
+      "stem": "以下关于组合数据类型的描述，正确的是：",
+      "options": [
+        "利用组合数据类型可以将多个数据用一个类型来表示和处理",
+        "序列类似和集合类型中的元素都是可以重复的",
+        "一个映射类型变量中的关键字可以是不同类型的数据",
+        "集合类型中的元素是有序的"
+      ]
+    },
+    "py-v2-text-151": {
+      "stem": "下面代码的输出结果是\nlistV = list(range(5))\nprint(2 in listV)",
+      "options": [
+        "False",
+        "0",
+        "-1",
+        "True"
+      ]
+    },
+    "py-v2-text-152": {
+      "stem": "二维列表1s=[[1，2，3]，[4,5,6]，[7,8,9]]，哪个选项能获取其中元素5",
+      "options": [
+        "1s[-2][-1]",
+        "1s[1][1]",
+        "1s[-1][-1]",
+        "1s[4]"
+      ]
+    },
+    "py-v2-text-153": {
+      "stem": "以下程序的输出结果是：\n1s=[“浇熊”，”豪猪”，“艾草松鸡”，”棉尾兔\"，\"\nx=“豪猪”\nprint(1s.index(x,0))",
+      "options": [
+        "0",
+        "-4",
+        "1",
+        "-3"
+      ]
+    },
+    "py-v2-text-154": {
+      "stem": "序列s，哪个选项对s.index（x）的描述是正确的？",
+      "options": [
+        "返回序列s中元素x所有出现位置的序号",
+        "返回序列s中元素x第一次出现的序号",
+        "返回序列s中x的长度",
+        "返回序列s中序号为x的元素"
+      ]
+    },
+    "py-v2-text-155": {
+      "stem": "以下不是程序输出结果的选项是：\nimport random as r\n1s1=[12,34,56,78]\nr.shuffle(1s1)\nprint(1s1)",
+      "options": [
+        "[12,78,56,34]",
+        "[56,12,78,34]",
+        "[12,34,56,78]",
+        "[12,78,34,56]"
+      ]
+    },
+    "py-v2-text-156": {
+      "stem": "给出如下代码：\ns=list(”巴老爷有八十八棵芭蕉树，来了八十八老爷拔了八十八棵芭蕉树，不让八十八个把式在/八十烧了八十八棵芭蕉树，巴老爷在八十八棵树边哭。以下选项中能输出字符八出现次数的是",
+      "options": [
+        "print(s.index(\"八\"))",
+        "print(s.index(\"八\"),6)",
+        "print(s.index(\"八\"),6,len(s))",
+        "print(s.count(\"八\"))"
+      ]
+    },
+    "py-v2-text-157": {
+      "stem": "下面代码的执行结果是：\n1s=[\"2020\",\"20.20\",\"python\"]\n1s.append(2020)\n1s.append([2020,\"2020\"])\nprint(1s)",
+      "options": [
+        "['2020’,20.20',\"Python',2020]",
+        "[2020,20.20,\"Python',2020[2020,\"2020']]",
+        "[2020’,20.20”，\"Python\"，2020，['2020]]",
+        "['2020',20.20\",\"Python\",2020,2020,2020']"
+      ]
+    },
+    "py-v2-text-158": {
+      "stem": "已知列表Ist=[5,3,2,4,1]，则以下能够改变列表st中的元素顺序，使其按照值从大到小排列的表达式是：",
+      "options": [
+        "lst.reverse()",
+        "lst.sort(reverse=True)",
+        "sorted(lst,reverse=True)",
+        "lst[::-1]"
+      ]
+    },
+    "py-v2-text-159": {
+      "stem": "list=(-2,7,9,-1,9)则执行sorted(list,key =1ambda x:abs())后，1ist为：",
+      "options": [
+        "[0,-1,-2,7,9]",
+        "[0,1,2,7,9]",
+        "(-2,7,9,-1,0)",
+        "(2,7,9,1,0)"
+      ]
+    },
+    "py-v2-text-160": {
+      "stem": "关于Python的组合数据类型，以下选项中描述错误的是:",
+      "options": [
+        "组合数据类型可以分为3类：序列类型、集合类型和映射类型",
+        "序列类型是二维元素向量，元素之间存在先后关系，通过序号访问",
+        "Python的str、tuple和list类型都属于序列类型",
+        "Python 组合数据类型能够将多个同类型或不同类型的数据组织起来，通过单一的表示使数据操作更有序、更容易"
+      ]
+    },
+    "py-v2-text-161": {
+      "stem": "a=[1,3,5,7];b=a[:];b[0:2]=0，1后，a的值为",
+      "options": [
+        "[1,3,5,7]",
+        "[1,1,5,7]",
+        "[0,1,5,7]",
+        "程序出错"
+      ]
+    },
+    "py-v2-text-162": {
+      "stem": "通过列表中的那种方法可以根据指定值查找第一个匹配的列表元素的位置。",
+      "options": [
+        "index",
+        "find",
+        "search",
+        "at"
+      ]
+    },
+    "py-v2-text-163": {
+      "stem": "以下程序的输出结果是：\ndat=['1',\"2',\"3',0\",0','0']\nfor item in dat:\nif item ==0\":\ndat.remove(item)\nprint(dat)",
+      "options": [
+        "['1',2',3']",
+        "['1','2',3',0\",“0\"]",
+        "['1',2',3\",0\",0\",\"0\"]",
+        "['1','2’，3'，'0']"
+      ]
+    },
+    "py-v2-text-164": {
+      "stem": "以下不是Python序列类型的是：",
+      "options": [
+        "元组类型",
+        "列表类型",
+        "数组类型",
+        "字符串类型"
+      ]
+    },
+    "py-v2-text-165": {
+      "stem": "给出如下代码\nimport random as ran\nlistV=[]\nran.seed(100)\nfor i in range(10):\ni= ran.randint(108,999)\nlistV.append()\n以下选项中能输出随机列表元素最大值的是",
+      "options": [
+        "print(max(listV))",
+        "print(listV.pop(i))",
+        "print(listV.max())",
+        "print(listV,reverse(1))"
+      ]
+    },
+    "py-v2-text-166": {
+      "stem": "1s=[3.5,\"Python\",[10,\"LIST\"]，3.6]，1s[2][-1][1]的运行结果是",
+      "options": [
+        "I",
+        "p",
+        "Y",
+        "L"
+      ]
+    },
+    "py-v2-text-167": {
+      "stem": "alist=[3,4,5,7,9,12,13,15,17]\nblist=alist[3:7:2]\nprint(blist)\n上述代码的输出结果是",
+      "options": [
+        "[5,9]",
+        "[7,12]",
+        "[7,12,15]",
+        "上述答案都不正确"
+      ]
+    },
+    "py-v2-text-168": {
+      "stem": "以下程序的输出结果是：\nX=['90’，'87'，'90']\nn s 90\nprint(x.count(n))",
+      "options": [
+        "1.",
+        "2",
+        "None",
+        "0"
+      ]
+    },
+    "py-v2-text-169": {
+      "stem": "a=[1,3,5,7];b=a.copy();b[0:2]=0,1后，a的值为",
+      "options": [
+        "[1,3,5,7]",
+        "[1,1,5,7]",
+        "[0,1,5,7]",
+        "程序出错"
+      ]
+    },
+    "py-v2-text-170": {
+      "stem": "元组变量t=(\"cat\"，\"dog\"，\"tiger,human\")，t[::-1]的结果是",
+      "options": [
+        "{Chuman','tiger','dog','cat}",
+        "[Chuman','tiger','dog','cat]",
+        "运行出错",
+        "('human','tiger','dog','cat')"
+      ]
+    },
+    "py-v2-text-171": {
+      "stem": "关于Python的元组类型，以下选项错误的是",
+      "options": [
+        "元组一旦创建就不能被修改",
+        "元组中元素必须是相同类型",
+        "一个元组可以作为另一个元组的元素，可以采用多级索引获取信息",
+        "元组采用逗号和圆括号（可选）来表示"
+      ]
+    },
+    "py-v2-text-172": {
+      "stem": "range(M,N)函数产生一个整数序列，整数范围：",
+      "options": [
+        "≥M且≤N-1",
+        "2M且≤N",
+        "2M+1且sN",
+        "≥M-1且sN"
+      ]
+    },
+    "py-v2-text-173": {
+      "stem": "已知t=tuple(range(0,10）)，则print(t[-1:3:-2]）的结果是",
+      "options": [
+        "[9,7,5]",
+        "(9,7,5）",
+        "[9,7,5,3]",
+        "(9,7,5,3)"
+      ]
+    },
+    "py-v2-text-174": {
+      "stem": "创建空字典需要使用",
+      "options": [
+        "[]",
+        "{:}",
+        "()",
+        "dict()"
+      ]
+    },
+    "py-v2-text-175": {
+      "stem": "给定字典d，哪个选项对d.values()的描述是正确的？",
+      "options": [
+        "返回一个元组类型，包括字典d中所有值",
+        "返回一个集合类型，包括字典d中所有值",
+        "返回一种 dict_values类型，包括字典d中所有值",
+        "返回一个列表类型，包括字典d中所有值"
+      ]
+    },
+    "py-v2-text-176": {
+      "stem": "MonthandF1ower={\"1月”：“梅花”，”2月”：“杏花“5月”：“石榴花”，“6月”：”莲花”，”7月”：”玉善花”“9月”：”菊花”，“10月”：”芙蓉花”，”11月”：“山茶n=input(\"请输入1-12的月份：\"）print(n+“月份之代表花：”+MonthandF1owi以下选项中描述正确的是",
+      "options": [
+        "代码实现了获取一个整数（1-12）来表示月份，输出该月份对应的代表花名",
+        "MonthandFlower 是列表类型变量",
+        "MonthandFlower 是一个元组",
+        "MonthandFlower 是集合类型变量"
+      ]
+    },
+    "py-v2-text-177": {
+      "stem": "给出如下代码：DictColor={\"seashel1\":“海贝色”，\"gold\"：以下选项中能输出“海贝色”的是",
+      "options": [
+        "print(DictColor.keys())",
+        "print(DictColor[“海贝色”]）",
+        "print(DictColor.values())",
+        "print(DictColor[\"seashel1\"])"
+      ]
+    },
+    "py-v2-text-178": {
+      "stem": "字典访问正确的是",
+      "options": [
+        "字典不能通过键访问",
+        "字典可以通过数组下标访问",
+        "对字典不存在的键进行访问会出错",
+        "对字典不存在的键进行访问不会出错，仅仅是结果为空"
+      ]
+    },
+    "py-v2-text-179": {
+      "stem": "哪个选项是下面代码的输出结果？\nd={'a':1,'B':2,\"b\":3'}\nprint(d['b])",
+      "options": [
+        "{b':2}",
+        "2",
+        "1",
+        "3"
+      ]
+    },
+    "py-v2-text-180": {
+      "stem": "以下不是组合数据类型的是：",
+      "options": [
+        "引用类型",
+        "序列类型",
+        "映射类型",
+        "集合类型"
+      ]
+    },
+    "py-v2-text-181": {
+      "stem": "运行以下程序，当从键盘上输入{1：”清华大学”，2：“北京大学\"}，运行结果的是：\nx=eval(input())                              \nprint(type(x))",
+      "options": [
+        "<class \"int'>",
+        "<class.'dict'>",
+        "出错",
+        "<class \"list'>"
+      ]
+    },
+    "py-v2-text-182": {
+      "stem": "假设将单词保存在变量word 中，使用一个字典类型counts={}，统计单词出现的次数可采用以下代码：",
+      "options": [
+        "counts[word] = count[word]+1",
+        "counts[word]=1",
+        "counts[word]= count.get(word,1)+1",
+        "counts[word] = count.get(word,0)+1"
+      ]
+    },
+    "py-v2-text-183": {
+      "stem": "关于字典描述正确的是",
+      "options": [
+        "字典中不能通过键找到值",
+        "字典中也可以通过值找到对应的键",
+        "字典中如果不存在的键进行赋值会出错",
+        "字典中如果不存在的键进行赋值会增加该条目"
+      ]
+    },
+    "py-v2-text-184": {
+      "stem": "以下选项中，不是建立字典的方式是",
+      "options": [
+        "d={[1,2]:1,[3,4]：3}",
+        "d={(1,2):1,(3,4)：3}",
+        "d={张三：1，李四’：2}",
+        "d={1:[1,2],3:[3,4]}"
+      ]
+    },
+    "py-v2-text-185": {
+      "stem": "以下关于字典类型的描述，错误的是：",
+      "options": [
+        "字典类型是一种无序的对象集合，通过键来存取",
+        "字典类型可以在原来的变量上增加或缩短",
+        "字典类型可以包含列表和其他数据类型，支持嵌套的字典",
+        "字典类型中的数据可以进行分片和合并操作"
+      ]
+    },
+    "py-v2-text-186": {
+      "stem": "以下关于组合类型的描述，错误的是：",
+      "options": [
+        "可以用大括号创建字典，用中括号增加新元素",
+        "嵌套的字典数据类型可以用来表达高维数据",
+        "字典的pop函数可以返回一个键对应的值，并删除该键值对",
+        "空字典和空集合都可以用大括号来创建"
+      ]
+    },
+    "py-v2-text-187": {
+      "stem": "给定字典d，哪个选项对xin d的描述是正确的？",
+      "options": [
+        "判断x是否是在字典d中以键或值方式存在",
+        "x是一个二元元组，判断x是否是字典d中的键值对",
+        "判断x是否是字典d中的键",
+        "判断x是否是字典d中的值"
+      ]
+    },
+    "py-v2-text-188": {
+      "stem": "以下程序的输出结果是：\nd={\"zhang\":\"China\",\"Jone\":\"America\",\nprint(max(d),min(d))",
+      "options": [
+        "Japan America",
+        "zhang:China Jone:America",
+        "China America",
+        "zhang Jone"
+      ]
+    },
+    "py-v2-text-189": {
+      "stem": "以下关于组合类型的描述，错误的是：",
+      "options": [
+        "可以用大括号创建字典，用中括号增加新元素",
+        "空字典和空集合都可以用大括号来创建",
+        "字典的pop函数可以返回一个键对应的值，并删除该键值对",
+        "嵌套的字典数据类型可以用来表达高维数据"
+      ]
+    },
+    "py-v2-text-190": {
+      "stem": "字典d={Name':'Kate','No':'1001','Age':'20'}，表达式1en（d)的值为",
+      "options": [
+        "3",
+        "6",
+        "19",
+        "22"
+      ]
+    },
+    "py-v2-text-191": {
+      "stem": "字典d={\"Name\"：Kate','No\":'1001，Age':20}，表达式1en(d)的值为",
+      "options": [
+        "12",
+        "9",
+        "6",
+        "3"
+      ]
+    },
+    "py-v2-text-192": {
+      "stem": "关于字典描述正确的是",
+      "options": [
+        "字典是由于若干键值对构成的",
+        "字典中键与值均可以更改",
+        "字典中键必须不唯一",
+        "字典中值必须唯一"
+      ]
+    },
+    "py-v2-text-193": {
+      "stem": "假设将单词保存在变量 word 中，使用一个字典类型counts=[}，统计单词出现的次数可采用以下代码：",
+      "options": [
+        "counts[word]=count[word]+1",
+        "counts[word]=1",
+        "counts[word]=count.get(word,1)+1",
+        "counts[word]=count.get(word,0)+1"
+      ]
+    },
+    "py-v2-text-194": {
+      "stem": "以下关于字典类型的描述，错误的是：",
+      "options": [
+        "字典类型是一种无序的对象集合，通过键来存取",
+        "字典类型可以在原来的变量上增加或缩短",
+        "字典类型可以包含列表和其他数据类型，支持嵌套的字典",
+        "字典类型中的数据可以进行分片和合并操作"
+      ]
+    },
+    "py-v2-text-195": {
+      "stem": "班级管理系统中，宜作为键的是",
+      "options": [
+        "姓名",
+        "学号",
+        "班级",
+        "性别"
+      ]
+    },
+    "py-v2-text-196": {
+      "stem": "以下程序的输出结果是：\ndict={\"Name\":\"baby\",\"Age\":7}\nprint(dict.items())",
+      "options": [
+        "[(\"Age',7),('Name',\"baby\")]",
+        "(\"Age\",7),(\"Name\",\"baby\")",
+        "dict_items([('Age\",7),(\"Name\"\"baby\")])",
+        "'Age':7,'Name':'baby'"
+      ]
+    },
+    "py-v2-text-197": {
+      "stem": "以下关于字典操作的描述，错误的是：",
+      "options": [
+        "del 用于删除字典或者元素",
+        "clear 用于清空字典中的数据",
+        "1en 方法可以计算字典中键值对的个数",
+        "keys 方法可以获取字典的值列表"
+      ]
+    },
+    "py-v2-text-198": {
+      "stem": "以下选项中不属于组合数据类型的是",
+      "options": [
+        "变体类型",
+        "字典类型",
+        "映射类型",
+        "序列类型"
+      ]
+    },
+    "py-v2-text-199": {
+      "stem": "使用字典中的什么方法可以删除指定键的元素",
+      "options": [
+        "pop",
+        "remove",
+        "del",
+        "delete"
+      ]
+    },
+    "py-v2-text-200": {
+      "stem": "以下不能创建一个字典的语句是",
+      "options": [
+        "dict1={}",
+        "dict2={3:5}",
+        "dict3={[1,2,3]:\"uestc\"}",
+        "dict4={(1,2,3):\"uestc\"}"
+      ]
+    },
+    "py-v2-text-201": {
+      "stem": "下面代码的输出结果是\nd={“大海”：“蓝色”，“天空\"：“灰色”，“大地\"：\nprint(d[“大地“]，d.get(“大地”，“黄色”））",
+      "options": [
+        "黑色黄色",
+        "黑色黑色",
+        "黑的灰色",
+        "黑色蓝色"
+      ]
+    },
+    "py-v2-text-202": {
+      "stem": "以下关于字典类型的描述，正确的是：",
+      "options": [
+        "不能使用d={}这种形式创建新字典，它创建的是空集合",
+        "表达式for xin d:中，假设d是字典，则x是字典中的键值对",
+        "字典类型的键可以是列表和其他数据类型",
+        "字典类型的值可以是任意数据类型的对象"
+      ]
+    },
+    "py-v2-text-203": {
+      "stem": "以下程序的输出结果是：\nd={\"zhang\":\"China\",\"Jone\":\"America\"，\nfor k in d:\nprint(k,end=\"\")",
+      "options": [
+        "zhangJone Natan",
+        "zhang:China Jone:America Natan:Japan",
+        "\"zhang\"\"Jone\"\"Natan\"",
+        "China America Japan"
+      ]
+    },
+    "py-v2-text-204": {
+      "stem": "定义a是一个空集合的正确方法是",
+      "options": [
+        "a={}",
+        "a=[]",
+        "a=()",
+        "a=set()"
+      ]
+    },
+    "py-v2-text-205": {
+      "stem": "集合与字典的区别在于",
+      "options": [
+        "集合有键，字典无键",
+        "集合无键，字典有键",
+        "集合采用[]，字典采用()",
+        "集合可以采用下标方式访问，字典只能通过键访问"
+      ]
+    },
+    "py-v2-text-206": {
+      "stem": "以下程序的输出结果是：\n55=set(\"htslbht\")\n5s =sorted(ss)\nfor i in ss:\nprint(i,end=\")",
+      "options": [
+        "htslbht",
+        "bhlst",
+        "tsblh",
+        "hhlstt"
+      ]
+    },
+    "py-v2-text-207": {
+      "stem": "S和T是两个集合，哪个选项对S~T的描述是正确的?",
+      "options": [
+        "S和的并运算，包括在集合S和T中的所有元素",
+        "S和T的差运算，包括在集合S但不在T中的元素",
+        "S和的补运算，包括集合S和T中的非相同元素",
+        "S和T的交运算，包括同时在集合s和T中的元素"
+      ]
+    },
+    "py-v2-text-208": {
+      "stem": "以下表达式，正确定义了一个集合数据对象的是：",
+      "options": [
+        "x={200,'f1g,20.3}",
+        "x=(200,f1g',20.3)",
+        "x=[200,'f1g,20.3]",
+        "x={\"flg：20.3}"
+      ]
+    },
+    "py-v2-text-209": {
+      "stem": "下面不能创建一个集合的语句是：",
+      "options": [
+        "sl=set()",
+        "s2s set(\"\"abcd\"\")",
+        "s3=(1,2,3,4)",
+        "s4=frozenset((3,2,1))"
+      ]
+    },
+    "py-v2-text-210": {
+      "stem": "s1={1,3,5}，52={4,5,6}，则执行\ns1.update(s2)后",
+      "options": [
+        "s2={1,3,4,5,6}",
+        "s2={1,3,4,5,5,6}",
+        "s1={1,3,4,5,6}",
+        "s1={1,3,4,5,5,6}"
+      ]
+    },
+    "py-v2-text-211": {
+      "stem": "下面代码的输出结果是\nprint(0.1+0.2==0.3)",
+      "options": [
+        "True",
+        "False",
+        "true",
+        "false"
+      ]
+    },
+    "py-v2-text-212": {
+      "stem": "给出下面代码：         \na=input(\"\").split(\"，\")\nx=0\nwhile x< len(a):\nprint(a[x],end=\"\")\nx+=1\n代码执行时，从键盘获得：python语言，是，脚本语言则代码的输出结果是",
+      "options": [
+        "执行代码出错",
+        "python语言，是，脚本，语言",
+        "python语言是脚本语言",
+        "无输出"
+      ]
+    },
+    "py-v2-text-213": {
+      "stem": "下列哪个语句在Python 中是非法的?",
+      "options": [
+        "x=y=z=1",
+        "x=(y=z+1)",
+        "x,y=y，X",
+        "x+=y"
+      ]
+    },
+    "py-v2-text-214": {
+      "stem": "设x=10；y=20，下列语句能正确运行结束的是：",
+      "options": [
+        "max=x>y?x:y",
+        "if(x>y)print(x)",
+        "min=x if x<y else y",
+        "while True:pass"
+      ]
+    },
+    "py-v2-text-215": {
+      "stem": "以下程序的输出结果是：\na=30\nb=1\nif a >=10\na=20\nelif a>=20\na=38\nelif a>-30:\nb=a\nelse:\nb=0\nprint(\"a={},b={}'.format(a,b))",
+      "options": [
+        "a=30,b=1",
+        "a=30,b=30",
+        "a=20,b=20",
+        "a=20,b=1"
+      ]
+    },
+    "py-v2-text-216": {
+      "stem": "以下关于Python 的控制结构，错误的是：",
+      "options": [
+        "每个if条件后要使用冒号：",
+        "elif 可以单独使用",
+        "Python 中的pass是空语句，一般用作占位语句",
+        "在Python中，没有switch-case 语句"
+      ]
+    },
+    "py-v2-text-217": {
+      "stem": "对于分支结构的描述错误的是",
+      "options": [
+        "如果if elif else后边的语句只有一句时可以不用换行书写，例如 if this year==2020:print(\"bad time\")",
+        "if 90<=x<=109:表达的是x如果属于[99,100]这个闭区间",
+        "当双分支的操作较为简单时，可以使用其简洁表达形式，例如 print(\"bad time\"if this year ==2020 else \"good time\")",
+        "if a>b>c：等价于if a>b and a>c:"
+      ]
+    },
+    "py-v2-text-218": {
+      "stem": "Python 通过什么来判断当前程序是否在选择结构中?",
+      "options": [
+        "括号",
+        "缩进",
+        "冒号",
+        "花括号"
+      ]
+    },
+    "py-v2-text-219": {
+      "stem": "关于分支结构，以下选项中描述不正确的是",
+      "options": [
+        "if 语句中条件部分可以使用任何能够产生True 和False 的语句和函数",
+        "二分支结构有一种紧凑形式，使用保留字if 和elif 实现",
+        "多分支结构用于设置多个判断条件以及对应的多条执行路径",
+        "if 语句中语句块执行与否依赖于条件判断"
+      ]
+    },
+    "py-v2-text-220": {
+      "stem": "以下程序的输出结果是：\nt=\"Python\"\nprint(t if t>=\"python\"else \"None\")",
+      "options": [
+        "None",
+        "python",
+        "t",
+        "Python"
+      ]
+    },
+    "py-v2-text-221": {
+      "stem": "以下语句执行后a、b、c的值是：\na =\"watermelon\"\nb=\"strawberry\"\nc=“cherry\"\nif a>b:\nc=a\na=b\nb=c",
+      "options": [
+        "watermelon strawberry cherry",
+        "watermelon cherry strawberry",
+        "strawberry cherry watermelon",
+        "strawberry watermelon watermelon"
+      ]
+    },
+    "py-v2-text-222": {
+      "stem": "关于Python 的分支结构，以下选项中描述错误的是",
+      "options": [
+        "分支结构使用if保留字",
+        "Python 中 if-else 语句用来形成二分支结构",
+        "Python 中 if-elif-else 语句描述多分支结构",
+        "分支结构可以向已经执行过的语句部分跳转"
+      ]
+    },
+    "py-v2-text-223": {
+      "stem": "关于a or b的描述错误的是",
+      "options": [
+        "如果a=True,b=True,则a or b等于True",
+        "如果a=True,b=False，则a orb等于True",
+        "如果a=True,b=True,则a or b等于False",
+        "如果a=False,b=False，则a or b等于False"
+      ]
+    },
+    "py-v2-text-224": {
+      "stem": "1s=[1,2,3,4,5,6]，以下关于的描述，错误的是：",
+      "options": [
+        "表达式for i in range(1en(1s））的循环次数跟for i in1s的循环次数是一样的",
+        "表达式for i in range(len(1s))跟foriin1s的循环中，i的值是一样的",
+        "表达式for i in range(1en(1s)）的循环次数跟for i in range(1,1en(1s)+1）的循环次数是一样的",
+        "表达式for i in range(1en(1s)）的循环次数跟for i in range(e,1en(1s))的循环次数是一样的"
+      ]
+    },
+    "py-v2-text-225": {
+      "stem": "给出如下代码\nimport random\nnum = random.randint(1,10)\nwhile True:\nif num >=9:\nbreak\nelse:\nnum = random.randint(1,10)\n以下选项中描述错误的是",
+      "options": [
+        "这段代码的功能是程序自动猜数字",
+        "import random代码是可以省略的",
+        "while True:创建了一个永远执行的循环",
+        "random.randint(1,10)生成[1，10]之间的整数"
+      ]
+    },
+    "py-v2-text-226": {
+      "stem": "关于Python循环结构，以下选项中描述错误的是：",
+      "options": [
+        "遍历循环中的遍历结构可以是字符串、文件、序列类型和range（）函数等",
+        "break 用来跳出最内层for或者 while循环，脱离该循环后程序从循环代码后继续执行",
+        "每个continue 语句只有能力跳出当前层次的循环",
+        "Python 通过for、while 等关键字提供遍历循环和无限循环结构"
+      ]
+    },
+    "py-v2-text-227": {
+      "stem": "在循环中使用（）语句可以跳出循环体。",
+      "options": [
+        "break",
+        "continue",
+        "while",
+        "for"
+      ]
+    },
+    "py-v2-text-228": {
+      "stem": "以下关于循环结构的描述，错误的是：",
+      "options": [
+        "遍历循环的循环次数由遍历结构中的元素个数来体现",
+        "非确定次数的循环的次数是根据条件判断来决定的",
+        "非确定次数的循环用while 语句来实现，确定次数的循环用for或者while 语句来实现",
+        "遍历循环对循环的次数是不确定的"
+      ]
+    },
+    "py-v2-text-229": {
+      "stem": "以下关于分支和循环结构的描述，错误的是：",
+      "options": [
+        "python 的在分支和循环语句里使用例如x<=y<=z的表达式是合法的",
+        "分支结构的中的代码块是用冒号来标记的",
+        "二分支结构的<表达式1>if<条件>else<表达式2>形式，适合用来控制程序分支",
+        "while 循环如果设计不小心会出现死循环"
+      ]
+    },
+    "py-v2-text-230": {
+      "stem": "以下代码段，不会输出A，B，C，的选项是：",
+      "options": [
+        "for i in range(3):\nprint(chr(65+i),end=\",\")",
+        "for i in [0,1,2]:\nprint(chr(65+i),end=\",\")",
+        "1=0\nwhile i<3:\nprint(chr(i+65),end=\",\")\n1+=1\ncontinue",
+        "1=0\nwhile 1<3:\nprint(chr(i+65),end=\",\")\nbreak\ni.+= 1"
+      ]
+    },
+    "py-v2-text-231": {
+      "stem": "关于循环结构的描述错误的是",
+      "options": [
+        "for结构适合特定次数的循环，即在编程阶段就已知次数或者循环之前可以通过计算得到次数的场景",
+        "while 结构适合循环次数未知但知道循环进行或者终止的条件的场景",
+        "不能使用while True:的形式来构造死循环否则程序会无法退出",
+        "for ..in.….的结构中，in关键字后边必须是可迭代对象，比如字符串或者range 函数产生的数值序列"
+      ]
+    },
+    "py-v2-text-232": {
+      "stem": "给出如下代码：\nwhile True:\nguess = eval(input())\nif guess == 0x452//2:\nbreak\n作为输入能够结束程序运行的是",
+      "options": [
+        "553",
+        "0x452",
+        "\"0x452//2\"",
+        "break"
+      ]
+    },
+    "py-v2-text-233": {
+      "stem": "以下程序的输出结果是\nx=10\nwhile x:\nx-=1\nif not x%2:\nprint(x,end =\"\")\nelse:\nprint(x)",
+      "options": [
+        "86420",
+        "975311",
+        "97531",
+        "864200"
+      ]
+    },
+    "py-v2-text-234": {
+      "stem": "以下关于循环结构的描述，错误的是：",
+      "options": [
+        "遍历循环使用for<循环变量>in<循环结构>语句，其中循环结构不能是文件",
+        "使用range（）函数可以指定for循环的次数",
+        "for i in range(5)表示循环5次，i的值是从0到4",
+        "用字符串做循环结构的时候，循环的次数是字符串的长度"
+      ]
+    },
+    "py-v2-text-235": {
+      "stem": "下列关于break和continue 的描述错误的是",
+      "options": [
+        "二者都会终止循环，不过break是退出整个循环，continue是终止本轮循环进入下一轮",
+        "当循环嵌套时，break如果在内层循环内则只能退出最内层循环",
+        "在while 或者for循环中如果使用break退出，则不会执行其后的else语句",
+        "continue 是终止循环继续运行for 或者while 结构后的语句"
+      ]
+    },
+    "py-v2-text-236": {
+      "stem": "以下程序的输出结果是\nfor i in range(3):\nfor s in \"abcd\":\nif s==\"c\":\nbreak\nprint(s,end=\"\")",
+      "options": [
+        "abcabcabc",
+        "aaabbbccc",
+        "aaabbb",
+        "ababab"
+      ]
+    },
+    "py-v2-text-237": {
+      "stem": "for 或者while与else 搭配使用时，关于执行e1se 语句块描述正确的是",
+      "options": [
+        "仅循环非正常结束后执行（以break结束）",
+        "仅循环正常结束后执行",
+        "总会执行",
+        "永不执行"
+      ]
+    },
+    "py-v2-text-238": {
+      "stem": "下面代码的输出结果是\nsum =1.0\nfor num in range(1,4):\nsum.+=num\nprint(sum)",
+      "options": [
+        "6",
+        "7",
+        "7.0",
+        "1.0"
+      ]
+    },
+    "py-v2-text-239": {
+      "stem": "以下关于程序控制结构描述错误的是:",
+      "options": [
+        "分支结构包括单分支结构和二分支结构",
+        "二分支结构组合形成多分支结构",
+        "Python里，能用分支结构写出循环的算法",
+        "程序由三种基本结构组成"
+      ]
+    },
+    "py-v2-text-240": {
+      "stem": "以下程序的输出结果是：\nfor i in \"the number changes\":\nif i=='n:\nbreak\nelse:\nprint(i,end=\"\")",
+      "options": [
+        "the umber chages",
+        "thenumberchanges",
+        "thenumberchages",
+        "the"
+      ]
+    },
+    "py-v2-text-241": {
+      "stem": "关于Python循环结构，以下选项中描述错误的是",
+      "options": [
+        "遍历循环中的遍历结构可以是字符串、文件、组合数据类型和range0函数等",
+        "break 用来跳出最内层 for 或者 while 循环脱离该循环后程序从循环代码后继续执行",
+        "每个continue语句只有能力跳出当前层次的循环",
+        "Python 通过for、while 等保留字提供遍历循环和无限循环结构"
+      ]
+    },
+    "py-v2-text-242": {
+      "stem": "关于Python 循环结构，以下选项中描述错误的是",
+      "options": [
+        "遍历循环中的遍历结构可以是字符串、文件组合数据类型和range（）函数等",
+        "break 用来结束当前当次语句，但不跳出当前的循环体",
+        "continue 只结束本次循环",
+        "Python通过for、while 等保留字构建循环结构"
+      ]
+    },
+    "py-v2-text-243": {
+      "stem": "下面代码的输出结果是\nfor s in \"Hello world\":\nif s-=\"W”:\ncontinue\nprint(s,end=\"\")",
+      "options": [
+        "Hello",
+        "world",
+        "Helloworld",
+        "Helloorld"
+      ]
+    },
+    "py-v2-text-244": {
+      "stem": "下面程序中print语句执行了多少次\nfor i in range(0,5):\nfor j in range(1,1):\nprint(1*j)",
+      "options": [
+        "5",
+        "6",
+        "0",
+        "以上都不对"
+      ]
+    },
+    "py-v2-text-245": {
+      "stem": "下面程序的结果是\ni=1\nsum =0\nwhile i<11\n   sum +=i\n   i+=1\nprint(sum)",
+      "options": [
+        "10",
+        "55",
+        "100",
+        "11"
+      ]
+    },
+    "py-v2-text-246": {
+      "stem": "for i in range(1,10,3)：在循环结束后打印i值，结果为",
+      "options": [
+        "7",
+        "10",
+        "13",
+        "9"
+      ]
+    },
+    "py-v2-text-247": {
+      "stem": "执行以下程序，输入qp，输出结果是：\nk=6\nwhile True:\ns =.input('请输入q退出：）\nif s=='q':\nk+=1\ncontinue\nelse:\nk+=2\nbreak\nprint(k)",
+      "options": [
+        "2",
+        "请输入q退出：",
+        "3",
+        "1"
+      ]
+    },
+    "py-v2-text-248": {
+      "stem": "打插法利用循环结构查找某个序列的最大值过程中，共有5次比较，请问该程序是几个数中找最大值?",
+      "options": [
+        "4个数中找最大值",
+        "5个数中找最大值",
+        "6个数中找最大值",
+        "7个数中找最大值"
+      ]
+    },
+    "py-v2-text-249": {
+      "stem": "关于局部变量和全局变量，以下选项中描述错误的是",
+      "options": [
+        "局部变量和全局变量是不同的变量，但可以使用global保留字在函数内部使用全局变量",
+        "局部变量是函数内部的占位符，与全局变量可能重名但不同",
+        "函数运算结束后，局部变量不会被释放",
+        "局部变量为组合数据类型且未创建，等同于全局变量"
+      ]
+    },
+    "py-v2-text-250": {
+      "stem": "以下程序的输出结果是：\nimg1=[12,34,56,78]\nimg2=[1,2,3,4,5]\ndef displ():\nprint(img1)\ndef modi():\nimg1= img2\nmodi(\ndispl()",
+      "options": [
+        "[1,2,3,4,5]",
+        "([12,34,56,78]）",
+        "([1,2,3,4,5])",
+        "[12,34,56,78]"
+      ]
+    },
+    "py-v2-text-251": {
+      "stem": "以下关于函数参数和返回值的描述，正确的是",
+      "options": [
+        "采用名称传参的时候，实参的顺序需要和形参的顺序一致",
+        "可选参数传递指的是没有传入对应参数值的时候，就不使用该参数",
+        "函数能同时返回多个参数值，需要形成一个列表来返回",
+        "Python支持按照位置传参也支持名称传参，但不支持地址传参"
+      ]
+    },
+    "py-v2-text-252": {
+      "stem": "关于Python的1ambda 函数，以下选项中描述错误的是",
+      "options": [
+        "可以使用1ambda 函数定义列表的排序规则",
+        "f=lambda x,y:x+y 执行后，f的类型为数字类型",
+        "lambda 函数将函数名作为函数结果返回",
+        "1ambda 用于定义简单的、能够在一行内表示的函数"
+      ]
+    },
+    "py-v2-text-253": {
+      "stem": "如果函数没有使用return语句，则函数返回的是?",
+      "options": [
+        "G",
+        "None 对象",
+        "任意正整数",
+        "错误！函数必须有返回值。"
+      ]
+    },
+    "py-v2-text-254": {
+      "stem": "假设函数中不包括g1obal保留字，对于改变参数值的方法，以下选项中错误的是",
+      "options": [
+        "参数是int 类型时，不改变原参数的值",
+        "参数是组合类型（可变对象）时，改变原参数的值",
+        "参数的值是否改变与函数中对变量的操作有关，与参数类型无关",
+        "参数是1ist类型时，改变原参数的值"
+      ]
+    },
+    "py-v2-text-255": {
+      "stem": "关于Python的全局变量和局部变量，以下选项中描述错误的是：",
+      "options": [
+        "局部变量指在函数内部使用的变量，当函数退出时，变量依然存在，下次函数调用可以继续使用。",
+        "使用global保留字声明简单数据类型变量后，该变量作为全局变量使用。",
+        "简单数据类型变量无论是否与全局变量重名，仅在函数内部创建和使用，函数退出后变量被释放。",
+        "全局变量指在函数之外定义的变量，一般没有缩进，在程序执行全过程有效。"
+      ]
+    },
+    "py-v2-text-256": {
+      "stem": "Python 语言中用来定义函数的关键字是",
+      "options": [
+        "def",
+        "function",
+        "define",
+        "return"
+      ]
+    },
+    "py-v2-text-257": {
+      "stem": "下面代码的输出结果是：\ndef change(a,b):\na=10\nb +=a\na=4\nb=5\nchange(a,b)\nprint(a,b)",
+      "options": [
+        "10 5",
+        "4 15",
+        "10 15",
+        "4 5"
+      ]
+    },
+    "py-v2-text-258": {
+      "stem": "def shouNnumber(numbers):\nfor n in numbens:\nprint(n)\n下面那些在调用函数时会报错",
+      "options": [
+        "showNumer([2,4,5])",
+        "showNnumber('abcesf\")",
+        "showNnumber(3.4)",
+        "shouNumber((12,4,5))"
+      ]
+    },
+    "py-v2-text-259": {
+      "stem": "以下关于函数的描述，错误的是：",
+      "options": [
+        "函数是一种功能抽象",
+        "使用函数的目的只是为了增加代码用",
+        "函数名可以是任何有效的Python标识符",
+        "使用函数后，代码的维护难应降低了"
+      ]
+    },
+    "py-v2-text-260": {
+      "stem": "以下对递归描述错误的是：",
+      "options": [
+        "书写简单",
+        "代码执行效率高",
+        "一定要有基例",
+        "递归程序都可以有非递归的编写方法"
+      ]
+    },
+    "py-v2-text-261": {
+      "stem": "以下关于函数说法错误的是：",
+      "options": [
+        "函数通过函数名来调用",
+        "函数可以看做是一段具有名字的子程序",
+        "函数是一段具有特定功能的、可重用的语句组",
+        "对函数的使用必须了解其内部实现原理"
+      ]
+    },
+    "py-v2-text-262": {
+      "stem": "以下程序的输出结果是：\ndef hub(ss,x=2.0,y=4.0):\n    ss+=x*y\nss=10\nprint(ss,hub(ss,3))",
+      "options": [
+        "22.0 None",
+        "10 None",
+        "22 None",
+        "10.0  22.0"
+      ]
+    },
+    "py-v2-text-263": {
+      "stem": "关于Python函数，以下选项中描述错误的是",
+      "options": [
+        "函数是一段可重用的语句组。",
+        "函数通过函数名进行调用。",
+        "每次使用函数需要提供相同的参数作为输入",
+        "函数是一段具有特定功能的语句组。"
+      ]
+    },
+    "py-v2-text-264": {
+      "stem": "以下关于函数参数传递的描述错误的是",
+      "options": [
+        "定义函数的时候，可选参数必须写在非可选参数的后面",
+        "函数的实参位置可变需要形参定义和实参调用时都要给出名称",
+        "调用函数时，可变数量参数被当做元组类型传递到函数中",
+        "Python 支持可变数量的参数，实参用”*参数名”表示"
+      ]
+    },
+    "py-v2-text-265": {
+      "stem": "执行以下代码，运行错误的是：\ndef fun(x,y=\"Name\",z=\"No\"):\npass",
+      "options": [
+        "fun(1,2,3)",
+        "fun(1,,3)",
+        "fun(1)",
+        "fun(1,2)"
+      ]
+    },
+    "py-v2-text-266": {
+      "stem": "以下程序的输出结果是：\ndef fun1():\nprint(\"in fun1()\")\nfun2()\nfun1()\ndef fun2():\nprint(\"in fun2()\")\nfun1()\nfun2()",
+      "options": [
+        "in fun1()\nin fun2()",
+        "in fun1()",
+        "死循环",
+        "出错"
+      ]
+    },
+    "py-v2-text-267": {
+      "stem": "以下程序的输出结果是：\ndef func(num):\nnum=2\nx=20\nFunc(x)\nprint(x)",
+      "options": [
+        "40",
+        "出错",
+        "20",
+        "无输出"
+      ]
+    },
+    "py-v2-text-268": {
+      "stem": "Python 中，函数定义可以不包括以下：",
+      "options": [
+        "一对圆括号",
+        "关键字 def",
+        "函数名",
+        "可选参数列表"
+      ]
+    },
+    "py-v2-text-269": {
+      "stem": "以下程序的输出结果是：\ndef test(b=2,a=4):\nglobal z\nZ +=a*b\nreturn z\nZ=10\nprint(z,test())",
+      "options": [
+        "18 None",
+        "10 18",
+        "UnboundLocalErron",
+        "18 18"
+      ]
+    },
+    "py-v2-text-270": {
+      "stem": "以下程序的输出结果是：\n>>>def f(x,y=0,z=0):pass\n>>>f(1,，3)",
+      "options": [
+        "pass",
+        "None",
+        "not",
+        "出错"
+      ]
+    },
+    "py-v2-text-271": {
+      "stem": "def chanageInt(number2):\nnumber2 =numben2+1\nprint(\"changeInt:number2=, number\n调用\nnumber1=2j\nchanageInt(number1)\nprint(\"number:\",number1)\n打印结果哪项是正确",
+      "options": [
+        "changeInt:number2=3 numben:2",
+        "changeInt:number2= 3 number:3",
+        "number;2 changeInt;numben2s3\n1",
+        "numbep:? changernt; numhen?s 3"
+      ]
+    },
+    "py-v2-text-272": {
+      "stem": "关于函数的描述，错误的选项是",
+      "options": [
+        "Python 使用del保留字定义一个函数",
+        "函数能完成特定的功能，对函数的使用不需要了解函数内部实现原理，只要了解函数的输入输出方式即可。",
+        "函数是一段具有特定功能的、可重用的语句组",
+        "使用函数的主要目的是减低编程难度和代码重用"
+      ]
+    },
+    "py-v2-text-273": {
+      "stem": "以下关于函数的描述，正确的是：",
+      "options": [
+        "函数的全局变量是列表类型的时候，函数内部不可以直接引用该全局变量。",
+        "如果函数内部定义了跟外部的全局变量同名的组合数据类型的变量，则函数内部引用的变量不确定。",
+        "python 的函数里引用一个组合数据类型变量，就会创建一个该类型对象。",
+        "函数的简单数据类型全局变量在函数内部使用的时候，需要在显式声明为全局变量"
+      ]
+    },
+    "py-v2-text-274": {
+      "stem": "执行以下代码，运行结果\ndef split(s):\nreturn s.split(\"a\")\nss\"Happy birthday to you!\"\nprint(split(s))",
+      "options": [
+        "[H',ppy birthd','y to you]",
+        "\"Happy birthday to you!\"",
+        "运行出错",
+        "['Happy',birthday','to',\"you!]"
+      ]
+    },
+    "py-v2-text-275": {
+      "stem": "以下程序的输出结果是：\ndef func(a,\"b):\nfor item in b:\na +=item\nretunn a\nm=0\nprint(func(m,1,1,2,3,5,7,12,21,33))",
+      "options": [
+        "33",
+        "0",
+        "7",
+        "85"
+      ]
+    },
+    "py-v2-text-276": {
+      "stem": "下面代码实现的功能描述的是\ndef fact(n):\nif n==0:\nreturn 1\nelse:\nreturn n*fact(n-1)\nnum =eval(input(“请输入一个整数：\"））\nprint(fact(abs(int(num))))",
+      "options": [
+        "接受用户输入的整数n，输出n的阶乘值",
+        "接受用户输入的整数n，判断n是否是素数\n并输出结论",
+        "接受用户输入的整数n，判断n是否是水仙\n花数",
+        "接受用户输入的整数n，判断n是否是完数\n并输出结论"
+      ]
+    },
+    "py-v2-text-277": {
+      "stem": "关于Python的1ambda 函数，以下选项中描述错误的是",
+      "options": [
+        "可以使用1ambda函数定义列表的排序规则",
+        "f=1ambda x,y:x+y 执行后，f的类型为数字类型",
+        "1ambda函数将函数名作为函数结果返回",
+        "1ambda用于定义简单的、能够在一行内表示的函数"
+      ]
+    },
+    "py-v2-text-278": {
+      "stem": "关于函数的可变参数可变参数“args传入函数时存储的类型是",
+      "options": [
+        "list",
+        "set",
+        "dict",
+        "tuple"
+      ]
+    },
+    "py-v2-text-279": {
+      "stem": "以下程序的输出结果是：\ndef calu(x=3, y = 2, z= 10):\nreturn(x **y *z)\nh=2\nW=3\nprint(calu(h,w))",
+      "options": [
+        "90",
+        "70",
+        "160",
+        "80"
+      ]
+    },
+    "py-v2-text-280": {
+      "stem": "以下关于python 函数使用的描述，错误的是",
+      "options": [
+        "函数定义是使用函数的第一步",
+        "函数被调用后才能执行",
+        "函数执行结束后，程序执行流程会自动返回到函数被调用的语句之后",
+        "Python 程序里一定要有一个主函数"
+      ]
+    },
+    "py-v2-text-281": {
+      "stem": "以下关于python内置函数的描述，错误的是",
+      "options": [
+        "hash()返回一个可计算哈希的类型的数据的哈希值",
+        "id（)返回一个数据的一个编号，跟其在内存中的地址无关",
+        "sorted()对一个序列类型数据进行排序",
+        "type()返回一个数据对应的类型"
+      ]
+    },
+    "py-v2-text-282": {
+      "stem": "关于形参和实参的描述，以下选项中正确的是",
+      "options": [
+        "参数列表中给出要传入函数内部的参数，这类参数称为形式参数，简称形参",
+        "函数调用时，实参默认采用按照位置顺序的方式传递给函数，Python也提供了按照形参名称输入实参的方式",
+        "程序在调用时，将形参复制给函数的实参",
+        "函数定义中参数列表里面的参数是实际参数，简称实参"
+      ]
+    },
+    "py-v2-text-283": {
+      "stem": "以下程序的输出结果是：\n\nab = 4\n\ndef myab(ab, xy):\n    ab = pow(ab,xy)\n    print(ab,end=\" \")\n\nmyab(ab,2)\nprint(ab)",
+      "options": [
+        "4 4",
+        "16 16",
+        "16 4",
+        "4 16"
+      ],
+      "note": "文字版缺少选项或标号，已据同文图片版补全，并整理识别错误与缩进。"
+    },
+    "py-v2-text-284": {
+      "stem": "关于函数作用的描述，以下选项中错误的是",
+      "options": [
+        "复用代码",
+        "增强代码的可读性",
+        "降低编程复杂度",
+        "提高代码执行速度"
+      ]
+    },
+    "py-v2-text-285": {
+      "stem": "下面代码的输出结果是\n1s=[\"F\",\"f\"]\ndef fun(a):\n1s.append(a)\nreturn\nfun(\"C\")\nprint(1s)",
+      "options": [
+        "[“F”,'f\"]",
+        "['C']",
+        "出错",
+        "['F','f’，'C']"
+      ]
+    },
+    "py-v2-text-286": {
+      "stem": "关于以下程序输出的两个值的描述正确的是：\nda=[1,2,3]\nprint(id(da))\ndef getda(st)\nfa -da.copy()\nprint(id(fa))\ngetda(da)",
+      "options": [
+        "两个值相等",
+        "每次执行的结果不确定",
+        "首次不相等",
+        "两个值不相等"
+      ]
+    },
+    "py-v2-text-287": {
+      "stem": "以下关于python内置函数的描述，错误的是",
+      "options": [
+        "id()返回一个变量的一个编号，是其在内存中的地址",
+        "al1(1s)返回True，如果1s的每个元素都是True",
+        "type()返回一个对象的类型",
+        "sorted()对一个序列类型数据进行排序，将排序后的结果写回到该变量中"
+      ]
+    },
+    "py-v2-text-288": {
+      "stem": "以下关于Python 内置库、标准库和第三方库的描述，错误的是：",
+      "options": [
+        "第三方库需要单独安装才能使用",
+        "内置库里的函数不需要import就可以调用",
+        "第三方库有多种安装方式，最常用的是pip工具",
+        "第三方库发布方法和标准库一样，是跟python 安装包一起发布的"
+      ]
+    },
+    "py-v2-text-289": {
+      "stem": "关于import 引用，以下选项中描述错误的是",
+      "options": [
+        "使用import turtle 引入turtle库",
+        "可以使用from turtle import setup 引入turtle 库",
+        "使用import turtle as t 引入turtle 库取别名为t",
+        "import 保留字用于导入模块或者模块中的对象"
+      ]
+    },
+    "py-v2-text-290": {
+      "stem": "导入模块的方式错误的是",
+      "options": [
+        "import mo",
+        "from mo import *",
+        "import mo as m",
+        "import m from mo"
+      ]
+    },
+    "py-v2-text-291": {
+      "stem": "关于Python文件的+”打开模式，以下选项正确的描述是",
+      "options": [
+        "追加写模式",
+        "与r/u/a/x 一同使用，在原功能基础上增加同时读写功能",
+        "只读模式",
+        "覆盖写模式"
+      ]
+    },
+    "py-v2-text-292": {
+      "stem": "以下关于CSV文件说法正确的是：",
+      "options": [
+        "使用writer 对象对CSV文件进行写操作后不需要关闭文件。",
+        "python的csv模块是第三方模块，需要单独安装",
+        "reader 对象中的每个元素都是一个字符串，对应了CSV文件中的一行",
+        "CSv 文件主要用来存储表格数据"
+      ]
+    },
+    "py-v2-text-293": {
+      "stem": "当文本文件中包含了中文字符时，需要进行以下哪些操作：",
+      "options": [
+        "改为拼音或者英文",
+        "删除文本文件中的中文字符",
+        "留意文本文件保存时的编码方式，代码中设置open 函数中的encoding参数",
+        "不需要做任何操作"
+      ]
+    },
+    "py-v2-text-294": {
+      "stem": "关于Python文件打开模式的描述，以下选项中描述错误的是",
+      "options": [
+        "覆盖写模式w",
+        "追加写模式a",
+        "创建写模式n",
+        "只读模式r"
+      ]
+    },
+    "py-v2-text-295": {
+      "stem": "运行以下程序后，文件result.txt中的内容为：\nf=open(\"./result.txt',\"w')\nf.write('hello\\nworld\")\nf.close()",
+      "options": [
+        "hello\nworld",
+        "helloworld",
+        "hello\nn\nworld",
+        "hel1o\n\\n\nwould"
+      ]
+    },
+    "py-v2-text-296": {
+      "stem": "以下关于文件的描述，错误的是：",
+      "options": [
+        "二进制文件和文本文件的操作步骤都是“打开-操作-关闭”",
+        "open()打开文件之后，文件的内容并没有在内存中",
+        "open()只能打开一个已经存在的文件",
+        "文件读写之后，要调用c10se（）才能确保文件被保存在磁盘中了"
+      ]
+    },
+    "py-v2-text-297": {
+      "stem": "以下哪些在open函数中代表既可读也可写的模式：",
+      "options": [
+        "r",
+        "w+",
+        "n-",
+        "w"
+      ]
+    },
+    "py-v2-text-298": {
+      "stem": "关于CSV文件的描述，哪个选项的描述是错误的?",
+      "options": [
+        "整个CSV文件是一个二维数据",
+        "CSV文件格式是一种通用的、相对简单的文件格式，应用于程序之间转移表格数据",
+        "CSV文件的每一行是一维数据，可以使用Python 中的列表类型表示",
+        "CSV文件通过多种编码表示字符"
+      ]
+    },
+    "py-v2-text-299": {
+      "stem": "已知文本文件对象f，以下哪些语句能实现将整数1-10中所有的偶数写入文件，且一行一个数",
+      "options": [
+        "f.writelines(['2\",'4\",'6','8','10\\n'])",
+        "f.write('2\\n4\\n6\\n8\\n1e\\n')",
+        "f.uritelines(['2\",'4','6','8','10'])",
+        "f.uritelines([2,4,6,8,10])"
+      ]
+    },
+    "py-v2-text-300": {
+      "stem": "关于Python文件的+打开模式，哪个选项的描述是正确的?",
+      "options": [
+        "只读模式",
+        "覆盖写模式",
+        "追加写模式",
+        "与r/w/a/x一同使用，在原功能基础上增加同时读写功能"
+      ]
+    },
+    "py-v2-text-301": {
+      "stem": "以下哪些文件的方法可以将文本文件中的内容一次性读出：",
+      "options": [
+        "readlines",
+        "readline",
+        "writeline",
+        "read(1924)"
+      ]
+    },
+    "py-v2-text-302": {
+      "stem": "以下选项对文件描述错误的是：",
+      "options": [
+        "文件可以包含任何内容",
+        "文件是存储在辅助存储器上的数据序列",
+        "文件是数据的集合和抽象",
+        "文件是程序的集合和抽象"
+      ]
+    },
+    "py-v2-text-303": {
+      "stem": "给出如下代码：\nfname=input(“请输入要打开的文件：”）\nfo =open(fname,\"r)\nfor line in fo.readlines():\nprint(line,end=\")\nfo.close()\n关于上述代码的描述，以下选项中错误的是",
+      "options": [
+        "通过fo.readlines(）方法将文件的全部内容读入一个字典 fo",
+        "通过fo.readlines（）方法将文件的全部内容读入一个列表fo",
+        "上述代码可以优化为：\nfname =input(“请输入要打开的文件：“）\nfo =open(fname,\"r\")\nfor line in fo:\nprint(line,end=\"\")\nfo,close()",
+        "用户输入文件路径，以文本文件方式读入文件内容并逐行打印"
+      ]
+    },
+    "py-v2-text-304": {
+      "stem": "关于文件关闭的close（）方法，哪个选项的描述是正确的？",
+      "options": [
+        "如果文件是只读方式打开，仅在这种情况下可以不用close（）方法关闭文件",
+        "文件处理结束之后，一定要用close（）方法关闭文件",
+        "文件处理遵循严格的“打开-操作-关闭”模式",
+        "文件处理后可以不用close（)方法关闭文件，程序退出时会默认关闭"
+      ]
+    },
+    "py-v2-text-305": {
+      "stem": "设city.csv 文件内容如下：\n巴哈马，巴林，孟加拉国，巴巴多斯\n白俄罗斯，比利时，伯利兹\n下面代码的执行结果是：\nf=open(\"city.csv\",\"r\")\n1s=f.read().split(\",\")\nf.close()\nprint(1s)",
+      "options": [
+        "['巴哈马，巴林”，孟加拉国’，巴巴多斯\\n白俄罗斯”，比利时”，伯利兹]",
+        "['巴哈马，巴林，孟加拉国，巴巴多斯，白俄罗斯，比利时，伯利兹]",
+        "['巴哈马’，‘巴林”，“孟加拉国”，“巴巴多斯”，’\\n'，'白俄罗斯’，”比利时”，伯利效]",
+        "['巴哈马’，‘巴林”，孟加拉国”，‘巴巴多斯，'白俄罗斯’，‘比利时”，‘伯利慈]"
+      ]
+    },
+    "py-v2-text-306": {
+      "stem": "Python 文件读取方法read(size)的含义是：",
+      "options": [
+        "CSV文件的每一行是一维数据，可以使用Python 中的列表类型表示从头到尾读取文件所有内容",
+        "从文件中读取一行数据",
+        "从文件中读取多行数据",
+        "从文件中读取指定size大小的数据，如果size为负数或者空，则读取到文件结束"
+      ]
+    },
+    "py-v2-text-307": {
+      "stem": "以下程序的功能是：\ns=\"what\\'s a package,project,or rele\n5=5.lower()\nfor ch in \"\\\",?.:()\":\ns=s.replace(ch,\"\")\nwords=s.split()\ncounts={}\nfor word in words:\ncounts[word]=counts.get(word,0)+1\nitems = list(counts.items())\nitems.sort(key=lambda x:x[1],reverse =T\nfo= open(\"wordnum.txt\",\"w\",encoding =\"t\nfor i in range(10):\nword,count= items[i]\nfo.writelines( word +\":\"+ str(cour\nfo.close()",
+      "options": [
+        "统计字符串s中所有单词的出现次数，将单词和次数写入wordnum.txt文件",
+        "统计字符串s中所有字母的出现次数，将单词和次数写入wordnum.txt文件",
+        "统计输出字符串5中前10个字母的出现次数，将单词和次数写入wordnum.txt 文件",
+        "统计字符串5中前10个高插单词的出现次数将单词和次数写入wordnum.txt 支件"
+      ]
+    },
+    "py-v2-text-308": {
+      "stem": "在对Csv文件进行写操作时，可通过设置以下哪个参数来避免出现空行：",
+      "options": [
+        "newline",
+        "newlines",
+        "enter",
+        "encoding"
+      ]
+    },
+    "py-v2-text-309": {
+      "stem": "以下选项中，对文件的描述错误的是",
+      "options": [
+        "文件中可以包含·内容",
+        "文本文件和二进制文件都是文件",
+        "文本文件不能用二进制文件方式读入",
+        "文件是一个存储在辅助存储器上的数据序列"
+      ]
+    },
+    "py-v2-text-310": {
+      "stem": "以下关于Python文件的描述，错误的是：",
+      "options": [
+        "open函数的参数处理模式b’表示以二进制数据处理文件",
+        "open函数的参数处理模式’+’表示可以对文件进行读和写操作",
+        "readline函数表示读取文件的一行，返回一个字符串",
+        "open 函数的参数处理模式’a’表示追加方式打开文件，删除已有内容"
+      ]
+    },
+    "py-v2-text-311": {
+      "stem": "执行如下代码：\nfname=input(“请输入要写入的文件：”）\nfo =open(fname,\"w+\")\n1s=[\"清明时节雨纷纷，”，”路上行人欲断魂，”\nfo.writelines(1s)\nfo.seek(0)\nfor line in fo:\nprint(line)\nfo.close()\n以下选项中描述错误的是",
+      "options": [
+        "fo.writelines(1s)将元素全为字符串的1s列表写入文件",
+        "fo.seek(e)这行代码如果省略，也能打印输出文件内容",
+        "代码主要功能为向文件写入一个列表类型，并打印输出结果",
+        "执行代码时，从键盘输入清明，txt，则清明，txt被创建"
+      ]
+    },
+    "py-v2-text-312": {
+      "stem": "以下关于文件的描述错误的选项是：",
+      "options": [
+        "readlines()函数读入文件内容后返回一个列表，元素划分依据是文本文件中的换行符",
+        "read()一次性读入文本文件的全部内容后返回一个字符串",
+        "readline()函数读入文本文件的一行，返回一个字符串",
+        "二进制文件和文本文件都是可以用文本编辑器编辑的文件"
+      ]
+    },
+    "py-v2-text-313": {
+      "stem": "以下程序的输出结果是：\nfo =open(\"text.txt\"，'w+')\nx,y=\"this is a test','hello\nfo.write(\"{}+{}\\n'.format(x,y))\nprint(fo.read())\nfo.close()",
+      "options": [
+        "this is a test hello",
+        "this is a test+hello",
+        "this is atest,hello.",
+        "this is a test"
+      ]
+    },
+    "py-v2-text-314": {
+      "stem": "关于以下代码的描述，错误的选项是\nwith open(\"abc.txt\",'r+\")as f:\nlines=f.readlines()\nfor item in lines:\nprint(item)",
+      "options": [
+        "执行代码后，abc.txt文件未关闭，必须通过close0函数关闭",
+        "打印输出abc.txt文件内容",
+        "item是字符串类型",
+        "lines是列表类型"
+      ]
+    },
+    "py-v2-text-315": {
+      "stem": "以下程序输出到文件text.csv 里的结果是：\nfo=open(\"text.csv\",\"w')\nX=[90,87，93]\nfo.write(\",\".join(str(x)))\nfo.close()",
+      "options": [
+        "[90,87,93]",
+        "90,87,93",
+        "9,0,,,,8,7,,,,9,3,",
+        "[,9,0,,,,8,7,,,,9,3,]"
+      ]
+    },
+    "py-v2-text-316": {
+      "stem": "以下选项不是Python文件读操作的是：",
+      "options": [
+        "read()",
+        "readline()",
+        "readtext()",
+        "readlines()"
+      ]
+    },
+    "py-v2-text-317": {
+      "stem": "以下关于CSV文件的描述，错误的选项是",
+      "options": [
+        "CSV文件可用于不同工具间进行数据交换",
+        "CSV文件格式是一种通用的，相对简单的文件格式，应用于程序之间转移表格数据。",
+        "CSV文件通过多种编码表示字符",
+        "CSV文件的每一行是一维数据，可以使用Python 中的列表类型表示"
+      ]
+    },
+    "py-v2-text-318": {
+      "stem": "对于Python文件，以下描述正确的是：",
+      "options": [
+        "根据不同类型的文件，打开方式只能是文本或者二进制中的一种",
+        "当文件以二进制文件方式打开时，读取按照字符串方式",
+        "同一个文件可以既采用文本方式打开，也可以采用二进制方式打开",
+        "当文件以文本方式打开时，读取按照字节流方式"
+      ]
+    },
+    "py-v2-text-319": {
+      "stem": "Python 对文件操作采用的统步骤是：",
+      "options": [
+        "打开一读写一写入",
+        ".操作一读取一写入",
+        "打开一读取一写入一关闭",
+        "打开操作一关闭"
+      ]
+    },
+    "py-v2-text-320": {
+      "stem": "关于Python文件打开模式的描述，以下选项中描述错误的是",
+      "options": [
+        "覆盖写模式w",
+        "追加写模式a",
+        "创建写模式n",
+        "只读模式r"
+      ]
+    },
+    "py-v2-text-321": {
+      "stem": "关于random.uniform(a，b)的作用描述，以下选项中正确的是",
+      "options": [
+        "生成一个[a，b]之间的随机实数",
+        "生成一个均值为a，方差为b的正态分布",
+        "生成一个（a,b)之间的随机数",
+        "生成一个[a，b]之间的随机整数"
+      ]
+    },
+    "py-v2-text-322": {
+      "stem": "关于time库的描述，以下选项中错误的是",
+      "options": [
+        "time 库提供获取系统时间并格式化输出功能",
+        "time.sleep(s)的作用是休眠s秒",
+        "time.perf_counter()返回一个固定的时间计数值",
+        "time 库是Python 中处理时间的标准库"
+      ]
+    },
+    "py-v2-text-323": {
+      "stem": "执行如下代码：\nimport time\nprint(time.time())\n以下选项中描述错误的是",
+      "options": [
+        "time 库是Python的标准库",
+        "可使用time.ctime（），显示为更可读的形式",
+        "time.sleep(5)推迟调用线程的运行，单位为毫秒",
+        "输出自1970年1月1日00：00:00AM以来的秒数"
+      ]
+    },
+    "py-v2-text-324": {
+      "stem": "关于import 引用，以下选项中描述错误的是",
+      "options": [
+        "使用 import turtle.引入turtle库",
+        "可以使用 from turtle import setup 引入turtle库",
+        "使用 import turtle as t 引入turtle 库取别名为t",
+        "import保留字用于导入模块或者模块中的对象"
+      ]
+    },
+    "py-v2-text-325": {
+      "stem": "以下程序的输出结果是：\nimport time\nt=time.gmtime()\nprint(time.strftime(\"%Y-%m-%d %H:%M:%5",
+      "options": [
+        "系统当前的日期",
+        "系统当前的时间",
+        "系统出错",
+        "系统当前的日期与时间"
+      ]
+    },
+    "py-v2-text-326": {
+      "stem": "以下关于random 库的描述，正确的是：",
+      "options": [
+        "设定相同种子，每次调用随机函数生成的随机数不相同",
+        "通过 from random import *引入random随机库的部分函数",
+        "uniform(e,1)与 uniform(0.0,1.0)的输出结果不同，前者输出随机整数，后者输出随机小数",
+        "randint(a,b)是生成一个[a,b]之间的整数"
+      ]
+    },
+    "py-v2-text-327": {
+      "stem": "如果当前时间是2018年5月1日10点10分9秒，则下面代码的输出结果是\nimport time\nprint(time.strftime(“%Y=%m-%dQ%H>%M>%5\"，",
+      "options": [
+        "2018=05-01010>10>09",
+        "2018=5-1 10>10>9",
+        "True@True",
+        "2018=5-1@10>10>9"
+      ]
+    },
+    "py-v2-text-328": {
+      "stem": "关于random库，以下选项中描述错误的是",
+      "options": [
+        "设定相同种子，每次调用随机函数生成的随机数相同",
+        "通过from random import*可以引入random 随机库",
+        "通过import random 可以引入random 随机库",
+        "生成随机数之前必须要指定随机数种子"
+      ]
+    },
+    "py-v2-text-329": {
+      "stem": "以下程序输出到文件text.csv里的结果是：\nfo =open(\"text.c5v,'w')\nx=[90,87,93]\n2=[]\nfor y in x:\nz.append(str(y))\nfo.urite(\",\".join(z))\nfo.close()",
+      "options": [
+        "[90,87,93]",
+        "90,87,93",
+        "'[90,87,93]",
+        "'90,87,93"
+      ]
+    },
+    "py-v2-text-330": {
+      "stem": "关于程序的异常处理，以下选项中描述错误的是：",
+      "options": [
+        "程序异常发生经过妥善处理可以继续执行",
+        "异常语句可以与else和finally保留字配合使",
+        "编程语言中的异常和错误是完全相同的概念",
+        "Python通过try、except等保留字提供异常处理功能"
+      ]
+    },
+    "py-v2-text-331": {
+      "stem": "以下程序的输出结果是：\ns=\ntry:\nfor i in range(1,10,2):\ns.append(i)\nexcept:\nprint(\"error\")\nprint(s)",
+      "options": [
+        "13579",
+        "[1,3,5,7,9]",
+        "2,4,6,8,10",
+        "error"
+      ]
+    },
+    "py-v2-text-332": {
+      "stem": ".对以下程序描述错误的是\ntry:\n#语句块1\nexcept IndexError as i:\n#语句块2",
+      "options": [
+        "改程序对异常处理了，因此一定不会终止程序",
+        "改程序对异常处理了，不一定不会因异常引发终止",
+        "语句块1，如果抛出IndexError 异常，不会因为异常终止程序",
+        "语句块2不一定会执行"
+      ]
+    },
+    "py-v2-text-333": {
+      "stem": "执行下列语句，程序会抛出什么异常：\nx=5\ny=6\nx=x+y",
+      "options": [
+        "TypeError",
+        "IOError",
+        "NameError",
+        "AttributeError"
+      ]
+    },
+    "py-v2-text-334": {
+      "stem": "以下关于异常处理的描述，错误的选项是：",
+      "options": [
+        "Python 通过try、except 等保留字提供异常处理功能",
+        "ZeroDivisionError 是一个变量末命名错误",
+        "NameError 是一种异常类型",
+        "异常语句可以与else 和 finally 语句配合使用"
+      ]
+    },
+    "py-v2-text-335": {
+      "stem": "以下选项中Python 用于异常处理结构中用来捕获特定类型的异常的保留字是",
+      "options": [
+        "except",
+        "do",
+        "pass",
+        "while"
+      ]
+    },
+    "py-v2-text-336": {
+      "stem": "当用户输入abc时，下面代码的输出结果是\ntry:\nn=0\nn=input(\"请输入一个整数：”）\ndef powle(n):\nreturn n*310\nexcept:\nprint(“程序执行错误”）",
+      "options": [
+        "输出：abc",
+        "程序没有任何输出",
+        "输出：e",
+        "输出：程序执行错误"
+      ]
+    },
+    "py-v2-text-337": {
+      "stem": "执行以下程序，输入1a，输出结果是：\n1a='python'\ntry:\ns=eval(input('请输入整数：））\n1s=s*2\nprint(1s)\nexcept:\nprint(请输入整数’）",
+      "options": [
+        "la",
+        "请输入整数",
+        "pythonpython",
+        "python"
+      ]
+    },
+    "py-v2-text-338": {
+      "stem": "以下程序的输出结果是：\n5=0\ndef fun(num):\ntry:\n5 +=num\nreturn s\nexcept:\nretunn 0\nreturn 5\nprint(fun(2))",
+      "options": [
+        "0",
+        "2",
+        "UnboundLocalEnron",
+        "5"
+      ]
+    },
+    "py-v2-text-339": {
+      "stem": "以下Python 语言关键字在异常处理结构中用来捕获特定类型异常的选项是：",
+      "options": [
+        "for",
+        "except",
+        "in",
+        "lambda"
+      ]
+    },
+    "py-v2-text-340": {
+      "stem": "以下关于异常处理的描述，正确的是：",
+      "options": [
+        "Python 中允许利用raise 语句由程序主动引发异常",
+        "Python中，可以用异常处理捕获程序中的所有错误",
+        "引发一个不存在索引的列表元素会引发NameError 错误",
+        "try语句中有except 子句就不能有finally 子句"
+      ]
+    },
+    "py-v2-text-341": {
+      "stem": "运行以下程序：\ntry:\nnum =eval(input(\"请输入一个列表：”)）\nnum.reverse()\nprint(num)\nexcept:\nprint(\"输入的不是列表”）\n从键盘上输入1，2，3，则输出的结果是：",
+      "options": [
+        "[1,2,3]",
+        "[3,2,1]",
+        "输入的不是列表",
+        "运算错误"
+      ]
+    },
+    "py-v2-text-342": {
+      "stem": "用户输入整数的时候不合规导致程序出错，为了不让程序异常中断，需要用到的语句是：",
+      "options": [
+        "try-except 语句",
+        "eval 语句",
+        "循环语句",
+        "if 语句"
+      ]
+    }
+  }
+}

@@ -41,7 +41,7 @@ theme_override_constants/margin_bottom = 140
 
 [node name="PageColumn" type="VBoxContainer" parent="PageMargin" unique_id=529779532]
 layout_mode = 2
-theme_override_constants/separation = 200
+theme_override_constants/separation = 80
 
 [node name="Title" type="Label" parent="PageMargin/PageColumn" unique_id=2124834621]
 custom_minimum_size = Vector2(0, 110)
@@ -59,7 +59,7 @@ layout_mode = 2
 [node name="ButtonColumn" type="VBoxContainer" parent="PageMargin/PageColumn/ButtonCenter" unique_id=932316383]
 custom_minimum_size = Vector2(1500, 0)
 layout_mode = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 30
 
 [node name="MarxismButton" type="Button" parent="PageMargin/PageColumn/ButtonCenter/ButtonColumn" unique_id=832214068]
 custom_minimum_size = Vector2(1500, 130)
@@ -81,6 +81,27 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 52
 text = "习近平新时代中国特色社会主义思想概论"
+
+[node name="MatlabButton" type="Button" parent="PageMargin/PageColumn/ButtonCenter/ButtonColumn"]
+custom_minimum_size = Vector2(1500, 130)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 52
+text = "MATLAB"
+
+[node name="PythonButton" type="Button" parent="PageMargin/PageColumn/ButtonCenter/ButtonColumn"]
+custom_minimum_size = Vector2(1500, 130)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 52
+text = "Python"
+
+[node name="CppButton" type="Button" parent="PageMargin/PageColumn/ButtonCenter/ButtonColumn"]
+custom_minimum_size = Vector2(1500, 130)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 52
+text = "C++"
 
 [node name="BackButtonContainer" type="CenterContainer" parent="PageMargin/PageColumn" unique_id=1947648174]
 custom_minimum_size = Vector2(0, 200)

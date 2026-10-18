@@ -18,7 +18,6 @@ const DARK_ACCENT := Color("#416ED8")
 @onready var wrong_button: Button = $PageMargin/PageColumn/ButtonCenter/ButtonRow/WrongButton
 @onready var kaiwu_button: Button = $PageMargin/PageColumn/FeatureCenter/FeatureRow/KaiwuButton
 @onready var spirit_button: Button = $PageMargin/PageColumn/FeatureCenter/FeatureRow/SpiritButton
-@onready var wrong_status: Label = $PageMargin/PageColumn/WrongStatusMargin/WrongStatus
 @onready var background: ColorRect = $Background
 @onready var title_label: Label = $PageMargin/PageColumn/Title
 @onready var welcome_label: Label = $PageMargin/PageColumn/SubtitleRow/WelcomeLabel
@@ -34,29 +33,11 @@ func _ready() -> void:
 	spirit_button.pressed.connect(
 		func(): get_tree().change_scene_to_file("res://scenes/MySpirit.tscn")
 	)
-	_refresh_wrong_counts()
 	_app_state().font_scale_changed.connect(_on_font_scale_changed)
 	_app_state().color_mode_changed.connect(_on_color_mode_changed)
 	_app_state().apply_font_scale(self)
 	_app_state().apply_color_mode(self)
 	_apply_page_palette()
-
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_APPLICATION_FOCUS_IN and is_instance_valid(wrong_status):
-		_refresh_wrong_counts()
-
-
-func _refresh_wrong_counts() -> void:
-	var subjects: Dictionary = _app_state().SUBJECTS
-	var marxism_count := _load_json_array(subjects["marxism"]["wrong_path"]).size()
-	var mao_count := _load_json_array(subjects["mao"]["wrong_path"]).size()
-	var xi_count := _load_json_array(subjects["xi"]["wrong_path"]).size()
-	wrong_status.text = "马克思主义原理错题：%d 道\n毛泽东思想和中国特色社会主义错题：%d 道\n习近平新时代中国特色社会主义思想概论错题：%d 道" % [
-		marxism_count,
-		mao_count,
-		xi_count,
-	]
 
 
 func _open_subject_selector(mode: String) -> void:
@@ -68,16 +49,6 @@ func _open_subject_selector(mode: String) -> void:
 
 func _app_state() -> Node:
 	return get_node("/root/AppState")
-
-
-func _load_json_array(path: String) -> Array:
-	if not FileAccess.file_exists(path):
-		return []
-	var file := FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		return []
-	var parsed = JSON.parse_string(file.get_as_text())
-	return parsed if typeof(parsed) == TYPE_ARRAY else []
 
 
 func _on_font_scale_changed(_scale: float) -> void:
@@ -101,7 +72,6 @@ func _apply_page_palette() -> void:
 		"font_color",
 		Color("#8EACFF") if is_dark else HEBUT_BLUE,
 	)
-	wrong_status.add_theme_color_override("font_color", muted_color)
 
 	_apply_button_palette(all_button, true, is_dark)
 	for button in [wrong_button, kaiwu_button, spirit_button]:

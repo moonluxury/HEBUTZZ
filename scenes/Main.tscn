@@ -113,19 +113,3 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 52
 text = "我的精灵"
-
-[node name="WrongStatusMargin" type="MarginContainer" parent="PageMargin/PageColumn" unique_id=1221292059]
-layout_mode = 2
-theme_override_constants/margin_top = 30
-
-[node name="WrongStatus" type="Label" parent="PageMargin/PageColumn/WrongStatusMargin" unique_id=1085580709]
-custom_minimum_size = Vector2(0, 260)
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_constants/line_spacing = 47
-theme_override_font_sizes/font_size = 46
-text = "马克思主义原理错题：0 道
-毛泽东思想和中国特色社会主义错题：0 道
-习近平新时代中国特色社会主义思想概论错题：0 道"
-horizontal_alignment = 1
-vertical_alignment = 1

@@ -1,0 +1,283 @@
+{
+  "source": "F:\\C++题库（400页）.pdf",
+  "page_count": 391,
+  "blank_pages": [
+	81,
+	120,
+	160,
+	194,
+	231,
+	275,
+	318,
+	390,
+	391
+  ],
+  "identified_records": {
+	"单项选择": 264,
+	"程序填空": 70,
+	"读程序写结果": 72,
+	"编程": 382
+  },
+  "included": {
+	"single": 262,
+	"fill": 69,
+	"output": 71
+  },
+  "total": 402,
+  "excluded_incomplete": [
+	{
+	  "source_number": 575,
+	  "source_id": 40401,
+	  "kind": "单项选择",
+	  "pages": [
+		41,
+		42
+	  ],
+	  "reason": "第 41～42 页题目截断，并混入下一题的答案和内容"
+	},
+	{
+	  "source_number": 622,
+	  "source_id": 40448,
+	  "kind": "单项选择",
+	  "pages": [
+		80
+	  ],
+	  "reason": "第 81 页空白，该题仅剩 A、B 选项，后续选项缺失"
+	},
+	{
+	  "source_number": 107,
+	  "source_id": 20013,
+	  "kind": "程序填空",
+	  "pages": [
+		119,
+		121
+	  ],
+	  "reason": "缺少参考答案，题目受空白页影响"
+	},
+	{
+	  "source_number": 131,
+	  "source_id": 30010,
+	  "kind": "读程序写结果",
+	  "pages": [
+		159,
+		161
+	  ],
+	  "reason": "第 160 页空白，原程序仅剩函数头，并混入后续题目的代码"
+	}
+  ],
+  "directory_counts": {
+	"单项选择": 269,
+	"程序填空": 71,
+	"读程序写结果": 78,
+	"编程": 390
+  },
+  "unavailable_in_scope": {
+	"count": 16,
+	"missing_source_numbers": [
+	  108,
+	  132,
+	  133,
+	  134,
+	  576,
+	  623,
+	  624,
+	  625,
+	  626,
+	  800,
+	  801,
+	  802
+	],
+	"incomplete_source_numbers": [
+	  575,
+	  622,
+	  107,
+	  131
+	]
+  },
+  "output_questions": {
+	"directory_count": 78,
+	"included": 71,
+	"missing_source_numbers": [
+	  132,
+	  133,
+	  134,
+	  800,
+	  801,
+	  802
+	],
+	"incomplete_source_numbers": [
+	  131
+	],
+	"recovered_source_numbers": [
+	  799
+	]
+  },
+  "missing_source_numbers": [
+	108,
+	132,
+	133,
+	134,
+	200,
+	201,
+	231,
+	260,
+	261,
+	262,
+	263,
+	273,
+	576,
+	623,
+	624,
+	625,
+	626,
+	800,
+	801,
+	802
+  ],
+  "source_repairs": [
+	{
+	  "source_id": 20004,
+	  "changes": [
+		{
+		  "before": "include <iostream>\n",
+		  "after": "include <iostream>\nusing namespace std;\n"
+		}
+	  ]
+	},
+	{
+	  "source_id": 20005,
+	  "changes": [
+		{
+		  "before": "double mul=1;",
+		  "after": "double mul=1;\nint j;"
+		},
+		{
+		  "before": "for (int j=2;j<i;j++)",
+		  "after": "for (j=2;j<i;j++)"
+		}
+	  ]
+	},
+	{
+	  "source_id": 20008,
+	  "changes": [
+		{
+		  "before": "for(j=1;",
+		  "after": "for(int j=1;"
+		}
+	  ]
+	},
+	{
+	  "source_id": 20012,
+	  "changes": [
+		{
+		  "before": "void main()\n",
+		  "after": ""
+		}
+	  ]
+	},
+	{
+	  "source_id": 20021,
+	  "changes": [
+		{
+		  "before": "char *p=\"program\"",
+		  "after": "const char *p=\"program\""
+		}
+	  ]
+	},
+	{
+	  "source_id": 40629,
+	  "changes": [
+		{
+		  "before": "const int N = 5\n",
+		  "after": "const int N = 5;\n"
+		}
+	  ]
+	},
+	{
+	  "source_id": 40630,
+	  "changes": [
+		{
+		  "before": "char *days[]",
+		  "after": "const char *days[]"
+		}
+	  ]
+	},
+	{
+	  "source_id": 20025,
+	  "changes": [
+		{
+		  "before": "for (int i=0,j=0;",
+		  "after": "int j=0;\nfor (int i=0;"
+		}
+	  ]
+	},
+	{
+	  "source_id": 40622,
+	  "changes": [
+		{
+		  "before": "char name[255]\n",
+		  "after": "char name[255];\n"
+		}
+	  ]
+	},
+	{
+	  "source_id": 40623,
+	  "changes": [
+		{
+		  "before": "}\nTIME*",
+		  "after": "};\nTIME*"
+		}
+	  ]
+	},
+	{
+	  "source_id": 40624,
+	  "changes": [
+		{
+		  "before": "cout << \"pls input the number of students:\"\n",
+		  "after": "cout << \"pls input the number of students:\";\n"
+		}
+	  ]
+	},
+	{
+	  "source_id": 30014,
+	  "changes": [
+		{
+		  "before": "for (int i=1,count=0;i<=10;i++)",
+		  "after": "int count=0;\nfor (int i=1;i<=10;i++)"
+		}
+	  ]
+	},
+	{
+	  "source_id": 30019,
+	  "changes": [
+		{
+		  "before": "for(i=0;i<4;i++)",
+		  "after": "for(int i=0;i<4;i++)"
+		}
+	  ]
+	},
+	{
+	  "source_id": 30025,
+	  "changes": [
+		{
+		  "before": "for (i=0;i<2;i++)",
+		  "after": "for (int i=0;i<2;i++)"
+		}
+	  ]
+	},
+	{
+	  "source_id": 40625,
+	  "changes": [
+		{
+		  "note": "从第 193 页恢复完整题干与答案，剔除空白页之后混入的其他题目片段。"
+		},
+		{
+		  "before": "char name[255]\n",
+		  "after": "char name[255];\n"
+		}
+	  ]
+	}
+  ],
+  "scope": "不分章节；选择题、文字填空题及读程序写结果题；输出题支持多行文字作答，不执行代码。整段编程题暂未导入。",
+  "answer_policy": "以 PDF 参考答案为基础，未逐题编译或重新审定全部答案。"
+}
