@@ -10,6 +10,8 @@ const DISPLAY_LETTERS := ["A", "B", "C", "D", "E", "F"]
 const CORRECT_COLOR := Color(0.05, 0.55, 0.22)
 const WRONG_COLOR := Color(0.86, 0.15, 0.15)
 const QUESTION_NUMBER_COLUMNS := 5
+const QUIZ_FONT_SIZE := 42
+const QUESTION_LINE_HEIGHT_MULTIPLIER := 1.5
 const HEBUT_BLUE := Color("#092C87")
 const OPTION_SELECTED_BG := Color("#EEF3FF")
 const OPTION_CORRECT_BG := Color("#EDF9F1")
@@ -111,6 +113,9 @@ func _ready() -> void:
 	# Use the Python question font throughout all six course quiz pages.
 	theme = theme.duplicate()
 	theme.default_font = CODE_FONT
+	if _app_state().quiz_mode == "all":
+		var vertical_spacing := question_number_list.get_theme_constant("v_separation")
+		question_number_list.add_theme_constant_override("v_separation", vertical_spacing * 2)
 	for button in [prev_button, next_button, wrong_toggle, home_button]:
 		button.clip_text = true
 		button.alignment = HORIZONTAL_ALIGNMENT_RIGHT if button == next_button else HORIZONTAL_ALIGNMENT_LEFT
@@ -148,7 +153,8 @@ func _ready() -> void:
 		_show_question()
 	_app_state().font_scale_changed.connect(_on_font_scale_changed)
 	_app_state().color_mode_changed.connect(_on_color_mode_changed)
-	_app_state().apply_font_scale(self)
+	_apply_quiz_font_scale(self)
+	_scale_question_line_spacing()
 	_scale_footer_icons()
 	_app_state().apply_color_mode(self)
 	_apply_quiz_palette()
@@ -727,7 +733,7 @@ func _build_fill_inputs() -> void:
 		program_editor.configure(questions[current_index], entered_answers[0], reference_revealed)
 		program_editor.draft_changed.connect(_on_program_draft_changed.bind(str(questions[current_index]["source_id"])))
 		program_editor.reference_toggled.connect(_on_program_reference_toggled)
-		_app_state().apply_font_scale(program_editor)
+		_apply_quiz_font_scale(program_editor)
 		_app_state().apply_color_mode(program_editor)
 		program_editor.apply_palette(_is_dark_mode())
 		return
@@ -757,7 +763,7 @@ func _build_fill_inputs() -> void:
 		field.text_submitted.connect(_on_fill_enter.bind(index))
 		row.add_child(field)
 		fill_inputs.append(field)
-	_app_state().apply_font_scale(fill_answers_box)
+	_apply_quiz_font_scale(fill_answers_box)
 	_app_state().apply_color_mode(fill_answers_box)
 	_style_fill_inputs()
 
@@ -782,7 +788,7 @@ func _build_output_input() -> void:
 	output_input.add_theme_font_size_override("font_size", 40)
 	output_input.text_changed.connect(_on_output_text_changed)
 	fill_answers_box.add_child(output_input)
-	_app_state().apply_font_scale(fill_answers_box)
+	_apply_quiz_font_scale(fill_answers_box)
 	_app_state().apply_color_mode(fill_answers_box)
 	_style_fill_inputs()
 
@@ -1127,9 +1133,46 @@ func _subject() -> Dictionary:
 
 
 func _on_font_scale_changed(_scale: float) -> void:
-	_app_state().apply_font_scale(self)
+	_apply_quiz_font_scale(self)
+	_scale_question_line_spacing()
 	_scale_footer_icons()
 	_position_current_number_underline.call_deferred()
+
+
+func _apply_quiz_font_scale(root: Node) -> void:
+	if _app_state().quiz_mode == "all":
+		_set_quiz_base_font_size(root)
+	_app_state().apply_font_scale(root)
+
+
+func _set_quiz_base_font_size(node: Node) -> void:
+	if node is Control:
+		node.set_meta("base_font_size", QUIZ_FONT_SIZE)
+		node.add_theme_font_size_override("font_size", QUIZ_FONT_SIZE)
+		if node is RichTextLabel:
+			node.set_meta("base_normal_font_size", QUIZ_FONT_SIZE)
+			node.add_theme_font_size_override("normal_font_size", QUIZ_FONT_SIZE)
+	for child in node.get_children(true):
+		_set_quiz_base_font_size(child)
+
+
+func _scale_question_line_spacing() -> void:
+	if _app_state().quiz_mode != "all":
+		return
+	var font := question_label.get_theme_font("normal_font")
+	var font_size := question_label.get_theme_font_size("normal_font_size")
+	# line_separation adds pixels to the font's natural line height (default gap: 0).
+	question_label.add_theme_constant_override(
+		"line_separation",
+		roundi(font.get_height(font_size) * (QUESTION_LINE_HEIGHT_MULTIPLIER - 1.0)),
+	)
+	for button in option_buttons:
+		var option_font := button.get_theme_font("font")
+		var option_font_size := button.get_theme_font_size("font_size")
+		button.add_theme_constant_override(
+			"line_spacing",
+			roundi(option_font.get_height(option_font_size) * (QUESTION_LINE_HEIGHT_MULTIPLIER - 1.0)),
+		)
 
 
 func _scale_footer_icons() -> void:
