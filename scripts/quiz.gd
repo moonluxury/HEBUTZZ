@@ -97,7 +97,8 @@ var number_underline_tween: Tween
 	$PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/Option6,
 ]
 @onready var submit_button: Button = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/SubmitRow/SubmitButton
-@onready var fill_answers_box: VBoxContainer = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/FillAnswers
+@onready var answer_margin: MarginContainer = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/AnswerMargin
+@onready var fill_answers_box: VBoxContainer = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/AnswerMargin/FillAnswers
 @onready var result_label: Label = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/SubmitRow/ResultLabel
 @onready var answer_label: Label = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/AnswerLabel
 @onready var footer_divider: ColorRect = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/FooterDivider
@@ -724,6 +725,7 @@ func _build_fill_inputs() -> void:
 	fill_inputs.clear()
 	output_input = null
 	program_editor = null
+	answer_margin.visible = _is_text_question()
 	fill_answers_box.visible = _is_text_question()
 	if not _is_text_question():
 		return

@@ -395,7 +395,12 @@ text = "○    F. 其他"
 alignment = 0
 autowrap_mode = 2
 
-[node name="FillAnswers" type="VBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content"]
+[node name="AnswerMargin" type="MarginContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_right = 32
+
+[node name="FillAnswers" type="VBoxContainer" parent="PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/AnswerMargin"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 20
