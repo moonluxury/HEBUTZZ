@@ -15,13 +15,20 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="河工开物"
-run/main_scene="res://scenes/Main.tscn"
-config/features=PackedStringArray("4.7")
-config/icon="res://icon.svg"
+run/main_scene="res://scenes/Workbench.tscn"
+config/features=PackedStringArray("4.6")
+config/icon="res://assets/branding/hegong_zhigu_icon.png"
+config/windows_native_icon="res://assets/branding/hegong_zhigu_icon.ico"
 
 [autoload]
 
 AppState="*res://scripts/app_state.gd"
+StudyStats="*res://scripts/study_stats.gd"
+WindowIcon="*res://scripts/window_icon.gd"
+UiMotion="*res://scripts/ui_motion.gd"
+UiResources="*res://scripts/ui_resources.gd"
+ProfileStore="*res://scripts/profile_store.gd"
+PageRouter="*res://scripts/page_router.gd"
 
 [display]
 

@@ -5,6 +5,7 @@ signal reference_toggled(revealed: bool)
 
 const CODE_FONT = preload("res://themes/code_font.tres")
 const PythonRunner = preload("res://scripts/python_runner.gd")
+const Tokens = preload("res://scripts/ui_tokens.gd")
 var editor: CodeEdit
 var reference_editor: CodeEdit
 var reference_box: VBoxContainer
@@ -59,7 +60,7 @@ func configure(question: Dictionary, draft: String, revealed: bool) -> void:
 
 
 func _toggle_reference() -> void:
-	reference_box.visible = not reference_box.visible
+	get_node("/root/UiMotion").reveal(reference_box, not reference_box.visible)
 	reveal_button.text = "收起参考代码" if reference_box.visible else "查看参考代码"
 	reference_toggled.emit(reference_box.visible)
 
@@ -154,7 +155,7 @@ func _code_edit(editable_code: bool) -> CodeEdit:
 func apply_palette(dark: bool) -> void:
 	var ink := Color("#E8EEF8") if dark else Color("#172235")
 	var surface := Color("#19263A") if dark else Color("#F8FAFE")
-	var accent := Color("#8CA9FF") if dark else Color("#173C91")
+	var accent := Tokens.DARK_ACCENT if dark else Tokens.PRIMARY
 	for field in [editor, reference_editor, stdin_editor, output_editor]:
 		var style := StyleBoxFlat.new()
 		style.bg_color = surface
@@ -166,6 +167,7 @@ func apply_palette(dark: bool) -> void:
 		var focus := style.duplicate()
 		focus.border_color = accent
 		field.add_theme_stylebox_override("focus", focus)
+		get_node("/root/UiMotion").bind_input.call_deferred(field)
 		for color_name in ["font_color", "font_readonly_color", "caret_color", "line_number_color"]:
 			field.add_theme_color_override(color_name, ink)
 		field.add_theme_color_override("font_placeholder_color", Color("#8795AB") if dark else Color("#69788F"))
@@ -183,7 +185,7 @@ func apply_palette(dark: bool) -> void:
 			field.syntax_highlighter = syntax
 	for button in [reveal_button, run_button, stop_button]:
 		var normal := StyleBoxFlat.new()
-		normal.bg_color = Color("#21375B") if dark else Color("#EEF3FF")
+		normal.bg_color = Tokens.DARK_SOFT if dark else Tokens.SOFT
 		normal.border_color = Color("#455878") if dark else Color("#CBD5E5")
 		normal.set_border_width_all(2)
 		normal.set_corner_radius_all(8)
@@ -199,3 +201,4 @@ func apply_palette(dark: bool) -> void:
 		button.add_theme_color_override("font_hover_color", ink)
 		button.add_theme_color_override("font_focus_color", ink)
 		button.add_theme_color_override("font_disabled_color", Color("#8795AB") if dark else Color("#69788F"))
+		get_node("/root/UiMotion").bind_button.call_deferred(button)

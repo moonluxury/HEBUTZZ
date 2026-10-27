@@ -1,0 +1,194 @@
+[
+  {
+    "文件": "01_原版图形/团队Logo_原版蓝色渐变_透明_1254.png",
+    "尺寸": "1254×1254",
+    "透明情况": "有透明通道",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\HEBUT卡背_团队Logo版_20261019\\02_视觉素材\\team_logo.png",
+    "SHA256": "b462c2136229441bd961f3aea5c63211d31af95ee8b1a91781553b50d3521db3"
+  },
+  {
+    "文件": "01_原版图形/团队官网_原始小图标_透明_192.png",
+    "尺寸": "192×192",
+    "透明情况": "有透明通道",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\HEBUT卡背_团队Logo版_20261019\\04_制作源文件\\team_homepage_icon.png",
+    "SHA256": "0b787311716c7595594e9980283d19f326c23a27e56daf69ea3b22fef60d3013"
+  },
+  {
+    "文件": "02_带团队名称/HEBUT先进空天_亮蓝横版_v1_棋盘格底.png",
+    "尺寸": "2048×768",
+    "透明情况": "不透明背景",
+    "说明": "棋盘格已写入像素，不是真透明。",
+    "来源": "E:\\zhengzhi\\assets\\hebut-aerospace-research-center-logo-v1.png",
+    "SHA256": "39074d6124eaa8915d8bbe0c45d69f37da05b901cf1bc8a6a946236921bd239f"
+  },
+  {
+    "文件": "02_带团队名称/HEBUT先进空天_深蓝横版_v2_棋盘格底.png",
+    "尺寸": "2048×768",
+    "透明情况": "不透明背景",
+    "说明": "棋盘格已写入像素，不是真透明。",
+    "来源": "E:\\zhengzhi\\assets\\hebut-aerospace-research-center-logo-v2.png",
+    "SHA256": "e302d9c851b5735c5149c3993f4d7954fae8c39b201ca413cdc30f97997bda31"
+  },
+  {
+    "文件": "02_带团队名称/HEBUT先进空天_深蓝横版_v2_白底.png",
+    "尺寸": "2048×768",
+    "透明情况": "不透明背景",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\assets\\hebut-aerospace-research-center-logo-v2-white.png",
+    "SHA256": "d14c8dcda55d21df18d2d88316d0fd58fa0f15ce2512726d64637e6f0aafcc75"
+  },
+  {
+    "文件": "03_配色变种/纯奶油白_透明.png",
+    "尺寸": "1254×1254",
+    "透明情况": "有透明通道",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\HEBUT卡背_纯奶油白_20261020\\02_视觉素材\\team_logo.png",
+    "SHA256": "45895e9dd8ef2f1b68931fbac208c17a081af71dc1eb813c68e5abd310694fe2"
+  },
+  {
+    "文件": "03_配色变种/方案14_雾蓝豆沙_透明.png",
+    "尺寸": "1254×1254",
+    "透明情况": "有透明通道",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\HEBUT卡背_方案14雾蓝豆沙_20261019\\02_视觉素材\\team_logo.png",
+    "SHA256": "8df35fefbd15f85a911c9dc8498b51cb8e12c7b71deffe4e0754175bbac75a66"
+  },
+  {
+    "文件": "03_配色变种/淡蓝紫主体_奶油色轨道_透明.png",
+    "尺寸": "1254×1254",
+    "透明情况": "有透明通道",
+    "说明": "早期配色探索；按实际配色命名。",
+    "来源": "C:\\Users\\Legion\\.codex\\generated_images\\01a151ff-5b88-7140-956a-c4c22cabbc69\\exec-26027c68-5a03-4e16-8c13-54932460d7f1.png",
+    "SHA256": "daabfdd7f0d20624e02d197b0fc4c2a7cd76c1626d3792fce8c5164911dd56c5"
+  },
+  {
+    "文件": "03_配色变种/冷暖对比_金橙主体蓝绿轨道_透明.png",
+    "尺寸": "1254×1254",
+    "透明情况": "有透明通道",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\HEBUT卡背_团队Logo冷暖对比版_20261019.zip :: HEBUT卡背_团队Logo冷暖对比版_20261019/02_视觉素材/team_logo.png",
+    "SHA256": "fb99598dbb4017213b25711245f87759136ed4cab88eec3b5e5cd82dea7564bc"
+  },
+  {
+    "文件": "03_配色变种/交大灰_DCDCDD_透明.png",
+    "尺寸": "503×334",
+    "透明情况": "有透明通道",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\HEBUT卡背_团队Logo交大灰_DCDCDD_20261019.zip :: HEBUT卡背_团队Logo交大灰_DCDCDD_20261019/02_视觉素材/团队Logo_DCDCDD_透明.png",
+    "SHA256": "8e0477be7e849679c10a7f6ca4034bf6194860d998e6b8f883fbf743d2bd3648"
+  },
+  {
+    "文件": "04_艺术变种/01_旧日航天/旧日航天_轻做旧_透明.png",
+    "尺寸": "2048×2048",
+    "透明情况": "有透明通道",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\旧日航天_Logo_20261020\\retro_aerospace_transparent.png",
+    "SHA256": "904d715f83732652649790222f2a8cc4e3a200d00d3c6b78633f304e38de4681"
+  },
+  {
+    "文件": "04_艺术变种/01_旧日航天/旧日航天_轻做旧_奶油底.png",
+    "尺寸": "2048×2048",
+    "透明情况": "不透明背景",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\旧日航天_Logo_20261020\\retro_aerospace_cream.png",
+    "SHA256": "253e22d4421aa1629b63353df66021da8b9e1bc47cc1c042eea36d71ff8639b1"
+  },
+  {
+    "文件": "04_艺术变种/01_旧日航天/旧日航天_无做旧分色_透明.png",
+    "尺寸": "2048×2048",
+    "透明情况": "有透明通道",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\旧日航天_Logo_20261020\\retro_aerospace_flat_transparent.png",
+    "SHA256": "f54c513cd4329399c6932cdfa29c6473f1497909c7b098403e69a37c78808162"
+  },
+  {
+    "文件": "04_艺术变种/01_旧日航天/旧日航天_无做旧分色_奶油底.png",
+    "尺寸": "2048×2048",
+    "透明情况": "不透明背景",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\旧日航天_Logo_20261020\\retro_aerospace_flat_cream.png",
+    "SHA256": "3daad559d47d69476e4263c83c7e16e34377aa2546ad0b7ee2181c86b65e861e"
+  },
+  {
+    "文件": "04_艺术变种/02_青花出舱/青花出舱_透明_2048.png",
+    "尺寸": "2048×2048",
+    "透明情况": "有透明通道",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\青花出舱_Logo_20261020\\qinghua_chucang_transparent.png",
+    "SHA256": "d7a03477f4aeeb2e13459f2e409129779ff4a3e5582864605400859eaf337936"
+  },
+  {
+    "文件": "04_艺术变种/02_青花出舱/青花出舱_浅暖白底_2048.png",
+    "尺寸": "2048×2048",
+    "透明情况": "不透明背景",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\青花出舱_Logo_20261020\\qinghua_chucang_light.png",
+    "SHA256": "a69fbb876411df94efd186919a598c092e57772c2ce3e45462b0cf6842011e43"
+  },
+  {
+    "文件": "04_艺术变种/03_重返大气层/重返大气层_透明_2048.png",
+    "尺寸": "2048×2048",
+    "透明情况": "有透明通道",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\重返大气层_Logo_20261020\\reentry_transparent.png",
+    "SHA256": "f51515ca944c2b0011204db962f67be8fbf5d7d2bc74c93315e4d72fbd0ba7c6"
+  },
+  {
+    "文件": "04_艺术变种/03_重返大气层/重返大气层_深色底_2048.png",
+    "尺寸": "2048×2048",
+    "透明情况": "不透明背景",
+    "说明": "",
+    "来源": "E:\\zhengzhi\\outputs\\重返大气层_Logo_20261020\\reentry_dark.png",
+    "SHA256": "d5513d48d7c131eb1746da3a2f407128da664412504eec1b15cb1c89ce43b303"
+  },
+  {
+    "文件": "04_艺术变种/04_雪原极光/雪原极光_v3斜边修正版_透明_2048.png",
+    "尺寸": "2048×2048",
+    "透明情况": "有透明通道",
+    "说明": "采用最后修复斜边的 v3。",
+    "来源": "E:\\zhengzhi\\outputs\\snowfield_aurora\\final\\logo_snowfield_aurora_transparent_v3.png",
+    "SHA256": "88a48b84d7b791401e7e5f027fb84b1d68c2411f217d3b3c3a83b3fb2b0af3c4"
+  },
+  {
+    "文件": "04_艺术变种/04_雪原极光/雪原极光_v3斜边修正版_雪夜展示_2048.png",
+    "尺寸": "2048×2048",
+    "透明情况": "不透明背景",
+    "说明": "采用最后修复斜边的 v3。",
+    "来源": "E:\\zhengzhi\\outputs\\snowfield_aurora\\final\\logo_snowfield_aurora_presentation_v3.png",
+    "SHA256": "b3e71078f7d0dbf222b66abf7a36258e6ca1828cd91f57caf811f5473b35eb91"
+  },
+  {
+    "文件": "05_历史草稿/青花出舱_早期海浪纹样稿_透明.png",
+    "尺寸": "1254×1254",
+    "透明情况": "有透明通道",
+    "说明": "探索草稿，正式版本见艺术变种。",
+    "来源": "E:\\zhengzhi\\outputs\\青花出舱_Logo_20261020\\source\\first_pass_reference.png",
+    "SHA256": "a08d689da31c5b9b900ab4684a36cc7f1c1046e4346b740fab7e896a85639bb5"
+  },
+  {
+    "文件": "05_历史草稿/重返大气层_早期高亮纹理稿_透明.png",
+    "尺寸": "1254×1254",
+    "透明情况": "有透明通道",
+    "说明": "探索草稿，正式版本见艺术变种。",
+    "来源": "E:\\zhengzhi\\outputs\\重返大气层_Logo_20261020\\source\\first_pass_reference.png",
+    "SHA256": "dc078c454135ca24c0d6262903ec29a9b9d4fa39905efafc0b20010069766f58"
+  },
+  {
+    "文件": "06_原始尺寸备份/青花出舱_选定稿_生成原尺寸1254_透明.png",
+    "尺寸": "1254×1254",
+    "透明情况": "有透明通道",
+    "说明": "2048 交付版的选定生成原图。",
+    "来源": "E:\\zhengzhi\\outputs\\青花出舱_Logo_20261020\\source\\porcelain_generated.png",
+    "SHA256": "09068abbab1849f04c6566ace8ec8915cc0ea6a4f0b3c55c3b2e0d601862ebbe"
+  },
+  {
+    "文件": "06_原始尺寸备份/重返大气层_选定稿_生成原尺寸1254_透明.png",
+    "尺寸": "1254×1254",
+    "透明情况": "有透明通道",
+    "说明": "2048 交付版的选定生成原图。",
+    "来源": "E:\\zhengzhi\\outputs\\重返大气层_Logo_20261020\\source\\reentry_generated.png",
+    "SHA256": "2745b39fccf89458e6a901e4514b2ceaecfc2d75edf4cef2fb47d0cae4875571"
+  }
+]

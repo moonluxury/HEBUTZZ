@@ -1,0 +1,15 @@
+青花出舱 · 现代青花瓷 Logo 艺术版本
+
+qinghua_chucang_light.png：2048×2048 浅暖白背景展示图，背景 #FAF8F4。
+qinghua_chucang_transparent.png：同尺寸、同位置透明底版本。
+previews/qinghua_chucang_128.png：128×128 缩小预览。
+previews/porcelain_detail_100percent.png：原尺寸瓷面与笔触局部。
+
+设计：主体和火箭以温润瓷白为主，少量顺着结构展开的抽象青花笔触；轨道使用浓淡变化的钴蓝；左下圆点为简洁白瓷珠。沿用原标识的四个识别部分与穿插构图。
+未加入文字、徽章外框、古董做旧或背景道具。
+
+source 保留原始 Logo、分区参考、图像编辑过程输入、最终生成原图、完整提示词及导出脚本。
+使用内置 image_gen 进行材质和表面纹样编辑；导出脚本只裁去多余透明留白、等比排版并生成预览。
+当前艺术稿是位图；瓷面和青花纹样尚未拆分成单独可编辑图层，轮廓也不是逐像素锁定的矢量重制。
+重新导出：在安装有 Node.js 与 sharp 的环境中运行 source/export.cjs。
+原始文件未覆盖。

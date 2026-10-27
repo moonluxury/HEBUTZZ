@@ -1,0 +1,44 @@
+{
+  "canvas": [
+    2048,
+    2048
+  ],
+  "effectiveLogoWidth": 1536,
+  "effectiveWidthPercent": 75,
+  "colors": {
+    "cream": "#F1E8D7",
+    "navy": "#3C4D5D",
+    "orbit": "#B86140"
+  },
+  "inkAreaPixels": 546156,
+  "missingInkPercent": 3.19,
+  "fullyTransparentPinholes": 8564,
+  "creamCompositeMaxPixelError": 0,
+  "parts": {
+    "body": {
+      "inkAreaPixels": 359912,
+      "removedPixels": 13659,
+      "removedPercent": 3.795
+    },
+    "orbit": {
+      "inkAreaPixels": 122286,
+      "removedPixels": 2623,
+      "removedPercent": 2.145
+    },
+    "rocket": {
+      "inkAreaPixels": 47742,
+      "removedPixels": 868,
+      "removedPercent": 1.819
+    },
+    "dot": {
+      "inkAreaPixels": 16216,
+      "removedPixels": 270,
+      "removedPercent": 1.662
+    }
+  },
+  "registration": {
+    "globalOffset": 0,
+    "localPlateEdgePixels": 16,
+    "description": "Two very short gap-facing edge exposures, about one pixel deep; original gaps never reduced."
+  }
+}

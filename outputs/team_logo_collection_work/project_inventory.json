@@ -1,0 +1,288 @@
+[
+  {
+    "index": 1,
+    "path": "E:\\zhengzhi\\assets\\hebut-aerospace-research-center-logo-v1.png",
+    "size": [
+      2048,
+      768
+    ],
+    "alpha_range": [
+      255,
+      255
+    ],
+    "sha256": "39074d6124eaa8915d8bbe0c45d69f37da05b901cf1bc8a6a946236921bd239f"
+  },
+  {
+    "index": 2,
+    "path": "E:\\zhengzhi\\assets\\hebut-aerospace-research-center-logo-v2-white.png",
+    "size": [
+      2048,
+      768
+    ],
+    "alpha_range": [
+      255,
+      255
+    ],
+    "sha256": "d14c8dcda55d21df18d2d88316d0fd58fa0f15ce2512726d64637e6f0aafcc75"
+  },
+  {
+    "index": 3,
+    "path": "E:\\zhengzhi\\assets\\hebut-aerospace-research-center-logo-v2.png",
+    "size": [
+      2048,
+      768
+    ],
+    "alpha_range": [
+      255,
+      255
+    ],
+    "sha256": "e302d9c851b5735c5149c3993f4d7954fae8c39b201ca413cdc30f97997bda31"
+  },
+  {
+    "index": 4,
+    "path": "E:\\zhengzhi\\outputs\\HEBUT卡背_全奶油白_20261020\\02_视觉素材\\team_logo.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "45895e9dd8ef2f1b68931fbac208c17a081af71dc1eb813c68e5abd310694fe2"
+  },
+  {
+    "index": 5,
+    "path": "E:\\zhengzhi\\outputs\\HEBUT卡背_原版Logo工大蓝文字_20261020\\02_视觉素材\\team_logo.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "b462c2136229441bd961f3aea5c63211d31af95ee8b1a91781553b50d3521db3"
+  },
+  {
+    "index": 6,
+    "path": "E:\\zhengzhi\\outputs\\HEBUT卡背_团队Logo版_20261019\\02_视觉素材\\team_logo.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "b462c2136229441bd961f3aea5c63211d31af95ee8b1a91781553b50d3521db3"
+  },
+  {
+    "index": 7,
+    "path": "E:\\zhengzhi\\outputs\\HEBUT卡背_方案14雾蓝豆沙_20261019\\02_视觉素材\\team_logo.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "8df35fefbd15f85a911c9dc8498b51cb8e12c7b71deffe4e0754175bbac75a66"
+  },
+  {
+    "index": 8,
+    "path": "E:\\zhengzhi\\outputs\\HEBUT卡背_纯奶油白_20261020\\02_视觉素材\\team_logo.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "45895e9dd8ef2f1b68931fbac208c17a081af71dc1eb813c68e5abd310694fe2"
+  },
+  {
+    "index": 9,
+    "path": "E:\\zhengzhi\\outputs\\HEBUT卡背_全奶油白_20261020\\03_分层素材\\logo_layer.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "1cd11c26f5fddc21bb1f2a66db804f251b340d17d74b72e0a131fc2e6bf9ee1d"
+  },
+  {
+    "index": 10,
+    "path": "E:\\zhengzhi\\outputs\\HEBUT卡背_原版Logo工大蓝文字_20261020\\03_分层素材\\logo_layer.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "c7428725d2ef730c044f91c44c17ac3a43a3c2ecd6f3527c2c83de6929de6675"
+  },
+  {
+    "index": 11,
+    "path": "E:\\zhengzhi\\outputs\\HEBUT卡背_团队Logo版_20261019\\03_分层素材\\logo_layer.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "c7428725d2ef730c044f91c44c17ac3a43a3c2ecd6f3527c2c83de6929de6675"
+  },
+  {
+    "index": 12,
+    "path": "E:\\zhengzhi\\outputs\\HEBUT卡背_方案14雾蓝豆沙_20261019\\03_分层素材\\logo_layer.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "11dae5c3019c97e3c303d25e3394d8cf573e5daf47ab6de6d31eb919cdf49398"
+  },
+  {
+    "index": 13,
+    "path": "E:\\zhengzhi\\outputs\\HEBUT卡背_纯奶油白_20261020\\03_分层素材\\logo_layer.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "1cd11c26f5fddc21bb1f2a66db804f251b340d17d74b72e0a131fc2e6bf9ee1d"
+  },
+  {
+    "index": 14,
+    "path": "E:\\zhengzhi\\outputs\\HEBUT卡背_团队Logo版_20261019\\04_制作源文件\\team_homepage_icon.png",
+    "size": [
+      192,
+      192
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "0b787311716c7595594e9980283d19f326c23a27e56daf69ea3b22fef60d3013"
+  },
+  {
+    "index": 15,
+    "path": "E:\\zhengzhi\\outputs\\hebut_cards_work\\cream_white\\logo_fit.png",
+    "size": [
+      504,
+      336
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "48aef2e24c70dd7d3d4fefbf95c6c2a13a2d16120a54fb18b4ed008de6ee7dbd"
+  },
+  {
+    "index": 16,
+    "path": "E:\\zhengzhi\\outputs\\hebut_cards_work\\cream_white_text\\logo_fit.png",
+    "size": [
+      504,
+      336
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "48aef2e24c70dd7d3d4fefbf95c6c2a13a2d16120a54fb18b4ed008de6ee7dbd"
+  },
+  {
+    "index": 17,
+    "path": "E:\\zhengzhi\\outputs\\hebut_cards_work\\original_logo_hebut_blue_text\\logo_fit.png",
+    "size": [
+      506,
+      470
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "e54fb0c443ded8e7742d029e33f67814ff5279e60f73202f1bce7eb3422a05c5"
+  },
+  {
+    "index": 18,
+    "path": "E:\\zhengzhi\\outputs\\hebut_cards_work\\scheme14_mist_rose\\logo_fit.png",
+    "size": [
+      498,
+      342
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "9f23660037b15eee34aa7530a83f815db8d716c300f8c93cb4e47a74caec9db6"
+  },
+  {
+    "index": 19,
+    "path": "E:\\zhengzhi\\outputs\\hebut_cards_work\\team_logo_back\\logo_fit.png",
+    "size": [
+      506,
+      470
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "e54fb0c443ded8e7742d029e33f67814ff5279e60f73202f1bce7eb3422a05c5"
+  },
+  {
+    "index": 20,
+    "path": "E:\\zhengzhi\\outputs\\hebut_cards_work\\team_logo_warm_cool\\logo_fit.png",
+    "size": [
+      501,
+      342
+    ],
+    "alpha_range": [
+      0,
+      255
+    ],
+    "sha256": "95c85bc4047259ba2ce88974a62faffc6269a2cd7b1cf36ddb6c4fb9f761a614"
+  },
+  {
+    "index": 21,
+    "path": "E:\\zhengzhi\\tools\\quiz_logo_dark.png",
+    "size": [
+      1440,
+      860
+    ],
+    "alpha_range": [
+      255,
+      255
+    ],
+    "sha256": "b6303618500c2faa4ab369ff1c45af5f4731e41b4d5b7bb4f3848eb5acb0d63b"
+  },
+  {
+    "index": 22,
+    "path": "E:\\zhengzhi\\tools\\quiz_logo_light.png",
+    "size": [
+      1440,
+      860
+    ],
+    "alpha_range": [
+      255,
+      255
+    ],
+    "sha256": "008d909d5b2e15dd07608510cd2be4b56c8cd41f60ad5acbe6b48d7556407f02"
+  }
+]

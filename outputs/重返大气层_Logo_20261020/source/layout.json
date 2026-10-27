@@ -1,0 +1,24 @@
+{
+  "canvas": [
+    2048,
+    2048
+  ],
+  "generatedSize": [
+    1254,
+    1254
+  ],
+  "generatedCrop": {
+    "left": 13,
+    "top": 226,
+    "width": 1227,
+    "height": 832
+  },
+  "logo": {
+    "left": 256,
+    "top": 503,
+    "width": 1536,
+    "height": 1042
+  },
+  "background": "#060B18",
+  "method": "Built-in image_gen color and surface edit; proportional export preserves generated alpha. Generated raster, not a pixel-locked vector reconstruction."
+}

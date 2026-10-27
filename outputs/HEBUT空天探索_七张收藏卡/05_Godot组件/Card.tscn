@@ -1,0 +1,164 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="Card.gd" id="1_script"]
+[ext_resource type="Texture2D" path="../03_通用模板/card_base.png" id="2_base"]
+[ext_resource type="Texture2D" path="../03_通用模板/card_frame.png" id="3_frame"]
+[ext_resource type="Texture2D" path="../02_插画/01_rocket.png" id="4_art"]
+
+[sub_resource type="SystemFont" id="CJKRegular"]
+font_names = PackedStringArray("Microsoft YaHei", "Noto Sans CJK SC", "sans-serif")
+font_weight = 400
+
+[sub_resource type="SystemFont" id="CJKBold"]
+font_names = PackedStringArray("Microsoft YaHei", "Noto Sans CJK SC", "sans-serif")
+font_weight = 700
+
+[sub_resource type="SystemFont" id="LatinBold"]
+font_names = PackedStringArray("Arial", "sans-serif")
+font_weight = 700
+
+[sub_resource type="SystemFont" id="LatinRegular"]
+font_names = PackedStringArray("Arial", "sans-serif")
+font_weight = 400
+
+[sub_resource type="FontVariation" id="BrandFont"]
+base_font = SubResource("LatinBold")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="TitleFont"]
+base_font = SubResource("CJKBold")
+spacing_glyph = 3
+
+[sub_resource type="FontVariation" id="EnglishFont"]
+base_font = SubResource("LatinRegular")
+spacing_glyph = 4
+
+[node name="HEBUTCard" type="Control"]
+custom_minimum_size = Vector2(256, 384)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1024.0
+offset_bottom = 1536.0
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="Design" type="Control" parent="."]
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 1536.0
+mouse_filter = 2
+
+[node name="Base" type="TextureRect" parent="Design"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1024.0
+offset_bottom = 1536.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 0
+texture = ExtResource("2_base")
+
+[node name="Illustration" type="TextureRect" parent="Design"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 148.0
+offset_right = 980.0
+offset_bottom = 1284.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+clip_contents = true
+texture = ExtResource("4_art")
+
+[node name="Frame" type="TextureRect" parent="Design"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1024.0
+offset_bottom = 1536.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 0
+texture = ExtResource("3_frame")
+
+[node name="RasterText" type="TextureRect" parent="Design"]
+visible = false
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1024.0
+offset_bottom = 1536.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 0
+
+[node name="Brand" type="Label" parent="Design"]
+layout_mode = 0
+offset_left = 151.0
+offset_top = 52.0
+offset_right = 411.0
+offset_bottom = 132.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.141, 0.302, 0.439, 1)
+theme_override_fonts/font = SubResource("BrandFont")
+theme_override_font_sizes/font_size = 54
+text = "HEBUT"
+horizontal_alignment = 0
+vertical_alignment = 1
+
+[node name="Series" type="Label" parent="Design"]
+layout_mode = 0
+offset_left = 450.0
+offset_top = 66.0
+offset_right = 800.0
+offset_bottom = 124.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.322, 0.451, 0.549, 1)
+theme_override_fonts/font = SubResource("CJKRegular")
+theme_override_font_sizes/font_size = 30
+text = "空天探索系列"
+horizontal_alignment = 0
+vertical_alignment = 1
+
+[node name="Number" type="Label" parent="Design"]
+layout_mode = 0
+offset_left = 844.0
+offset_top = 65.0
+offset_right = 946.0
+offset_bottom = 123.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.973, 0.898, 1)
+theme_override_fonts/font = SubResource("LatinBold")
+theme_override_font_sizes/font_size = 42
+text = "01"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="Label" parent="Design"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = 1309.0
+offset_right = 956.0
+offset_bottom = 1417.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.141, 0.302, 0.439, 1)
+theme_override_fonts/font = SubResource("TitleFont")
+theme_override_font_sizes/font_size = 72
+text = "火箭"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="English" type="Label" parent="Design"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = 1393.0
+offset_right = 956.0
+offset_bottom = 1451.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.404, 0.502, 0.588, 1)
+theme_override_fonts/font = SubResource("EnglishFont")
+theme_override_font_sizes/font_size = 26
+text = "ROCKET"
+horizontal_alignment = 1
+vertical_alignment = 1

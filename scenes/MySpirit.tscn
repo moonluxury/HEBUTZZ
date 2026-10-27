@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://5bchi0r4pjvw"]
+[gd_scene format=3 uid="uid://ddeq6v0os3nps"]
 
-[ext_resource type="Script" uid="uid://djkl4f75e4625" path="res://scripts/my_spirit.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/my_spirit.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://dmvxlpfd6713q" path="res://themes/minimal_theme.tres" id="2_theme"]
 
 [node name="MySpirit" type="Control" unique_id=2023962053]

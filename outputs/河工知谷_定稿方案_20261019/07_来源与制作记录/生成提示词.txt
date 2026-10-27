@@ -1,0 +1,7 @@
+工具：内置 image_gen；用途：从用户选定原稿中整理独立透明图形。
+Use case: background-extraction.
+Prepare the attached APPROVED logo for production as an app icon.
+The attached image is the final approved artwork. Do not redesign or reinterpret it.
+Extract ONLY its circular blue valley-and-river emblem. Remove the white page background and remove ALL Chinese and English lettering beneath the emblem. Outside the circle must be truly transparent alpha, not white, grey or checkerboard.
+Preserve the exact approved mountain silhouettes, original S-shaped river course, clean river mouth without an extra curl, sky gradient, blue colors, relative positions and proportions inside the circle. Do not add another mountain, change any contour, straighten the river, or alter the gradient style. This is background removal and isolated asset preparation only.
+Return a square image with the circular emblem precisely centered, occupying about 96% of the canvas width and height, with a small equal transparent margin on all four sides. The outer silhouette must be a clean perfect circle with antialiased edges. Nothing else in the image: no text, no square tile, no border, no shadow, no glow outside the circle. Transparent background required.

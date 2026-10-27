@@ -1,0 +1,14 @@
+{
+  "textColor": "#092C87",
+  "numberTextColor": "#FFF8E5",
+  "numberBadge": {
+    "fill": "#092C87"
+  },
+  "scope": [
+    "HEBUT",
+    "series",
+    "chineseTitle",
+    "englishTitle"
+  ],
+  "source": "https://www.hebut.edu.cn/docs/2022-05/d45b55ad5cb64d6f8a501d9453d9247d.pdf"
+}

@@ -1,0 +1,16 @@
+const fs = require('fs');
+const path = require('path');
+const out = 'E:/zhengzhi/outputs/河工知谷_定稿方案_20261019';
+const source = 'C:/Users/Legion/AppData/Local/Temp/codex-clipboard-ec1ab79f-9a30-48d5-b9eb-b01d3ada0744.png';
+const raw = 'C:/Users/Legion/.codex/generated_images/01a1529f-813e-7f11-bccf-b405da9b23ac/exec-7544f85c-e793-42d5-af8e-ef0dccf8f809.png';
+fs.mkdirSync(out, {recursive:true});
+let code = fs.readFileSync('E:/zhengzhi/outputs/hegong_brand_work/build.cjs', 'utf8');
+code = code.replace("const out='E:/zhengzhi/outputs/河工知谷_品牌组件';", `const out=${JSON.stringify(out)};`);
+code = code.replace(/^const raw=.*;$/m, `const raw=${JSON.stringify(raw)};`);
+code = code.replace(/^const source=.*;$/m, `const source=${JSON.stringify(source)};`);
+code = code.replace("'1150x1128+52+65'", "'1064x1064+94+115'");
+code = code.replace("const navy='#062D55';", "const navy='#073D70';");
+code = code.replace('统一品牌组件  /  HEGONG ZHIGU', '定稿应用方案  /  HEGONG ZHIGU');
+code = code.replace('原始品牌展示板.png', '用户选定原稿.png');
+fs.writeFileSync(path.join(__dirname, 'build.cjs'), code);
+console.log(JSON.stringify({out, source, raw}));

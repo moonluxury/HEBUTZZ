@@ -1,0 +1,61 @@
+{
+  "status": "complete",
+  "dpi": 96,
+  "scale_percent": 100,
+  "fix": "Resize the accepted source with Lanczos at system icon size before calling DisplayServer.set_icon on Windows.",
+  "verified": [
+    "Windows release export",
+    "GUI startup",
+    "WM_GETICON handles for big and small icons",
+    "Win32 DrawIconEx at 32px and 16px",
+    "Installed executable hash matches verified executable"
+  ],
+  "limitations": [
+    "Other display scaling settings have not been tested on a physical display."
+  ],
+  "artwork_changed": false,
+  "android_changed": false,
+  "backup": "E:\\zhengzhi\\build\\before-window-icon-fix-20261019",
+  "builds": [
+    {
+      "file": "E:\\zhengzhi\\build\\河工开物.exe",
+      "bytes": 180236176,
+      "sha256": "b902b1c9adcc704f41bc376c142c27f75a1002d9d41ae06c094db16734e849d3"
+    },
+    {
+      "file": "E:\\zhengzhi\\build\\河工开物.console.exe",
+      "bytes": 418304,
+      "sha256": "b4f6848de45440846853c14eff39b605208c77a1c8113481b144f7fbf2d3c4b7"
+    }
+  ],
+  "icon_alpha_statistics": [
+    {
+      "state": "before",
+      "kind": "big",
+      "transparent": 242,
+      "translucent": 30,
+      "opaque": 752
+    },
+    {
+      "state": "before",
+      "kind": "small",
+      "transparent": 72,
+      "translucent": 952,
+      "opaque": 0
+    },
+    {
+      "state": "after",
+      "kind": "big",
+      "transparent": 152,
+      "translucent": 238,
+      "opaque": 634
+    },
+    {
+      "state": "after",
+      "kind": "small",
+      "transparent": 152,
+      "translucent": 238,
+      "opaque": 634
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+重返大气层 · Logo 艺术版本
+
+reentry_dark.png：2048×2048 深蓝黑背景展示版，背景 #060B18。
+reentry_transparent.png：同尺寸、同位置的透明底版本。
+previews/reentry_128.png：128×128 缩小预览。
+previews/heat_detail.png：火箭和热端的局部预览。
+
+设计以左下深蓝、主体蓝紫与紫红过渡、右上火箭炽橙与小面积热白为主。
+轨道沿原有绕行关系体现冷暖变化，主体保留少量沿飞行方向的热流层次。
+
+source/original_logo.png：原始 Logo 副本，原文件未覆盖。
+source/part_separation_reference.png：只用于解释轨道与主体分区的参考。
+source/first_pass_reference.png：初稿过程文件，非最终交付版本。
+source/reentry_generated.png：选定的内置 image_gen 生成原图。
+source/prompts.json：两轮完整提示词及输入说明。
+source/export.cjs：透明范围裁切、等比排版、背景合成与预览导出脚本。
+source/layout.json：生成图尺寸及最终排版信息。
+
+本版是图像编辑生成的艺术位图，不是逐像素锁定的矢量重制。
+颜色与热流纹理尚未拆分为独立可编辑图层；原始分区参考与完整提示词已保留。
+2048×2048 文件由生成原图等比缩放、居中导出，原始尺寸记录于 layout.json。
+如需重新导出，在安装了 Node.js 和 sharp 的环境中运行 source/export.cjs。

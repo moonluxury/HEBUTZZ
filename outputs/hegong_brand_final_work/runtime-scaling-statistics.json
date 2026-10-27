@@ -1,0 +1,26 @@
+[
+  {
+    "file": "win32-from-256.png",
+    "semi": 30,
+    "opaque": 752,
+    "transparent": 242
+  },
+  {
+    "file": "win32-from-32.png",
+    "semi": 162,
+    "opaque": 686,
+    "transparent": 176
+  },
+  {
+    "file": "win32-from-16.png",
+    "semi": 952,
+    "opaque": 0,
+    "transparent": 72
+  },
+  {
+    "file": "win32-from-png256.png",
+    "semi": 30,
+    "opaque": 752,
+    "transparent": 242
+  }
+]

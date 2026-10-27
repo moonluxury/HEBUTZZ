@@ -1,0 +1,61 @@
+const fs = require('fs');
+const path = require('path');
+const {execFileSync} = require('child_process');
+const root = __dirname;
+const src = path.join(root, '原始参考');
+const work = path.join(root, '研究局部');
+fs.mkdirSync(work, {recursive:true});
+const magick = 'F:/ImageMagick-7.1.2-Q16-HDRI/magick.exe';
+const font = 'C:/Windows/Fonts/msyh.ttc';
+const bold = 'C:/Windows/Fonts/msyhbd.ttc';
+function run(a) {return execFileSync(magick, a.map(String), {env:{...process.env,MAGICK_THREAD_LIMIT:'2'},maxBuffer:30e6});}
+function crop(file, geometry, name) {const p=path.join(work,name+'.png');run([path.join(src,file),'-crop',geometry,'+repage',p]);return p;}
+const wedding=crop('02_2011_套卡目录.jpg','452x344+157+98','01_婚礼套卡局部');
+const vehicles=crop('06_2011_交换界面.jpg','218x150+308+162','02_交通工具卡局部');
+const marine=crop('05_2011_交换卡片.jpg','89x117+310+254','03_海马卡局部');
+const slot=crop('05_2011_交换卡片.jpg','86x122+199+89','04_空卡槽纹样_身份未确认');
+const board=['-size','1800x1460','xc:#F2F5F7'];
+let counter=0;
+function text(s,x,y,size=25,color='#274660',heavy=false) {const p=path.join(work,'label_'+(++counter)+'.png');run(['-background','none','-fill',color,'-font',heavy?bold:font,'-pointsize',size,'label:'+s,p]);board.push(p,'-geometry',`+${x}+${y}`,'-compose','Over','-composite');}
+function place(p,x,y,w,h) {board.push('(',p,'-resize',`${w}x${h}`,')','-geometry',`+${x}+${y}`,'-compose','Over','-composite');}
+function panel(x,y) {board.push('-fill','#FFFFFF','-stroke','#DAE3EA','-strokewidth','2','-draw',`roundrectangle ${x},${y} ${x+815},${y+525} 16,16`);}
+text('《魔法卡片》原版实图研究',60,42,48,'#163F60',true);
+text('2011 年公开攻略截图 · 只学习视觉组织，保留 HEBUT 的原创 2D 空天主题',62,111,25,'#627687');
+panel(60,185);panel(925,185);panel(60,750);panel(925,750);
+text('01  婚礼套卡：同套配色、轻边框',88,207,29,'#163F60',true);
+place(wedding,90,270,460,350);
+text('值得学',575,310,24,'#28758E',true);
+text('少量主题色',575,365,23);
+text('主体轮廓清楚',575,411,23);
+text('背景留白',575,457,23);
+text('统一感由配色与比例建立，不依赖繁复装饰。',89,651,25);
+text('02  交通工具卡：物体是视觉中心',953,207,29,'#163F60',true);
+place(vehicles,955,278,430,310);
+text('值得学',1424,310,24,'#28758E',true);
+text('物体占比大',1424,365,23);
+text('薄而清楚的框',1424,411,23);
+text('短名称栏',1424,457,23);
+text('只借鉴层次与比例；新卡仍使用原创卡通插画。',954,651,24);
+text('03  海马卡：小尺寸仍能一眼识别',88,772,29,'#163F60',true);
+place(marine,115,835,220,347);
+text('值得学',389,862,24,'#28758E',true);
+text('一个明确主体',389,914,25);
+text('前景与背景拉开明暗',389,962,25);
+text('装饰服从主题',389,1010,25);
+text('这张只参考构图，不沿用写实素材或暗色背景。',89,1216,24);
+text('04  米色空卡槽：低对比纹样',953,772,29,'#163F60',true);
+place(slot,982,850,240,340);
+text('观察到的结构',1285,862,24,'#28758E',true);
+text('浅底＋单个纹样',1285,914,25);
+text('细框＋小角饰',1285,962,25);
+text('留白明显',1285,1010,25);
+text('这是界面中的空卡槽，不能认定为正式卡背。',954,1216,24,'#94612C');
+text('研究结论：减轻边框和花纹，把识别点集中；卡背先解决图案与留白，再添加少量细节。',62,1314,27,'#163F60',true);
+text('来源：腾牛网《如何查看魔法卡片？和好友交换卡片的方法》2011-01-07',62,1370,22,'#627687');
+text('局部仅裁切和放大；原始完整截图与来源链接保存在同一文件夹。',62,1407,20,'#627687');
+run([...board,'-strip',path.join(root,'00_实图参考与学习要点.png')]);
+const sources={checkedOn:'2026-10-19',references:[{title:'如何查看魔法卡片？和好友交换卡片的方法',publisher:'腾牛网',date:'2011-01-07',url:'https://www.qqan.com/article/article_24228_1.html',images:[{file:'01_2011_查看套卡入口.jpg',description:'炼卡入口',url:'https://p.qqan.com/up/2011-1/201111771123296155.jpg'},{file:'02_2011_套卡目录.jpg',description:'婚礼套卡合成树；文件名为下载时临时命名',url:'https://p.qqan.com/up/2011-1/201111771123306482.jpg'},{file:'03_2011_套卡展示.jpg',description:'合成树及套卡选择目录',url:'https://p.qqan.com/up/2011-1/201111771123321363.jpg'},{file:'04_2011_卡片详情.jpg',description:'好友换卡箱；文件名为下载时临时命名',url:'https://p.qqan.com/up/2011-1/20111177112333740.jpg'},{file:'05_2011_交换卡片.jpg',description:'交易窗口、海马卡、出租车卡与米色空卡槽；空卡槽不能确认为独立卡背',url:'https://p.qqan.com/up/2011-1/201111771123367121.jpg'},{file:'06_2011_交换界面.jpg',description:'卡箱中的多张卡面：眼镜、火、黄色TAXI、代步小车等',url:'https://p.qqan.com/up/2011-1/201111771123382300.jpg'}]},{title:'QQ魔法卡片下载',publisher:'PC下载网',date:'2025-09-05（页面标注时间，不能据此推定游戏版本）',url:'https://www.pcsoft.com.cn/yx/30221124.html',images:[{file:'08_游戏界面_版本未核实.png',description:'补充参考，未纳入同期实图参考板',url:'https://img.pcsoft.com.cn/game/202509/145012-68ba8824897a8.png'},{file:'09_游戏界面_版本未核实.png',description:'补充参考，未纳入同期实图参考板',url:'https://img.pcsoft.com.cn/game/202509/145050-68ba884ac37be.png'}]}]};
+fs.writeFileSync(path.join(root,'来源索引.json'),JSON.stringify(sources,null,2));
+const html=`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>魔法卡片 · 实图研究</title><style>body{margin:0;background:#f2f5f7;color:#243e53;font:17px/1.8 "Microsoft YaHei",sans-serif}main{max-width:1200px;margin:auto;padding:40px 28px}h1{font-size:32px}h2{font-size:24px}img{max-width:100%;height:auto}a{color:#1c668d}section{padding:24px;background:white;border-radius:12px;margin:24px 0}.muted{color:#6c7c89}li{margin:10px 0}</style><main><h1>《魔法卡片》实图研究</h1><p>重新对照了 2011 年的游戏截图。之前四款方案偏重花纹、徽章和天空装饰；本次从实际卡面中学习配色、比例和边框分量。</p><a href="00_实图参考与学习要点.png"><img src="00_实图参考与学习要点.png" alt="婚礼、交通工具、海马和空卡槽的四组实图观察"></a><section><h2>用于下一次卡背设计的约束</h2><ul><li>保留用户要求的 2:3 竖版和已选卡面的轮廓。早期截图中的尺寸不作为新卡尺寸标准。</li><li>边框使用窄描边和少量高光；删除大面积金色卷草、厚徽章和云海装饰。</li><li>用一个简洁原创的空天图案作为识别点，控制背景细节和重复纹样的对比。</li><li>深蓝用于轮廓、文字或少量重点；浅蓝与奶油色提供主要留白，避免全屏雾化渐变。</li><li>真实截图混有照片与插画。HEBUT 新卡继续坚持原创 2D 卡通插画，不照搬照片素材。</li><li>HEBUT 与系列名称独立排版，边框、插画、文字分层，便于 Godot 调整。</li></ul><p><strong>证据限制：</strong>本次核实的是同期卡面与游戏界面。米色圆形纹样出现在空卡槽中，尚不足以证明它是正式通用卡背；不把它当作原版卡背复刻。</p></section><section><h2>原始来源</h2>${sources.references.map(s=>`<p><a href="${s.url}">${s.title}</a> · ${s.publisher} · ${s.date}</p><ul>${s.images.map(i=>`<li><a href="原始参考/${i.file}">${i.description}</a> · <a href="${i.url}">原图链接</a></li>`).join('')}</ul>`).join('')}<p class="muted">参考图版权归原权利人所有。局部裁切仅用于设计分析，未做 AI 修复或重绘。未将参考素材加入可交付的 HEBUT 卡片资产。</p></section></main>`;
+fs.writeFileSync(path.join(root,'参考研究.html'),html);
+console.log(JSON.stringify({board:path.join(root,'00_实图参考与学习要点.png'),notes:path.join(root,'参考研究.html'),verifiedExamples:3,unconfirmedSlotPattern:1},null,2));

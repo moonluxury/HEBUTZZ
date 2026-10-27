@@ -1,0 +1,19 @@
+{
+  "canvas": [
+    1024,
+    1536
+  ],
+  "logo": {
+    "x": 263,
+    "y": 489,
+    "width": 498,
+    "height": 342
+  },
+  "layers": [
+    "base",
+    "background",
+    "team-logo",
+    "frame",
+    "text"
+  ]
+}

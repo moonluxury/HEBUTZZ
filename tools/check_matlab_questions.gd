@@ -26,21 +26,21 @@ func _run() -> void:
 	xi_file.store_string("[1]\n")
 	xi_file.close()
 
-	var main = await _open_page("res://scenes/Main.tscn")
+	var main = await _open_page("res://scenes/Workbench.tscn")
 	_expect(not main.has_node("PageMargin/PageColumn/WrongStatusMargin"), "首页不再显示错题数量")
-	main.all_button.pressed.emit()
+	main.find_child("AllButton", true, false).pressed.emit()
 	await _settle()
 	var selector = current_scene
-	_expect(selector.matlab_button.text == "MATLAB", "总题库课程页应有 MATLAB 按钮")
+	_expect(selector.matlab_button.get_parent().get_node("CourseTitle").text == "MATLAB", "总题库课程页应有 MATLAB 课程入口")
 	_expect(selector.wrong_count_labels.is_empty(), "总题库课程页不显示错题数量")
 	selector.matlab_button.pressed.emit()
 	await _settle()
 	var quiz = current_scene
 	_expect(state.subject_id == "matlab" and state.quiz_mode == "all", "总题库入口应选择 MATLAB")
 	_expect(quiz.questions.size() == 505, "MATLAB 总题库应加载全部 505 题")
-	_expect(quiz.question_number_list.item_count == 505, "应显示 505 个跳题题号")
-	_expect(quiz.title_label.text == "MATLAB题库", "答题页应显示课程名称")
-	_expect(quiz.mode_label.text == "总题库答题", "总题库模式名称不正确")
+	_expect(quiz.minimal_view.number_count == 505, "应显示 505 个跳题题号")
+	_expect(quiz.minimal_view.heading.text == "MATLAB", "答题页应显示课程名称")
+	_expect(quiz.minimal_view.active_nav == "AllButton", "总题库模式名称不正确")
 	var counts := {"single": 0, "multiple": 0, "judge": 0}
 	var sample_indices := {}
 	for question_index in quiz.questions.size():
@@ -92,15 +92,15 @@ func _run() -> void:
 	quiz.submit_button.pressed.emit()
 	_expect(quiz.result_label.text == "回答错误", "多选题的错误组合应判错")
 
-	main = await _open_page("res://scenes/Main.tscn")
-	main.wrong_button.pressed.emit()
+	main = await _open_page("res://scenes/Workbench.tscn")
+	main.find_child("WrongButton", true, false).pressed.emit()
 	await _settle()
 	_expect(current_scene.wrong_count_labels["matlab"].text == "3 道", "错题库课程按钮应刷新 MATLAB 错题数量")
 	current_scene.matlab_button.pressed.emit()
 	await _settle()
 	quiz = current_scene
 	_expect(quiz.questions.size() == 3, "错题入口应读取已保存的 MATLAB 题目")
-	_expect(quiz.mode_label.text == "错题库答题", "错题模式名称不正确")
+	_expect(quiz.minimal_view.active_nav == "WrongButton", "错题模式名称不正确")
 	_expect(int(quiz.questions[0]["id"]) == collected_ids[0], "错题记录应按原题号找到题目")
 	quiz.wrong_toggle.pressed.emit()
 	_expect(quiz.questions.size() == 2, "移出错题应立即更新当前列表")
@@ -110,13 +110,13 @@ func _run() -> void:
 	quiz.wrong_toggle.pressed.emit()
 	quiz.wrong_toggle.pressed.emit()
 	await _settle()
-	_expect(current_scene.scene_file_path == "res://scenes/Main.tscn", "移出最后一道错题后应返回首页")
+	_expect(current_scene.scene_file_path == state.HOME_SCENE_PATH, "移出最后一道错题后应返回首页")
 	_expect(_load_ids(wrong_path).is_empty(), "清空后错题文件应为空")
-	current_scene.wrong_button.pressed.emit()
+	current_scene.find_child("WrongButton", true, false).pressed.emit()
 	await _settle()
 	current_scene.matlab_button.pressed.emit()
 	await _settle()
-	_expect(current_scene.empty_state.visible, "空错题库应显示空状态")
+	_expect(current_scene.empty_label.is_visible_in_tree() and not current_scene.question_scroll.visible, "空错题库应显示空状态")
 	_expect(current_scene.empty_label.text == "MATLAB错题库暂无题目", "空状态应显示正确课程名称")
 	_expect(FileAccess.get_file_as_string(xi_path) == "[1]\n", "完整错题流程应保持其他课程存档不变")
 

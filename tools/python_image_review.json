@@ -1,0 +1,4094 @@
+[
+  {
+    "image": "image1.png",
+    "answer": "B",
+    "crop": [
+      0,
+      29,
+      624,
+      239
+    ],
+    "column_confidence": 0.887
+  },
+  {
+    "image": "image2.png",
+    "answer": "D",
+    "crop": [
+      0,
+      27,
+      625,
+      259
+    ],
+    "column_confidence": 0.903
+  },
+  {
+    "image": "image3.png",
+    "answer": "C",
+    "crop": [
+      0,
+      25,
+      625,
+      252
+    ],
+    "column_confidence": 0.905
+  },
+  {
+    "image": "image4.png",
+    "answer": "A",
+    "crop": [
+      0,
+      27,
+      628,
+      250
+    ],
+    "column_confidence": 0.896
+  },
+  {
+    "image": "image5.png",
+    "answer": "B",
+    "crop": [
+      0,
+      30,
+      629,
+      258
+    ],
+    "column_confidence": 0.884
+  },
+  {
+    "image": "image6.png",
+    "answer": "D",
+    "crop": [
+      0,
+      24,
+      624,
+      228
+    ],
+    "column_confidence": 0.895
+  },
+  {
+    "image": "image7.png",
+    "answer": "D",
+    "crop": [
+      0,
+      24,
+      623,
+      249
+    ],
+    "column_confidence": 0.908
+  },
+  {
+    "image": "image8.png",
+    "answer": "A",
+    "crop": [
+      0,
+      24,
+      626,
+      242
+    ],
+    "column_confidence": 0.901
+  },
+  {
+    "image": "image9.png",
+    "answer": "C",
+    "crop": [
+      0,
+      25,
+      620,
+      252
+    ],
+    "column_confidence": 0.905
+  },
+  {
+    "image": "image10.png",
+    "answer": "C",
+    "crop": [
+      0,
+      27,
+      625,
+      255
+    ],
+    "column_confidence": 0.902
+  },
+  {
+    "image": "image11.png",
+    "answer": "A",
+    "crop": [
+      0,
+      25,
+      620,
+      241
+    ],
+    "column_confidence": 0.905
+  },
+  {
+    "image": "image12.png",
+    "answer": "A",
+    "crop": [
+      0,
+      27,
+      624,
+      255
+    ],
+    "column_confidence": 0.902
+  },
+  {
+    "image": "image13.png",
+    "answer": "D",
+    "crop": [
+      0,
+      26,
+      626,
+      229
+    ],
+    "column_confidence": 0.891
+  },
+  {
+    "image": "image14.png",
+    "answer": "D",
+    "crop": [
+      0,
+      25,
+      629,
+      235
+    ],
+    "column_confidence": 0.902
+  },
+  {
+    "image": "image15.png",
+    "answer": "B",
+    "crop": [
+      0,
+      20,
+      625,
+      221
+    ],
+    "column_confidence": 0.914
+  },
+  {
+    "image": "image16.png",
+    "answer": "D",
+    "crop": [
+      0,
+      29,
+      628,
+      288
+    ],
+    "column_confidence": 0.903
+  },
+  {
+    "image": "image17.png",
+    "answer": "A",
+    "crop": [
+      0,
+      31,
+      627,
+      239
+    ],
+    "column_confidence": 0.879
+  },
+  {
+    "image": "image18.png",
+    "answer": "D",
+    "crop": [
+      0,
+      26,
+      626,
+      244
+    ],
+    "column_confidence": 0.893
+  },
+  {
+    "image": "image19.png",
+    "answer": "A",
+    "crop": [
+      0,
+      28,
+      619,
+      236
+    ],
+    "column_confidence": 0.881
+  },
+  {
+    "image": "image20.png",
+    "answer": "C",
+    "crop": [
+      0,
+      26,
+      625,
+      284
+    ],
+    "column_confidence": 0.908
+  },
+  {
+    "image": "image21.png",
+    "answer": "B",
+    "crop": [
+      0,
+      28,
+      627,
+      249
+    ],
+    "column_confidence": 0.892
+  },
+  {
+    "image": "image22.png",
+    "answer": "B",
+    "crop": [
+      0,
+      27,
+      623,
+      241
+    ],
+    "column_confidence": 0.896
+  },
+  {
+    "image": "image23.png",
+    "answer": "A",
+    "crop": [
+      0,
+      27,
+      627,
+      250
+    ],
+    "column_confidence": 0.896
+  },
+  {
+    "image": "image24.png",
+    "answer": "B",
+    "crop": [
+      0,
+      23,
+      622,
+      239
+    ],
+    "column_confidence": 0.912
+  },
+  {
+    "image": "image25.png",
+    "answer": "D",
+    "crop": [
+      0,
+      23,
+      625,
+      333
+    ],
+    "column_confidence": 0.937
+  },
+  {
+    "image": "image26.png",
+    "answer": "C",
+    "crop": [
+      0,
+      29,
+      624,
+      271
+    ],
+    "column_confidence": 0.9
+  },
+  {
+    "image": "image27.png",
+    "answer": "D",
+    "crop": [
+      0,
+      25,
+      630,
+      250
+    ],
+    "column_confidence": 0.904
+  },
+  {
+    "image": "image28.png",
+    "answer": "B",
+    "crop": [
+      0,
+      112,
+      491,
+      315
+    ],
+    "column_confidence": 0.933
+  },
+  {
+    "image": "image29.png",
+    "answer": "B",
+    "crop": [
+      0,
+      116,
+      494,
+      325
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image30.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      494,
+      332
+    ],
+    "column_confidence": 0.922
+  },
+  {
+    "image": "image31.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      493,
+      433
+    ],
+    "column_confidence": 0.942
+  },
+  {
+    "image": "image32.png",
+    "answer": "B",
+    "crop": [
+      0,
+      120,
+      494,
+      339
+    ],
+    "column_confidence": 0.914
+  },
+  {
+    "image": "image33.png",
+    "answer": "B",
+    "crop": [
+      0,
+      113,
+      492,
+      438
+    ],
+    "column_confidence": 0.945
+  },
+  {
+    "image": "image34.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      490,
+      357
+    ],
+    "column_confidence": 0.936
+  },
+  {
+    "image": "image35.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      498,
+      329
+    ],
+    "column_confidence": 0.93
+  },
+  {
+    "image": "image36.png",
+    "answer": "B",
+    "crop": [
+      0,
+      113,
+      491,
+      432
+    ],
+    "column_confidence": 0.944
+  },
+  {
+    "image": "image37.png",
+    "answer": "B",
+    "crop": [
+      0,
+      116,
+      496,
+      339
+    ],
+    "column_confidence": 0.926
+  },
+  {
+    "image": "image38.png",
+    "answer": "D",
+    "crop": [
+      0,
+      119,
+      495,
+      337
+    ],
+    "column_confidence": 0.914
+  },
+  {
+    "image": "image39.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      494,
+      336
+    ],
+    "column_confidence": 0.917
+  },
+  {
+    "image": "image40.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      492,
+      426
+    ],
+    "column_confidence": 0.939
+  },
+  {
+    "image": "image41.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      496,
+      418
+    ],
+    "column_confidence": 0.938
+  },
+  {
+    "image": "image42.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      491,
+      342
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image43.png",
+    "answer": "D",
+    "crop": [
+      0,
+      113,
+      493,
+      321
+    ],
+    "column_confidence": 0.928
+  },
+  {
+    "image": "image44.png",
+    "answer": "B",
+    "crop": [
+      0,
+      116,
+      493,
+      347
+    ],
+    "column_confidence": 0.928
+  },
+  {
+    "image": "image45.png",
+    "answer": "D",
+    "crop": [
+      0,
+      112,
+      496,
+      400
+    ],
+    "column_confidence": 0.945
+  },
+  {
+    "image": "image46.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      496,
+      685
+    ],
+    "column_confidence": 0.934
+  },
+  {
+    "image": "image47.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      493,
+      327
+    ],
+    "column_confidence": 0.93
+  },
+  {
+    "image": "image48.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      492,
+      359
+    ],
+    "column_confidence": 0.93
+  },
+  {
+    "image": "image49.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      494,
+      429
+    ],
+    "column_confidence": 0.942
+  },
+  {
+    "image": "image50.png",
+    "answer": "A",
+    "crop": [
+      0,
+      118,
+      497,
+      371
+    ],
+    "column_confidence": 0.927
+  },
+  {
+    "image": "image51.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      493,
+      334
+    ],
+    "column_confidence": 0.922
+  },
+  {
+    "image": "image52.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      493,
+      381
+    ],
+    "column_confidence": 0.929
+  },
+  {
+    "image": "image53.png",
+    "answer": "A",
+    "crop": [
+      0,
+      117,
+      496,
+      333
+    ],
+    "column_confidence": 0.919
+  },
+  {
+    "image": "image54.png",
+    "answer": "B",
+    "crop": [
+      0,
+      113,
+      497,
+      330
+    ],
+    "column_confidence": 0.927
+  },
+  {
+    "image": "image55.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      493,
+      429
+    ],
+    "column_confidence": 0.942
+  },
+  {
+    "image": "image56.png",
+    "answer": "D",
+    "crop": [
+      0,
+      119,
+      498,
+      335
+    ],
+    "column_confidence": 0.913
+  },
+  {
+    "image": "image57.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      494,
+      425
+    ],
+    "column_confidence": 0.941
+  },
+  {
+    "image": "image58.png",
+    "answer": "B",
+    "crop": [
+      0,
+      119,
+      494,
+      346
+    ],
+    "column_confidence": 0.913
+  },
+  {
+    "image": "image59.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      493,
+      337
+    ],
+    "column_confidence": 0.932
+  },
+  {
+    "image": "image60.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      499,
+      349
+    ],
+    "column_confidence": 0.928
+  },
+  {
+    "image": "image61.png",
+    "answer": "B",
+    "crop": [
+      0,
+      113,
+      492,
+      319
+    ],
+    "column_confidence": 0.928
+  },
+  {
+    "image": "image62.png",
+    "answer": "D",
+    "crop": [
+      0,
+      119,
+      496,
+      329
+    ],
+    "column_confidence": 0.912
+  },
+  {
+    "image": "image63.png",
+    "answer": "C",
+    "crop": [
+      0,
+      117,
+      495,
+      408
+    ],
+    "column_confidence": 0.931
+  },
+  {
+    "image": "image64.png",
+    "answer": "A",
+    "crop": [
+      0,
+      117,
+      496,
+      415
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image65.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      493,
+      342
+    ],
+    "column_confidence": 0.93
+  },
+  {
+    "image": "image66.png",
+    "answer": "C",
+    "crop": [
+      0,
+      113,
+      495,
+      310
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image67.png",
+    "answer": "C",
+    "crop": [
+      0,
+      119,
+      495,
+      642
+    ],
+    "column_confidence": 0.953
+  },
+  {
+    "image": "image68.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      492,
+      362
+    ],
+    "column_confidence": 0.928
+  },
+  {
+    "image": "image69.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      492,
+      331
+    ],
+    "column_confidence": 0.931
+  },
+  {
+    "image": "image71.png",
+    "answer": "C",
+    "crop": [
+      0,
+      117,
+      496,
+      327
+    ],
+    "column_confidence": 0.917
+  },
+  {
+    "image": "image72.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      491,
+      322
+    ],
+    "column_confidence": 0.925
+  },
+  {
+    "image": "image73.png",
+    "answer": "A",
+    "crop": [
+      0,
+      112,
+      492,
+      328
+    ],
+    "column_confidence": 0.933
+  },
+  {
+    "image": "image74.png",
+    "answer": "D",
+    "crop": [
+      0,
+      119,
+      494,
+      341
+    ],
+    "column_confidence": 0.915
+  },
+  {
+    "image": "image75.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      492,
+      373
+    ],
+    "column_confidence": 0.933
+  },
+  {
+    "image": "image76.png",
+    "answer": "A",
+    "crop": [
+      0,
+      119,
+      497,
+      344
+    ],
+    "column_confidence": 0.913
+  },
+  {
+    "image": "image77.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      492,
+      360
+    ],
+    "column_confidence": 0.928
+  },
+  {
+    "image": "image78.png",
+    "answer": "C",
+    "crop": [
+      0,
+      119,
+      498,
+      416
+    ],
+    "column_confidence": 0.928
+  },
+  {
+    "image": "image79.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      493,
+      326
+    ],
+    "column_confidence": 0.926
+  },
+  {
+    "image": "image80.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      489,
+      372
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image81.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      495,
+      413
+    ],
+    "column_confidence": 0.939
+  },
+  {
+    "image": "image82.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      496,
+      315
+    ],
+    "column_confidence": 0.914
+  },
+  {
+    "image": "image83.png",
+    "answer": "D",
+    "crop": [
+      0,
+      121,
+      495,
+      417
+    ],
+    "column_confidence": 0.926
+  },
+  {
+    "image": "image84.png",
+    "answer": "C",
+    "crop": [
+      0,
+      117,
+      493,
+      321
+    ],
+    "column_confidence": 0.916
+  },
+  {
+    "image": "image85.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      494,
+      433
+    ],
+    "column_confidence": 0.938
+  },
+  {
+    "image": "image86.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      496,
+      473
+    ],
+    "column_confidence": 0.943
+  },
+  {
+    "image": "image87.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      496,
+      344
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image88.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      491,
+      323
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image89.png",
+    "answer": "A",
+    "crop": [
+      0,
+      114,
+      491,
+      515
+    ],
+    "column_confidence": 0.955
+  },
+  {
+    "image": "image90.png",
+    "answer": "A",
+    "crop": [
+      0,
+      117,
+      495,
+      393
+    ],
+    "column_confidence": 0.931
+  },
+  {
+    "image": "image91.png",
+    "answer": "C",
+    "crop": [
+      0,
+      118,
+      492,
+      450
+    ],
+    "column_confidence": 0.938
+  },
+  {
+    "image": "image92.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      494,
+      323
+    ],
+    "column_confidence": 0.929
+  },
+  {
+    "image": "image93.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      499,
+      403
+    ],
+    "column_confidence": 0.938
+  },
+  {
+    "image": "image94.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      498,
+      412
+    ],
+    "column_confidence": 0.937
+  },
+  {
+    "image": "image95.png",
+    "answer": "C",
+    "crop": [
+      0,
+      117,
+      497,
+      333
+    ],
+    "column_confidence": 0.919
+  },
+  {
+    "image": "image96.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      495,
+      414
+    ],
+    "column_confidence": 0.937
+  },
+  {
+    "image": "image97.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      496,
+      407
+    ],
+    "column_confidence": 0.939
+  },
+  {
+    "image": "image98.png",
+    "answer": "D",
+    "crop": [
+      0,
+      113,
+      496,
+      367
+    ],
+    "column_confidence": 0.937
+  },
+  {
+    "image": "image99.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      494,
+      347
+    ],
+    "column_confidence": 0.922
+  },
+  {
+    "image": "image100.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      494,
+      324
+    ],
+    "column_confidence": 0.92
+  },
+  {
+    "image": "image101.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      495,
+      388
+    ],
+    "column_confidence": 0.928
+  },
+  {
+    "image": "image102.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      492,
+      327
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image103.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      494,
+      323
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image104.png",
+    "answer": "A",
+    "crop": [
+      0,
+      112,
+      493,
+      365
+    ],
+    "column_confidence": 0.942
+  },
+  {
+    "image": "image105.png",
+    "answer": "B",
+    "crop": [
+      0,
+      116,
+      494,
+      354
+    ],
+    "column_confidence": 0.927
+  },
+  {
+    "image": "image106.png",
+    "answer": "A",
+    "crop": [
+      0,
+      117,
+      496,
+      406
+    ],
+    "column_confidence": 0.931
+  },
+  {
+    "image": "image107.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      493,
+      412
+    ],
+    "column_confidence": 0.937
+  },
+  {
+    "image": "image108.png",
+    "answer": "D",
+    "crop": [
+      0,
+      118,
+      493,
+      346
+    ],
+    "column_confidence": 0.919
+  },
+  {
+    "image": "image109.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      493,
+      478
+    ],
+    "column_confidence": 0.946
+  },
+  {
+    "image": "image110.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      493,
+      409
+    ],
+    "column_confidence": 0.939
+  },
+  {
+    "image": "image111.png",
+    "answer": "A",
+    "crop": [
+      0,
+      118,
+      492,
+      324
+    ],
+    "column_confidence": 0.914
+  },
+  {
+    "image": "image112.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      491,
+      400
+    ],
+    "column_confidence": 0.94
+  },
+  {
+    "image": "image113.png",
+    "answer": "B",
+    "crop": [
+      0,
+      119,
+      497,
+      407
+    ],
+    "column_confidence": 0.929
+  },
+  {
+    "image": "image114.png",
+    "answer": "C",
+    "crop": [
+      0,
+      118,
+      494,
+      344
+    ],
+    "column_confidence": 0.919
+  },
+  {
+    "image": "image115.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      493,
+      432
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image116.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      497,
+      331
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image117.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      495,
+      400
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image118.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      495,
+      453
+    ],
+    "column_confidence": 0.945
+  },
+  {
+    "image": "image119.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      497,
+      330
+    ],
+    "column_confidence": 0.921
+  },
+  {
+    "image": "image120.png",
+    "answer": "D",
+    "crop": [
+      0,
+      120,
+      498,
+      332
+    ],
+    "column_confidence": 0.91
+  },
+  {
+    "image": "image121.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      490,
+      337
+    ],
+    "column_confidence": 0.926
+  },
+  {
+    "image": "image122.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      497,
+      407
+    ],
+    "column_confidence": 0.939
+  },
+  {
+    "image": "image123.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      494,
+      342
+    ],
+    "column_confidence": 0.918
+  },
+  {
+    "image": "image124.png",
+    "answer": "A",
+    "crop": [
+      0,
+      118,
+      493,
+      458
+    ],
+    "column_confidence": 0.939
+  },
+  {
+    "image": "image125.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      492,
+      460
+    ],
+    "column_confidence": 0.939
+  },
+  {
+    "image": "image126.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      492,
+      316
+    ],
+    "column_confidence": 0.918
+  },
+  {
+    "image": "image127.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      496,
+      462
+    ],
+    "column_confidence": 0.944
+  },
+  {
+    "image": "image128.png",
+    "answer": "D",
+    "crop": [
+      0,
+      110,
+      493,
+      399
+    ],
+    "column_confidence": 0.952
+  },
+  {
+    "image": "image129.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      492,
+      360
+    ],
+    "column_confidence": 0.928
+  },
+  {
+    "image": "image130.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      492,
+      355
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image131.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      491,
+      352
+    ],
+    "column_confidence": 0.926
+  },
+  {
+    "image": "image132.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      492,
+      352
+    ],
+    "column_confidence": 0.926
+  },
+  {
+    "image": "image133.png",
+    "answer": "C",
+    "crop": [
+      0,
+      118,
+      494,
+      395
+    ],
+    "column_confidence": 0.932
+  },
+  {
+    "image": "image134.png",
+    "answer": "A",
+    "crop": [
+      0,
+      118,
+      497,
+      344
+    ],
+    "column_confidence": 0.919
+  },
+  {
+    "image": "image135.png",
+    "answer": "D",
+    "crop": [
+      0,
+      111,
+      493,
+      360
+    ],
+    "column_confidence": 0.939
+  },
+  {
+    "image": "image136.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      491,
+      395
+    ],
+    "column_confidence": 0.942
+  },
+  {
+    "image": "image137.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      493,
+      444
+    ],
+    "column_confidence": 0.941
+  },
+  {
+    "image": "image138.png",
+    "answer": "A",
+    "crop": [
+      0,
+      119,
+      492,
+      423
+    ],
+    "column_confidence": 0.931
+  },
+  {
+    "image": "image139.png",
+    "answer": "A",
+    "crop": [
+      0,
+      114,
+      496,
+      430
+    ],
+    "column_confidence": 0.944
+  },
+  {
+    "image": "image140.png",
+    "answer": "C",
+    "crop": [
+      0,
+      110,
+      491,
+      383
+    ],
+    "column_confidence": 0.95
+  },
+  {
+    "image": "image141.png",
+    "answer": "D",
+    "crop": [
+      0,
+      121,
+      492,
+      376
+    ],
+    "column_confidence": 0.915
+  },
+  {
+    "image": "image142.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      497,
+      337
+    ],
+    "column_confidence": 0.926
+  },
+  {
+    "image": "image143.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      490,
+      519
+    ],
+    "column_confidence": 0.952
+  },
+  {
+    "image": "image144.png",
+    "answer": "B",
+    "crop": [
+      0,
+      120,
+      497,
+      427
+    ],
+    "column_confidence": 0.932
+  },
+  {
+    "image": "image145.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      492,
+      446
+    ],
+    "column_confidence": 0.942
+  },
+  {
+    "image": "image146.png",
+    "answer": "D",
+    "crop": [
+      0,
+      112,
+      494,
+      394
+    ],
+    "column_confidence": 0.944
+  },
+  {
+    "image": "image147.png",
+    "answer": "C",
+    "crop": [
+      0,
+      120,
+      496,
+      451
+    ],
+    "column_confidence": 0.936
+  },
+  {
+    "image": "image148.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      495,
+      828
+    ],
+    "column_confidence": 0.966
+  },
+  {
+    "image": "image149.png",
+    "answer": "B",
+    "crop": [
+      0,
+      113,
+      492,
+      313
+    ],
+    "column_confidence": 0.927
+  },
+  {
+    "image": "image150.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      491,
+      431
+    ],
+    "column_confidence": 0.942
+  },
+  {
+    "image": "image151.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      494,
+      414
+    ],
+    "column_confidence": 0.937
+  },
+  {
+    "image": "image152.png",
+    "answer": "D",
+    "crop": [
+      0,
+      112,
+      494,
+      450
+    ],
+    "column_confidence": 0.951
+  },
+  {
+    "image": "image153.png",
+    "answer": "B",
+    "crop": [
+      0,
+      114,
+      495,
+      342
+    ],
+    "column_confidence": 0.93
+  },
+  {
+    "image": "image154.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      496,
+      429
+    ],
+    "column_confidence": 0.942
+  },
+  {
+    "image": "image155.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      493,
+      702
+    ],
+    "column_confidence": 0.963
+  },
+  {
+    "image": "image156.png",
+    "answer": "A",
+    "crop": [
+      0,
+      118,
+      492,
+      341
+    ],
+    "column_confidence": 0.921
+  },
+  {
+    "image": "image157.png",
+    "answer": "B",
+    "crop": [
+      0,
+      116,
+      494,
+      353
+    ],
+    "column_confidence": 0.929
+  },
+  {
+    "image": "image158.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      497,
+      344
+    ],
+    "column_confidence": 0.919
+  },
+  {
+    "image": "image159.png",
+    "answer": "A",
+    "crop": [
+      0,
+      114,
+      495,
+      374
+    ],
+    "column_confidence": 0.936
+  },
+  {
+    "image": "image160.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      495,
+      510
+    ],
+    "column_confidence": 0.953
+  },
+  {
+    "image": "image161.png",
+    "answer": "A",
+    "crop": [
+      0,
+      117,
+      496,
+      447
+    ],
+    "column_confidence": 0.94
+  },
+  {
+    "image": "image162.png",
+    "answer": "C",
+    "crop": [
+      0,
+      117,
+      496,
+      342
+    ],
+    "column_confidence": 0.918
+  },
+  {
+    "image": "image163.png",
+    "answer": "B",
+    "crop": [
+      0,
+      116,
+      494,
+      489
+    ],
+    "column_confidence": 0.949
+  },
+  {
+    "image": "image164.png",
+    "answer": "D",
+    "crop": [
+      0,
+      120,
+      497,
+      421
+    ],
+    "column_confidence": 0.931
+  },
+  {
+    "image": "image165.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      493,
+      455
+    ],
+    "column_confidence": 0.945
+  },
+  {
+    "image": "image166.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      494,
+      682
+    ],
+    "column_confidence": 0.938
+  },
+  {
+    "image": "image167.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      490,
+      331
+    ],
+    "column_confidence": 0.918
+  },
+  {
+    "image": "image168.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      495,
+      352
+    ],
+    "column_confidence": 0.932
+  },
+  {
+    "image": "image169.png",
+    "answer": "D",
+    "crop": [
+      0,
+      113,
+      492,
+      436
+    ],
+    "column_confidence": 0.945
+  },
+  {
+    "image": "image170.png",
+    "answer": "B",
+    "crop": [
+      0,
+      116,
+      496,
+      455
+    ],
+    "column_confidence": 0.945
+  },
+  {
+    "image": "image171.png",
+    "answer": "D",
+    "crop": [
+      0,
+      118,
+      494,
+      432
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image172.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      495,
+      431
+    ],
+    "column_confidence": 0.937
+  },
+  {
+    "image": "image173.png",
+    "answer": "C",
+    "crop": [
+      0,
+      112,
+      496,
+      341
+    ],
+    "column_confidence": 0.938
+  },
+  {
+    "image": "image174.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      495,
+      455
+    ],
+    "column_confidence": 0.945
+  },
+  {
+    "image": "image175.png",
+    "answer": "A",
+    "crop": [
+      0,
+      119,
+      491,
+      379
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image176.png",
+    "answer": "C",
+    "crop": [
+      0,
+      113,
+      499,
+      324
+    ],
+    "column_confidence": 0.926
+  },
+  {
+    "image": "image177.png",
+    "answer": "D",
+    "crop": [
+      0,
+      113,
+      498,
+      353
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image178.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      494,
+      385
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image179.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      498,
+      431
+    ],
+    "column_confidence": 0.937
+  },
+  {
+    "image": "image180.png",
+    "answer": "B",
+    "crop": [
+      0,
+      114,
+      500,
+      424
+    ],
+    "column_confidence": 0.943
+  },
+  {
+    "image": "image181.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      493,
+      429
+    ],
+    "column_confidence": 0.942
+  },
+  {
+    "image": "image182.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      493,
+      536
+    ],
+    "column_confidence": 0.951
+  },
+  {
+    "image": "image183.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      497,
+      332
+    ],
+    "column_confidence": 0.916
+  },
+  {
+    "image": "image184.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      491,
+      355
+    ],
+    "column_confidence": 0.93
+  },
+  {
+    "image": "image185.png",
+    "answer": "D",
+    "crop": [
+      0,
+      119,
+      490,
+      439
+    ],
+    "column_confidence": 0.934
+  },
+  {
+    "image": "image186.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      493,
+      496
+    ],
+    "column_confidence": 0.948
+  },
+  {
+    "image": "image187.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      493,
+      371
+    ],
+    "column_confidence": 0.933
+  },
+  {
+    "image": "image188.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      492,
+      375
+    ],
+    "column_confidence": 0.939
+  },
+  {
+    "image": "image189.png",
+    "answer": "B",
+    "crop": [
+      0,
+      113,
+      494,
+      323
+    ],
+    "column_confidence": 0.929
+  },
+  {
+    "image": "image190.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      498,
+      504
+    ],
+    "column_confidence": 0.944
+  },
+  {
+    "image": "image191.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      492,
+      470
+    ],
+    "column_confidence": 0.945
+  },
+  {
+    "image": "image192.png",
+    "answer": "B",
+    "crop": [
+      0,
+      116,
+      491,
+      430
+    ],
+    "column_confidence": 0.94
+  },
+  {
+    "image": "image193.png",
+    "answer": "C",
+    "crop": [
+      0,
+      117,
+      495,
+      322
+    ],
+    "column_confidence": 0.913
+  },
+  {
+    "image": "image194.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      497,
+      350
+    ],
+    "column_confidence": 0.926
+  },
+  {
+    "image": "image195.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      493,
+      352
+    ],
+    "column_confidence": 0.926
+  },
+  {
+    "image": "image196.png",
+    "answer": "A",
+    "crop": [
+      0,
+      117,
+      494,
+      351
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image197.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      491,
+      376
+    ],
+    "column_confidence": 0.931
+  },
+  {
+    "image": "image198.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      492,
+      427
+    ],
+    "column_confidence": 0.941
+  },
+  {
+    "image": "image199.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      496,
+      332
+    ],
+    "column_confidence": 0.916
+  },
+  {
+    "image": "image200.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      490,
+      321
+    ],
+    "column_confidence": 0.922
+  },
+  {
+    "image": "image201.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      496,
+      413
+    ],
+    "column_confidence": 0.939
+  },
+  {
+    "image": "image202.png",
+    "answer": "B",
+    "crop": [
+      0,
+      116,
+      496,
+      359
+    ],
+    "column_confidence": 0.93
+  },
+  {
+    "image": "image203.png",
+    "answer": "C",
+    "crop": [
+      0,
+      112,
+      494,
+      437
+    ],
+    "column_confidence": 0.952
+  },
+  {
+    "image": "image204.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      493,
+      480
+    ],
+    "column_confidence": 0.95
+  },
+  {
+    "image": "image205.png",
+    "answer": "D",
+    "crop": [
+      0,
+      112,
+      494,
+      344
+    ],
+    "column_confidence": 0.936
+  },
+  {
+    "image": "image206.png",
+    "answer": "B",
+    "crop": [
+      0,
+      113,
+      497,
+      331
+    ],
+    "column_confidence": 0.931
+  },
+  {
+    "image": "image207.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      495,
+      347
+    ],
+    "column_confidence": 0.922
+  },
+  {
+    "image": "image208.png",
+    "answer": "B",
+    "crop": [
+      0,
+      118,
+      494,
+      429
+    ],
+    "column_confidence": 0.937
+  },
+  {
+    "image": "image209.png",
+    "answer": "A",
+    "crop": [
+      0,
+      119,
+      494,
+      352
+    ],
+    "column_confidence": 0.915
+  },
+  {
+    "image": "image210.png",
+    "answer": "A",
+    "crop": [
+      0,
+      120,
+      491,
+      461
+    ],
+    "column_confidence": 0.937
+  },
+  {
+    "image": "image211.png",
+    "answer": "A",
+    "crop": [
+      0,
+      119,
+      498,
+      356
+    ],
+    "column_confidence": 0.916
+  },
+  {
+    "image": "image212.png",
+    "answer": "C",
+    "crop": [
+      0,
+      119,
+      489,
+      342
+    ],
+    "column_confidence": 0.912
+  },
+  {
+    "image": "image213.png",
+    "answer": "D",
+    "crop": [
+      0,
+      119,
+      497,
+      341
+    ],
+    "column_confidence": 0.915
+  },
+  {
+    "image": "image214.png",
+    "answer": "A",
+    "crop": [
+      0,
+      111,
+      491,
+      582
+    ],
+    "column_confidence": 0.962
+  },
+  {
+    "image": "image215.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      495,
+      329
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image216.png",
+    "answer": "D",
+    "crop": [
+      0,
+      118,
+      498,
+      323
+    ],
+    "column_confidence": 0.916
+  },
+  {
+    "image": "image217.png",
+    "answer": "D",
+    "crop": [
+      0,
+      120,
+      491,
+      339
+    ],
+    "column_confidence": 0.914
+  },
+  {
+    "image": "image218.png",
+    "answer": "C",
+    "crop": [
+      0,
+      117,
+      497,
+      410
+    ],
+    "column_confidence": 0.932
+  },
+  {
+    "image": "image219.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      491,
+      335
+    ],
+    "column_confidence": 0.925
+  },
+  {
+    "image": "image220.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      494,
+      331
+    ],
+    "column_confidence": 0.931
+  },
+  {
+    "image": "image221.png",
+    "answer": "C",
+    "crop": [
+      0,
+      113,
+      492,
+      322
+    ],
+    "column_confidence": 0.925
+  },
+  {
+    "image": "image222.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      490,
+      374
+    ],
+    "column_confidence": 0.93
+  },
+  {
+    "image": "image223.png",
+    "answer": "A",
+    "crop": [
+      0,
+      124,
+      505,
+      398
+    ],
+    "column_confidence": 0.915
+  },
+  {
+    "image": "image224.png",
+    "answer": "A",
+    "crop": [
+      0,
+      114,
+      494,
+      364
+    ],
+    "column_confidence": 0.934
+  },
+  {
+    "image": "image225.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      486,
+      448
+    ],
+    "column_confidence": 0.942
+  },
+  {
+    "image": "image226.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      494,
+      360
+    ],
+    "column_confidence": 0.933
+  },
+  {
+    "image": "image227.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      494,
+      417
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image228.png",
+    "answer": "C",
+    "crop": [
+      0,
+      117,
+      492,
+      343
+    ],
+    "column_confidence": 0.921
+  },
+  {
+    "image": "image229.png",
+    "answer": "D",
+    "crop": [
+      0,
+      113,
+      492,
+      435
+    ],
+    "column_confidence": 0.947
+  },
+  {
+    "image": "image230.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      494,
+      328
+    ],
+    "column_confidence": 0.915
+  },
+  {
+    "image": "image231.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      494,
+      322
+    ],
+    "column_confidence": 0.925
+  },
+  {
+    "image": "image232.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      493,
+      359
+    ],
+    "column_confidence": 0.925
+  },
+  {
+    "image": "image233.png",
+    "answer": "D",
+    "crop": [
+      0,
+      110,
+      491,
+      327
+    ],
+    "column_confidence": 0.942
+  },
+  {
+    "image": "image234.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      494,
+      323
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image235.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      490,
+      408
+    ],
+    "column_confidence": 0.936
+  },
+  {
+    "image": "image236.png",
+    "answer": "B",
+    "crop": [
+      0,
+      114,
+      494,
+      453
+    ],
+    "column_confidence": 0.949
+  },
+  {
+    "image": "image237.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      495,
+      342
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image238.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      496,
+      340
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image239.png",
+    "answer": "D",
+    "crop": [
+      0,
+      119,
+      498,
+      334
+    ],
+    "column_confidence": 0.91
+  },
+  {
+    "image": "image240.png",
+    "answer": "C",
+    "crop": [
+      0,
+      117,
+      494,
+      334
+    ],
+    "column_confidence": 0.916
+  },
+  {
+    "image": "image241.png",
+    "answer": "C",
+    "crop": [
+      0,
+      113,
+      498,
+      330
+    ],
+    "column_confidence": 0.927
+  },
+  {
+    "image": "image242.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      495,
+      334
+    ],
+    "column_confidence": 0.922
+  },
+  {
+    "image": "image243.png",
+    "answer": "B",
+    "crop": [
+      0,
+      119,
+      493,
+      532
+    ],
+    "column_confidence": 0.944
+  },
+  {
+    "image": "image244.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      493,
+      555
+    ],
+    "column_confidence": 0.959
+  },
+  {
+    "image": "image245.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      493,
+      408
+    ],
+    "column_confidence": 0.936
+  },
+  {
+    "image": "image246.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      497,
+      338
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image247.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      495,
+      321
+    ],
+    "column_confidence": 0.916
+  },
+  {
+    "image": "image248.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      492,
+      323
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image249.png",
+    "answer": "D",
+    "crop": [
+      0,
+      118,
+      498,
+      401
+    ],
+    "column_confidence": 0.933
+  },
+  {
+    "image": "image250.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      494,
+      511
+    ],
+    "column_confidence": 0.951
+  },
+  {
+    "image": "image251.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      493,
+      362
+    ],
+    "column_confidence": 0.928
+  },
+  {
+    "image": "image252.png",
+    "answer": "C",
+    "crop": [
+      0,
+      117,
+      495,
+      322
+    ],
+    "column_confidence": 0.913
+  },
+  {
+    "image": "image253.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      496,
+      323
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image254.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      497,
+      323
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image255.png",
+    "answer": "B",
+    "crop": [
+      0,
+      114,
+      494,
+      320
+    ],
+    "column_confidence": 0.925
+  },
+  {
+    "image": "image256.png",
+    "answer": "A",
+    "crop": [
+      0,
+      119,
+      493,
+      341
+    ],
+    "column_confidence": 0.915
+  },
+  {
+    "image": "image257.png",
+    "answer": "A",
+    "crop": [
+      0,
+      113,
+      495,
+      348
+    ],
+    "column_confidence": 0.931
+  },
+  {
+    "image": "image258.png",
+    "answer": "A",
+    "crop": [
+      0,
+      113,
+      493,
+      489
+    ],
+    "column_confidence": 0.953
+  },
+  {
+    "image": "image259.png",
+    "answer": "D",
+    "crop": [
+      0,
+      119,
+      499,
+      798
+    ],
+    "column_confidence": 0.925
+  },
+  {
+    "image": "image260.png",
+    "answer": "C",
+    "crop": [
+      0,
+      118,
+      498,
+      411
+    ],
+    "column_confidence": 0.934
+  },
+  {
+    "image": "image261.png",
+    "answer": "B",
+    "crop": [
+      0,
+      116,
+      491,
+      558
+    ],
+    "column_confidence": 0.953
+  },
+  {
+    "image": "image262.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      493,
+      493
+    ],
+    "column_confidence": 0.945
+  },
+  {
+    "image": "image263.png",
+    "answer": "B",
+    "crop": [
+      0,
+      119,
+      493,
+      360
+    ],
+    "column_confidence": 0.917
+  },
+  {
+    "image": "image264.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      495,
+      344
+    ],
+    "column_confidence": 0.93
+  },
+  {
+    "image": "image265.png",
+    "answer": "C",
+    "crop": [
+      0,
+      118,
+      496,
+      428
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image266.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      495,
+      383
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image267.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      499,
+      316
+    ],
+    "column_confidence": 0.918
+  },
+  {
+    "image": "image268.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      587,
+      969
+    ],
+    "column_confidence": 0.945
+  },
+  {
+    "image": "image269.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      587,
+      573
+    ],
+    "column_confidence": 0.956
+  },
+  {
+    "image": "image270.png",
+    "answer": "B",
+    "crop": [
+      0,
+      109,
+      583,
+      419
+    ],
+    "column_confidence": 0.955
+  },
+  {
+    "image": "image271.png",
+    "answer": "B",
+    "crop": [
+      0,
+      121,
+      590,
+      347
+    ],
+    "column_confidence": 0.911
+  },
+  {
+    "image": "image272.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      588,
+      342
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image273.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      586,
+      381
+    ],
+    "column_confidence": 0.934
+  },
+  {
+    "image": "image274.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      589,
+      503
+    ],
+    "column_confidence": 0.954
+  },
+  {
+    "image": "image275.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      592,
+      453
+    ],
+    "column_confidence": 0.949
+  },
+  {
+    "image": "image276.png",
+    "answer": "C",
+    "crop": [
+      0,
+      117,
+      586,
+      436
+    ],
+    "column_confidence": 0.936
+  },
+  {
+    "image": "image277.png",
+    "answer": "C",
+    "crop": [
+      0,
+      112,
+      584,
+      373
+    ],
+    "column_confidence": 0.944
+  },
+  {
+    "image": "image278.png",
+    "answer": "B",
+    "crop": [
+      0,
+      119,
+      591,
+      378
+    ],
+    "column_confidence": 0.921
+  },
+  {
+    "image": "image279.png",
+    "answer": "D",
+    "crop": [
+      0,
+      113,
+      582,
+      404
+    ],
+    "column_confidence": 0.941
+  },
+  {
+    "image": "image280.png",
+    "answer": "C",
+    "crop": [
+      0,
+      113,
+      585,
+      538
+    ],
+    "column_confidence": 0.955
+  },
+  {
+    "image": "image281.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      584,
+      379
+    ],
+    "column_confidence": 0.939
+  },
+  {
+    "image": "image282.png",
+    "answer": "A",
+    "crop": [
+      0,
+      117,
+      584,
+      581
+    ],
+    "column_confidence": 0.954
+  },
+  {
+    "image": "image283.png",
+    "answer": "A",
+    "crop": [
+      0,
+      112,
+      585,
+      374
+    ],
+    "column_confidence": 0.941
+  },
+  {
+    "image": "image284.png",
+    "answer": "D",
+    "crop": [
+      0,
+      118,
+      591,
+      371
+    ],
+    "column_confidence": 0.927
+  },
+  {
+    "image": "image285.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      584,
+      358
+    ],
+    "column_confidence": 0.927
+  },
+  {
+    "image": "image286.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      587,
+      352
+    ],
+    "column_confidence": 0.926
+  },
+  {
+    "image": "image287.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      584,
+      495
+    ],
+    "column_confidence": 0.949
+  },
+  {
+    "image": "image288.png",
+    "answer": "D",
+    "crop": [
+      0,
+      121,
+      583,
+      335
+    ],
+    "column_confidence": 0.907
+  },
+  {
+    "image": "image289.png",
+    "answer": "A",
+    "crop": [
+      0,
+      111,
+      583,
+      442
+    ],
+    "column_confidence": 0.95
+  },
+  {
+    "image": "image290.png",
+    "answer": "D",
+    "crop": [
+      0,
+      118,
+      587,
+      324
+    ],
+    "column_confidence": 0.914
+  },
+  {
+    "image": "image291.png",
+    "answer": "B",
+    "crop": [
+      0,
+      115,
+      588,
+      365
+    ],
+    "column_confidence": 0.932
+  },
+  {
+    "image": "image292.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      582,
+      327
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image293.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      585,
+      488
+    ],
+    "column_confidence": 0.951
+  },
+  {
+    "image": "image294.png",
+    "answer": "B",
+    "crop": [
+      0,
+      112,
+      581,
+      374
+    ],
+    "column_confidence": 0.941
+  },
+  {
+    "image": "image295.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      585,
+      863
+    ],
+    "column_confidence": 0.936
+  },
+  {
+    "image": "image296.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      583,
+      484
+    ],
+    "column_confidence": 0.95
+  },
+  {
+    "image": "image297.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      582,
+      470
+    ],
+    "column_confidence": 0.94
+  },
+  {
+    "image": "image298.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      586,
+      496
+    ],
+    "column_confidence": 0.944
+  },
+  {
+    "image": "image299.png",
+    "answer": "B",
+    "crop": [
+      0,
+      120,
+      584,
+      351
+    ],
+    "column_confidence": 0.917
+  },
+  {
+    "image": "image300.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      589,
+      342
+    ],
+    "column_confidence": 0.918
+  },
+  {
+    "image": "image301.png",
+    "answer": "D",
+    "crop": [
+      0,
+      113,
+      583,
+      337
+    ],
+    "column_confidence": 0.932
+  },
+  {
+    "image": "image302.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      587,
+      534
+    ],
+    "column_confidence": 0.951
+  },
+  {
+    "image": "image303.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      583,
+      486
+    ],
+    "column_confidence": 0.947
+  },
+  {
+    "image": "image304.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      583,
+      420
+    ],
+    "column_confidence": 0.938
+  },
+  {
+    "image": "image305.png",
+    "answer": "D",
+    "crop": [
+      0,
+      119,
+      587,
+      318
+    ],
+    "column_confidence": 0.906
+  },
+  {
+    "image": "image306.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      583,
+      384
+    ],
+    "column_confidence": 0.932
+  },
+  {
+    "image": "image307.png",
+    "answer": "C",
+    "crop": [
+      0,
+      112,
+      583,
+      340
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image308.png",
+    "answer": "B",
+    "crop": [
+      0,
+      121,
+      590,
+      454
+    ],
+    "column_confidence": 0.93
+  },
+  {
+    "image": "image309.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      583,
+      541
+    ],
+    "column_confidence": 0.954
+  },
+  {
+    "image": "image310.png",
+    "answer": "B",
+    "crop": [
+      0,
+      114,
+      586,
+      316
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image311.png",
+    "answer": "C",
+    "crop": [
+      0,
+      115,
+      586,
+      353
+    ],
+    "column_confidence": 0.929
+  },
+  {
+    "image": "image312.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      589,
+      537
+    ],
+    "column_confidence": 0.95
+  },
+  {
+    "image": "image313.png",
+    "answer": "B",
+    "crop": [
+      0,
+      113,
+      591,
+      426
+    ],
+    "column_confidence": 0.944
+  },
+  {
+    "image": "image314.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      580,
+      322
+    ],
+    "column_confidence": 0.913
+  },
+  {
+    "image": "image315.png",
+    "answer": "A",
+    "crop": [
+      0,
+      114,
+      584,
+      351
+    ],
+    "column_confidence": 0.934
+  },
+  {
+    "image": "image316.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      585,
+      684
+    ],
+    "column_confidence": 0.936
+  },
+  {
+    "image": "image317.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      588,
+      329
+    ],
+    "column_confidence": 0.918
+  },
+  {
+    "image": "image318.png",
+    "answer": "A",
+    "crop": [
+      0,
+      114,
+      586,
+      320
+    ],
+    "column_confidence": 0.925
+  },
+  {
+    "image": "image319.png",
+    "answer": "A",
+    "crop": [
+      0,
+      112,
+      584,
+      317
+    ],
+    "column_confidence": 0.934
+  },
+  {
+    "image": "image320.png",
+    "answer": "A",
+    "crop": [
+      0,
+      114,
+      587,
+      418
+    ],
+    "column_confidence": 0.943
+  },
+  {
+    "image": "image321.png",
+    "answer": "D",
+    "crop": [
+      0,
+      121,
+      584,
+      318
+    ],
+    "column_confidence": 0.899
+  },
+  {
+    "image": "image322.png",
+    "answer": "B",
+    "crop": [
+      0,
+      117,
+      587,
+      328
+    ],
+    "column_confidence": 0.915
+  },
+  {
+    "image": "image323.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      588,
+      314
+    ],
+    "column_confidence": 0.917
+  },
+  {
+    "image": "image324.png",
+    "answer": "D",
+    "crop": [
+      0,
+      113,
+      583,
+      327
+    ],
+    "column_confidence": 0.93
+  },
+  {
+    "image": "image325.png",
+    "answer": "C",
+    "crop": [
+      0,
+      108,
+      576,
+      466
+    ],
+    "column_confidence": 0.961
+  },
+  {
+    "image": "image326.png",
+    "answer": "D",
+    "crop": [
+      0,
+      117,
+      590,
+      424
+    ],
+    "column_confidence": 0.934
+  },
+  {
+    "image": "image327.png",
+    "answer": "D",
+    "crop": [
+      0,
+      119,
+      587,
+      377
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image328.png",
+    "answer": "C",
+    "crop": [
+      0,
+      112,
+      584,
+      326
+    ],
+    "column_confidence": 0.933
+  },
+  {
+    "image": "image329.png",
+    "answer": "C",
+    "crop": [
+      0,
+      117,
+      582,
+      343
+    ],
+    "column_confidence": 0.921
+  },
+  {
+    "image": "image330.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      583,
+      406
+    ],
+    "column_confidence": 0.936
+  },
+  {
+    "image": "image331.png",
+    "answer": "B",
+    "crop": [
+      0,
+      113,
+      584,
+      577
+    ],
+    "column_confidence": 0.96
+  },
+  {
+    "image": "image332.png",
+    "answer": "C",
+    "crop": [
+      0,
+      111,
+      586,
+      318
+    ],
+    "column_confidence": 0.931
+  },
+  {
+    "image": "image333.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      588,
+      449
+    ],
+    "column_confidence": 0.944
+  },
+  {
+    "image": "image334.png",
+    "answer": "A",
+    "crop": [
+      0,
+      118,
+      583,
+      327
+    ],
+    "column_confidence": 0.917
+  },
+  {
+    "image": "image335.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      588,
+      344
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image336.png",
+    "answer": "B",
+    "crop": [
+      0,
+      114,
+      586,
+      323
+    ],
+    "column_confidence": 0.929
+  },
+  {
+    "image": "image337.png",
+    "answer": "B",
+    "crop": [
+      0,
+      114,
+      578,
+      508
+    ],
+    "column_confidence": 0.953
+  },
+  {
+    "image": "image338.png",
+    "answer": "D",
+    "crop": [
+      0,
+      115,
+      586,
+      348
+    ],
+    "column_confidence": 0.925
+  },
+  {
+    "image": "image339.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      586,
+      460
+    ],
+    "column_confidence": 0.943
+  },
+  {
+    "image": "image340.png",
+    "answer": "D",
+    "crop": [
+      0,
+      113,
+      582,
+      322
+    ],
+    "column_confidence": 0.925
+  },
+  {
+    "image": "image341.png",
+    "answer": "D",
+    "crop": [
+      0,
+      112,
+      585,
+      338
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image342.png",
+    "answer": "B",
+    "crop": [
+      0,
+      114,
+      584,
+      352
+    ],
+    "column_confidence": 0.932
+  },
+  {
+    "image": "image343.png",
+    "answer": "B",
+    "crop": [
+      0,
+      114,
+      586,
+      468
+    ],
+    "column_confidence": 0.949
+  },
+  {
+    "image": "image344.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      585,
+      325
+    ],
+    "column_confidence": 0.923
+  },
+  {
+    "image": "image345.png",
+    "answer": "D",
+    "crop": [
+      0,
+      112,
+      586,
+      331
+    ],
+    "column_confidence": 0.937
+  },
+  {
+    "image": "image346.png",
+    "answer": "D",
+    "crop": [
+      0,
+      113,
+      586,
+      320
+    ],
+    "column_confidence": 0.925
+  },
+  {
+    "image": "image347.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      590,
+      328
+    ],
+    "column_confidence": 0.921
+  },
+  {
+    "image": "image348.png",
+    "answer": "C",
+    "crop": [
+      0,
+      114,
+      584,
+      322
+    ],
+    "column_confidence": 0.925
+  },
+  {
+    "image": "image349.png",
+    "answer": "C",
+    "crop": [
+      0,
+      118,
+      591,
+      327
+    ],
+    "column_confidence": 0.917
+  },
+  {
+    "image": "image350.png",
+    "answer": "D",
+    "crop": [
+      0,
+      112,
+      581,
+      373
+    ],
+    "column_confidence": 0.944
+  },
+  {
+    "image": "image351.png",
+    "answer": "D",
+    "crop": [
+      0,
+      119,
+      586,
+      353
+    ],
+    "column_confidence": 0.918
+  },
+  {
+    "image": "image352.png",
+    "answer": "C",
+    "crop": [
+      0,
+      103,
+      589,
+      318
+    ],
+    "column_confidence": 0.956
+  },
+  {
+    "image": "image353.png",
+    "answer": "A",
+    "crop": [
+      0,
+      117,
+      582,
+      332
+    ],
+    "column_confidence": 0.916
+  },
+  {
+    "image": "image354.png",
+    "answer": "C",
+    "crop": [
+      0,
+      112,
+      585,
+      356
+    ],
+    "column_confidence": 0.938
+  },
+  {
+    "image": "image355.png",
+    "answer": "D",
+    "crop": [
+      0,
+      114,
+      580,
+      870
+    ],
+    "column_confidence": 0.938
+  },
+  {
+    "image": "image356.png",
+    "answer": "A",
+    "crop": [
+      0,
+      117,
+      583,
+      638
+    ],
+    "column_confidence": 0.956
+  },
+  {
+    "image": "image357.png",
+    "answer": "D",
+    "crop": [
+      0,
+      112,
+      589,
+      363
+    ],
+    "column_confidence": 0.942
+  },
+  {
+    "image": "image358.png",
+    "answer": "D",
+    "crop": [
+      0,
+      112,
+      587,
+      325
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image359.png",
+    "answer": "B",
+    "crop": [
+      0,
+      116,
+      589,
+      331
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image360.png",
+    "answer": "A",
+    "crop": [
+      0,
+      117,
+      584,
+      663
+    ],
+    "column_confidence": 0.959
+  },
+  {
+    "image": "image361.png",
+    "answer": "C",
+    "crop": [
+      0,
+      112,
+      583,
+      538
+    ],
+    "column_confidence": 0.959
+  },
+  {
+    "image": "image362.png",
+    "answer": "A",
+    "crop": [
+      0,
+      115,
+      585,
+      321
+    ],
+    "column_confidence": 0.922
+  },
+  {
+    "image": "image363.png",
+    "answer": "D",
+    "crop": [
+      0,
+      116,
+      583,
+      522
+    ],
+    "column_confidence": 0.95
+  },
+  {
+    "image": "image364.png",
+    "answer": "C",
+    "crop": [
+      0,
+      116,
+      588,
+      340
+    ],
+    "column_confidence": 0.924
+  },
+  {
+    "image": "image365.png",
+    "answer": "B",
+    "crop": [
+      0,
+      113,
+      589,
+      338
+    ],
+    "column_confidence": 0.929
+  },
+  {
+    "image": "image366.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      586,
+      343
+    ],
+    "column_confidence": 0.927
+  },
+  {
+    "image": "image367.png",
+    "answer": "A",
+    "crop": [
+      0,
+      116,
+      584,
+      440
+    ],
+    "column_confidence": 0.941
+  },
+  {
+    "image": "image368.png",
+    "answer": "A",
+    "crop": [
+      0,
+      112,
+      583,
+      554
+    ],
+    "column_confidence": 0.96
+  },
+  {
+    "image": "image369.png",
+    "answer": "A",
+    "crop": [
+      0,
+      118,
+      584,
+      440
+    ],
+    "column_confidence": 0.936
+  },
+  {
+    "image": "image370.png",
+    "answer": "B",
+    "crop": [
+      0,
+      110,
+      584,
+      326
+    ],
+    "column_confidence": 0.939
+  },
+  {
+    "image": "image371.png",
+    "answer": "A",
+    "crop": [
+      0,
+      112,
+      588,
+      336
+    ],
+    "column_confidence": 0.935
+  },
+  {
+    "image": "image372.png",
+    "answer": "B",
+    "crop": [
+      0,
+      121,
+      585,
+      520
+    ],
+    "column_confidence": 0.938
+  },
+  {
+    "image": "image373.png",
+    "answer": "C",
+    "crop": [
+      0,
+      113,
+      586,
+      503
+    ],
+    "column_confidence": 0.954
+  }
+]

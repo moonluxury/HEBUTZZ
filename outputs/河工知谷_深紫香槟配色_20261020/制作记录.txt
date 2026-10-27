@@ -1,0 +1,24 @@
+制作方式：内置 imagegen，基于已选定的山河图形进行配色修改。
+参考：华住会官方 App 商店图标 https://apps.apple.com/cn/app/id556808349
+配色方向：深紫、灰紫、暖香槟。提示中的 HEX 是本方案拟定色值，不是华住会官方色值。
+此文件为新配色提案，应用当前使用的资源与安装包未变更。
+
+最终生成提示词：
+
+Use case: style-transfer / logo-brand color refinement.
+Asset type: one standalone app logo, transparent PNG.
+
+Input image 1 is the EDIT TARGET: the user's approved circular mountain-and-winding-river logo. Recolor this exact mark. Preserve its circular outline, exact hill silhouettes, smooth rounded continuous contours, spatial composition, hill count, negative spaces, and exact S-curving river route and width. The user previously rejected alterations to hill or river geometry. Color changes only; no redesign.
+
+Primary request: The current cyan/blue palette feels too bright. Create ONE more restrained, rich, mature palette inspired by the deep purple and warm beige-gold color relationship of the Huazhu Rewards / 华住会 app icon. Reference only its COLOR MOOD, not its H, circular ring, typography, or graphic forms.
+
+Color art direction (our proposed palette, not claimed official brand values):
+- Dominant hills: deep plum and muted aubergine, approximately #40234F and #553163. Avoid blue, cyan, electric violet, hot magenta.
+- Left distant hill: muted medium plum approximately #775A86; remain distinct from the darker foreground.
+- Upper sky area inside the circle: subdued dusty mauve approximately #887391, softly shading toward #A293AA at the horizon at most; no white or luminous washed-out area. Lower its brightness substantially compared with the original cyan sky.
+- Winding river: muted warm champagne / parchment gold around #D8C4A3 with only very subtle variation. Matte warm beige, NOT yellow, metallic, shiny, glowing, or pure white. Preserve its recognizable winding silhouette.
+- Use restrained very subtle smooth gradients for gentle depth, almost flat elegant branding. Much less glossy and less contrast flare than original. Keep clear readable separation among all original regions at small app-icon size.
+
+Composition: one centered circular logo, nearly filling a square canvas with a small even transparent safety margin (~4%). The outside of the circle must be actually transparent; do NOT create a checkerboard graphic. Smooth precise antialiased circular alpha edge; no stray pixels, bumps, ragged cutout edges or fringes.
+Text: none. No wordmark, no labels, no swatches, no multiple variants, no presentation board, no border/ring, no drop shadow, no new mountain peaks, no additional pictorial elements. Preserve the original design's rounded character. Output a high-resolution, polished single recolored logo.
+

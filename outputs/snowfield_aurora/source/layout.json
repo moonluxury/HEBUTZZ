@@ -1,0 +1,56 @@
+{
+  "source": {
+    "file": "original_logo.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "sha256": "b462c2136229441bd961f3aea5c63211d31af95ee8b1a91781553b50d3521db3"
+  },
+  "crop_xyxy": [
+    21,
+    235,
+    1230,
+    1040
+  ],
+  "bbox_alpha_threshold": 8,
+  "canvas": [
+    2048,
+    2048
+  ],
+  "logo": {
+    "left": 266,
+    "top": 519,
+    "width": 1516,
+    "height": 1009
+  },
+  "scale": 1.2539288668320927,
+  "alpha_policy": "Original alpha preserved except the explicitly repaired left H edge and its rear-orbit occlusion; all parts partition the repaired master.",
+  "unassigned_nonzero_source_pixels_inside_crop": 2522,
+  "mask_partition_max_error": 0,
+  "left_crossing_edge_refinement": {
+    "enabled": false
+  },
+  "straight_edge_rebuild": {
+    "method": "One continuous straight edge, jointly supersampled with rear-orbit occlusion",
+    "body_edge_x_of_y": [
+      -0.39862216127682504,
+      603.3750078034293
+    ],
+    "rear_arc_upper_y_of_x": [
+      0.00020031797012557185,
+      -0.703709351435518,
+      881.9032846841797
+    ],
+    "rear_arc_lower_y_of_x": [
+      0.00010396054137155413,
+      -0.7804305087790442,
+      934.4926791130329
+    ],
+    "supersampling": 32,
+    "maximum_measured_edge_deviation_pixels": 0.0893696775663102,
+    "changed_alpha_pixels": 6609,
+    "alpha_changes_outside_authorized_region": 0
+  }
+}

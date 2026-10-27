@@ -1,0 +1,20 @@
+{
+  "canvas": [
+    2048,
+    2048
+  ],
+  "effective_width": 1516,
+  "effective_width_percent": 74.0234375,
+  "frost_seed_count": 562,
+  "snow_points": 12,
+  "seed": 20261020,
+  "external_glow": false,
+  "background_strengths": {
+    "aurora_strength": 0.12,
+    "secondary_aurora_strength": 0.045,
+    "snow_haze_strength": 0.035,
+    "snow_points": 12,
+    "snow_point_strength": 0.2
+  },
+  "processing": "Pillow and NumPy; source alpha is immutable; procedural material fields."
+}

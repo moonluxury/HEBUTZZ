@@ -1,0 +1,66 @@
+{
+  "tool": "内置 image_gen",
+  "version": "20261019_简洁方案",
+  "styleReferences": [
+    "E:/zhengzhi/outputs/HEBUT空天探索_七张收藏卡/01_独立卡面/01_火箭.png",
+    "E:/zhengzhi/outputs/HEBUT空天探索_七张收藏卡/01_独立卡面/07_环状行星.png"
+  ],
+  "designs": [
+    {
+      "id": "A",
+      "name": "环星",
+      "slug": "orbital_planet",
+      "description": "单颗蓝星 · 一道轨环 · 冰蓝留白",
+      "text": {
+        "brandY": 995,
+        "brandSize": 63,
+        "seriesY": 1076,
+        "seriesSize": 33,
+        "color": "#355B7A"
+      },
+      "prompt": "Use case: illustration-story.\nCreate an ORIGINAL matching card-BACK interior illustration for the user's approved HEBUT aerospace collectible card set.\nImage 1 and Image 2 are STYLE REFERENCES ONLY: preserve their contemporary refined 2D cartoon illustration, gently painterly broad shading, fine blue contours, warm ivory highlights, excellent finish. The user loves those fronts; maintain that art quality. We are designing a calm shared reverse.\nProduce ONE standalone upright 2:3 image, full bleed, flat frontal artwork, NOT a mockup or grid. NO text, letters, numbers, branding, watermark, title bars or card frame: exact reusable border and editable typography will be composited later.\nComposition: one instantly legible visual focus, a SIMPLE low-contrast backdrop and much deliberate breathing room. Background should have restrained broad smooth tonal variation and slight fine painted texture. Important artwork inside outer 10% safe zone.\nA mature university collectible game illustration: refined and warm, crisp silhouette with soft dimensional shading. Do not regress to 2010 raster UI, pixel graphics, clipart or stock vector. Also no plastic 3D, clay, toy faces, photoreal space, cinematic glare, heavy grain or canvas. No decorative cloud curls, heraldic crests, oval windows, diamond nameplates, banners, borders inside the art, scrollwork, fancy corner flourishes, gold filigree, sparkles everywhere, dense stars, HUD, constellations or elaborate diagrams. No giant white label. No arbitrary added small props.\nKeep the BACK composition simpler and much quieter than the supplied fronts.\nDESIGN A — ONE QUIET ORBITAL PLANET.\nA beautiful SINGLE softly shaded pale blue spherical planet with very simplified two or three broad ocean/atmospheric color shapes, held in one clean ivory orbital ring. It is a carefully painted 2D object, not realistic Earth, no detailed geography. The ring goes behind and in front of the sphere with coherent occlusion, tilting gently from lower-left to upper-right. Navy is only a restrained contour and small shadow. Planet occupies about 34% image width; ring including ends about 56% width. Center the motif at x=50%, y=42%; all of it lies within y=23–57%. Quiet misty ice-blue background with subtle periwinkle at the lower edge, mostly uniform, no clouds and no floating stars. The whole lower central area y=65–79% stays empty, pale and low-contrast for our added text. Warm cream light on upper-left planet edge; softness and fine painterly detail match the reference. This is a compact emblem-like illustrated object, WITHOUT an enclosing badge or pedestal."
+    },
+    {
+      "id": "B",
+      "name": "启航",
+      "slug": "quiet_launch",
+      "description": "小型火箭 · 连贯尾焰 · 奶油浅底",
+      "text": {
+        "brandY": 995,
+        "brandSize": 63,
+        "seriesY": 1076,
+        "seriesSize": 33,
+        "color": "#355B7A"
+      },
+      "prompt": "Use case: illustration-story.\nCreate an ORIGINAL matching card-BACK interior illustration for the user's approved HEBUT aerospace collectible card set.\nImage 1 and Image 2 are STYLE REFERENCES ONLY: preserve their contemporary refined 2D cartoon illustration, gently painterly broad shading, fine blue contours, warm ivory highlights, excellent finish. The user loves those fronts; maintain that art quality. We are designing a calm shared reverse.\nProduce ONE standalone upright 2:3 image, full bleed, flat frontal artwork, NOT a mockup or grid. NO text, letters, numbers, branding, watermark, title bars or card frame: exact reusable border and editable typography will be composited later.\nComposition: one instantly legible visual focus, a SIMPLE low-contrast backdrop and much deliberate breathing room. Background should have restrained broad smooth tonal variation and slight fine painted texture. Important artwork inside outer 10% safe zone.\nA mature university collectible game illustration: refined and warm, crisp silhouette with soft dimensional shading. Do not regress to 2010 raster UI, pixel graphics, clipart or stock vector. Also no plastic 3D, clay, toy faces, photoreal space, cinematic glare, heavy grain or canvas. No decorative cloud curls, heraldic crests, oval windows, diamond nameplates, banners, borders inside the art, scrollwork, fancy corner flourishes, gold filigree, sparkles everywhere, dense stars, HUD, constellations or elaborate diagrams. No giant white label. No arbitrary added small props.\nKeep the BACK composition simpler and much quieter than the supplied fronts.\nDESIGN B — ONE ROCKET, A QUIET UPWARD GESTURE.\nOne refined compact white-and-blue aerospace rocket in a three-quarter oblique view, diagonally ascending to upper right. Use the believable slender engineering proportions and hand-painted finish of image 1, but make it a small calm emblem rather than a dramatic launch scene. One streamlined fuselage, one clear rear engine nozzle, coherent symmetric stabilizing fins as seen in perspective; no porthole-like eyes. A short pale warm-yellow exhaust originates exactly INSIDE and attached to its one rear nozzle, transitions into one soft graceful curved ivory plume behind it, and fades smoothly, with no detached jets. The entire rocket+plume composition occupies x=29–72%, y=27–58%; no clouds filling the bottom, no landscape, no oval enclosure.\nBackground is soft buttercream / warm ivory with a very faint wash of powder blue along the bottom, mostly flat and very light. Keep the center of the lower third y=65–79% clear for text. One subtly painted blue shadow on the rocket, restrained warm highlight, exquisite contemporary 2D drawing consistent with the approved fronts. No star decorations at all. Let simplicity and the lovely drawn silhouette carry the design."
+    },
+    {
+      "id": "C",
+      "name": "地平线",
+      "slug": "earth_horizon",
+      "description": "下置星球弧面 · 天蓝渐层 · 开阔留白",
+      "text": {
+        "brandY": 480,
+        "brandSize": 63,
+        "seriesY": 561,
+        "seriesSize": 33,
+        "color": "#355B7A"
+      },
+      "prompt": "Use case: illustration-story.\nCreate an ORIGINAL matching card-BACK interior illustration for the user's approved HEBUT aerospace collectible card set.\nImage 1 and Image 2 are STYLE REFERENCES ONLY: preserve their contemporary refined 2D cartoon illustration, gently painterly broad shading, fine blue contours, warm ivory highlights, excellent finish. The user loves those fronts; maintain that art quality. We are designing a calm shared reverse.\nProduce ONE standalone upright 2:3 image, full bleed, flat frontal artwork, NOT a mockup or grid. NO text, letters, numbers, branding, watermark, title bars or card frame: exact reusable border and editable typography will be composited later.\nComposition: one instantly legible visual focus, a SIMPLE low-contrast backdrop and much deliberate breathing room. Background should have restrained broad smooth tonal variation and slight fine painted texture. Important artwork inside outer 10% safe zone.\nA mature university collectible game illustration: refined and warm, crisp silhouette with soft dimensional shading. Do not regress to 2010 raster UI, pixel graphics, clipart or stock vector. Also no plastic 3D, clay, toy faces, photoreal space, cinematic glare, heavy grain or canvas. No decorative cloud curls, heraldic crests, oval windows, diamond nameplates, banners, borders inside the art, scrollwork, fancy corner flourishes, gold filigree, sparkles everywhere, dense stars, HUD, constellations or elaborate diagrams. No giant white label. No arbitrary added small props.\nKeep the BACK composition simpler and much quieter than the supplied fronts.\nDESIGN C — THE QUIET EARTH HORIZON.\nOne large graceful curved blue planetary horizon enters from the BOTTOM of the artwork, with its top apex around y=65%. Only the upper arc of the planet is visible; its globe continues out through the bottom. Show three broad simplified bands/shapes of soft blue ocean, pale ivory atmospheric cloud, and blue-lilac shadow, painted like the approved illustrations, with no realistic continents or mottled texture. The entire upper 60% is very calm light blue / pale sky-blue space, no stars or dots, no moon, no rocket, no sun, no extra focal object. A single very fine softly painted atmospheric light edge traces the planet's curve, with a tiny warm-cream tint; no dramatic glow.\nThe composition's visual appeal is the contrast between a clean huge arc low in the frame and the spacious luminous sky. The top-middle y=29–43% must remain especially clean for our typography. Soft tonal values, contemporary collectible illustration, beautifully hand-finished broad color transitions and controlled edge highlights. Simplicity without looking like flat corporate vector art; no scenery, no mountainous clouds, no patterned border."
+    },
+    {
+      "id": "D",
+      "name": "星轨",
+      "slug": "orbit_star",
+      "description": "单枚星芒 · 流动轨迹 · 淡紫留白",
+      "text": {
+        "brandY": 995,
+        "brandSize": 63,
+        "seriesY": 1076,
+        "seriesSize": 33,
+        "color": "#355B7A"
+      },
+      "prompt": "Use case: illustration-story.\nCreate an ORIGINAL matching card-BACK interior illustration for the user's approved HEBUT aerospace collectible card set.\nImage 1 and Image 2 are STYLE REFERENCES ONLY: preserve their contemporary refined 2D cartoon illustration, gently painterly broad shading, fine blue contours, warm ivory highlights, excellent finish. The user loves those fronts; maintain that art quality. We are designing a calm shared reverse.\nProduce ONE standalone upright 2:3 image, full bleed, flat frontal artwork, NOT a mockup or grid. NO text, letters, numbers, branding, watermark, title bars or card frame: exact reusable border and editable typography will be composited later.\nComposition: one instantly legible visual focus, a SIMPLE low-contrast backdrop and much deliberate breathing room. Background should have restrained broad smooth tonal variation and slight fine painted texture. Important artwork inside outer 10% safe zone.\nA mature university collectible game illustration: refined and warm, crisp silhouette with soft dimensional shading. Do not regress to 2010 raster UI, pixel graphics, clipart or stock vector. Also no plastic 3D, clay, toy faces, photoreal space, cinematic glare, heavy grain or canvas. No decorative cloud curls, heraldic crests, oval windows, diamond nameplates, banners, borders inside the art, scrollwork, fancy corner flourishes, gold filigree, sparkles everywhere, dense stars, HUD, constellations or elaborate diagrams. No giant white label. No arbitrary added small props.\nKeep the BACK composition simpler and much quieter than the supplied fronts.\nDESIGN D — ONE STAR AND ONE ORBIT.\nA SINGLE four-point cream star is the primary object, hand-painted with soft warm and cool shading, refined slightly rounded tips, no face, no gem facets. The star itself occupies 25% of image width, centered x=50%, y=42%. ONE very graceful narrow dusty-blue orbital ellipse loops diagonally around and partly behind the star, forming an elegant integrated aerospace symbol. Entire motif reaches only 52% width and about 27% height. Keep occlusion coherent and make the stroke softly hand-painted, with no metallic shine and no extra satellites, circles, secondary stars, dots or sparkles. This is a clear drawn star-and-orbit figure, not a golden compass, nautical star, astrolabe or corporate logo.\nBackground is extremely light muted lilac / periwinkle, gently warming toward cream at bottom, almost uniform and very low contrast. Reserve the lower center y=65–79% as clean space for our added type. Subtle blue-purple contours and shadows match the reference ringed planet; hand-painted refinement with beautiful clean edges, not ornate or busy. No literal planetary globe in this version."
+    }
+  ]
+}

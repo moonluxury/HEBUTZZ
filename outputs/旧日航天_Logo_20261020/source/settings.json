@@ -1,0 +1,22 @@
+{
+  "canvas_size": 2048,
+  "effective_width": 1536,
+  "colors": {
+    "cream": "#F1E8D7",
+    "navy": "#3C4D5D",
+    "orbit": "#B86140"
+  },
+  "wear_strength": 0.033,
+  "wear_seed": 197703,
+  "wear_multipliers": {
+    "body": 1.15,
+    "orbit": 0.65,
+    "rocket": 0.55,
+    "dot": 0.5
+  },
+  "left_orbit_split": {
+    "minimum_y": 650,
+    "boundary_x_intercept": 608,
+    "boundary_x_per_y": -0.406
+  }
+}

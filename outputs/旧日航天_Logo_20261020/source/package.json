@@ -1,0 +1,14 @@
+{
+  "name": "retro-aerospace-logo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Editable two-ink logo masks and deterministic light print wear",
+  "dependencies": {
+    "sharp": "0.35.5"
+  },
+  "scripts": {
+    "render": "node render.cjs",
+    "flat": "node render.cjs --flat-only",
+    "rebuild-masks": "node inspect_components.cjs && node prepare_masks.cjs"
+  }
+}

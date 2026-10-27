@@ -1,0 +1,24 @@
+{
+  "canvas": [
+    1024,
+    1536
+  ],
+  "logo": {
+    "x": 259,
+    "y": 430,
+    "width": 506,
+    "height": 470
+  },
+  "text": {
+    "color": "#092C87",
+    "brandY": 995,
+    "seriesY": 1076
+  },
+  "layers": [
+    "base",
+    "background",
+    "team-logo",
+    "frame",
+    "text"
+  ]
+}

@@ -1,0 +1,318 @@
+[
+  {
+    "file": "icons/collection-chevron.png",
+    "size": [384, 384],
+    "source": "source/collection-chevron.svg",
+    "library": "Project original",
+    "shape": "Rounded disclosure chevron, 2.5px stroke on a 24px grid",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/arrow-left.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/arrow-left.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/arrow-right.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/arrow-right.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/book-open.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/book-open.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/book-text.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/book-text.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/brand-python.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/brand-python.svg",
+    "library": "Tabler",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/chart-no-axes-column-increasing.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/chart-no-axes-column-increasing.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/check.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/check.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/chevron-down.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/chevron-down.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/chevron-right.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/chevron-right.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/circle-dot.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/circle-dot.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/circle.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/circle.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/clipboard-x.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/clipboard-x.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/clock.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/clock.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/code-xml.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/code-xml.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/cpu.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/cpu.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/download.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/download.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/file-text.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/file-text.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/flag.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/flag.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/house.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/house.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/megaphone.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/megaphone.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/network.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/network.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/notebook-pen.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/notebook-pen.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/search.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/search.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/sliders-horizontal.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/sliders-horizontal.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/square-play.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/square-play.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/star.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/star.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/user-round.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/user-round.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  },
+  {
+    "file": "icons/x.png",
+    "size": [
+      384,
+      384
+    ],
+    "source": "source/x.svg",
+    "library": "Lucide",
+    "shape": "Original source paths, no shape edits",
+    "color": "White alpha mask, shared runtime tint"
+  }
+]

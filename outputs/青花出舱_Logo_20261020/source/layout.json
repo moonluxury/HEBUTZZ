@@ -1,0 +1,24 @@
+{
+  "canvas": [
+    2048,
+    2048
+  ],
+  "generatedSize": [
+    1254,
+    1254
+  ],
+  "generatedCrop": {
+    "left": 17,
+    "top": 228,
+    "width": 1223,
+    "height": 821
+  },
+  "logo": {
+    "left": 256,
+    "top": 509,
+    "width": 1536,
+    "height": 1031
+  },
+  "background": "#FAF8F4",
+  "method": "Built-in image_gen material edit; export preserves generated alpha and aspect ratio."
+}

@@ -1,0 +1,106 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="CardBack.gd" id="1_script"]
+[ext_resource type="Texture2D" path="../07_共用卡背/card_back_base.png" id="2_base"]
+[ext_resource type="Texture2D" path="../07_共用卡背/card_back_art_layer.png" id="3_art"]
+[ext_resource type="Texture2D" path="../07_共用卡背/card_back_frame.png" id="4_frame"]
+[ext_resource type="Texture2D" path="../07_共用卡背/card_back_text.png" id="5_text"]
+
+[sub_resource type="SystemFont" id="LatinBold"]
+font_names = PackedStringArray("Arial", "sans-serif")
+font_weight = 700
+
+[sub_resource type="SystemFont" id="CJKBold"]
+font_names = PackedStringArray("Microsoft YaHei", "Noto Sans CJK SC", "sans-serif")
+font_weight = 700
+
+[sub_resource type="FontVariation" id="BrandFont"]
+base_font = SubResource("LatinBold")
+spacing_glyph = 10
+
+[sub_resource type="FontVariation" id="SeriesFont"]
+base_font = SubResource("CJKBold")
+spacing_glyph = 5
+
+[node name="HEBUTCardBack" type="Control"]
+custom_minimum_size = Vector2(256, 384)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1024.0
+offset_bottom = 1536.0
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="Design" type="Control" parent="."]
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 1536.0
+mouse_filter = 2
+
+[node name="Base" type="TextureRect" parent="Design"]
+visible = true
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 1536.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 0
+texture = ExtResource("2_base")
+
+[node name="Illustration" type="TextureRect" parent="Design"]
+visible = true
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 1536.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 0
+texture = ExtResource("3_art")
+
+[node name="Frame" type="TextureRect" parent="Design"]
+visible = true
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 1536.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 0
+texture = ExtResource("4_frame")
+
+[node name="RasterText" type="TextureRect" parent="Design"]
+visible = false
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 1536.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 0
+texture = ExtResource("5_text")
+
+[node name="Brand" type="Label" parent="Design"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 184.0
+offset_right = 924.0
+offset_bottom = 294.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.95686, 0.84314, 1)
+theme_override_fonts/font = SubResource("BrandFont")
+theme_override_font_sizes/font_size = 80
+text = "HEBUT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Series" type="Label" parent="Design"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 1204.0
+offset_right = 924.0
+offset_bottom = 1290.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.95686, 0.84314, 1)
+theme_override_fonts/font = SubResource("SeriesFont")
+theme_override_font_sizes/font_size = 52
+text = "空天探索系列"
+horizontal_alignment = 1
+vertical_alignment = 1

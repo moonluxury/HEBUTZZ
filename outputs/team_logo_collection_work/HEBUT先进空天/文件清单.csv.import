@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dx5j4lnv0vmyt"
+
+[deps]
+
+files=["res://outputs/team_logo_collection_work/HEBUT先进空天/文件清单.尺寸.translation", "res://outputs/team_logo_collection_work/HEBUT先进空天/文件清单.透明情况.translation", "res://outputs/team_logo_collection_work/HEBUT先进空天/文件清单.说明.translation", "res://outputs/team_logo_collection_work/HEBUT先进空天/文件清单.来源.translation", "res://outputs/team_logo_collection_work/HEBUT先进空天/文件清单.SHA256.translation"]
+
+source_file="res://outputs/team_logo_collection_work/HEBUT先进空天/文件清单.csv"
+dest_files=["res://outputs/team_logo_collection_work/HEBUT先进空天/文件清单.尺寸.translation", "res://outputs/team_logo_collection_work/HEBUT先进空天/文件清单.透明情况.translation", "res://outputs/team_logo_collection_work/HEBUT先进空天/文件清单.说明.translation", "res://outputs/team_logo_collection_work/HEBUT先进空天/文件清单.来源.translation", "res://outputs/team_logo_collection_work/HEBUT先进空天/文件清单.SHA256.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

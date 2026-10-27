@@ -52,12 +52,12 @@ func _run() -> void:
     _expect(max_options <= 4, "当前界面按最多 4 个选项设计，实际最大 %d" % max_options)
     report_lines.append("题型统计：single=%d multiple=%d judge=%d max_options=%d" % [counts["single"], counts["multiple"], counts["judge"], max_options])
 
-    var main_scene = load("res://scenes/Main.tscn").instantiate()
+    var main_scene = load("res://scenes/Workbench.tscn").instantiate()
     root.add_child(main_scene)
     await process_frame
-    _expect(main_scene.has_method("_start_quiz"), "主页面缺少进入答题页的方法")
-    _expect(main_scene.total_count == 540, "主页面总题数应显示为 540")
-    report_lines.append("主页面：加载成功，总题数=%d" % main_scene.total_count)
+    _expect(main_scene.find_child("AllButton", true, false) != null, "主页面缺少总题库入口")
+    _expect(main_scene.data.total == 2981, "工作台总题数应显示为 2981")
+    report_lines.append("主页面：工作台加载成功，总题数=%d" % main_scene.data.total)
     main_scene.queue_free()
 
     var app_state = root.get_node_or_null("/root/AppState")

@@ -1,0 +1,46 @@
+{
+  "canvas": [
+    2048,
+    2048
+  ],
+  "source_size": [
+    1254,
+    1254
+  ],
+  "effective_logo_width_percent": 74.0234375,
+  "source_original_sha256": "b462c2136229441bd961f3aea5c63211d31af95ee8b1a91781553b50d3521db3",
+  "source_alpha_max_outside_effective_crop": 7,
+  "final_alpha_vs_scaled_original_max_error": 247,
+  "final_alpha_vs_scaled_original_changed_pixels": 6609,
+  "final_alpha_vs_repaired_geometry_max_error": 0,
+  "original_alpha_changes_outside_authorized_edge_region": 0,
+  "part_mask_sum_vs_repaired_geometry_max_error": 0,
+  "presentation_vs_background_plus_exact_core_max_error": 0,
+  "fully_transparent_pixel_rgb_max": 0,
+  "source_opaque_pixels_made_transparent": 25,
+  "background_luma_max": 68.75479888916016,
+  "rocket_luma_max": 247.01719665527344,
+  "logo_luma_mean": 224.11280822753906,
+  "previews": {
+    "512": [
+      512,
+      512
+    ],
+    "256": [
+      256,
+      256
+    ],
+    "128": [
+      128,
+      128
+    ]
+  },
+  "core_sha256": "88a48b84d7b791401e7e5f027fb84b1d68c2411f217d3b3c3a83b3fb2b0af3c4",
+  "presentation_sha256": "b3e71078f7d0dbf222b66abf7a36258e6ca1828cd91f57caf811f5473b35eb91",
+  "limitations": [
+    "Original is a 1254-pixel raster; 2048-pixel output is resampled, not recovered native vector detail.",
+    "The effective crop discards only outlying alpha values below 8.",
+    "The left H edge and its orbit occlusion are explicitly reconstructed as a continuous straight boundary; other source alpha is preserved.",
+    "Light backgrounds are inspection/adaptation references; the primary presentation is dark."
+  ]
+}

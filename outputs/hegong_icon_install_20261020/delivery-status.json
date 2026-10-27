@@ -1,0 +1,61 @@
+{
+  "status": "complete",
+  "date": "2026-10-20",
+  "approved_image": "E:/zhengzhi/outputs/河工知谷_交大蓝配色_20261020/河工知谷_交大蓝004E97_透明.png",
+  "windows": {
+    "release_export": "passed",
+    "gui_startup": "passed",
+    "dpi": 96,
+    "runtime_big_and_small_icons_match": true,
+    "translucent_pixels": 238,
+    "executable_icon": "visually checked",
+    "console_wrapper_icon": "Updated existing launcher resource using rcedit and visually checked",
+    "other_display_scaling_tested": false
+  },
+  "android": {
+    "debug_export": "passed",
+    "signature_v2": true,
+    "signature_v3": true,
+    "certificate_matches_previous": true,
+    "package": "com.zhengzhi.quiz",
+    "device_runtime_tested": false,
+    "icon_comparisons": [
+      {
+        "extracted": "apk-icon.webp",
+        "source": "hegong_zhigu_android_192.png",
+        "normalizedRmse": 0.000042668933655223655
+      },
+      {
+        "extracted": "apk-icon_foreground.webp",
+        "source": "hegong_zhigu_adaptive_foreground.png",
+        "normalizedRmse": 0.00002211334442105109
+      },
+      {
+        "extracted": "apk-icon_background.webp",
+        "source": "hegong_zhigu_adaptive_background.png",
+        "normalizedRmse": 0
+      }
+    ],
+    "existing_template_warning": "Unused themed_icon.xml reference warning also occurs in previous APK."
+  },
+  "export_configuration": "Exclude outputs/* design-preview files from both export presets; no runtime references to this folder.",
+  "installed": [
+    {
+      "file": "E:/zhengzhi/build/河工开物.exe",
+      "bytes": 135442576,
+      "sha256": "e7b14a26c4c1543ede1d40f9902a95ea75182577225b35ff54f3de8431029c86"
+    },
+    {
+      "file": "E:/zhengzhi/build/河工开物.console.exe",
+      "bytes": 418816,
+      "sha256": "e01bef44c42aa3655e45f58f91ccbde149cbcb74add35bd915a526b1beb82508"
+    },
+    {
+      "file": "E:/zhengzhi/build/河工开物.apk",
+      "bytes": 44554553,
+      "sha256": "e90b60f8032e90af5aa0e84aeb7fef91b39734d9f639519d03fc5f7184a5667a"
+    }
+  ],
+  "previous_builds": "E:/zhengzhi/build/before-jiaoda-icon-20261020",
+  "previous_assets": "E:\\zhengzhi\\outputs\\hegong_icon_install_20261020\\previous_assets"
+}

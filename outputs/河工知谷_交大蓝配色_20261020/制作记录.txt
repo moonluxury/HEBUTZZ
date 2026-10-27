@@ -1,0 +1,27 @@
+制作方式：内置 imagegen，基于已选定的原始蓝色山河图案做新配色预览。
+主色基准：用户指定 #004E97（RGB 0,78,151）。
+配色方向：交大蓝山体、较暗的灰蓝天空、柔和浅蓝灰河道，降低原图大面积浅亮色的占比。
+2026-10-20：用户确认采用本版，已更新项目资源及 Windows / Android 发布文件。原始预览图保留；应用尺寸资源位于“应用图标”目录。此图为生成式配色，渐变和辅助色不是单一固定 HEX。
+
+最终生成提示词：
+
+Use case: style-transfer / logo-brand color refinement.
+Asset type: a single standalone transparent app logo.
+
+Input image 1 is the EDIT TARGET: the user's approved blue circular hills and winding-river mark. Recolor the existing exact design, not a new logo. Preserve the circular boundary, all hill silhouettes, the smoothly rounded continuous geometry, hill count, positions and overlaps, and especially the precise winding S river shape, course and widths. The user is highly sensitive to shape changes. Keep the original recognizable proportions.
+
+User request: use the supplied Jiaoda Blue color #004E97. The current original feels too bright and light. Return to BLUE from the previous purple/champagne exploration. Make the accepted blue landscape look deeper, weightier and restrained with substantially fewer pale high-brightness areas. Do not make it electric blue or nearly black.
+
+Color specification:
+- Main right hillside: the user's EXACT anchor blue #004E97 (RGB 0,78,151) as its dominant local color. Use this as a real color target, not merely an approximate generic blue.
+- Near left foreground hillside: slightly darker blue approximately #003969, to maintain original layering without heavy black.
+- Distant left hillside: restrained medium blue around #286497, darker and less cyan than the original.
+- Sky inside upper portion of circle: medium desaturated slate blue around #5C7D9C, shading only subtly toward #7892AA near the horizon. THIS IS IMPORTANT: the upper half must no longer be pale sky-blue, icy white, washed out, or luminous. It should carry meaningful blue-gray midtone weight. Still lighter than the hills so the silhouette remains legible.
+- River: soft pale blue-gray around #D4DEE7, almost matte silver-blue, restrained rather than dazzling pure white. Clearly separated from the dark main hills. No gold, beige, purple, violet or cyan.
+- Finish: clean restrained branding, predominantly even color regions with very slight broad gradients only. Preserve perceived roundedness through smooth paths rather than glossy lighting. No texture, no vignetting, no metallic shine, no glow, no 3D bevels or photographic depth.
+
+Composition: one circular logo centered on a square transparent canvas, 4% even safety margin around the circle; exact round smooth antialiased edge. The transparent exterior must have real alpha and no visible checkerboard graphic. No stray fringe pixels.
+Text: none.
+Avoid: changing the icon geometry, changing river direction, pointed angular mountains, extra hills, replacing the logo with typography, introducing borders or rings, captions, color swatches, multiple options, mockups, shadows.
+Return one polished high-resolution recolored logo, not a design presentation.
+

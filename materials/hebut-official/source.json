@@ -2,10 +2,10 @@
   "source_page": "https://www.hebut.edu.cn/gdgk/xxbz/index.htm",
   "downloaded_on": "2026-10-16",
   "files": {
-    "m_logo.svg": "https://www.hebut.edu.cn/new/images/m_logo.svg",
-    "m_logo.png": "https://www.hebut.edu.cn/new/images/m_logo.png",
-    "logo01.svg": "https://www.hebut.edu.cn/new/images/logo01.svg",
-    "logo02.svg": "https://www.hebut.edu.cn/new/images/logo02.svg"
+	"m_logo.svg": "https://www.hebut.edu.cn/new/images/m_logo.svg",
+	"m_logo.png": "https://www.hebut.edu.cn/new/images/m_logo.png",
+	"logo01.svg": "https://www.hebut.edu.cn/new/images/logo01.svg",
+	"logo02.svg": "https://www.hebut.edu.cn/new/images/logo02.svg"
   },
   "ui_asset": "res://assets/hebut_logo.svg",
   "notes": "The UI asset is an unmodified copy of m_logo.svg: official white vector artwork with a transparent background. Godot imports at 4x resolution with mipmaps and tints it to the active UI accent color. The previous UI used a 224x74 crop from an opaque reference screenshot."

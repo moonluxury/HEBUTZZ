@@ -1,0 +1,9 @@
+[
+  {"id":"01","slug":"rocket","name":"火箭","english":"ROCKET","meaning":"启航与理想","palette":"天空蓝、蓝白、奶油黄"},
+  {"id":"02","slug":"satellite","name":"人造卫星","english":"SATELLITE","meaning":"探索与连接","palette":"浅青蓝、淡金、柔白"},
+  {"id":"03","slug":"space_station","name":"空间站","english":"SPACE STATION","meaning":"协作与共同进步","palette":"长春花蓝、浅紫、柔白"},
+  {"id":"04","slug":"astronaut","name":"宇航员","english":"ASTRONAUT","meaning":"勇气与求知","palette":"月光蓝、薰衣草紫、暖金"},
+  {"id":"05","slug":"spaceplane","name":"空天飞机","english":"SPACEPLANE","meaning":"工程创新与突破","palette":"晴空蓝、薄荷青、暖白"},
+  {"id":"06","slug":"radio_telescope","name":"射电望远镜","english":"RADIO TELESCOPE","meaning":"科学研究与未知探索","palette":"浅蓝绿、奶油黄、鼠尾草绿"},
+  {"id":"07","slug":"ringed_planet","name":"环状行星","english":"RINGED PLANET","meaning":"宇宙、未来与无限可能","palette":"淡紫、奶油色、雾蓝"}
+]

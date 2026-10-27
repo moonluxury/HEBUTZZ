@@ -1,0 +1,20 @@
+{
+  "tool": "内置 image_gen",
+  "sourceHomepage": "http://81.70.80.234/",
+  "verifiedWebsiteIcon": "http://81.70.80.234/assets/icons/icon-192.png",
+  "sourceLogo": "E:/zhengzhi/assets/hebut-aerospace-research-center-logo-v2.png",
+  "styleBase": "E:/zhengzhi/outputs/HEBUT卡背_简洁新方案_20261019/02_无字插画/A_orbital_planet.png",
+  "layout": {
+    "canvas": [
+      1024,
+      1536
+    ],
+    "logoMaxWidth": 610,
+    "logoCenter": [
+      512,
+      665
+    ],
+    "brandY": 995,
+    "seriesY": 1076
+  }
+}

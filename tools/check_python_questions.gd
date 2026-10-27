@@ -24,9 +24,9 @@ func _run() -> void:
 	state.subject_id = "python"
 	state.quiz_mode = "all"
 	state.start_index = 0
-	var main = await _page("res://scenes/Main.tscn")
+	var main = await _page("res://scenes/Workbench.tscn")
 	_expect(not main.has_node("PageMargin/PageColumn/WrongStatusMargin"), "Home does not show wrong counts")
-	main.wrong_button.pressed.emit()
+	main.find_child("WrongButton", true, false).pressed.emit()
 	await _settle()
 	_expect(current_scene.wrong_count_labels["python"].text == "0 道", "Old bank wrong IDs must not enter replacement bank")
 	state.quiz_mode = "all"
@@ -49,7 +49,7 @@ func _run() -> void:
 		if not sample.has(q["type"]):
 			sample[q["type"]] = index
 		_expect(q["source"] in ["编程2.docx", "编程大题1.docx"], "Only the two requested sources")
-		_expect(quiz._is_valid_question(q), "Valid imported schema")
+		_expect(root.get_node("StudyStats")._is_valid_question(q), "Valid imported schema")
 		_expect(q.get("images", []).is_empty() and q.get("reference_images", []).is_empty(), "All Python material is text: " + source_id)
 		for path in q.get("images", []) + q.get("reference_images", []):
 			_expect(ResourceLoader.exists(path), "Packaged image exists: " + path)
@@ -145,7 +145,7 @@ func _run() -> void:
 	_expect(not quiz.program_editor.reference_box.visible and quiz.result_label.text.is_empty(), "Reference toggles in wrong bank without an assessment")
 	quiz.wrong_toggle.pressed.emit()
 	await _settle()
-	_expect(current_scene.scene_file_path == "res://scenes/Main.tscn", "Return home after removing final wrong item")
+	_expect(current_scene.scene_file_path == state.HOME_SCENE_PATH, "Return home after removing final wrong item")
 	_expect(FileAccess.get_file_as_string(old_path) == "[1,2,3]\n", "Original bank saves preserved without reusing IDs")
 	_expect(FileAccess.get_file_as_string(cpp_path) == "[1]\n", "C++ wrong list unchanged")
 	for subject in ["marxism","mao","xi","matlab","cpp"]:

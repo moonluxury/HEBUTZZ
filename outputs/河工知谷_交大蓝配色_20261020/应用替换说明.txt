@@ -1,0 +1,17 @@
+河工知谷 · 交大蓝图标应用记录
+2026-10-20
+
+已采用用户选定的交大蓝版本，生成统一的透明 PNG、多尺寸 ICO、Android 启动图标及自适应前景/背景。外圈整理为带抗锯齿的正圆；图案内部颜色与选定图缩放后的像素一致。
+
+更新文件
+E:/zhengzhi/build/河工开物.exe
+E:/zhengzhi/build/河工开物.console.exe
+E:/zhengzhi/build/河工开物.apk
+
+Windows：重新导出 release，实际启动并检查了窗口大小图标及 EXE 图标，保留 Lanczos 预缩放处理。实测环境为 96 DPI / 100% 缩放。
+Android：重新导出 debug 包，v2/v3 签名验证通过，与原包证书一致；包内图标与项目资源比较通过。未在手机上安装运行。
+打包配置：排除 outputs/* 设计预览，避免无关输出进入安装包。
+
+旧版本备份：E:/zhengzhi/build/before-jiaoda-icon-20261020
+旧图标备份：E:\zhengzhi\outputs\hegong_icon_install_20261020\previous_assets
+详细验证：E:\zhengzhi\outputs\hegong_icon_install_20261020\delivery-status.json

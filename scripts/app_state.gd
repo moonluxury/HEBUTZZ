@@ -40,7 +40,7 @@ const LIGHT_FOREGROUND := Color(0.0, 0.0, 0.0)
 const DARK_FOREGROUND := Color("#E8EEF8")
 const LIGHT_DISABLED_FOREGROUND := Color(0.45, 0.45, 0.45)
 const DARK_DISABLED_FOREGROUND := Color("#77869E")
-const HOME_SCENE_PATH := "res://scenes/Main.tscn"
+const HOME_SCENE_PATH := "res://scenes/Workbench.tscn"
 const WINDOW_SAFE_FILL := 0.92
 
 const SUBJECTS := {
@@ -201,8 +201,14 @@ func _exit_tree() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
-		if event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
-			_return_to_home()
+		if event.pressed and event.keycode == KEY_ESCAPE:
+			# A real popup owns Escape; an ordinary focused text field
+			# must not swallow the page's back action just to release its focus.
+			if _escape_owned_by_popup():
+				return
+			_mark_input_handled()
+			if not event.echo:
+				get_node("/root/PageRouter").back()
 			return
 		if event.pressed and not event.echo and event.keycode == KEY_F9:
 			dark_mode = not dark_mode
@@ -220,14 +226,11 @@ func _input(event: InputEvent) -> void:
 		_mark_input_handled()
 
 
-func _return_to_home() -> void:
-	var scene_tree := get_tree()
-	if scene_tree == null or scene_tree.current_scene == null:
-		return
-	if scene_tree.current_scene.scene_file_path == HOME_SCENE_PATH:
-		return
-	_mark_input_handled()
-	scene_tree.change_scene_to_file(HOME_SCENE_PATH)
+func _escape_owned_by_popup() -> bool:
+	for window in get_tree().root.find_children("*", "Window", true, false):
+		if window.visible and not window.is_queued_for_deletion():
+			return true
+	return false
 
 
 func _mark_input_handled() -> void:

@@ -4,16 +4,12 @@ const FillAnswer = preload("res://scripts/fill_answer.gd")
 const OutputAnswer = preload("res://scripts/output_answer.gd")
 const ProgramEditor = preload("res://scripts/program_editor.gd")
 const CODE_FONT = preload("res://themes/code_font.tres")
-const HEART_ICON = preload("res://assets/quiz_icons/heart.png")
-const HEART_FILLED_ICON = preload("res://assets/quiz_icons/heart_filled.png")
 const DISPLAY_LETTERS := ["A", "B", "C", "D", "E", "F"]
 const CORRECT_COLOR := Color(0.05, 0.55, 0.22)
 const WRONG_COLOR := Color(0.86, 0.15, 0.15)
-const QUESTION_NUMBER_COLUMNS := 5
-const QUIZ_FONT_SIZE := 42
-const QUESTION_LINE_HEIGHT_MULTIPLIER := 1.5
-const HEBUT_BLUE := Color("#092C87")
-const OPTION_SELECTED_BG := Color("#EEF3FF")
+const Tokens = preload("res://scripts/ui_tokens.gd")
+const HEBUT_BLUE := Tokens.PRIMARY
+const OPTION_SELECTED_BG := Tokens.SOFT
 const OPTION_CORRECT_BG := Color("#EDF9F1")
 const OPTION_WRONG_BG := Color("#FFF1F1")
 const OPTION_BORDER := Color("#E3EAF5")
@@ -28,21 +24,14 @@ const DARK_OPTION_HOVER := Color("#20314B")
 const DARK_BORDER := Color("#2C3D59")
 const DARK_TEXT := Color("#E8EEF8")
 const DARK_MUTED := Color("#9EADC3")
-const DARK_ACCENT := Color("#6D92FF")
-const DARK_ACCENT_SURFACE := Color("#21375B")
+const DARK_ACCENT := Tokens.DARK_ACCENT
+const DARK_ACCENT_SURFACE := Tokens.DARK_SOFT
 const DARK_CORRECT := Color("#63D68A")
 const DARK_CORRECT_SURFACE := Color("#173827")
 const DARK_WRONG := Color("#FF858C")
 const DARK_WRONG_SURFACE := Color("#41242B")
-const INTERACTION_DURATION := 0.12
-const INTRO_DURATION := 0.28
-const HEADER_HIDE_DELAY := 0.16
-const HEADER_FADE_DURATION := 0.16
-const HEADER_COLLAPSED_HEIGHT := 28.0
-const HEADER_EXPANDED_HEIGHT := 156.0
-const OPTION_PRESS_SCALE := 0.996
-const NUMBER_UNDERLINE_HEIGHT := 4.0
-const NUMBER_UNDERLINE_DURATION := 0.42
+
+var minimal_view: Control
 
 var all_questions: Array = []
 var questions: Array = []
@@ -58,323 +47,48 @@ var program_editor: VBoxContainer
 var question_images: VBoxContainer
 var reference_revealed := false
 var has_answered := false
-var button_tweens := {}
-var header_hover_timer: Timer
-var header_tween: Tween
-var header_is_expanded := false
-var number_underline: ColorRect
-var number_underline_tween: Tween
 
-@onready var empty_state: Control = $EmptyState
-@onready var page_margin: MarginContainer = $PageMargin
-@onready var empty_label: Label = $EmptyState/EmptyColumn/EmptyLabel
-@onready var empty_back_button: Button = $EmptyState/EmptyColumn/BackButton
-@onready var background: ColorRect = $Background
-@onready var header_panel: PanelContainer = $PageMargin/PageColumn/Header
-@onready var header_margin: MarginContainer = $PageMargin/PageColumn/Header/HeaderMargin
-@onready var university_logo: TextureRect = $PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/BrandRow/UniversityLogo
-@onready var left_card: PanelContainer = $PageMargin/PageColumn/ContentMargin/Body/LeftCard
-@onready var right_card: PanelContainer = $PageMargin/PageColumn/ContentMargin/Body/RightCard
-@onready var title_label: Label = $PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/BrandRow/TitleColumn/Title
-@onready var mode_label: Label = $PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/BrandRow/TitleColumn/ModeLabel
-@onready var clock_icon: Label = $PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/TimeRow/ClockIcon
-@onready var time_label: Label = $PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/TimeRow/TimeColumn/TimeLabel
-@onready var date_label: Label = $PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/TimeRow/TimeColumn/DateLabel
-@onready var brand_divider: ColorRect = $PageMargin/PageColumn/Header/HeaderMargin/HeaderRow/BrandRow/BrandDivider
-@onready var progress_label: Label = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/TopBar/ProgressLabel
-@onready var type_label: Label = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/TopBar/TypeLabel
-@onready var jump_input: LineEdit = $PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn/HeaderRow/JumpRowContainer/JumpRow/JumpInput
-@onready var jump_button: Button = $PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn/HeaderRow/JumpRowContainer/JumpRow/JumpButton
-@onready var question_number_list: ItemList = $PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn/QuestionNumberList
-@onready var question_scroll: ScrollContainer = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll
-@onready var question_label: RichTextLabel = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/QuestionLabel
+@onready var empty_label: Label = $EmptyLabel
+@onready var jump_input: LineEdit = $JumpInput
+@onready var jump_button: Button = $JumpButton
+@onready var question_scroll: ScrollContainer = $QuestionScroll
+@onready var question_label: RichTextLabel = $QuestionScroll/Content/QuestionLabel
+@onready var submit_button: Button = $QuestionScroll/Content/SubmitRow/SubmitButton
+@onready var answer_margin: MarginContainer = $QuestionScroll/Content/AnswerMargin
+@onready var fill_answers_box: VBoxContainer = $QuestionScroll/Content/AnswerMargin/FillAnswers
+@onready var result_label: Label = $QuestionScroll/Content/SubmitRow/ResultLabel
+@onready var answer_label: Label = $QuestionScroll/Content/AnswerLabel
+@onready var prev_button: Button = $PrevButton
+@onready var next_button: Button = $NextButton
+@onready var wrong_toggle: Button = $WrongToggle
+@onready var home_button: Button = $HomeButton
 @onready var option_buttons: Array[Button] = [
-	$PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/Option1,
-	$PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/Option2,
-	$PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/Option3,
-	$PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/Option4,
-	$PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/Option5,
-	$PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/Option6,
+	$QuestionScroll/Content/Option1,
+	$QuestionScroll/Content/Option2,
+	$QuestionScroll/Content/Option3,
+	$QuestionScroll/Content/Option4,
+	$QuestionScroll/Content/Option5,
+	$QuestionScroll/Content/Option6,
 ]
-@onready var submit_button: Button = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/SubmitRow/SubmitButton
-@onready var answer_margin: MarginContainer = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/AnswerMargin
-@onready var fill_answers_box: VBoxContainer = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/AnswerMargin/FillAnswers
-@onready var result_label: Label = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/SubmitRow/ResultLabel
-@onready var answer_label: Label = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/QuestionMargin/QuestionArea/QuestionScroll/Content/AnswerLabel
-@onready var footer_divider: ColorRect = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/FooterDivider
-@onready var prev_button: Button = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer/BottomNav/PrevPositionKeeper/PrevButton
-@onready var next_button: Button = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer/BottomNav/NextButton
-@onready var wrong_toggle: Button = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer/BottomNav/WrongToggle
-@onready var home_button: Button = $PageMargin/PageColumn/ContentMargin/Body/LeftCard/LeftColumn/BottomNavContainer/BottomNav/HomeButton
-@onready var question_numbers_title: Label = $PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn/HeaderRow/HeaderTitleColumn/QuestionNumbersTitle
-@onready var title_underline: ColorRect = $PageMargin/PageColumn/ContentMargin/Body/RightCard/RightMargin/RightColumn/HeaderRow/HeaderTitleColumn/TitleUnderline
 
 
 func _ready() -> void:
-	# Use the Python question font throughout all six course quiz pages.
-	theme = theme.duplicate()
-	theme.default_font = CODE_FONT
-	if _app_state().quiz_mode == "all":
-		var vertical_spacing := question_number_list.get_theme_constant("v_separation")
-		question_number_list.add_theme_constant_override("v_separation", vertical_spacing * 2)
-	for button in [prev_button, next_button, wrong_toggle, home_button]:
-		button.clip_text = true
-		button.alignment = HORIZONTAL_ALIGNMENT_RIGHT if button == next_button else HORIZONTAL_ALIGNMENT_LEFT
-		button.resized.connect(_align_footer_icons.call_deferred)
-	randomize()
-	page_margin.modulate.a = 0.0
-	_update_clock()
-	var clock_timer := Timer.new()
-	clock_timer.wait_time = 1.0
-	clock_timer.autostart = true
-	clock_timer.timeout.connect(_update_clock)
-	add_child(clock_timer)
+	theme = get_node("/root/UiResources").page_theme
 	_load_data()
 	question_images = VBoxContainer.new()
 	question_images.name = "QuestionImages"
 	question_label.get_parent().add_child(question_images)
 	question_label.get_parent().move_child(question_images, question_label.get_index() + 1)
-	title_label.text = "%s题库" % str(_subject()["title"])
 	_connect_controls()
-	_setup_header_hover()
-	_setup_question_number_underline()
-	if questions.is_empty():
-		_set_quiz_ui_visible(false)
-		empty_state.visible = true
-		empty_label.text = "%s%s" % [
-			_subject()["title"],
-			"错题库暂无题目" if _app_state().quiz_mode == "wrong" else "题库暂无题目",
-		]
-	else:
-		_set_quiz_ui_visible(true)
-		empty_state.visible = false
-		current_index = clamp(_app_state().start_index, 0, questions.size() - 1)
-		_update_jump_search_hint()
-		_populate_question_numbers()
+	current_index = clampi(_app_state().start_index, 0, maxi(0, questions.size() - 1))
+	empty_label.text = "%s%s" % [_subject().title, "错题库暂无题目" if _app_state().quiz_mode == "wrong" else "题库暂无题目"]
+	minimal_view = preload("res://scripts/minimal_quiz_view.gd").new()
+	minimal_view.quiz = self
+	minimal_view.size = size
+	add_child(minimal_view)
+	minimal_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	if not questions.is_empty():
 		_show_question()
-	_app_state().font_scale_changed.connect(_on_font_scale_changed)
-	_app_state().color_mode_changed.connect(_on_color_mode_changed)
-	_apply_quiz_font_scale(self)
-	_scale_question_line_spacing()
-	_scale_footer_icons()
-	_app_state().apply_color_mode(self)
-	_apply_quiz_palette()
-	_setup_button_interactions()
-	_play_intro_fade.call_deferred()
-
-
-func _setup_header_hover() -> void:
-	header_panel.custom_minimum_size = Vector2(0, HEADER_COLLAPSED_HEIGHT)
-	header_panel.clip_contents = true
-	header_panel.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	header_margin.modulate.a = 0.0
-	header_margin.hide()
-	header_panel.mouse_entered.connect(_expand_header)
-	header_panel.mouse_exited.connect(_schedule_header_collapse)
-
-	header_hover_timer = Timer.new()
-	header_hover_timer.name = "HeaderHoverTimer"
-	header_hover_timer.one_shot = true
-	header_hover_timer.wait_time = HEADER_HIDE_DELAY
-	header_hover_timer.timeout.connect(_collapse_header)
-	add_child(header_hover_timer)
-
-
-func _setup_question_number_underline() -> void:
-	number_underline = ColorRect.new()
-	number_underline.name = "CurrentNumberUnderline"
-	number_underline.z_index = 5
-	number_underline.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	number_underline.color = HEBUT_BLUE
-	number_underline.hide()
-	question_number_list.add_child(number_underline)
-	question_number_list.clip_contents = true
-
-	var scroll_bar := question_number_list.get_v_scroll_bar()
-	if scroll_bar != null:
-		scroll_bar.value_changed.connect(_on_question_number_scroll_changed)
-
-
-func _animate_current_number_underline() -> void:
-	if not _position_current_number_underline():
-		return
-	if number_underline_tween != null and number_underline_tween.is_valid():
-		number_underline_tween.kill()
-	number_underline.pivot_offset = Vector2(
-		number_underline.size.x * 0.5,
-		NUMBER_UNDERLINE_HEIGHT * 0.5,
-	)
-	number_underline.scale = Vector2(0.0, 1.0)
-	number_underline.show()
-	number_underline_tween = create_tween()
-	number_underline_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	number_underline_tween.tween_property(
-		number_underline,
-		"scale:x",
-		1.0,
-		NUMBER_UNDERLINE_DURATION,
-	)
-
-
-func _position_current_number_underline() -> bool:
-	if (
-		number_underline == null
-		or current_index < 0
-		or current_index >= question_number_list.item_count
-	):
-		if number_underline != null:
-			number_underline.hide()
-		return false
-
-	var item_rect := question_number_list.get_item_rect(current_index, false)
-	var font := question_number_list.get_theme_font("font")
-	var font_size := question_number_list.get_theme_font_size("font_size")
-	var item_text := question_number_list.get_item_text(current_index)
-	var text_size := font.get_string_size(
-		item_text,
-		HORIZONTAL_ALIGNMENT_LEFT,
-		-1,
-		font_size,
-	)
-	var underline_width := maxf(8.0, ceilf(text_size.x))
-	var text_height := font.get_height(font_size)
-	var underline_x := (
-		item_rect.position.x
-		+ (item_rect.size.x - underline_width) * 0.5
-	)
-	var underline_y := (
-		item_rect.position.y
-		+ (item_rect.size.y + text_height) * 0.5
-		+ 1.0
-	)
-	underline_y = minf(
-		underline_y,
-		item_rect.end.y - NUMBER_UNDERLINE_HEIGHT,
-	)
-	var scroll_bar := question_number_list.get_v_scroll_bar()
-	if scroll_bar != null:
-		underline_y -= scroll_bar.value
-	number_underline.position = Vector2(underline_x, underline_y)
-	number_underline.size = Vector2(underline_width, NUMBER_UNDERLINE_HEIGHT)
-	number_underline.pivot_offset = Vector2(
-		underline_width * 0.5,
-		NUMBER_UNDERLINE_HEIGHT * 0.5,
-	)
-	return true
-
-
-func _on_question_number_scroll_changed(_value: float) -> void:
-	_position_current_number_underline.call_deferred()
-
-
-func _expand_header() -> void:
-	if header_hover_timer != null:
-		header_hover_timer.stop()
-	if header_is_expanded:
-		return
-	header_is_expanded = true
-	if header_tween != null and header_tween.is_valid():
-		header_tween.kill()
-	header_panel.custom_minimum_size = Vector2(0, HEADER_EXPANDED_HEIGHT)
-	header_margin.show()
-	header_margin.modulate.a = 0.0
-	_apply_quiz_palette()
-	header_tween = create_tween()
-	header_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	header_tween.tween_property(
-		header_margin,
-		"modulate:a",
-		1.0,
-		HEADER_FADE_DURATION,
-	)
-
-
-func _schedule_header_collapse() -> void:
-	if header_hover_timer != null:
-		header_hover_timer.start()
-
-
-func _collapse_header() -> void:
-	if not header_is_expanded:
-		return
-	header_is_expanded = false
-	if header_tween != null and header_tween.is_valid():
-		header_tween.kill()
-	header_tween = create_tween()
-	header_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	header_tween.tween_property(
-		header_margin,
-		"modulate:a",
-		0.0,
-		HEADER_FADE_DURATION,
-	)
-	header_tween.tween_callback(_finish_header_collapse)
-
-
-func _finish_header_collapse() -> void:
-	if header_is_expanded:
-		return
-	header_margin.hide()
-	header_panel.custom_minimum_size = Vector2(0, HEADER_COLLAPSED_HEIGHT)
-	_apply_quiz_palette()
-
-
-func _update_clock() -> void:
-	var now := Time.get_datetime_dict_from_system()
-	var weekdays := ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
-	time_label.text = "%02d:%02d:%02d" % [now.hour, now.minute, now.second]
-	date_label.text = "%04d年%02d月%02d日  %s" % [
-		now.year,
-		now.month,
-		now.day,
-		weekdays[now.weekday],
-	]
-
-
-func _setup_button_interactions() -> void:
-	var buttons: Array[Button] = []
-	buttons.append_array(option_buttons)
-	buttons.append_array([
-		submit_button,
-		prev_button,
-		next_button,
-		wrong_toggle,
-		home_button,
-		jump_button,
-		empty_back_button,
-	])
-	for button in buttons:
-		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		button.button_down.connect(_animate_button_press.bind(button, true))
-		button.button_up.connect(_animate_button_press.bind(button, false))
-
-
-func _animate_button_press(button: Button, is_pressed: bool) -> void:
-	var tween_key := button.get_instance_id()
-	if button_tweens.has(tween_key):
-		var previous_tween: Tween = button_tweens[tween_key]
-		if previous_tween != null and previous_tween.is_valid():
-			previous_tween.kill()
-	button.pivot_offset = button.size * 0.5
-	var tween := create_tween()
-	button_tweens[tween_key] = tween
-	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(
-		button,
-		"scale",
-		(
-			Vector2(OPTION_PRESS_SCALE, OPTION_PRESS_SCALE)
-			if is_pressed and option_buttons.has(button)
-			else Vector2(0.98, 0.98) if is_pressed else Vector2.ONE
-		),
-		0.07 if is_pressed else INTERACTION_DURATION,
-	)
-
-
-func _play_intro_fade() -> void:
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(page_margin, "modulate:a", 1.0, INTRO_DURATION)
 
 
 func _connect_controls() -> void:
@@ -384,50 +98,23 @@ func _connect_controls() -> void:
 	prev_button.pressed.connect(func(): _jump_to(current_index - 1))
 	next_button.pressed.connect(func(): _jump_to(current_index + 1))
 	wrong_toggle.pressed.connect(_toggle_wrong_current)
-	home_button.pressed.connect(_go_home)
-	empty_back_button.pressed.connect(_go_home)
+	home_button.pressed.connect(get_node("/root/PageRouter").back)
 	jump_button.pressed.connect(_jump_from_search)
 	jump_input.text_submitted.connect(func(_text: String): _jump_from_search())
-	question_number_list.item_selected.connect(_on_question_number_selected)
-	question_number_list.resized.connect(_fit_question_number_columns)
-	call_deferred("_fit_question_number_columns")
-
-
-func _set_quiz_ui_visible(is_visible: bool) -> void:
-	page_margin.visible = is_visible
 
 
 func _populate_question_numbers() -> void:
-	question_number_list.clear()
-	for index in questions.size():
-		question_number_list.add_item(str(index + 1))
-		question_number_list.set_item_tooltip_enabled(index, false)
-	_refresh_question_number_states()
-	call_deferred("_fit_question_number_columns")
+	if is_instance_valid(minimal_view):
+		minimal_view.build_numbers()
 
 
 func _refresh_question_number_states() -> void:
-	for index in mini(questions.size(), question_number_list.item_count):
-		var item_color := DARK_TEXT if _is_dark_mode() else Color("#17233A")
-		var state_key := _question_state_key(index)
-		var is_answered := false
-		if question_states.has(state_key):
-			var state: Dictionary = question_states[state_key]
-			is_answered = bool(state.get("answered", false))
-		if is_answered:
-			item_color = DARK_ACCENT if _is_dark_mode() else HEBUT_BLUE
-		if index == current_index:
-			item_color = DARK_ACCENT if _is_dark_mode() else HEBUT_BLUE
-		question_number_list.set_item_custom_fg_color(index, item_color)
-
-
-func _fit_question_number_columns() -> void:
-	var usable_width: int = max(1, int(question_number_list.size.x) - 36)
-	question_number_list.fixed_column_width = max(80, int(floor(float(usable_width) / QUESTION_NUMBER_COLUMNS)))
+	if is_instance_valid(minimal_view):
+		minimal_view.refresh_numbers()
 
 
 func _load_data() -> void:
-	all_questions = _load_questions_from_json(str(_subject()["question_path"]))
+	all_questions = get_node("/root/StudyStats").banks.get(_app_state().subject_id, [])
 	wrong_ids = _load_wrong_ids()
 	questions.clear()
 	if _app_state().quiz_mode == "wrong":
@@ -435,79 +122,20 @@ func _load_data() -> void:
 			if wrong_ids.has(str(question["id"])):
 				questions.append(question)
 	else:
-		questions = all_questions.duplicate(true)
-
-
-func _load_questions_from_json(path: String) -> Array:
-	if not FileAccess.file_exists(path):
-		push_warning("题库文件不存在：%s" % path)
-		return []
-
-	var file := FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		push_warning("题库文件无法打开：%s" % path)
-		return []
-
-	var json := JSON.new()
-	var parse_error := json.parse(file.get_as_text())
-	if parse_error != OK:
-		push_warning(
-			"题库 JSON 解析失败（第 %d 行）：%s"
-			% [json.get_error_line(), json.get_error_message()],
-		)
-		return []
-
-	var parsed = json.data
-	var raw_questions: Array = []
-	if typeof(parsed) == TYPE_ARRAY:
-		raw_questions = parsed
-	elif (
-		typeof(parsed) == TYPE_DICTIONARY
-		and parsed.has("questions")
-		and typeof(parsed["questions"]) == TYPE_ARRAY
-	):
-		raw_questions = parsed["questions"]
-	else:
-		push_warning("题库 JSON 根节点必须是数组或包含 questions 数组")
-		return []
-
-	var valid_questions: Array = []
-	for raw_question in raw_questions:
-		if _is_valid_question(raw_question):
-			valid_questions.append(raw_question)
-		else:
-			push_warning("已跳过一条格式不完整的题目数据")
-	return valid_questions
-
-
-func _is_valid_question(value: Variant) -> bool:
-	if typeof(value) != TYPE_DICTIONARY:
-		return false
-	var question: Dictionary = value
-	if question.get("type", "") == "fill":
-		return question.has("stem") and FillAnswer.is_valid(question)
-	if question.get("type", "") == "output":
-		return question.has("stem") and OutputAnswer.is_valid(question)
-	if question.get("type", "") == "program":
-		return question.has("stem") and question.has("reference_code")
-	return (
-		question.has("stem")
-		and question.has("options")
-		and typeof(question["options"]) == TYPE_ARRAY
-		and not question["options"].is_empty()
-	)
+		# The bank dictionaries are read-only; only this session's list is mutable.
+		questions = all_questions.duplicate()
 
 
 func _show_question() -> void:
+	# Reused option controls must never interpolate from the previous question's result.
+	for button in option_buttons:
+		button.set_meta("motion_snap", true)
 	var question: Dictionary = questions[current_index]
-	shuffled_options = question.get("options", []).duplicate(true)
+	get_node("/root/StudyStats").remember_question(_app_state().subject_id, question)
+	shuffled_options = question.get("options", []).duplicate()
 	if not question.get("preserve_option_order", false):
 		shuffled_options.shuffle()
 	_restore_current_question_state()
-	progress_label.text = str(current_index + 1)
-	title_label.text = "%s题库" % str(_subject()["title"])
-	mode_label.text = "错题库答题" if _app_state().quiz_mode == "wrong" else "总题库答题"
-	type_label.text = question["type_label"]
 	question_label.text = "%d. %s" % [question["id"], question["stem"]]
 	_build_fill_inputs()
 	_build_question_images(question.get("images", []))
@@ -529,14 +157,12 @@ func _show_question() -> void:
 			button.visible = false
 
 	_refresh_answer_feedback()
-	question_number_list.select(current_index)
 	_refresh_question_number_states()
-	question_number_list.ensure_current_is_visible()
-	_animate_current_number_underline.call_deferred()
 	prev_button.disabled = current_index == 0
 	next_button.disabled = current_index == questions.size() - 1
 	_update_wrong_button()
-	_refresh_interaction_colors()
+	if is_instance_valid(minimal_view):
+		minimal_view.question_changed()
 
 
 func _restore_current_question_state() -> void:
@@ -551,7 +177,10 @@ func _restore_current_question_state() -> void:
 		return
 
 	var state: Dictionary = question_states[state_key]
-	has_answered = bool(state.get("answered", false)) and not _is_program_question()
+	# A completed attempt remains in the number list, but revisiting starts a new
+	# attempt. Unsubmitted drafts (including a retry draft) still restore below.
+	if bool(state.get("submitted", state.get("answered", false))) and not _is_program_question():
+		return
 	reference_revealed = bool(state.get("reference_revealed", false))
 	entered_answers.clear()
 	for answer in state.get("fill_answers", []):
@@ -563,15 +192,17 @@ func _restore_current_question_state() -> void:
 
 
 func _save_current_question_state() -> void:
+	var previous: Dictionary = question_states.get(_question_state_key(current_index), {})
 	var selected_keys: Array[String] = []
 	for index in selected_indices:
 		selected_keys.append(str(shuffled_options[index].get("key", "")))
 	question_states[_question_state_key(current_index)] = {
 		"selected_keys": selected_keys,
 		"fill_answers": entered_answers.duplicate(),
-		"answered": has_answered,
+		"answered": has_answered or bool(previous.get("answered", false)),
+		"submitted": has_answered,
 		"reference_revealed": reference_revealed,
-		"correct": _is_selection_correct() if has_answered else false,
+		"correct": _is_selection_correct() if has_answered else bool(previous.get("correct", false)),
 	}
 
 
@@ -632,6 +263,7 @@ func _reveal_answer() -> void:
 		output_input.editable = false
 	var correct := _is_selection_correct()
 	_app_state().register_quiz_answer(correct)
+	get_node("/root/StudyStats").record_answer(_app_state().subject_id, questions[current_index], correct)
 	_save_current_question_state()
 	_refresh_option_text()
 	_refresh_all_option_visuals()
@@ -641,6 +273,7 @@ func _reveal_answer() -> void:
 
 
 func _refresh_answer_feedback() -> void:
+	answer_label.visible = has_answered and not _is_program_question()
 	if not has_answered or _is_program_question():
 		result_label.text = ""
 		answer_label.text = ""
@@ -813,6 +446,8 @@ func _on_program_draft_changed(code: String, source_id: String) -> void:
 
 func _on_program_reference_toggled(revealed: bool) -> void:
 	reference_revealed = revealed
+	if revealed:
+		get_node("/root/StudyStats").record_review(_app_state().subject_id, questions[current_index])
 	_save_current_question_state()
 
 
@@ -845,6 +480,7 @@ func _style_fill_inputs() -> void:
 		field.add_theme_stylebox_override("normal", _jump_input_style(background_color, border, 2))
 		field.add_theme_stylebox_override("read_only", _jump_input_style(background_color, border, 2))
 		field.add_theme_stylebox_override("focus", _jump_input_style(background_color, accent, 2))
+		get_node("/root/UiMotion").bind_input.call_deferred(field)
 	if output_input != null:
 		output_input.add_theme_color_override("font_color", _ink_color())
 		output_input.add_theme_color_override("font_readonly_color", _ink_color())
@@ -863,6 +499,16 @@ func _refresh_all_option_visuals() -> void:
 
 func _refresh_option_visual(index: int) -> void:
 	var button := option_buttons[index]
+	button.disabled = has_answered
+	var icon_name := "circle-dot" if selected_indices.has(index) else "circle"
+	if has_answered and bool(shuffled_options[index].get("correct", false)):
+		icon_name = "check"
+	elif has_answered and selected_indices.has(index):
+		icon_name = "x"
+	button.icon = load("res://assets/minimal/icons/%s.png" % icon_name)
+	button.expand_icon = true
+	button.add_theme_constant_override("icon_max_width", 26)
+	button.add_theme_constant_override("h_separation", 18)
 	var is_selected := selected_indices.has(index)
 	var is_correct_option := bool(shuffled_options[index].get("correct", false))
 	var is_dark := _is_dark_mode()
@@ -909,6 +555,10 @@ func _refresh_option_visual(index: int) -> void:
 	button.add_theme_stylebox_override("focus", _option_style(background, border))
 	button.add_theme_stylebox_override("disabled", _option_style(background, border))
 	_set_option_color(button, text_color)
+	if not is_selected and not has_answered:
+		for state in ["icon_normal_color", "icon_hover_color", "icon_focus_color"]:
+			button.add_theme_color_override(state, DARK_MUTED if is_dark else Color("#AEB6C2"))
+	get_node("/root/UiMotion").bind_button(button, false, true)
 
 
 func _option_style(background: Color, border: Color) -> StyleBoxFlat:
@@ -917,8 +567,10 @@ func _option_style(background: Color, border: Color) -> StyleBoxFlat:
 	style.border_color = border
 	style.set_border_width_all(2)
 	style.set_corner_radius_all(12)
-	style.content_margin_left = 32.0
-	style.content_margin_right = 24.0
+	style.content_margin_left = 24.0
+	style.content_margin_right = 20.0
+	style.content_margin_top = 10.0
+	style.content_margin_bottom = 10.0
 	return style
 
 
@@ -977,15 +629,8 @@ func _correct_display_text() -> String:
 
 
 func _option_display_text(index: int) -> String:
-	var marker := "●" if selected_indices.has(index) else "○"
-	if has_answered and bool(shuffled_options[index].get("correct", false)):
-		marker = "✓"
-	elif has_answered and selected_indices.has(index):
-		marker = "×"
 	var option_text := str(shuffled_options[index]["text"])
-	if questions[current_index].get("language", "") == "python" and "\n" in option_text:
-		return "%s  %s.\n%s" % [marker, DISPLAY_LETTERS[index], option_text]
-	return "%s  %s. %s" % [marker, DISPLAY_LETTERS[index], option_text]
+	return "%s. %s" % [DISPLAY_LETTERS[index], option_text]
 
 
 func _refresh_option_text() -> void:
@@ -995,9 +640,12 @@ func _refresh_option_text() -> void:
 
 func _toggle_wrong_current() -> void:
 	var id := str(questions[current_index]["id"])
+	var previous := wrong_ids.duplicate()
 	if wrong_ids.has(id):
 		wrong_ids.erase(id)
-		_save_wrong_ids()
+		if not _save_wrong_ids():
+			_wrong_save_failed(previous)
+			return
 		if _app_state().quiz_mode == "wrong":
 			questions.remove_at(current_index)
 			if questions.is_empty():
@@ -1010,56 +658,24 @@ func _toggle_wrong_current() -> void:
 			return
 	else:
 		wrong_ids[id] = true
-		_save_wrong_ids()
+		if not _save_wrong_ids():
+			_wrong_save_failed(previous)
+			return
 	_update_wrong_button()
+
+func _wrong_save_failed(previous: Dictionary) -> void:
+	wrong_ids = previous
+	_update_wrong_button()
+	result_label.text = "错题库保存失败，请重试。"
+	result_label.add_theme_color_override("font_color", _wrong_feedback_color())
+	get_node("/root/UiMotion").enter(result_label, Tokens.STATE)
 
 
 func _update_wrong_button() -> void:
 	var is_collected := wrong_ids.has(str(questions[current_index]["id"]))
 	wrong_toggle.text = "已加入错题库" if is_collected else "加入错题库"
-	wrong_toggle.icon = HEART_FILLED_ICON if is_collected else HEART_ICON
-	var is_dark := _is_dark_mode()
-	var background := DARK_OPTION if is_dark else Color.WHITE
-	var border := (
-		(DARK_ACCENT if is_dark else HEBUT_BLUE)
-		if is_collected
-		else (DARK_BORDER if is_dark else OPTION_BORDER)
-	)
-	var text_color := (
-		(DARK_ACCENT if is_dark else HEBUT_BLUE)
-		if is_collected
-		else (DARK_TEXT if is_dark else LIGHT_TEXT)
-	)
-	for state_name in ["normal", "focus"]:
-		wrong_toggle.add_theme_stylebox_override(
-			state_name,
-			_action_button_style(background, border),
-		)
-	for state_name in ["hover", "pressed"]:
-		wrong_toggle.add_theme_stylebox_override(
-			state_name,
-			_action_button_style(
-				DARK_OPTION_HOVER if is_dark else Color("#F1F5FC"),
-				DARK_ACCENT if is_collected and is_dark else (
-					HEBUT_BLUE if is_collected else border
-				),
-			),
-		)
-	_set_button_state_colors(
-		wrong_toggle,
-		text_color,
-		DARK_ACCENT if is_dark else HEBUT_BLUE,
-	)
-	_align_footer_icons.call_deferred()
-
-
-func _action_button_style(background: Color, border: Color) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = background
-	style.border_color = border
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(10)
-	return style
+	if is_instance_valid(minimal_view):
+		minimal_view.refresh()
 
 
 func _jump_to(index: int) -> void:
@@ -1091,12 +707,15 @@ func _update_jump_search_hint() -> void:
 	jump_input.placeholder_text = "跳转到题号"
 
 
-func _on_question_number_selected(index: int) -> void:
-	_jump_to(index)
+func consume_back_action() -> bool:
+	if is_instance_valid(minimal_view) and minimal_view.canvas.size.x < 1400 and minimal_view.compact_rail_open:
+		minimal_view._toggle_rail()
+		return true
+	return false
 
 
 func _go_home() -> void:
-	get_tree().change_scene_to_file("res://scenes/Main.tscn")
+	get_node("/root/PageRouter").go("res://scenes/Workbench.tscn")
 
 
 func _load_wrong_ids() -> Dictionary:
@@ -1106,7 +725,7 @@ func _load_wrong_ids() -> Dictionary:
 	return ids
 
 
-func _save_wrong_ids() -> void:
+func _save_wrong_ids() -> bool:
 	var ids := []
 	for id in wrong_ids.keys():
 		ids.append(int(id))
@@ -1114,6 +733,12 @@ func _save_wrong_ids() -> void:
 	var file := FileAccess.open(_subject()["wrong_path"], FileAccess.WRITE)
 	if file:
 		file.store_string(JSON.stringify(ids, "  "))
+		file.flush()
+		var saved := file.get_error() == OK
+		if saved:
+			get_node("/root/StudyStats").changed.emit()
+		return saved
+	return false
 
 
 func _load_json_array(path: String) -> Array:
@@ -1134,94 +759,9 @@ func _subject() -> Dictionary:
 	return _app_state().get_subject()
 
 
-func _on_font_scale_changed(_scale: float) -> void:
-	_apply_quiz_font_scale(self)
-	_scale_question_line_spacing()
-	_scale_footer_icons()
-	_position_current_number_underline.call_deferred()
-
-
 func _apply_quiz_font_scale(root: Node) -> void:
-	if _app_state().quiz_mode == "all":
-		_set_quiz_base_font_size(root)
-	_app_state().apply_font_scale(root)
-
-
-func _set_quiz_base_font_size(node: Node) -> void:
-	if node is Control:
-		node.set_meta("base_font_size", QUIZ_FONT_SIZE)
-		node.add_theme_font_size_override("font_size", QUIZ_FONT_SIZE)
-		if node is RichTextLabel:
-			node.set_meta("base_normal_font_size", QUIZ_FONT_SIZE)
-			node.add_theme_font_size_override("normal_font_size", QUIZ_FONT_SIZE)
-	for child in node.get_children(true):
-		_set_quiz_base_font_size(child)
-
-
-func _scale_question_line_spacing() -> void:
-	if _app_state().quiz_mode != "all":
-		return
-	var font := question_label.get_theme_font("normal_font")
-	var font_size := question_label.get_theme_font_size("normal_font_size")
-	# line_separation adds pixels to the font's natural line height (default gap: 0).
-	question_label.add_theme_constant_override(
-		"line_separation",
-		roundi(font.get_height(font_size) * (QUESTION_LINE_HEIGHT_MULTIPLIER - 1.0)),
-	)
-	for button in option_buttons:
-		var option_font := button.get_theme_font("font")
-		var option_font_size := button.get_theme_font_size("font_size")
-		button.add_theme_constant_override(
-			"line_spacing",
-			roundi(option_font.get_height(option_font_size) * (QUESTION_LINE_HEIGHT_MULTIPLIER - 1.0)),
-		)
-
-
-func _scale_footer_icons() -> void:
-	jump_button.add_theme_constant_override("icon_max_width", roundi(32.0 * jump_button.get_theme_font_size("font_size") / 26.0))
-	# These textures preserve the original icon glyphs, independently of text fonts.
-	for button in [prev_button, next_button, wrong_toggle, home_button]:
-		var scale: float = button.get_theme_font_size("font_size") / 42.0
-		button.add_theme_constant_override("icon_max_width", roundi(button.icon.get_width() / 3.0 * scale))
-		button.add_theme_constant_override("h_separation", roundi(30.0 * scale))
-	_align_footer_icons.call_deferred()
-
-
-func _align_footer_icons() -> void:
-	for button in [prev_button, next_button, wrong_toggle, home_button]:
-		var text_width: float = button.get_theme_font("font").get_string_size(button.text, HORIZONTAL_ALIGNMENT_LEFT, -1, button.get_theme_font_size("font_size")).x
-		var content_width: float = text_width + button.get_theme_constant("icon_max_width") + button.get_theme_constant("h_separation")
-		var inset := maxf(12.0, (button.size.x - content_width) / 2.0)
-		for state_name in ["normal", "hover", "pressed", "focus", "disabled"]:
-			var style: StyleBox = button.get_theme_stylebox(state_name).duplicate()
-			style.content_margin_left = inset if button != next_button else 0.0
-			style.content_margin_right = inset if button == next_button else 0.0
-			button.add_theme_stylebox_override(state_name, style)
-
-
-func _on_color_mode_changed(_is_dark: bool) -> void:
-	_app_state().apply_color_mode(self)
-	_refresh_quiz_colors()
-
-
-func _refresh_quiz_colors() -> void:
-	_apply_quiz_palette()
-	if questions.is_empty():
-		return
-
-	_refresh_all_option_visuals()
-	_refresh_question_number_states()
-
-	if has_answered:
-		var correct := _is_selection_correct()
-		result_label.add_theme_color_override(
-			"font_color",
-			_correct_feedback_color() if correct else _wrong_feedback_color(),
-		)
-	elif result_label.text.begins_with("请"):
-		result_label.add_theme_color_override("font_color", _wrong_feedback_color())
-	else:
-		result_label.add_theme_color_override("font_color", _ink_color())
+	if is_instance_valid(minimal_view):
+		minimal_view._font_controls(root)
 
 
 func _ink_color() -> Color:
@@ -1229,173 +769,8 @@ func _ink_color() -> Color:
 
 
 func _refresh_interaction_colors() -> void:
-	_style_fill_inputs()
-	_set_option_color(submit_button, Color.WHITE)
-	_apply_primary_button_style(jump_button, _is_dark_mode())
-	_apply_footer_button_style(prev_button, _is_dark_mode())
-	_apply_footer_button_style(next_button, _is_dark_mode())
-	_apply_outline_button_style(home_button, _is_dark_mode())
-	if not questions.is_empty():
-		_update_wrong_button()
-
-
-func _apply_quiz_palette() -> void:
-	var is_dark := _is_dark_mode()
-	var page_background := DARK_BACKGROUND if is_dark else LIGHT_BACKGROUND
-	var header_background := DARK_HEADER if is_dark else Color.WHITE
-	var card_background := DARK_CARD if is_dark else Color.WHITE
-	var border_color := DARK_BORDER if is_dark else Color("#E5EAF2")
-	var text_color := DARK_TEXT if is_dark else LIGHT_TEXT
-	var muted_color := DARK_MUTED if is_dark else LIGHT_MUTED
-	var accent_color := DARK_ACCENT if is_dark else HEBUT_BLUE
-
-	background.color = page_background
-	header_panel.add_theme_stylebox_override(
-		"panel",
-		_header_style(
-			header_background,
-			border_color,
-			1,
-		),
-	)
-	for card in [left_card, right_card]:
-		card.add_theme_stylebox_override(
-			"panel",
-			_card_style(card_background, border_color, is_dark),
-		)
-
-	title_label.add_theme_color_override("font_color", accent_color)
-	university_logo.self_modulate = accent_color
-	mode_label.add_theme_color_override("font_color", muted_color)
-	clock_icon.add_theme_color_override("font_color", accent_color)
-	time_label.add_theme_color_override("font_color", text_color)
-	date_label.add_theme_color_override("font_color", muted_color)
-	type_label.add_theme_color_override("font_color", muted_color)
-	question_label.add_theme_color_override("default_color", text_color)
-	answer_label.add_theme_color_override("font_color", text_color)
-	question_numbers_title.add_theme_color_override("font_color", text_color)
-	brand_divider.color = DARK_BORDER if is_dark else Color("#A3B1C9")
-	footer_divider.color = border_color
-	title_underline.color = accent_color
-	if number_underline != null:
-		number_underline.color = accent_color
-	jump_input.add_theme_color_override("font_color", text_color)
-	jump_input.add_theme_color_override("font_placeholder_color", muted_color)
-	jump_input.add_theme_color_override("caret_color", accent_color)
-	jump_input.add_theme_color_override(
-		"selection_color",
-		Color(accent_color, 0.26),
-	)
-	jump_input.add_theme_stylebox_override(
-		"normal",
-		_jump_input_style(
-			DARK_OPTION if is_dark else Color.WHITE,
-			border_color,
-			2,
-		),
-	)
-	jump_input.add_theme_stylebox_override(
-		"focus",
-		_jump_input_style(
-			DARK_OPTION_HOVER if is_dark else Color.WHITE,
-			accent_color,
-			2,
-		),
-	)
-
-	progress_label.add_theme_color_override("font_color", Color.WHITE)
-	progress_label.add_theme_stylebox_override(
-		"normal",
-		_badge_style(DARK_ACCENT.darkened(0.16) if is_dark else HEBUT_BLUE),
-	)
-	question_number_list.add_theme_color_override("font_color", text_color)
-	question_number_list.add_theme_color_override("font_hovered_color", accent_color)
-	question_number_list.add_theme_color_override("font_selected_color", accent_color)
-	question_number_list.add_theme_color_override("font_hovered_selected_color", accent_color)
-	question_number_list.add_theme_stylebox_override(
-		"panel",
-		_list_style(card_background),
-	)
-	question_number_list.add_theme_stylebox_override(
-		"selected",
-		_selection_style(Color.TRANSPARENT),
-	)
-	question_number_list.add_theme_stylebox_override(
-		"selected_focus",
-		_selection_style(Color.TRANSPARENT),
-	)
-
-	_apply_primary_button_style(submit_button, is_dark)
-	_apply_primary_button_style(empty_back_button, is_dark)
-	_apply_primary_button_style(jump_button, is_dark)
-	_apply_footer_button_style(prev_button, is_dark)
-	_apply_footer_button_style(next_button, is_dark)
-	_apply_outline_button_style(home_button, is_dark)
-	empty_label.add_theme_color_override("font_color", text_color)
-	empty_label.add_theme_stylebox_override(
-		"normal",
-		_card_style(card_background, border_color, is_dark),
-	)
-
-	if not questions.is_empty():
-		_refresh_all_option_visuals()
-		_refresh_question_number_states()
-	_refresh_interaction_colors()
-
-
-func _header_style(
-	background_color: Color,
-	border_color: Color,
-	border_width: int,
-) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = background_color
-	style.border_color = border_color
-	style.border_width_bottom = border_width
-	return style
-
-
-func _card_style(
-	background_color: Color,
-	border_color: Color,
-	is_dark: bool,
-) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = background_color
-	style.border_color = border_color
-	style.set_border_width_all(1)
-	style.set_corner_radius_all(16)
-	style.shadow_color = Color(0, 0, 0, 0.24 if is_dark else 0.07)
-	style.shadow_size = 18
-	style.shadow_offset = Vector2(0, 5)
-	return style
-
-
-func _badge_style(background_color: Color) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = background_color
-	style.set_corner_radius_all(8)
-	style.shadow_color = Color(background_color, 0.22)
-	style.shadow_size = 6
-	style.shadow_offset = Vector2(0, 3)
-	return style
-
-
-func _list_style(background_color: Color) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = background_color
-	style.content_margin_left = 12.0
-	style.content_margin_top = 8.0
-	style.content_margin_right = 12.0
-	style.content_margin_bottom = 8.0
-	return style
-
-
-func _selection_style(background_color: Color) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = background_color
-	style.set_corner_radius_all(8)
-	return style
+	if is_instance_valid(minimal_view):
+		minimal_view.refresh()
 
 
 func _jump_input_style(
@@ -1411,90 +786,6 @@ func _jump_input_style(
 	style.content_margin_left = 12.0
 	style.content_margin_right = 12.0
 	return style
-
-
-func _apply_primary_button_style(button: Button, is_dark: bool) -> void:
-	var normal_color := DARK_ACCENT.darkened(0.20) if is_dark and button != jump_button else HEBUT_BLUE
-	var hover_color := normal_color.lightened(0.10)
-	_set_option_color(button, Color.WHITE)
-	for state_name in ["normal", "focus"]:
-		button.add_theme_stylebox_override(
-			state_name,
-			_primary_button_style(normal_color, is_dark),
-		)
-	for state_name in ["hover", "pressed"]:
-		button.add_theme_stylebox_override(
-			state_name,
-			_primary_button_style(hover_color, is_dark),
-		)
-
-
-func _primary_button_style(background_color: Color, is_dark: bool) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = background_color
-	style.set_corner_radius_all(10)
-	style.shadow_color = Color(0, 0, 0, 0.22 if is_dark else 0.10)
-	style.shadow_size = 7
-	style.shadow_offset = Vector2(0, 3)
-	return style
-
-
-func _apply_outline_button_style(button: Button, is_dark: bool) -> void:
-	var normal_background := DARK_OPTION if is_dark else Color.WHITE
-	var hover_background := DARK_OPTION_HOVER if is_dark else Color("#F1F5FC")
-	var border_color := DARK_BORDER if is_dark else OPTION_BORDER
-	var text_color := DARK_TEXT if is_dark else LIGHT_TEXT
-	_set_option_color(button, text_color)
-	for state_name in ["normal", "focus"]:
-		button.add_theme_stylebox_override(
-			state_name,
-			_action_button_style(normal_background, border_color),
-		)
-	for state_name in ["hover", "pressed"]:
-		button.add_theme_stylebox_override(
-			state_name,
-			_action_button_style(hover_background, border_color.lightened(0.12)),
-		)
-
-
-func _apply_footer_button_style(button: Button, is_dark: bool) -> void:
-	var normal_background := DARK_OPTION if is_dark else Color.WHITE
-	var normal_border := DARK_BORDER if is_dark else OPTION_BORDER
-	var normal_text := DARK_TEXT if is_dark else LIGHT_TEXT
-	var hover_background := DARK_ACCENT.darkened(0.20) if is_dark else HEBUT_BLUE
-	for state_name in ["normal", "focus"]:
-		button.add_theme_stylebox_override(
-			state_name,
-			_action_button_style(normal_background, normal_border),
-		)
-	for state_name in ["hover", "pressed"]:
-		button.add_theme_stylebox_override(
-			state_name,
-			_action_button_style(hover_background, hover_background),
-		)
-	_set_button_state_colors(button, normal_text, Color.WHITE)
-
-
-func _set_button_state_colors(
-	button: Button,
-	normal_color: Color,
-	hover_color: Color,
-) -> void:
-	button.add_theme_color_override("font_color", normal_color)
-	button.add_theme_color_override("font_focus_color", normal_color)
-	button.add_theme_color_override(
-		"font_disabled_color",
-		normal_color.darkened(0.20),
-	)
-	button.add_theme_color_override("font_hover_color", hover_color)
-	button.add_theme_color_override("font_pressed_color", hover_color)
-	button.add_theme_color_override("font_hover_pressed_color", hover_color)
-	button.add_theme_color_override("icon_normal_color", normal_color)
-	button.add_theme_color_override("icon_focus_color", normal_color)
-	button.add_theme_color_override("icon_disabled_color", normal_color.darkened(0.20))
-	button.add_theme_color_override("icon_hover_color", hover_color)
-	button.add_theme_color_override("icon_pressed_color", hover_color)
-	button.add_theme_color_override("icon_hover_pressed_color", hover_color)
 
 
 func _correct_feedback_color() -> Color:

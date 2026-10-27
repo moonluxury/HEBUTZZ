@@ -1,0 +1,27 @@
+{
+  "same_final_png_bytes_after_rerender": true,
+  "configuration_values_preserved": true,
+  "sha256": {
+    "logo_snowfield_aurora_transparent.png": "88a48b84d7b791401e7e5f027fb84b1d68c2411f217d3b3c3a83b3fb2b0af3c4",
+    "logo_snowfield_aurora_presentation.png": "b3e71078f7d0dbf222b66abf7a36258e6ca1828cd91f57caf811f5473b35eb91"
+  },
+  "cli_options_exercised": [
+    "--body-color",
+    "#DCEEFF",
+    "--orbit-green",
+    "#6BDDBB",
+    "--orbit-violet",
+    "#8995E8",
+    "--frost",
+    "0.38",
+    "--snow",
+    "0.78",
+    "--reflection",
+    "0.06",
+    "--background-aurora",
+    "0.12",
+    "--snow-points",
+    "12"
+  ],
+  "method": "Run the provided build command again with all eight public controls at the saved settings."
+}

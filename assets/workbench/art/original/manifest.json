@@ -1,0 +1,112 @@
+[
+	{
+		"file": "nav_home.png",
+		"method": "Godot SVG rasterizer; original paths unchanged",
+		"size": [
+			512,
+			512
+		],
+		"source": "res://assets/workbench/icons/house-door-fill.svg",
+		"tint": "Original UI color applied at runtime"
+	},
+	{
+		"file": "nav_bank.png",
+		"method": "Godot SVG rasterizer; original paths unchanged",
+		"size": [
+			512,
+			512
+		],
+		"source": "res://assets/workbench/icons/journal-text.svg",
+		"tint": "Original UI color applied at runtime"
+	},
+	{
+		"file": "nav_wrong.png",
+		"method": "Godot SVG rasterizer; original paths unchanged",
+		"size": [
+			512,
+			512
+		],
+		"source": "res://assets/workbench/icons/clipboard-x-fill.svg",
+		"tint": "Original UI color applied at runtime"
+	},
+	{
+		"file": "nav_kaiwu.png",
+		"method": "Godot SVG rasterizer; original paths unchanged",
+		"size": [
+			512,
+			512
+		],
+		"source": "res://assets/workbench/icons/collection-fill.svg",
+		"tint": "Original UI color applied at runtime"
+	},
+	{
+		"file": "nav_spirit.png",
+		"method": "Godot SVG rasterizer; original paths unchanged",
+		"size": [
+			512,
+			512
+		],
+		"source": "res://assets/workbench/icons/person-fill.svg",
+		"tint": "Original UI color applied at runtime"
+	},
+	{
+		"file": "nav_legacy.png",
+		"method": "Godot SVG rasterizer; original paths unchanged",
+		"size": [
+			512,
+			512
+		],
+		"source": "res://assets/workbench/icons/grid-1x2-fill.svg",
+		"tint": "Original UI color applied at runtime"
+	},
+	{
+		"file": "stat_today.png",
+		"method": "Godot SVG rasterizer; original paths unchanged",
+		"size": [
+			512,
+			512
+		],
+		"source": "res://assets/workbench/icons/clipboard-data-fill.svg",
+		"tint": "Original UI color applied at runtime"
+	},
+	{
+		"file": "stat_progress.png",
+		"method": "Godot SVG rasterizer; original paths unchanged",
+		"size": [
+			512,
+			512
+		],
+		"source": "res://assets/workbench/icons/bar-chart-fill.svg",
+		"tint": "Original UI color applied at runtime"
+	},
+	{
+		"file": "stat_days.png",
+		"method": "Godot SVG rasterizer; original paths unchanged",
+		"size": [
+			512,
+			512
+		],
+		"source": "res://assets/workbench/icons/calendar-check-fill.svg",
+		"tint": "Original UI color applied at runtime"
+	},
+	{
+		"file": "stat_total.png",
+		"method": "Godot SVG rasterizer; original paths unchanged",
+		"size": [
+			512,
+			512
+		],
+		"source": "res://assets/workbench/icons/plus-circle-fill.svg",
+		"tint": "Original UI color applied at runtime"
+	},
+	{
+		"file": "action_arrow.png",
+		"method": "Godot SVG rasterizer; original paths unchanged",
+		"size": [
+			512,
+			512
+		],
+		"source": "res://assets/workbench/icons/arrow-right.svg",
+		"tint": "Original UI color applied at runtime"
+	}
+]

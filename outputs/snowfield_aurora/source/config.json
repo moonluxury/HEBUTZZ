@@ -1,0 +1,75 @@
+{
+  "canvas_size": 2048,
+  "effective_width": 1516,
+  "effective_bbox_alpha_threshold": 8,
+  "seed": 20261020,
+  "palette": {
+    "snow": "#F4FAFF",
+    "body": "#DCEEFF",
+    "glacier": "#91BCE0",
+    "inner_shadow": "#294566",
+    "aurora_green": "#6BDDBB",
+    "aurora_violet": "#8995E8",
+    "night": "#081421",
+    "night_soft": "#132A3D"
+  },
+  "material": {
+    "surface_grain_strength": 0.025,
+    "frost_strength": 0.38,
+    "thin_snow_strength": 0.78,
+    "aurora_reflection_strength": 0.06,
+    "inner_shading_strength": 0.22
+  },
+  "orbit": {
+    "aurora_strength": 0.9,
+    "flow_variation_strength": 0.16,
+    "rear_brightness": 0.91
+  },
+  "background": {
+    "aurora_strength": 0.12,
+    "secondary_aurora_strength": 0.045,
+    "snow_haze_strength": 0.035,
+    "snow_points": 12,
+    "snow_point_strength": 0.2
+  },
+  "segmentation": {
+    "left_crossing_edge_refinement": {
+      "enabled": false,
+      "upper_fit_rows": [
+        620,
+        655
+      ],
+      "lower_fit_rows": [
+        700,
+        735
+      ],
+      "blend_rows": [
+        665,
+        698
+      ],
+      "local_source_box": [
+        310,
+        660,
+        355,
+        704
+      ],
+      "supersampling": 16
+    },
+    "straight_edge_rebuild": {
+      "enabled": true,
+      "supersampling": 32
+    },
+    "left_orbit_minimum_y": 650,
+    "left_orbit_boundary_x_intercept": 608,
+    "left_orbit_boundary_x_per_y": -0.406,
+    "ellipse_reference_center": [
+      620,
+      750
+    ],
+    "ellipse_reference_radii": [
+      620,
+      188
+    ],
+    "ellipse_reference_angle_degrees": -20
+  }
+}

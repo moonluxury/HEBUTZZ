@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "file": "E:/zhengzhi/assets/branding/hegong_zhigu_icon.png",
+      "sha256": "afc586ce3a2971038a30b29014aaba096ceb35502d11ba7103e535cc864e612c",
+      "dimensions": "1024x1024"
+    },
+    {
+      "file": "E:/zhengzhi/assets/branding/hegong_zhigu_icon.ico",
+      "sha256": "b12f245cba0fa645314bd0a86d80b5d5fae0f6438beb223b543bfe905e839cc4",
+      "dimensions": "256x256 128x128 64x64 48x48 32x32 16x16"
+    },
+    {
+      "file": "E:/zhengzhi/assets/branding/hegong_zhigu_android_192.png",
+      "sha256": "352a62a870e7665b3bb1bb82c344210306ecf508728f35a4c6cbf621afb498e8",
+      "dimensions": "192x192"
+    },
+    {
+      "file": "E:/zhengzhi/assets/branding/hegong_zhigu_adaptive_foreground.png",
+      "sha256": "3b3ace654b98e568dd5c3917c483b98b7952f346655cdd58477cdfcd1dda0506",
+      "dimensions": "432x432"
+    },
+    {
+      "file": "E:/zhengzhi/assets/branding/hegong_zhigu_adaptive_background.png",
+      "sha256": "5c410f25b9b47fdc799ba045bfa2672aaf631f17c7dbaea46dea88250facc66b",
+      "dimensions": "432x432"
+    }
+  ]
+}

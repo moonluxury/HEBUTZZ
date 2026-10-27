@@ -1,0 +1,89 @@
+{
+  "status": "complete",
+  "brand_plan": "E:/zhengzhi/outputs/河工知谷_定稿方案_20261019/定稿方案.html",
+  "brand_bundle": "E:/zhengzhi/outputs/河工知谷_定稿方案_20261019.zip",
+  "project_icon_files_replaced": 5,
+  "png_assets_verified": 41,
+  "master_pixel_consistency_checked": 955760,
+  "windows": {
+    "file": "E:/zhengzhi/build/河工开物.exe",
+    "export": "passed",
+    "embedded_icon": "visually verified from executable",
+    "isolated_headless_startup_exit_code": 0,
+    "runtime_icon_fix": {
+      "status": "complete",
+      "dpi": 96,
+      "scale_percent": 100,
+      "fix": "Resize the accepted source with Lanczos at system icon size before calling DisplayServer.set_icon on Windows.",
+      "verified": [
+        "Windows release export",
+        "GUI startup",
+        "WM_GETICON handles for big and small icons",
+        "Win32 DrawIconEx at 32px and 16px",
+        "Installed executable hash matches verified executable"
+      ],
+      "limitations": [
+        "Other display scaling settings have not been tested on a physical display."
+      ],
+      "artwork_changed": false,
+      "android_changed": false,
+      "backup": "E:\\zhengzhi\\build\\before-window-icon-fix-20261019",
+      "builds": [
+        {
+          "file": "E:\\zhengzhi\\build\\河工开物.exe",
+          "bytes": 180236176,
+          "sha256": "b902b1c9adcc704f41bc376c142c27f75a1002d9d41ae06c094db16734e849d3"
+        },
+        {
+          "file": "E:\\zhengzhi\\build\\河工开物.console.exe",
+          "bytes": 418304,
+          "sha256": "b4f6848de45440846853c14eff39b605208c77a1c8113481b144f7fbf2d3c4b7"
+        }
+      ],
+      "icon_alpha_statistics": [
+        {
+          "state": "before",
+          "kind": "big",
+          "transparent": 242,
+          "translucent": 30,
+          "opaque": 752
+        },
+        {
+          "state": "before",
+          "kind": "small",
+          "transparent": 72,
+          "translucent": 952,
+          "opaque": 0
+        },
+        {
+          "state": "after",
+          "kind": "big",
+          "transparent": 152,
+          "translucent": 238,
+          "opaque": 634
+        },
+        {
+          "state": "after",
+          "kind": "small",
+          "transparent": 152,
+          "translucent": 238,
+          "opaque": 634
+        }
+      ]
+    }
+  },
+  "android": {
+    "file": "E:/zhengzhi/build/河工开物.apk",
+    "export": "passed",
+    "signature_verification": "passed",
+    "signing_certificate_matches_previous": true,
+    "package_id": "com.zhengzhi.quiz",
+    "aapt2_manifest_read": "passed",
+    "launcher_icon_normalized_rmse": 0.0000237232,
+    "adaptive_foreground_normalized_rmse": 0.00000691136,
+    "device_runtime_tested": false
+  },
+  "previous_builds": "E:/zhengzhi/build/before-icon-refresh-20261019",
+  "previous_icon_resources": "E:/zhengzhi/outputs/hegong_brand_final_work/previous_assets",
+  "image_preparation": "Built-in image_gen; shared master exported with ImageMagick"
+}

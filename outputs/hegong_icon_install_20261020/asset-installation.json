@@ -1,0 +1,35 @@
+{
+  "source": "E:/zhengzhi/outputs/河工知谷_交大蓝配色_20261020/河工知谷_交大蓝004E97_透明.png",
+  "source_sha256": "44f3d5d63055f1b611d10a19851f458d3d9c242c97c27b805eb2a0fb82302891",
+  "master": "E:/zhengzhi/outputs/河工知谷_交大蓝配色_20261020/应用图标/河工知谷_交大蓝_1024.png",
+  "checked_interior_pixels": 781008,
+  "max_rgb_difference": 0,
+  "alpha_verified": true,
+  "results": [
+    {
+      "file": "E:/zhengzhi/assets/branding/hegong_zhigu_icon.png",
+      "sha256": "4ef53dc7f61589ba53f09981ba6a0e10635dc3f145106aaf7a471b521446cd2f",
+      "size": "1024x1024"
+    },
+    {
+      "file": "E:/zhengzhi/assets/branding/hegong_zhigu_icon.ico",
+      "sha256": "23dae3e7a0e4c89c95c57d8da3c5b444ca4efeb1992caa49f86c323e1dd4ae20",
+      "size": "256x256 128x128 64x64 48x48 32x32 16x16"
+    },
+    {
+      "file": "E:/zhengzhi/assets/branding/hegong_zhigu_android_192.png",
+      "sha256": "a42e1eba4a9984eb1a363cea885424bacece33eb613defce64a62c27e0333ccf",
+      "size": "192x192"
+    },
+    {
+      "file": "E:/zhengzhi/assets/branding/hegong_zhigu_adaptive_foreground.png",
+      "sha256": "a92ac6b87813af0249e7a73ac6ca9359a7180f5388570fac35358ccd273b30ee",
+      "size": "432x432"
+    },
+    {
+      "file": "E:/zhengzhi/assets/branding/hegong_zhigu_adaptive_background.png",
+      "sha256": "5c410f25b9b47fdc799ba045bfa2672aaf631f17c7dbaea46dea88250facc66b",
+      "size": "432x432"
+    }
+  ]
+}

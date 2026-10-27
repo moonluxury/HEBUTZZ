@@ -14,6 +14,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot", required=True, type=Path)
     parser.add_argument("--course", choices=["python", "matlab", "cpp"], default="python")
+    parser.add_argument("--timeout", type=float, default=180, help="Per-step timeout in seconds (C++ exercises every answer)")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     test_root = root / ".godot_appdata"
@@ -47,7 +48,7 @@ def main():
     ]
     for step in steps:
         result = subprocess.run([str(args.godot), "--headless", "--path", str(fixture), *step],
-                                env=environment, capture_output=True, timeout=90)
+                                env=environment, capture_output=True, timeout=args.timeout)
         output = (result.stdout + result.stderr).decode("utf-8", errors="replace")
         if "--script" in step or result.returncode or "ERROR:" in output:
             print(output, flush=True)

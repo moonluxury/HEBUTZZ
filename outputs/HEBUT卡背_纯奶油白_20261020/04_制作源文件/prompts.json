@@ -1,0 +1,5 @@
+{
+  "mode": "built-in image_gen",
+  "targetColor": "#F6F0E2",
+  "prompt": "Use case: precise-object-edit.\nAsset type: transparent team logo for an existing HEBUT collectible-card back.\nInput image 1 is the EDIT TARGET, an existing navy-blue H + diagonal rocket + elliptical orbit + small circular node emblem.\nPrimary request: change ONLY its fill color to pure, uniform warm cream white, target hex #F6F0E2. All parts of the emblem must use the SAME solid cream white, fully opaque in their interiors.\nPreserve the original silhouette, H shape, rocket geometry, fins, thin diagonal paths, orbital curve, node, proportions and all negative-space cutouts as closely as possible. Keep every edge crisp and clean with antialiasing.\nStyle: completely flat monochrome logo. No gradients, no shading, no highlights, no material texture, no embossed edges, no outline, no glow, no shadow, no new details.\nOutput only the existing emblem recolored cream white, on genuine transparent background with a small even clear margin. No card, no text, no white rectangle or white background."
+}
