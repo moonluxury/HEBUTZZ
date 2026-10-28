@@ -220,7 +220,10 @@ func _sync() -> void:
 	quantity.max_value = maxi(n, maxi(1, int(rule.max)))
 	var name := str(store.card(card_id).get("name", ""))
 	review.text = "请选择赠送对象。" if selected_friend.is_empty() else "将 %d 张「%s」赠送给 %s。" % [n, name, selected_friend.name]
-	remaining.text = "送出后你将剩余 %d 张。" % maxi(0, store.count(card_id) - n)
+	if n >= 1 and n <= int(rule.max):
+		remaining.text = "送出后你将剩余 %d 张（至少保留 1 张）。" % (store.count(card_id) - n)
+	else:
+		remaining.text = "每种卡片至少保留 1 张，当前最多可赠送 %d 张。" % int(rule.max)
 	confirm.text = "正在提交…" if busy else "确认赠送 %d 张" % n
 	confirm.disabled = busy or store.pending() or selected_friend.is_empty() or n < 1 or n > int(rule.max) or not selected_friend.get("eligible", true)
 	# Refresh this local button before its draw: changing a shared StyleBox from
@@ -229,7 +232,7 @@ func _sync() -> void:
 	if feedback != null:
 		feedback._check_disabled()
 	confirm.queue_redraw()
-	quantity.editable = not busy and not store.pending()
+	quantity.editable = not busy and not store.pending() and int(rule.max) > 0
 	search.editable = not busy and not store.pending()
 	recovery.visible = store.pending()
 	recovery.disabled = busy or store._busy
@@ -244,6 +247,8 @@ func _sync() -> void:
 		error_label.text = "当前可赠数量已变化，请调整数量。"
 	elif not str(rule.get("consequence", "")).is_empty():
 		error_label.text = str(rule.consequence)
+	elif error_label.text == store.KEEP_ONE_REASON:
+		error_label.text = ""
 
 func _submit() -> void:
 	quantity.apply()

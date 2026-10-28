@@ -11,13 +11,15 @@ Esc 统一返回上一层：先关闭当前弹窗、下拉菜单、展开的资�
 
 页面加载采用五项优化：`UiResources` 共用字体、主题和图标；题号列表按可见区域复用按钮；答题场景仅保留实际使用的控件；`StudyStats` 统一读取、校验并缓存题库，练习只复制题目列表；`PageRouter` 保留侧栏及最多 4 个非当前常用页面。总题库与错题库分别缓存，保留筛选和滚动位置，返回时刷新学习记录与错题；答题会话不缓存，新开练习仍创建新会话。题号聚焦时可用方向键、Home/End、PageUp/PageDown 移动，Enter/空格选择。
 
+各课程题库在加载时统一按“单选 → 多选 → 判断 → 填空 → 输出 → 编程”分组，同类题保留原资料顺序；总题库和错题练习使用同一分组顺序。题干编号、右侧题号和输入跳转均使用当前练习中的连续序号。原题 ID、题目内容和来源编号保持不变，已有错题、学习进度、继续学习位置及编程草稿仍按原标识对应。验证：`python tools/run_workbench_checks.py --godot <Godot控制台程序路径> --script check_question_order.gd`。
+
 加载回归：`python tools/run_workbench_checks.py --godot <Godot控制台程序路径> --script check_loading_optimization.gd`。同一命令换为 `--script profile_page_switches.gd --visual` 可记录首次及重复进入的资源加载、页面构建和首帧间隔；比较时关闭其他测试进程。缓存数量可在 `scripts/page_router.gd` 的 `CACHE_LIMIT` 调整，默认 4，不包含当前页面。
 
 普通答题模式使用题干 26、选项 24 的基础字号，F6 专注模式使用题干 28、选项 24，题号列表字号不变。两种模式的题干均按内容占高，选项基础高度 56、间距 24；答题区高度不足 650 时改为高度 48、间距 16。多行题干和选项会自动增高，长题仍可滚动，Ctrl + 滚轮仍可整体缩放。字号参数位于 `scripts/minimal_quiz_view.gd` 顶部的 `QUESTION_FONT_SIZE`、`OPTION_FONT_SIZE` 及两项 `FOCUS_*` 常量，按钮尺寸和间距位于 `_apply_question_typography()`。加入错题库按钮始终保持页面底色；未加入时文字与图标使用普通颜色，已加入时固定为蓝色（深色模式使用浅蓝），悬停、聚焦和按下不会改变这个状态颜色。该反馈通过 `state_only_feedback` 单独启用，不改变其他按钮的样式。
 
 已提交的题目再次点击题号或切回来时可重新作答，旧选择、输入和参考答案会清空，题号列表仍保留“已答”记录；未提交的选择和输入保留为草稿，编程题草稿也继续保留。再次实际提交会记一次作答，停留在当前结果上重复点击提交不会重复计数。F6、主题切换和窗口调整只改变显示，不开始新一轮作答。“结束练习”直接返回工作台。
 
-图标素材位于 `assets/minimal/icons/`，每个图标单独导出为 384 × 384 透明 PNG，按参考选择原始线性图标轮廓，源文件、授权及导出工具均随项目保存；选中工作台仍复用原有实心房子图标。文字全部使用原生控件，采用 4 倍字体过采样，图标开启 mipmap 缩小过滤。界面现使用统一、可中断的颜色与透明度过渡，不使用循环装饰、卡片缩放、导航位移或悬浮说明。
+图标素材位于 `assets/minimal/icons/`，每个图标单独导出为 384 × 384 透明 PNG，按参考选择原始线性图标轮廓，源文件、授权及导出工具均随项目保存；选中工作台仍复用原有实心房子图标。文字全部使用原生控件，采用 4 倍字体过采样，图标开启 mipmap 缩小过滤。界面现使用统一、可中断的颜色与透明度过渡，不使用循环装饰、卡片缩放、导航位移或悬浮说明。所有按钮统一取消聚焦蓝框及悬停时的蓝色边框渐变，键盘导航、回车操作和弹窗关闭后的焦点恢复继续可用。
 
 总题库提供课程/题干搜索、课程类别和学习进度筛选。错题页读取原错题 ID，支持科目筛选、已练习/未练习筛选；“待复习错题”使用与总题库一致的课程卡片，只展示有匹配错题的科目，显示该科目的错题总数和已练习比例，可开始/继续复习。逐题列表和“查看全部错题”入口已移除。旧错题没有逐题日期和错误次数，因此不伪造示意图中的日期、次数与掌握度，趋势展示新版记录的每日答错次数。河工开物继续使用现有四条示例资源，已移除“默认 / 名称 / 分类”排序，按数据源顺序显示；搜索、分类、示例展开、正文和公告均保留。答题页通过 `scripts/minimal_quiz_view.gd` 共用外观，判题、错题存档、Python 运行和草稿仍由原控制器负责。
 
@@ -61,9 +63,9 @@ Windows 64 位版的编程编辑器支持运行 Python 代码。需要 `input()`
 
 公共侧栏左上角现为头像、显示名称和“个人中心”入口，替换原品牌区；侧栏宽度、导航坐标和第四项“河工开物”资源入口保持不变。未登录显示“登录”，当前仓库没有正式登录服务，因此点击会进入个人中心并明确说明服务尚未接入。品牌素材、应用名称和启动场景保留。收藏导航与个人中心收藏快捷入口使用同一个卡牌图标、场景路由和 `CollectionStore`，不重置收藏页缓存、筛选或分季展开状态。
 
-`scenes/PersonalCenter.tscn` / `scripts/personal_center.gd` 实现上方身份、下方左侧资料和右侧设置布局；窄窗口顺排并滚动。右侧只有“账号与安全”“我的收藏”和轻量“版本信息”，底部保留退出登录。`profile_dialog.gd` 提供编辑、好友、账号、版本和登录/退出局部面板，使用原字体、主题、工大蓝、动效和原生独占窗口焦点。`profile_identity.gd` 是可跨页面保留的身份按钮；`profile_avatar.gd` 及 `assets/profile/`、`shaders/profile_avatar.gdshader` 负责圆形等比裁切、失败回退和局部线性图标。
+`scenes/PersonalCenter.tscn` / `scripts/personal_center.gd` 实现上方身份、下方左侧资料和右侧设置布局；窄窗口顺排并滚动。右侧只有“账号与安全”“我的收藏”和轻量“版本信息”，底部保留退出登录。`profile_dialog.gd` 提供编辑、账号、版本和登录/退出局部面板（好友入口现转到下述独立模块），使用原字体、主题、工大蓝、动效和原生独占窗口焦点。`profile_identity.gd` 是可跨页面保留的身份按钮；`profile_avatar.gd` 及 `assets/profile/`、`shaders/profile_avatar.gdshader` 负责圆形等比裁切、失败回退和局部线性图标。
 
-`ProfileStore` 自动加载项是统一资料状态与服务适配层，不是新账号系统。仓库没有正式认证、个人资料保存、头像上传、账号绑定或退出接口，也没有正式好友服务；当前不会产生示例用户、随机 ID、虚假保存或虚假退出。好友面板复用收藏赠送的 `request_friends` 数据源，当前缺少好友服务时明确提示。版本信息读取 `application/config/version`；当前项目未提供该值，显示“当前构建未提供版本号”，没有套用 Android 导出配置或引擎版本冒充桌面应用版本。
+`ProfileStore` 自动加载项是统一资料状态与服务适配层，不是新账号系统。仓库没有正式认证、个人资料保存、头像上传、账号绑定或退出接口，也没有正式好友服务；当前不会产生示例用户、随机 ID、虚假保存或虚假退出。好友模块复用收藏赠送的 `request_friends` 数据源及新增社交适配契约，当前缺少好友服务时明确提示。版本信息读取 `application/config/version`；当前项目未提供该值，显示“当前构建未提供版本号”，没有套用 Android 导出配置或引擎版本冒充桌面应用版本。
 
 后续真实服务接入契约（服务负责身份校验、字段权限、格式验证、持久化、请求超时及现有账号流程）：
 
@@ -72,10 +74,28 @@ Windows 64 位版的编程编辑器支持运行 Python 代码。需要 `input()`
 - `editable_fields` 只包含允许修改的字段及其现有规则，例如 `display_name: {max_length: ...}`。没有权限项即只读。头像须提供 `avatar: {extensions: [...], max_bytes: ...}` 后才开放文件选择，避免前端自定业务限制。`public_id`、登录身份、角色、认证状态不参与编辑。
 - `save_profile(account_id, patch, avatar_file)` 接收有改动的可编辑字段和可选头像本地源文件。适配器须完成授权、上传和持久化，再返回 `{ok: true, persisted: true, account_id, profile, editable_fields}`；头像返回持久引用，不能回传所选临时源路径作为保存结果。失败返回 `{ok: false, message}` 并保留草稿。前端不会乐观替换已提交资料，会拦截重复提交和过期响应。页面离开清理未提交草稿；已经提交的请求由统一状态层完成，不依赖窗口生存期。
 - `request_account(account_id)` 返回 `{ok, account_id, login_method?, masked_email?, masked_phone?, message?}`；只展示明确脱敏的联系方式，不读取密码或令牌。可选 `open_account_settings(account_id)` / `begin_login()` 打开宿主既有账号流程；认证结果由宿主通过 `use_provider` 同步。`logout(account_id)` 只有返回匹配账号的成功结果后才清除当前会话，失败保留状态。
-- 好友请求仍为 `CollectionStore.search_friends` / 既有 `request_friends`；没有另建好友关系、管理规则或聊天功能。新入口不更改收藏库存、想要标记、赠送规则、题库授权和学习记录。
+- 好友入口现进入同一「我的好友」模块，见下节与 `SOCIAL_SERVICE_CONTRACT.md`；收藏仍复用既有赠送业务和想要标记，不改变题库授权与学习记录。
 
 专项验证：`python tools/run_workbench_checks.py --godot <Godot控制台程序路径> --script check_personal_center.gd --visual`。不加 `--visual` 为 headless 检查。`tools/fixtures/profile_provider.gd` 只供隔离测试，运行前拒绝正式用户存档路径，未注册到应用，也不参与发布资源。覆盖保存成功/失败/取消、权限、重复提交、头像预览与持久化、剪贴板成功/失败、好友查询时序、收藏入口缓存一致性、长文本、深色、窄窗口、焦点恢复、切换账号和离页请求。实际运行截图在 `outputs/profile-validation/`，其中 `01-current-no-service.png` 是当前未接入服务的状态，其余明确标注隔离测试资料，不代表正式账号服务已开通。
 
 本轮最终验证结果：个人中心 headless 71 项、Windows OpenGL 实际渲染 72 项全部通过（实际渲染额外验证系统剪贴板，并恢复原剪贴板文字）；`check_loading_optimization.gd`、`check_minimal_design.gd`、`check_workbench.gd`、`check_quiz_focus.gd`、`check_motion.gd` 及收藏 `check_collection.gd --visual` 均为 0 失败。`git diff --check` 无空白错误。所有账号写入、切换、退出和错误场景只在独立 `workbench-check-*` 存档及测试服务中执行。
 
 收藏原 headless 测试有一个既有测试时序限制：`capture()` 在该模式直接返回，布局尚未稳定就执行模拟点击，导致点击断言失败并超时。在 `.godot_appdata/profile_collection_settled.gd` 中仅给该测试的 headless capture 补上与视觉模式等长的布局等待，完整用例即通过；没有改动收藏业务或其原测试文件。正式网络认证、远端资料/头像持久化、真实绑定与退出、真实好友服务和实体触屏仍未验证，原因是仓库没有相关服务或当前没有对应设备。系统减少动画能力在 headless 返回未知值 `-1`，可控减少动画接口已验证。
+
+## 我的好友（2026-10-28）
+
+侧栏在「我的收藏」之后新增唯一入口「我的好友」，个人中心好友入口进入同一 Godot 场景。支持好友/最近对话、服务端官方只读会话、申请、文本发送与重试、阅读水位、备注/免打扰/拉黑、想要清单、共享收藏赠送窗口、换卡核对与记录；没有“消息请求”分箱。
+
+当前仓库没有正式认证、好友、聊天、通知或库存后端。正常启动明确显示未接入，不自动填充测试账号或假成功。真实服务需按 [社交接口契约](SOCIAL_SERVICE_CONTRACT.md) 接到既有会话。文件范围、默认规则、运行方法、实际检查与未验证的后端事务见 [交付说明](SOCIAL_IMPLEMENTATION.md)。
+
+专项检查：`python tools/run_workbench_checks.py --godot <Godot控制台程序路径> --script check_social.gd --visual`；回环 HTTP 检查：`python tools/run_social_http_checks.py --godot <Godot控制台程序路径>`。实际运行截图在 `outputs/social-validation/`，除未接入状态外均明确标注隔离服务替身，不代表正式账号与真实转卡已经上线。
+
+## 我要充值（2026-10-28）
+
+F5 运行后，在「我的好友」下方进入「我要充值」。原生 Godot 页面使用统一两格横向电池，包含余额、两列套餐、充值核对、订单详情、支付状态恢复、电池明细与充值记录。答题入口复用现有题库；投稿尚无编辑/审核后台，保留“审核通过并发表后获得”的条件并链接现有征稿说明。
+
+充值页已按最新截图删去顶部标题、副标题和“电池余额”标签，主余额左移、主体上移；底部答题/投稿入口增加线性图标并排展示。充值导航未选中时为灰色，选中时沿用工大蓝。各页面右上角显示同一账号的电池图标和真实数量，未知余额显示“—”；答题页 F6 专注模式随顶栏隐藏。`scripts/wallet_badge.gd` 复用共享余额与同一两格图标，不另外发起页面轮询。
+
+本轮补齐原请求及价格快照持久化、重新认证恢复、支付弹窗/历史订单查询、晚到支付归并、账号切换清理和大数值布局。普通答题不受奖励服务未开放影响。正式账号、价格、支付渠道与奖励规则当前均未提供，正常启动不显示示例余额或假支付；开发示意只出现在隔离检查中。
+
+详细文件、配置、验证结果和截图见 [充值交付说明](RECHARGE_IMPLEMENTATION.md)，真实服务按 [电池服务契约](WALLET_SERVICE_CONTRACT.md) 接入；空配置模板为 `config/wallet.example.json`。检查：`python tools/run_workbench_checks.py --godot <Godot控制台程序路径> --script check_recharge.gd --visual`；订单恢复将脚本改为 `check_wallet_recovery.gd`；真实回环 HTTP 使用 `python tools/run_wallet_http_checks.py --godot <Godot控制台程序路径>`；隔离 SQLite 并发/事务检查使用 `python tools/check_wallet_service.py`。

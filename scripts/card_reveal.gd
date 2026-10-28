@@ -126,7 +126,10 @@ func present(value: Dictionary, gray := false) -> void:
 	accessibility_name = "正在准备收藏卡片"
 	_pending.clear()
 	var resources := get_node("/root/UiResources")
-	for path in [str(session.card.get("image", "")), str(session.back)]:
+	var paths := [str(session.card.get("image", ""))]
+	if not session.static and not session.completed:
+		paths.append(str(session.back))
+	for path in paths:
 		if not _pending.has(path):
 			_pending.append(path)
 			if not resources.request_texture(path):
@@ -151,23 +154,23 @@ func _poll_resources() -> void:
 			return
 		if status != ResourceLoader.THREAD_LOAD_LOADED:
 			loaded = false
-		elif path == str(session.back) and back_texture == null:
+		elif not session.static and not session.completed and path == str(session.back) and back_texture == null:
 			back_texture = resources.textures[path] as Texture2D
 			face.texture = back_texture
 	if not loaded:
 		return
 	front_texture = resources.textures[str(session.card.image)] as Texture2D
-	if front_texture == null or back_texture == null:
+	if front_texture == null or (not session.static and not session.completed and back_texture == null):
 		_fail()
 		return
 	set_process(false)
-	flip_material.set_shader_parameter("front_image", front_texture)
-	flip_material.set_shader_parameter("back_image", back_texture)
-	flip_material.set_shader_parameter("grayscale", grayscale)
 	status_label.hide()
 	if session.static or session.completed:
 		_finish(false)
 		return
+	flip_material.set_shader_parameter("front_image", front_texture)
+	flip_material.set_shader_parameter("back_image", back_texture)
+	flip_material.set_shader_parameter("grayscale", grayscale)
 	if _motion.reduced() and not session.reduced:
 		session.reduced = true
 		session.elapsed = 0.0

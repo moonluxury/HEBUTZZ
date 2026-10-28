@@ -90,7 +90,7 @@ func _build_content() -> void:
 	friends.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	friends.custom_minimum_size = Vector2(145, 42)
 	friends.add_theme_color_override("font_color", _accent())
-	friends.pressed.connect(show_panel.bind("friends", friends))
+	friends.pressed.connect(get_node("/root/PageRouter").open_friends)
 	edit_button = _button(header, "EditProfile", "编辑资料", _edit)
 	_style_button(edit_button, BLUE, true)
 	edit_button.custom_minimum_size = Vector2(154, 52)
@@ -216,6 +216,9 @@ func _copy_id() -> void:
 	feedback.text = profile_store.copy_public_id().message
 
 func show_panel(mode: String, trigger: Control = null) -> void:
+	if mode == "friends":
+		get_node("/root/PageRouter").open_friends()
+		return
 	if is_instance_valid(dialog):
 		return
 	dialog_return = weakref(trigger) if trigger != null else null

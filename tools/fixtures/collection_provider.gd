@@ -54,6 +54,9 @@ func send_gift(operation: Dictionary) -> Dictionary:
 		response.message = "隔离测试：库存不足。"
 	elif operation.quantity < 1 or operation.quantity > int(inventory[operation.card_id].giftable_count) or operation.friend_id not in ["test-friend-a", "test-friend-b"]:
 		response.message = "隔离测试：赠送资格校验失败。"
+	elif int(inventory[operation.card_id].count) - int(operation.quantity) < 1:
+		# Model the authoritative transaction's retain-one check, including stale reads.
+		response.message = "隔离测试：每种卡片需至少保留 1 张。"
 	else:
 		inventory[operation.card_id].count -= operation.quantity
 		inventory[operation.card_id].giftable_count -= operation.quantity

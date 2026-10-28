@@ -226,6 +226,15 @@ func _loading_and_errors() -> void:
 		check(preview.state == "revealed" and preview.session.id == 903, "Retry loads the same session without another result")
 		preview.queue_free()
 		await frames()
+	var static_preview := Reveal.new()
+	root.add_child(static_preview)
+	static_preview.size = Vector2(400, 420)
+	static_preview.present(Reveal.new_session(store.card("0003"), "res://missing-unused-static-back.png", 905, false), true)
+	await loaded(static_preview)
+	check(static_preview.state == "revealed" and static_preview.face.material == static_preview.gray_material and static_preview._tween == null, "Static gray cards display immediately even without a back texture")
+	check(static_preview.back_texture == null and static_preview.interactive and static_preview.detail_alpha == 1, "Static presentation never displays or waits for a card back")
+	static_preview.queue_free()
+	await frames()
 
 func _visual_cards() -> void:
 	sheet = Image.create(1960, 1500, false, Image.FORMAT_RGBA8)

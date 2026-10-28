@@ -11,6 +11,26 @@ var pending := ""
 var switch_queued := false
 var identity_login_requested := false
 
+func wallet_store() -> Node:
+	var store := get_node_or_null("WalletStore")
+	if store == null:
+		store = preload("res://scripts/wallet_store.gd").new()
+		store.name = "WalletStore"
+		add_child(store)
+	return store
+
+func social_store() -> Node:
+	var store := get_node_or_null("SocialStore")
+	if store == null:
+		store = preload("res://scripts/social_store.gd").new()
+		store.name = "SocialStore"
+		add_child(store)
+	return store
+
+func open_friends(from_bell := false) -> void:
+	social_store().bell_requested = from_bell
+	go("res://scenes/MyFriends.tscn")
+
 func collection_store() -> Node:
 	var store := get_node_or_null("CollectionStore")
 	if store == null:

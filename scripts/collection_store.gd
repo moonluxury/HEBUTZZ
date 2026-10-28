@@ -6,6 +6,7 @@ signal gift_completed(result: Dictionary)
 signal friends_loaded(ticket: String, response: Dictionary)
 const CATALOG := "res://data/collection_catalog.json"
 const SAVE_DIR := "user://collection_v1"
+const KEEP_ONE_REASON := "每种卡片需至少保留 1 张，拥有 2 张及以上才可赠送。"
 var provider: Node
 var account_id := "local-profile"
 var seasons: Array = []
@@ -110,10 +111,12 @@ func gift_rule(id: String) -> Dictionary:
 		return {"max": 0, "reason": "尚未取得当前库存，请刷新后重试。"}
 	if count(id) <= 0:
 		return {"max": 0, "reason": "尚未拥有这张卡。"}
+	if count(id) == 1:
+		return {"max": 0, "reason": KEEP_ONE_REASON}
 	var entry: Dictionary = inventory.get(id, {})
 	if not entry.has("giftable_count"):
 		return {"max": 0, "reason": "服务未返回可赠数量，暂时无法赠送。"}
-	return {"max": mini(count(id), maxi(0, int(entry.giftable_count))),
+	return {"max": mini(count(id) - 1, maxi(0, int(entry.giftable_count))),
 		"reason": str(entry.get("gift_reason", "")), "consequence": str(entry.get("gift_consequence", ""))}
 
 func refresh() -> void:
@@ -154,6 +157,9 @@ func _apply_snapshot(response: Dictionary) -> bool:
 	return true
 
 func friends(query: String) -> Dictionary:
+	var social := get_node_or_null("/root/PageRouter/SocialStore")
+	if social != null and social.account_id == account_id and social.available():
+		return await social.request("friends", {"query": query, "eligible_for_gift": true})
 	if not is_instance_valid(provider):
 		return {"ok": false, "message": "好友服务尚未接入。", "friends": []}
 	var owner_id := account_id
@@ -175,7 +181,10 @@ func submit_gift(card_id: String, friend_id: String, amount: int) -> Dictionary:
 		return _gift_result({"ok": false, "message": "上一笔赠送正在核实，请查询结果。"})
 	var rule := gift_rule(card_id)
 	if amount < 1 or amount > int(rule.max) or friend_id.is_empty():
-		return _gift_result({"ok": false, "message": rule.reason if not str(rule.reason).is_empty() else "请核对好友和可赠数量。"})
+		var reason := str(rule.reason)
+		if reason.is_empty() and count(card_id) > 0 and amount >= count(card_id):
+			reason = KEEP_ONE_REASON
+		return _gift_result({"ok": false, "message": reason if not reason.is_empty() else "请核对好友和可赠数量。"})
 	var previous := operation.duplicate(true)
 	operation = {"id": Crypto.new().generate_random_bytes(24).hex_encode(), "account_id": account_id,
 		"card_id": card_id, "friend_id": friend_id, "quantity": amount, "state": "pending"}

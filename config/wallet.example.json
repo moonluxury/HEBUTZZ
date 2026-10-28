@@ -1,0 +1,22 @@
+{
+  "protocol_version": 1,
+  "endpoint": "",
+  "payment_hosts": [],
+  "recharge_enabled": false,
+  "packages": [],
+  "channels": [],
+  "rules": {
+    "summary": "充值及奖励规则尚未配置。",
+    "description": "正式充值尚未开放，当前不提供真实收款。",
+    "quiz": {
+      "enabled": false,
+      "trusted_attempts": false,
+      "types": [],
+      "bank_versions": {}
+    },
+    "publication": {
+      "entry_enabled": false,
+      "reward_enabled": false
+    }
+  }
+}

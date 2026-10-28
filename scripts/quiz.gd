@@ -32,6 +32,7 @@ const DARK_WRONG := Color("#FF858C")
 const DARK_WRONG_SURFACE := Color("#41242B")
 
 var minimal_view: Control
+var wallet_bridge: Node
 
 var all_questions: Array = []
 var questions: Array = []
@@ -75,6 +76,9 @@ var has_answered := false
 func _ready() -> void:
 	theme = get_node("/root/UiResources").page_theme
 	_load_data()
+	wallet_bridge = preload("res://scripts/quiz_wallet_bridge.gd").new()
+	wallet_bridge.quiz = self
+	add_child(wallet_bridge)
 	question_images = VBoxContainer.new()
 	question_images.name = "QuestionImages"
 	question_label.get_parent().add_child(question_images)
@@ -136,7 +140,8 @@ func _show_question() -> void:
 	if not question.get("preserve_option_order", false):
 		shuffled_options.shuffle()
 	_restore_current_question_state()
-	question_label.text = "%d. %s" % [question["id"], question["stem"]]
+	# Display the practice position; stable source IDs remain the save keys.
+	question_label.text = "%d. %s" % [current_index + 1, question["stem"]]
 	_build_fill_inputs()
 	_build_question_images(question.get("images", []))
 	submit_button.visible = question["type"] in ["multiple", "fill", "output"]
@@ -163,6 +168,8 @@ func _show_question() -> void:
 	_update_wrong_button()
 	if is_instance_valid(minimal_view):
 		minimal_view.question_changed()
+	if is_instance_valid(wallet_bridge):
+		wallet_bridge.prepare(_app_state().subject_id, question)
 
 
 func _restore_current_question_state() -> void:
@@ -270,6 +277,7 @@ func _reveal_answer() -> void:
 	_refresh_answer_feedback()
 	_refresh_question_number_states()
 	submit_button.disabled = true
+	if is_instance_valid(wallet_bridge): wallet_bridge.submit()
 
 
 func _refresh_answer_feedback() -> void:
@@ -305,6 +313,7 @@ func _refresh_answer_feedback() -> void:
 		var explanation := str(questions[current_index].get("explanation", ""))
 		if not explanation.is_empty():
 			answer_label.text += "\n\n" + explanation
+	if is_instance_valid(wallet_bridge): wallet_bridge.apply_feedback()
 
 
 func _is_fill_question() -> bool:
@@ -552,7 +561,7 @@ func _refresh_option_visual(index: int) -> void:
 		"hover_pressed",
 		_option_style(background, border),
 	)
-	button.add_theme_stylebox_override("focus", _option_style(background, border))
+	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	button.add_theme_stylebox_override("disabled", _option_style(background, border))
 	_set_option_color(button, text_color)
 	if not is_selected and not has_answered:

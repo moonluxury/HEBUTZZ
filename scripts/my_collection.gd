@@ -172,6 +172,8 @@ func _render() -> void:
 					owned += 1
 					total += store.count(item.id)
 			_label(group, "%s · %d 款%s" % [_filter_name(), items.size(), " · 已拥有 %d 款 / %d 张" % [owned, total] if store.inventory_known else ""], 18, muted_color).name = "Count"
+			if items.is_empty():
+				continue
 			_line(group, Rect2()).name = "Divider"
 			if is_open:
 				var grid := Control.new()
@@ -381,9 +383,10 @@ func _layout_content(width: float) -> void:
 			if group.has_node("Grid"):
 				group.get_node("Grid").position = Vector2(0, 110)
 				group_height = 130 + _layout_grid(group.get_node("Grid"), width)
-			else:
+			elif group.has_node("Previews"):
 				_rect(group.get_node("Previews"), Rect2(width - 112, 12, 110, 50))
-			_rect(group.get_node("Divider"), Rect2(0, group_height, width, 1))
+			if group.has_node("Divider"):
+				_rect(group.get_node("Divider"), Rect2(0, group_height, width, 1))
 			group.size = Vector2(width, group_height)
 			height += group_height + 30
 	content.size = Vector2(width, height)
@@ -433,13 +436,17 @@ func _build_detail() -> void:
 		return
 	if _reveal_session.is_empty() or str(_reveal_session.card.id) != selected_id:
 		_start_reveal_session(item, false)
+	var unowned: bool = store.count(selected_id) == 0
+	if unowned:
+		# A refresh may remove the last copy during an active reveal.
+		_reveal_session.static = true
 	reveal = CardReveal.new()
 	reveal.name = "Preview"
 	detail_panel.add_child(reveal)
 	reveal.status_label.add_theme_color_override("font_color", muted_color)
 	reveal.presentation_changed.connect(_apply_detail_reveal)
 	reveal.action_finished.connect(func(): _restore_focus.call_deferred(selected_id))
-	reveal.present(_reveal_session, filter != "all" and store.count(selected_id) == 0)
+	reveal.present(_reveal_session, unowned)
 	_label(detail_panel, str(item.name), SECTION_SIZE, text_color, Rect2(), true).name = "Name"
 	_label(detail_panel, _season_title(store.season(item.season_id)) + " · 编号 " + str(item.get("number", "")), 18, muted_color).name = "Metadata"
 	var description := _label(detail_panel, str(item.get("description", "")), 20, text_color)
@@ -456,7 +463,7 @@ func _build_detail() -> void:
 	facts.name = "Facts"
 	var rule: Dictionary = store.gift_rule(selected_id)
 	var amount: int = store.count(selected_id)
-	var caption := "未拥有" if amount == 0 else "库存未接入" if amount < 0 else "赠送好友"
+	var caption := "未拥有" if amount == 0 else "库存未接入" if amount < 0 else "仅有 1 张" if amount == 1 else "赠送好友"
 	var give := _button(detail_panel, "Gift", caption, _open_gift.bind(selected_id))
 	if int(rule.max) > 0:
 		_style_button(give, BLUE, true)
@@ -483,7 +490,7 @@ func _start_reveal_session(item: Dictionary, animated: bool) -> void:
 		reveal.cancel()
 	_reveal_serial += 1
 	var season: Dictionary = store.season(str(item.season_id))
-	_reveal_session = CardReveal.new_session(item, str(item.get("back_image", season.get("back_image", ""))), _reveal_serial, animated)
+	_reveal_session = CardReveal.new_session(item, str(item.get("back_image", season.get("back_image", ""))), _reveal_serial, animated and store.count(str(item.id)) != 0)
 
 func _apply_detail_reveal() -> void:
 	if not is_instance_valid(reveal) or not is_instance_valid(detail_panel):
@@ -590,7 +597,11 @@ func _select_card(id: String) -> void:
 		in_detail = true
 		_render()
 		scroll.scroll_vertical = 0
-		_motion().enter(content)
+		if store.count(id) == 0:
+			_motion().cancel(content)
+			content.modulate.a = 1.0
+		else:
+			_motion().enter(content)
 		_restore_focus.call_deferred(id)
 	else:
 		selected_id = id
@@ -741,7 +752,7 @@ func _restore_focus(id: String) -> void:
 		filter_buttons[filter].grab_focus()
 
 func _open_gift(id: String) -> void:
-	if store.card(id).is_empty() or store.count(id) <= 0:
+	if int(store.gift_rule(id).max) <= 0:
 		return
 	if is_instance_valid(gift_dialog):
 		gift_dialog.grab_focus()

@@ -196,7 +196,7 @@ func apply_palette(dark: bool) -> void:
 		hover.border_color = accent
 		button.add_theme_stylebox_override("hover", hover)
 		button.add_theme_stylebox_override("pressed", hover)
-		button.add_theme_stylebox_override("focus", hover)
+		button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 		button.add_theme_color_override("font_color", ink)
 		button.add_theme_color_override("font_hover_color", ink)
 		button.add_theme_color_override("font_focus_color", ink)

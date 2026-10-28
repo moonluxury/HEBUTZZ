@@ -199,7 +199,7 @@ func _run() -> void:
 	var saved: Dictionary = quiz.question_states[quiz._question_state_key(0)].duplicate(true)
 	for index in range(1, 30):
 		quiz._jump_to(index)
-		_expect(quiz.question_label.text == "%d. %s" % [quiz.questions[index].id, quiz.questions[index].stem], "Stem matches the latest ID")
+		_expect(quiz.question_label.text == "%d. %s" % [index + 1, quiz.questions[index].stem], "Stem matches the latest practice position")
 		_expect(not quiz.has_answered and quiz.selected_indices.is_empty() and quiz.answer_label.text.is_empty(), "New question has no previous answer or analysis")
 		_expect(quiz.option_buttons[0].get_theme_stylebox("normal").bg_color.is_equal_approx(Color.WHITE), "No previous green/red background leaks across questions")
 	motion.set_hover_enabled(true)

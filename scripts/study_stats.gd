@@ -8,6 +8,7 @@ signal changed
 
 const SAVE_PATH := "user://workbench_study_v1.json"
 const TYPE_NAMES := {"single": "单选题", "multiple": "多选题", "judge": "判断题", "fill": "填空题", "output": "输出题", "program": "编程题"}
+const TYPE_ORDER := ["single", "multiple", "judge", "fill", "output", "program"]
 var history: Dictionary = {}
 var learned: Dictionary = {}
 var last_question: Dictionary = {}
@@ -202,7 +203,24 @@ func _load_questions_from_json(path: String) -> Array:
 			valid_questions.append(raw_question)
 		else:
 			push_warning("已跳过一条格式不完整的题目数据")
-	return valid_questions
+	return _group_questions_by_type(valid_questions)
+
+
+func _group_questions_by_type(questions: Array) -> Array:
+	# Group once in the shared bank so practice, search and wrong reviews agree.
+	# Keep source order within each type and preserve IDs used by existing saves.
+	var groups: Dictionary = {}
+	for kind in TYPE_ORDER:
+		groups[kind] = []
+	for question in questions:
+		var kind := str(question.get("type", "single"))
+		if not groups.has(kind):
+			groups[kind] = []
+		groups[kind].append(question)
+	var grouped: Array = []
+	for group in groups.values():
+		grouped.append_array(group)
+	return grouped
 
 
 func _is_valid_question(value: Variant) -> bool:

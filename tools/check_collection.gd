@@ -16,6 +16,40 @@ func check(value: bool, message: String) -> void:
 		failures.append(message)
 		push_error(message)
 
+func check_keep_one_limits() -> void:
+	var source := Fixture.new()
+	root.add_child(source)
+	var inventory_store := Store.new()
+	root.add_child(inventory_store)
+	inventory_store.use_provider(source, "isolated-keep-one")
+	check(inventory_store.gift_rule("0001").max == 0, "Unknown inventory never enables gifting")
+	await inventory_store.refresh()
+	check(inventory_store.gift_rule("0003").max == 0 and inventory_store.gift_rule("0002").max == 0, "Zero and one copy cannot be gifted")
+	check(inventory_store.gift_rule("0001").max == 2 and inventory_store.gift_rule("0004").max == 0, "Keep-one cap still respects stricter service restrictions")
+	source.inventory["0001"].giftable_count = 1
+	source.revision += 1
+	await inventory_store.refresh()
+	check(inventory_store.gift_rule("0001").max == 1, "A smaller service cap wins over duplicate count")
+	source.inventory["0001"].giftable_count = 3
+	source.revision += 1
+	await inventory_store.refresh()
+	var outcome: Dictionary = await inventory_store.submit_gift("0001", "test-friend-a", 3)
+	check(not outcome.ok and outcome.message.contains("保留 1 张") and source.calls == 0 and inventory_store.operation.is_empty(), "Direct submission cannot bypass retain-one or create a pending operation")
+	outcome = await inventory_store.submit_gift("0001", "test-friend-a", 2)
+	check(outcome.ok and inventory_store.count("0001") == 1 and source.credits["test-friend-a"] == 2, "Three copies may gift two while preserving one")
+	outcome = await inventory_store.submit_gift("0001", "test-friend-a", 1)
+	check(not outcome.ok and source.calls == 1 and source.transfers == 1 and inventory_store.count("0001") == 1, "The remaining copy cannot be submitted again")
+	# A trusted service must recheck the same rule when the client's read is stale.
+	source.inventory["0001"] = {"count": 3, "giftable_count": 3}
+	source.revision += 1
+	await inventory_store.refresh()
+	source.inventory["0001"].count = 1
+	source.revision += 1
+	outcome = await inventory_store.submit_gift("0001", "test-friend-a", 2)
+	check(not outcome.ok and inventory_store.count("0001") == 1 and source.transfers == 1, "Authoritative race check rejects losing the last copy without crediting the recipient")
+	inventory_store.queue_free()
+	source.queue_free()
+
 func frames(n := 4) -> void:
 	for index in n:
 		await process_frame
@@ -29,6 +63,16 @@ func settle_reveal() -> void:
 			break
 		await create_timer(0.01).timeout
 	preview.skip()
+
+func check_unowned_static() -> void:
+	# Do not use settle_reveal(): its skip would hide an accidental animation.
+	for index in 300:
+		if page.reveal.state != "loading":
+			break
+		await create_timer(0.01).timeout
+	check(page.reveal.state == "revealed" and page.reveal.session.static and page.reveal._tween == null, "Unowned card goes straight to a static front without a reveal")
+	check(page.reveal.face.material == page.reveal.gray_material and page.reveal.face.texture.resource_path == store.card(page.selected_id).image, "Unowned detail stays grayscale in every filter")
+	check(page.reveal.detail_alpha == 1 and page.reveal.interactive and page.reveal.orbit_alpha == 0 and page.reveal.sparkle_progress == 0, "Static unowned detail has no effects and keeps its actions available")
 
 func key(window: Window, code: Key, shift := false) -> void:
 	for pressed in [true, false]:
@@ -224,6 +268,7 @@ func _run() -> void:
 	store.use_provider(backend, "isolated-account-a")
 	await store.refresh()
 	check(store.summary().kinds == 3 and store.summary().total == 6, "Copies merge; zero-stock history excluded")
+	await check_keep_one_limits()
 	backend.snapshot_delay = 12
 	await frames()
 	await click(page.refresh_button, MOUSE_BUTTON_LEFT)
@@ -245,6 +290,10 @@ func _run() -> void:
 	await key(root, KEY_ENTER)
 	await frames()
 	check(page.in_detail and page.selected_id == "0002", "Keyboard Enter on artwork opens exact card detail")
+	await settle_reveal()
+	check(page.detail_panel.get_node("Gift").disabled and page.detail_panel.get_node("Gift").text == "仅有 1 张" and page.detail_panel.get_node("GiftReason").text.contains("保留 1 张"), "One-copy detail explains why gifting is disabled")
+	page._open_gift("0002")
+	check(page.gift_dialog == null, "One-copy cards cannot open the gift flow")
 	await key(root, KEY_ESCAPE)
 	await frames()
 	check(not page.in_detail and current_scene == page, "Page-local Escape restores overview, shell stays mounted")
@@ -269,6 +318,7 @@ func _run() -> void:
 	store.set_wanted("0002", false)
 	page._set_filter("wanted")
 	page._select_card("0003")
+	await check_unowned_static()
 	check(page.detail_panel.get_node("Gift").disabled and page.detail_panel.get_node("Gift").text == "未拥有" and page.detail_panel.get_node("Quantity").text == "×0", "Known zero inventory shows zero and cannot enable gifting")
 	check(page.tiles["0003"].get_node("Art").texture.resource_path == store.card("0003").artwork, "Wanted list uses unframed artwork")
 	check(page.detail_panel.get_node("Preview").session.card.image == store.card("0003").image, "Wanted detail retains full card design")
@@ -374,11 +424,17 @@ func _run() -> void:
 	await frames()
 	page.card_scroll.scroll_vertical = 0
 	page._select_card("0003")
+	await check_unowned_static()
+	page._select_card("0003")
+	await check_unowned_static()
+	page._on_data_changed()
+	await check_unowned_static()
 	await capture("08-fixture-unowned-detail")
-	check(page.tiles["0003"].get_node("Art").material == null and page.reveal.face.material == null, "All-cards view uses original art even for known zero inventory")
+	check(page.tiles["0003"].get_node("Art").material == null, "Public artwork remains in source colors")
 	await check_rendered_art(page.tiles["0003"].get_node("Art"), false)
-	await check_rendered_art(page.detail_panel.get_node("Preview"), false)
+	await check_rendered_art(page.detail_panel.get_node("Preview"), true)
 	page._select_card("0001")
+	check(not page.reveal.session.static, "Owned cards retain the animated reveal")
 	await frames()
 	page._open_gift("0001")
 	await frames(10)
@@ -396,12 +452,12 @@ func _run() -> void:
 	dialog._choose_friend(backend.friend_data[0])
 	dialog.quantity.get_line_edit().text = "999"
 	dialog.quantity.apply()
-	check(dialog.quantity.value <= 3, "Quantity control clamps excessive input")
+	check(dialog.quantity.value == 2 and dialog.quantity.max_value == 2, "Three-copy quantity input caps gifts at two")
 	dialog.quantity.value = 1
 	# SpinBox updates its edit text on the next frame; emulate a real user pause
 	# before the next click in headless mode too (visual capture already waits).
 	await frames()
-	check(dialog.remaining.text == "送出后你将剩余 2 张。" and not dialog.confirm.disabled, "Gift confirmation quantity and remainder")
+	check(dialog.remaining.text == "送出后你将剩余 2 张（至少保留 1 张）。" and not dialog.confirm.disabled, "Gift confirmation shows remainder and retain-one rule")
 	await capture("05-fixture-gift-confirm")
 	check(dialog.confirm.get_theme_color("font_color") == Color.WHITE, "Enabled gift confirmation retains white primary text")
 	dialog._submit()
@@ -443,12 +499,41 @@ func _run() -> void:
 	reloaded.queue_free()
 	result = await store.recover_gift()
 	check(result.ok and store.count("0001") == 1, "Original store reconciles authoritative result")
+	call_count = backend.calls
+	result = await store.submit_gift("0001", "test-friend-a", 1)
+	check(not result.ok and store.count("0001") == 1 and backend.calls == call_count, "Recovered last copy remains protected from a new gift")
+	# Isolated service grants another copy, then reports an unrelated stock change.
+	backend.inventory["0001"] = {"count": 2, "giftable_count": 2}
+	backend.revision += 1
+	await store.refresh()
 	backend.mode = "stock"
 	result = await store.submit_gift("0001", "test-friend-a", 1)
 	check(not result.ok and store.count("0001") == 0 and store.summary().kinds == 2, "Inventory failure reconciles authoritative zero stock")
+	await check_unowned_static()
 	check(store.is_wanted("0001"), "Losing last copy never clears wanted")
 	backend.mode = "success"
 	# Empty/failing friend sources have distinct prompts and cannot invent recipients.
+	backend.inventory["0002"] = {"count": 2, "giftable_count": 2}
+	backend.revision += 1
+	await store.refresh()
+	page._open_gift("0002")
+	await frames(10)
+	dialog = page.gift_dialog
+	dialog._choose_friend(backend.friend_data[0])
+	check(not dialog.confirm.disabled and dialog.quantity.max_value == 1, "Two-copy card may gift exactly one")
+	backend.inventory["0002"].count = 1
+	backend.revision += 1
+	await store.refresh()
+	check(dialog.confirm.disabled and not dialog.quantity.editable and dialog.error_label.text.contains("保留 1 张"), "Dropping to one while the dialog is open immediately blocks confirmation")
+	call_count = backend.calls
+	dialog._submit()
+	check(backend.calls == call_count, "Stale dialog submission cannot dispatch the last copy")
+	backend.inventory["0002"].count = 2
+	backend.revision += 1
+	await store.refresh()
+	check(not dialog.confirm.disabled and dialog.error_label.text.is_empty(), "Refreshed duplicates restore eligibility and clear the stale warning")
+	dialog.dismiss()
+	await frames()
 	page._open_gift("0002")
 	await frames(10)
 	dialog = page.gift_dialog
@@ -473,7 +558,7 @@ func _run() -> void:
 	backend.snapshot_fail = false
 	await store.refresh()
 	result = await store.submit_gift("0002", "test-friend-a", 1)
-	check(result.ok and store.count("0002") == 0, "No invented keep-one restriction when service allows last card")
+	check(result.ok and store.count("0002") == 1 and store.gift_rule("0002").max == 0, "Gifting one of two keeps the final copy and disables further gifts")
 	var latest: int = store.revision
 	var stale: Dictionary = backend.snapshot(store.account_id)
 	stale.revision = latest - 1

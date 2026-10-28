@@ -360,6 +360,7 @@ func _layout() -> void:
 	var header_height := 0.0 if distraction_free else 125.0
 	sidebar.visible = not distraction_free
 	header.visible = not distraction_free
+	if is_instance_valid(wallet_badge): wallet_badge.visible = not distraction_free
 	var available := canvas.size.x - sidebar_width
 	_rect(header, Rect2(sidebar_width, 0, available, 125))
 	_rect(quiz.home_button, Rect2(30, 39, 112, 54))

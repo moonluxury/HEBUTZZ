@@ -4,6 +4,7 @@ const Tokens = preload("res://scripts/ui_tokens.gd")
 const MotionProgressBar = preload("res://scripts/ui_progress_bar.gd")
 const BLUE := Tokens.PRIMARY
 const IdentityEntry = preload("res://scripts/profile_identity.gd")
+const WalletBadge = preload("res://scripts/wallet_badge.gd")
 const NAV_SIZE := 22
 const BODY_SIZE := 22
 const BUTTON_SIZE := 22
@@ -25,6 +26,7 @@ var content_height := 900.0
 var detail_overlay: Control
 var modal_focus: Array[Control] = []
 var appearance_dirty := false
+var wallet_badge: HBoxContainer
 
 func _ready() -> void:
 	var resources := get_node("/root/UiResources")
@@ -87,6 +89,11 @@ func _rebuild(_unused: Variant = null) -> void:
 	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(body)
 	_build_content()
+	wallet_badge = WalletBadge.new()
+	wallet_badge.name = "WalletBadge"
+	canvas.add_child(wallet_badge)
+	wallet_badge.configure(self)
+	wallet_badge.minimum_size_changed.connect(_layout_wallet_badge)
 	_layout()
 	scroll.set_deferred("scroll_vertical", saved_scroll)
 	if not focus_path.is_empty() and canvas.has_node(focus_path):
@@ -112,6 +119,8 @@ func _build_sidebar() -> void:
 		["WrongButton", "错题库", "clipboard-x", router.open_subjects.bind("wrong")],
 		["KaiwuButton", "河工开物", "book-open", router.go.bind("res://scenes/HegongKaiwu.tscn")],
 		["CollectionButton", "我的收藏", "user-round", router.go.bind("res://scenes/MyCollection.tscn")],
+		["FriendsButton", "我的好友", "user-round", router.open_friends],
+		["RechargeButton", "我要充值", "user-round", router.go.bind("res://scenes/Recharge.tscn")],
 	]
 	for index in items.size():
 		var item: Array = items[index]
@@ -124,6 +133,10 @@ func _build_sidebar() -> void:
 		var nav_icon := _icon(button, item[2], Rect2(20, 15, ICON_SIZE, ICON_SIZE), BLUE if selected else muted_color)
 		if item[0] == "CollectionButton":
 			nav_icon.texture = _texture("res://assets/profile/cards.svg")
+		if item[0] == "FriendsButton":
+			nav_icon.texture = _texture("res://assets/profile/friends.svg")
+		if item[0] == "RechargeButton":
+			nav_icon.texture = _texture("res://assets/recharge/battery-two.svg")
 		if selected and item[0] == "HomeButton":
 			nav_icon.texture = load("res://assets/workbench/art/original/nav_home.png")
 		_label(button, item[1], NAV_SIZE, BLUE if selected else muted_color, Rect2(78, 9, 138, 40), selected)
@@ -134,7 +147,7 @@ func _refresh_sidebar() -> void:
 	sidebar.show()
 	sidebar.add_theme_stylebox_override("panel", _style(Color("#101724") if dark else Color("#F6F7F9"), 0))
 	sidebar.get_node("IdentityButton").configure(self, active_nav == "IdentityButton")
-	for name in ["HomeButton", "AllButton", "WrongButton", "KaiwuButton", "CollectionButton"]:
+	for name in ["HomeButton", "AllButton", "WrongButton", "KaiwuButton", "CollectionButton", "FriendsButton", "RechargeButton"]:
 		var button: Button = sidebar.get_node(name)
 		var selected: bool = name == active_nav
 		_style_button(button)
@@ -179,8 +192,14 @@ func _layout() -> void:
 	_rect(scroll, Rect2(322, 48, canvas.size.x - 358, canvas.size.y - 64))
 	_layout_content(scroll.size.x - 12)
 	body.custom_minimum_size = Vector2(0, content_height)
+	_layout_wallet_badge()
 	if is_instance_valid(detail_overlay) and has_method("_layout_details"):
 		call("_layout_details")
+
+func _layout_wallet_badge() -> void:
+	if not is_inside_tree() or not is_instance_valid(wallet_badge): return
+	var extent := wallet_badge.get_combined_minimum_size()
+	_rect(wallet_badge, Rect2(canvas.size.x - 48 - extent.x, 8, extent.x, maxf(30, extent.y)))
 
 func _label(parent: Node, caption: String, font_size: int, color: Color, rect: Rect2 = Rect2(), bold: bool = false) -> Label:
 	var label := Label.new()
@@ -216,10 +235,7 @@ func _style_button(button: Button, color: Color = Color.TRANSPARENT, primary: bo
 		style.content_margin_left = 16 if primary else 0
 		style.content_margin_right = 16 if primary else 0
 		button.add_theme_stylebox_override(state, style)
-	var focus := _style(Color.TRANSPARENT, 8)
-	focus.set_border_width_all(2)
-	focus.border_color = BLUE
-	button.add_theme_stylebox_override("focus", focus)
+	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color", "font_disabled_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_focus_color", "icon_disabled_color"]:
 		button.add_theme_color_override(state, Color.WHITE if primary else muted_color if button.disabled else text_color)
 	button.add_theme_constant_override("icon_max_width", ICON_SIZE)

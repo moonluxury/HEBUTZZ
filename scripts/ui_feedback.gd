@@ -97,7 +97,7 @@ func configure_panel(duration: float) -> void:
 	control.mouse_filter = Control.MOUSE_FILTER_PASS
 
 func _install_focus() -> void:
-	if foreground_only or control.get_meta("suppress_focus_feedback", false):
+	if control is BaseButton or foreground_only or control.get_meta("suppress_focus_feedback", false):
 		control.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 		return
 	var focus := base.duplicate()
@@ -105,7 +105,7 @@ func _install_focus() -> void:
 	focus.border_color = T.PRIMARY
 	focus.set_border_width_all(2)
 	# A shadow behind a transparent focus box also tints the control's interior.
-	# Keep the light button fill and mark keyboard focus with the border alone.
+	# Keep the input fill intact and mark text-entry focus with the border alone.
 	focus.shadow_color = Color.TRANSPARENT
 	focus.shadow_size = 0
 	control.add_theme_stylebox_override("focus", focus)
@@ -130,7 +130,7 @@ func update_state(duration: float) -> void:
 			bg = T.PRESSED_COLOR if primary else _shade(bg, 0.07)
 		elif over:
 			bg = T.HOVER_COLOR if primary else base.bg_color if is_input else _shade(bg, 0.04)
-			if border.a > 0 and not primary:
+			if border.a > 0 and not primary and not control is BaseButton:
 				border = border.lerp(T.PRIMARY, 0.18)
 	motion.animate(self, live, ^"bg_color", bg, duration)
 	motion.animate(self, live, ^"border_color", border, duration)

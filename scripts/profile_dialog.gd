@@ -19,9 +19,6 @@ var avatar_preview: TextureRect
 var avatar_path := ""
 var avatar_select: Button
 var file_picker: FileDialog
-var friend_list: VBoxContainer
-var search: LineEdit
-var friend_query := 0
 var session_epoch := 0
 var ticket := ""
 var busy := false
@@ -36,7 +33,7 @@ func _ready() -> void:
 	borderless = true
 	visible = false
 	theme = page.theme
-	title = {"edit": "编辑资料", "friends": "我的好友", "account": "账号与安全", "version": "版本信息", "login": "登录", "logout": "退出登录"}.get(panel_mode, "个人中心")
+	title = {"edit": "编辑资料", "account": "账号与安全", "version": "版本信息", "login": "登录", "logout": "退出登录"}.get(panel_mode, "个人中心")
 	min_size = Vector2i(340, 260)
 	shade = ColorRect.new()
 	shade.color = Color(0.02, 0.04, 0.09, 0.22)
@@ -71,7 +68,6 @@ func _ready() -> void:
 	window_input.connect(_input_window)
 	match panel_mode:
 		"edit": _build_edit()
-		"friends": _build_friends()
 		"account": _build_account()
 		"version":
 			page._text(column, str(ProjectSettings.get_setting("application/config/name", "")), 24, page.text_color, true)
@@ -102,8 +98,6 @@ func refresh_theme() -> void:
 		page._style_button(button, page.BLUE if primary else Color.TRANSPARENT, primary)
 	for edit in fields.values():
 		_field_style(edit)
-	if is_instance_valid(search):
-		_field_style(search)
 
 func _field_style(edit: Control) -> void:
 	var style: StyleBoxFlat = page._style(page.surface, 6, page.border)
@@ -231,54 +225,6 @@ func _set_busy(value: bool) -> void:
 		cancel_button.disabled = value
 		page.sync_button_state(cancel_button)
 
-func _build_friends() -> void:
-	search = LineEdit.new()
-	search.placeholder_text = "搜索好友昵称或用户 ID"
-	search.accessibility_name = search.placeholder_text
-	column.add_child(search)
-	_field_style(search)
-	friend_list = VBoxContainer.new()
-	friend_list.add_theme_constant_override("separation", 14)
-	column.add_child(friend_list)
-	var collection: Node = get_node("/root/PageRouter").collection_store()
-	collection.friends_loaded.connect(_friends_arrived)
-	search.text_changed.connect(_search_friends)
-	_search_friends("")
-
-func _search_friends(query: String) -> void:
-	friend_query += 1
-	for child in friend_list.get_children():
-		friend_list.remove_child(child)
-		child.queue_free()
-	if not store.authenticated():
-		message.text = "当前未登录，好友服务尚不可用。"
-		return
-	message.text = "正在读取好友…"
-	get_node("/root/PageRouter").collection_store().search_friends(query, ticket + ":" + str(friend_query))
-
-func _friends_arrived(id: String, response: Dictionary) -> void:
-	if closing or id != ticket + ":" + str(friend_query) or session_epoch != store.epoch:
-		return
-	if not response.get("ok", false):
-		message.text = str(response.get("message", "好友读取失败，请重试。"))
-		_action(friend_list, "重试", _search_friends.bind(search.text))
-		return
-	var count := 0
-	for friend in response.get("friends", []):
-		if not friend is Dictionary or str(friend.get("id", "")).is_empty():
-			continue
-		count += 1
-		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 18)
-		row.set_meta("friend_id", str(friend.id))
-		friend_list.add_child(row)
-		var portrait: TextureRect = page.Avatar.new()
-		portrait.custom_minimum_size = Vector2(48, 48)
-		portrait.show_avatar(str(friend.get("avatar", "")))
-		row.add_child(portrait)
-		page._text(row, str(friend.get("name", "")) + "\n" + str(friend.id), 20, page.text_color)
-	message.text = "暂无好友" if count == 0 and search.text.is_empty() else "没有匹配的好友" if count == 0 else "共 %d 位好友" % count
-
 func _build_account() -> void:
 	message.text = "正在读取账号信息…"
 	confirm = _action(column, "重新加载", _run_action.bind("request_account"))
@@ -318,12 +264,10 @@ func _session_changed() -> void:
 		dismiss()
 
 func present() -> void:
-	popup_centered_clamped(Vector2i(640, 820 if panel_mode == "edit" else 560 if panel_mode == "friends" else 330), 0.88)
+	popup_centered_clamped(Vector2i(640, 820 if panel_mode == "edit" else 330), 0.88)
 	page._motion().enter(panel, page.Tokens.PANEL)
 	if not fields.is_empty():
 		fields.values()[0].grab_focus()
-	elif is_instance_valid(search):
-		search.grab_focus()
 	else:
 		close_button.grab_focus()
 
@@ -343,7 +287,6 @@ func dismiss() -> void:
 	if closing:
 		return
 	closing = true
-	friend_query += 1
 	fields.clear()
 	original_fields.clear()
 	avatar_path = ""

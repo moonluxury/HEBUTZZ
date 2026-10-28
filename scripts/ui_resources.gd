@@ -19,6 +19,10 @@ func _ready() -> void:
 	page_theme = Theme.new()
 	page_theme.default_font = regular
 	page_theme.default_font_size = 22
+	# Button focus remains functional without adding an outline to the design.
+	var button_focus := StyleBoxEmpty.new()
+	for button_type in ["Button", "CheckBox", "CheckButton", "MenuButton", "OptionButton", "LinkButton"]:
+		page_theme.set_stylebox("focus", button_type, button_focus)
 	# Include internal bars created later by editors, menus and dialog windows.
 	get_tree().node_added.connect(_hide_scrollbar)
 
