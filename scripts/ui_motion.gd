@@ -1,4 +1,5 @@
 extends Node
+const Styles = preload("res://scripts/ui_styles.gd")
 ## Interruptible presentation only. No answer/save/request depends on a Tween callback.
 const Tokens = preload("res://scripts/ui_tokens.gd")
 const Feedback = preload("res://scripts/ui_feedback.gd")
@@ -199,35 +200,7 @@ func bind_popup(popup: PopupMenu, source: Button) -> void:
 		return
 	popup.set_meta("motion_bound", true)
 	var dark: bool = get_node("/root/AppState").dark_mode
-	# PopupMenu is its own Window; install the page's high-resolution font and
-	# complete palette explicitly instead of falling back to the engine theme.
-	popup.add_theme_font_override("font", source.get_theme_font("font"))
-	popup.add_theme_font_size_override("font_size", source.get_theme_font_size("font_size"))
-	popup.add_theme_color_override("font_color", Color("#E8ECF4") if dark else Color("#171B24"))
-	popup.add_theme_color_override("font_disabled_color", Color("#A2ADBE") if dark else Color("#657080"))
-	var accent := Tokens.DARK_ACCENT if dark else Tokens.PRIMARY
-	var muted := Color("#A2ADBE") if dark else Color("#657080")
-	popup.add_theme_icon_override("radio_checked", choice_icon("checked", accent))
-	popup.add_theme_icon_override("radio_unchecked", choice_icon("circle", muted))
-	popup.add_theme_icon_override("radio_checked_disabled", choice_icon("checked", muted))
-	popup.add_theme_icon_override("radio_unchecked_disabled", choice_icon("circle", muted))
-	popup.add_theme_constant_override("h_separation", 12)
-	popup.add_theme_constant_override("v_separation", 14)
-	var panel := StyleBoxFlat.new()
-	panel.bg_color = Color("#141C2A") if dark else Color.WHITE
-	panel.border_color = Color("#2F3A4D") if dark else Color("#E5E8EE")
-	panel.set_border_width_all(1)
-	panel.set_corner_radius_all(8)
-	panel.content_margin_left = 12
-	panel.content_margin_right = 12
-	panel.content_margin_top = 8
-	panel.content_margin_bottom = 8
-	popup.add_theme_stylebox_override("panel", panel)
-	var hover := StyleBoxFlat.new()
-	hover.bg_color = Tokens.DARK_SOFT if dark else Tokens.SOFT
-	hover.set_corner_radius_all(4)
-	popup.add_theme_stylebox_override("hover", hover)
-	popup.add_theme_color_override("font_hover_color", Tokens.DARK_ACCENT if dark else Tokens.PRIMARY)
+	Styles.popup(popup, source, dark, choice_icon)
 	# PopupMenu owns a viewport: tint that canvas instead of rebuilding menu controls.
 	popup.transparent_bg = true
 	popup.transparent = true

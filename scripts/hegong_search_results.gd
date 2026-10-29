@@ -1,4 +1,5 @@
 extends VBoxContainer
+const Styles = preload("res://scripts/ui_styles.gd")
 
 signal category_selected(category: String)
 signal entry_opened(entry: Dictionary)
@@ -256,7 +257,7 @@ func _apply_appearance(node: Node) -> void:
 			control.add_theme_stylebox_override("normal", _style(tint if selected else Color.TRANSPARENT, Color.TRANSPARENT, role != "link"))
 			control.add_theme_stylebox_override("hover", _style(tint, Color.TRANSPARENT, role != "link"))
 			control.add_theme_stylebox_override("pressed", _style(tint, accent, role != "link"))
-			control.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+			Styles.apply_focus(control)
 			if control is OptionButton:
 				control.add_theme_color_override("font_color", accent)
 				control.get_popup().add_theme_font_size_override("font_size", roundi(22 * font_scale))

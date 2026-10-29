@@ -54,7 +54,7 @@ func capture(name: String, fixture := true) -> void:
 func login(account: String) -> void:
 	backend.actor = account
 	profile.use_provider(backend, {"state": "authenticated", "account_id": account})
-	router.collection_store().refresh()
+	get_root().get_node("AppServices").collection_store().refresh()
 	await frames()
 
 func labels(node: Node) -> String:
@@ -92,7 +92,7 @@ func _run() -> void:
 	profile = root.get_node("ProfileStore")
 	root.get_node("UiMotion").set_enabled(false)
 	page = await visit("MyFriends")
-	social = router.social_store()
+	social = get_root().get_node("AppServices").social_store()
 	check(page.active_nav == "FriendsButton" and page.sidebar.has_node("FriendsButton"), "Friends is the single additional global navigation entry")
 	check(page.sidebar.get_node("FriendsButton").position.y > page.sidebar.get_node("CollectionButton").position.y, "Navigation order and identity header are retained")
 	check(social.friends.is_empty() and social.conversations.is_empty() and not social.available(), "Production mode has no seeded accounts, contacts or official impersonation")
@@ -275,8 +275,8 @@ func _trades(cid: String) -> void:
 	backend.relationships[backend.pair(Fixture.A, Fixture.B)] = true
 	backend.revision += 1
 	social.refresh()
-	router.collection_store().refresh()
-	var collection: Node = router.collection_store()
+	get_root().get_node("AppServices").collection_store().refresh()
+	var collection: Node = get_root().get_node("AppServices").collection_store()
 	collection.set_wanted("0001", true)
 	var gift: Dictionary = await collection.submit_gift("0001", Fixture.B, 1)
 	check(gift.ok and collection.is_wanted("0001"), "Shared collection gift succeeds only on authoritative result and preserves wanted marker")

@@ -1,12 +1,14 @@
 extends "res://scripts/minimal_page.gd"
 const Avatar = preload("res://scripts/profile_avatar.gd")
 const ProfileDialog = preload("res://scripts/profile_dialog.gd")
+const AvatarDialog = preload("res://scripts/avatar_settings_dialog.gd")
 const PROFILE_LABELS := {"school": "学校", "college": "学院", "major": "专业", "grade": "年级", "bio": "个人简介"}
 var profile_store: Node
 var column: VBoxContainer
 var columns: BoxContainer
 var settings: VBoxContainer
 var avatar: TextureRect
+var avatar_button: Button
 var username: Label
 var public_id: Label
 var status: Label
@@ -15,7 +17,6 @@ var values: Dictionary = {}
 var edit_button: Button
 var copy_button: Button
 var logout_button: Button
-var retry_button: Button
 var dialog: Window
 var dialog_return: WeakRef
 
@@ -24,6 +25,8 @@ func _ready() -> void:
 	active_nav = "IdentityButton"
 	super._ready()
 	profile_store.changed.connect(_refresh_profile)
+	if profile_store.authenticated() and not profile_store.loading:
+		profile_store.refresh()
 	var router := get_node("/root/PageRouter")
 	if router.identity_login_requested:
 		router.identity_login_requested = false
@@ -66,10 +69,15 @@ func _build_content() -> void:
 	header.name = "IdentitySummary"
 	header.add_theme_constant_override("separation", 26)
 	column.add_child(header)
+	avatar_button = _button(header, "ChangeAvatar", "", Callable())
+	avatar_button.custom_minimum_size = Vector2(94, 94)
+	avatar_button.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	avatar_button.accessibility_name = "更换头像"
+	avatar_button.set_meta("state_only_feedback", true)
+	avatar_button.pressed.connect(show_panel.bind("avatar", avatar_button))
 	avatar = Avatar.new()
-	avatar.custom_minimum_size = Vector2(94, 94)
-	avatar.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	header.add_child(avatar)
+	avatar_button.add_child(avatar)
+	avatar.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var identity := VBoxContainer.new()
 	identity.add_theme_constant_override("separation", 8)
 	identity.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -99,9 +107,6 @@ func _build_content() -> void:
 	_rule(column)
 	_space(column, 34)
 	status = _text(column, "", 18, muted_color)
-	retry_button = _button(column, "RetryProfile", "重新加载资料", profile_store.refresh)
-	retry_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	retry_button.custom_minimum_size = Vector2(180, 40)
 	columns = BoxContainer.new()
 	columns.name = "ProfileColumns"
 	columns.add_theme_constant_override("separation", 60)
@@ -185,7 +190,7 @@ func _refresh_profile() -> void:
 		return
 	var data: Dictionary = profile_store.profile
 	username.text = profile_store.display_name() if profile_store.authenticated() or profile_store.session_state == "loading" else "尚未登录"
-	avatar.show_avatar(str(data.get("avatar", "")))
+	avatar.show_profile(data)
 	var identifier := str(data.get("public_id", ""))
 	public_id.text = "用户 ID：" + (identifier if not identifier.is_empty() else "暂不可用" if profile_store.authenticated() else "未登录")
 	copy_button.disabled = identifier.is_empty() or not profile_store.authenticated()
@@ -194,7 +199,6 @@ func _refresh_profile() -> void:
 		values[field].text = value if not value.is_empty() else "暂无简介" if field == "bio" else "未填写"
 	status.text = "正在加载资料…" if profile_store.loading or profile_store.session_state == "loading" else profile_store.error if not profile_store.error.is_empty() else "登录后可管理你的资料与账号。" if not profile_store.authenticated() else ""
 	status.visible = not status.text.is_empty()
-	retry_button.visible = profile_store.authenticated() and not profile_store.error.is_empty() and not profile_store.saving
 	edit_button.text = "保存中…" if profile_store.saving else "编辑资料" if profile_store.authenticated() else "登录"
 	edit_button.disabled = profile_store.saving or profile_store.loading or profile_store.session_state == "loading"
 	logout_button.disabled = not profile_store.authenticated()
@@ -222,7 +226,7 @@ func show_panel(mode: String, trigger: Control = null) -> void:
 	if is_instance_valid(dialog):
 		return
 	dialog_return = weakref(trigger) if trigger != null else null
-	dialog = ProfileDialog.new()
+	dialog = AvatarDialog.new() if mode == "avatar" else ProfileDialog.new()
 	dialog.page = self
 	dialog.panel_mode = mode
 	dialog.closed.connect(_dialog_closed)
@@ -230,10 +234,13 @@ func show_panel(mode: String, trigger: Control = null) -> void:
 	dialog.present()
 
 func _dialog_closed() -> void:
+	var return_to_avatar: bool = is_instance_valid(dialog) and dialog.panel_mode == "avatar"
 	dialog = null
 	var trigger: Control = dialog_return.get_ref() if dialog_return != null else null
 	if is_instance_valid(trigger) and trigger.is_inside_tree() and trigger.is_visible_in_tree():
 		trigger.grab_focus()
+	elif return_to_avatar and is_instance_valid(avatar_button) and avatar_button.is_inside_tree():
+		avatar_button.grab_focus()
 	elif is_inside_tree() and is_instance_valid(edit_button) and not edit_button.disabled:
 		edit_button.grab_focus()
 

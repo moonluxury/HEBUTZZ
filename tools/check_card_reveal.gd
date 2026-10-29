@@ -82,7 +82,7 @@ func _run() -> void:
 	await loaded(page.reveal)
 	check(page.reveal.state in ["ready", "revealing"], "Selecting starts the automatic back-to-front presentation")
 	check(not page.detail_panel.get_node("Name").visible, "Hidden details cannot expose the unrevealed name")
-	check(page.reveal.find_children("*", "Button", true, false).size() == 1 and page.reveal.retry_button.text == "重新加载", "Reveal has only error retry and no skip button")
+	check(page.reveal.find_children("*", "Button", true, false).is_empty(), "Reveal has no manual reload or skip button")
 	check(page.reveal.card_rect.size.x <= 240.01 and is_equal_approx(page.reveal.card_rect.size.y / page.reveal.card_rect.size.x, 1.5), "Card fits existing width and exact 2:3 aspect")
 	var serial: int = page._reveal_serial
 	var instance: int = page.reveal.get_instance_id()
@@ -217,7 +217,7 @@ func _loading_and_errors() -> void:
 		preview.size = Vector2(400, 420)
 		var result: Dictionary = Reveal.new_session(item, "res://missing-back-test.png" if bad_back else back, 903)
 		preview.present(result)
-		check(preview.state == "error" and preview.retry_button.visible and preview.accessibility_name.contains("射电望远镜") and preview.face.texture == null, "Missing face/back exposes exact identity and retry without substitute artwork")
+		check(preview.state == "error" and preview.status_label.visible and preview.status_label.size.x == preview.size.x and preview.accessibility_name.contains("射电望远镜") and preview.face.texture == null, "Missing face/back uses the full width for its status without substitute artwork")
 		preview.session.card.image = store.card("0006").image
 		preview.session.back = back
 		preview.retry()

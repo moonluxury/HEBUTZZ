@@ -71,7 +71,7 @@ func _run() -> void:
 	profile = root.get_node("ProfileStore")
 	root.get_node("UiMotion").set_enabled(false)
 	page = await visit("Recharge")
-	store = router.wallet_store()
+	store = get_root().get_node("AppServices").wallet_store()
 	check(store.balance == null and store.packages.is_empty() and page.pay_button.disabled, "Production does not seed a balance, identity, package or payment channel")
 	check(page.active_nav == "RechargeButton" and page.sidebar.get_node("RechargeButton").position.y > page.sidebar.get_node("FriendsButton").position.y, "Recharge follows Friends without rearranging existing navigation")
 	check(page.balance_amount.number.text == "—" and page.estimate_value.text == "—" and page.wallet_badge.number.text == "—", "Unknown balance, shared header and estimate are never zero")

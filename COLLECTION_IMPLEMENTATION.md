@@ -14,7 +14,7 @@
 
 按后续调整，外围光点为 **15 颗**，不透明度在原值上乘 **1.10**（蓝色峰值 0.715、金色峰值 0.46475）。已删除跳过按钮，**播放中按空格跳过**；按键在 GUI 按钮处理之前消费，长按重复、松键及连续按空格不会误触当前卡片重播。完成后再次点击左侧卡片可重播；Enter 仍用于选卡，Escape 沿用返回收藏逻辑。赠送窗口打开时不截获其空格操作。
 
-本入口只浏览已有目录，不宣称获得新卡、不显示收下、不发奖、不改变库存。未知库存继续显示未知；赠送与想要沿用已有业务。播放期间详情文字隐藏，终段淡入后恢复原按钮权限；图片失败显示对应卡片文字、重新加载入口，重试只重新加载同一会话的图片。
+本入口只浏览已有目录，不宣称获得新卡、不显示收下、不发奖、不改变库存。未知库存继续显示未知；赠送与想要沿用已有业务。播放期间详情文字隐藏，终段淡入后恢复原按钮权限；图片失败使用整行显示对应卡片状态，不显示重新加载按钮。收藏页手动刷新及专用工具栏已删除，内容区直接使用腾出的高度；进入页面及业务操作后仍自动更新库存。
 
 本轮改动：
 
@@ -73,7 +73,7 @@
 
 1. `request_snapshot(account_id)` 返回 `ok/account_id/revision/inventory_complete/inventory`。revision 是该账号库存单调递增版本；inventory 为按稳定卡牌/变体 ID 的字典，条目包含非负整数 count。必须声明完整库存；拒绝部分分页、错账号与非法数量，忽略旧版本。
 2. 库存条目的可选字段：`giftable_count`（服务核验当前可赠数量）、`gift_reason`、`gift_consequence`、`acquired_label`、`source_label`。日期和来源 label 必须已有明确的“该卡种”语义，不能随意选一个副本。缺字段时不猜测。
-3. `request_friends(account_id, query)` 返回 `ok/friends/message`；好友条目为 `id/name/eligible/avatar`（avatar 为已有可加载资源路径，可省略）。适配器负责现有好友分页，只有可确认身份的条目可以展示。旧查询、旧账户响应会被忽略。
+3. `request_friends(account_id, query)` 返回 `ok/friends/message`；好友条目为 `id/name/eligible/avatar_card_id`（头像卡牌 ID 可省略，客户端沿用公开目录原画的圆形裁切）。适配器负责现有好友分页，只有可确认身份的条目可以展示。旧查询、旧账户响应会被忽略。
 4. `send_gift(operation)` 接收 `id/account_id/card_id/friend_id/quantity/state`。服务必须按操作 ID 幂等，核验身份/好友/库存/数量/额度/权益，并在同一可信事务中检查 `当前库存 - 赠送数量 >= 1`，随后转移库存与记录。客户端预检不能代替这些服务端职责。
 5. `gift_status(account_id, operation_id)` 查询原操作。两个赠送方法返回 `operation_id/account_id/state/message`；state 为 succeeded/failed/unknown（其它状态按 unknown 处理）。成功必须附带与快照相同的完整库存和版本。失败若无有效完整库存，客户端将库存标记未知，可刷新。超时必须返回 unknown；不得在适配器里无幂等重发。只有确定失败后才允许创建新操作。
 

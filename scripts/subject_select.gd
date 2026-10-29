@@ -42,6 +42,7 @@ func _ready() -> void:
 	active_nav = "WrongButton" if page_mode == "wrong" else "AllButton"
 	super._ready()
 	_stats().changed.connect(func(): data_dirty = true)
+	get_node("/root/AppServices").wrong_questions().changed.connect(func(_subject: String): data_dirty = true)
 
 func _refresh_cached_content() -> void:
 	if not data_dirty and shown_date == Time.get_date_string_from_system():
@@ -185,14 +186,9 @@ func _course_card(subject: String, total: int, learned: int, action: Callable, w
 
 func _load_wrongs() -> void:
 	wrongs.clear()
+	var repository: Node = get_node("/root/AppServices").wrong_questions()
 	for subject in _app().SUBJECTS:
-		var path: String = _app().SUBJECTS[subject].wrong_path
-		var parsed = JSON.parse_string(FileAccess.get_file_as_string(path)) if FileAccess.file_exists(path) else []
-		var ids: Array = parsed if parsed is Array else []
-		wrongs[subject] = []
-		for question in _stats().banks[subject]:
-			if question.id in ids or str(question.id) in ids:
-				wrongs[subject].append(question)
+		wrongs[subject] = repository.questions(subject, _stats().banks[subject])
 
 func _build_wrong() -> void:
 	_load_wrongs()

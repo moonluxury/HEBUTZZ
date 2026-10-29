@@ -1,4 +1,5 @@
 extends Control
+const Styles = preload("res://scripts/ui_styles.gd")
 ## Shared UI for the supplied 简约风 screens (1600 px design grid).
 const Tokens = preload("res://scripts/ui_tokens.gd")
 const MotionProgressBar = preload("res://scripts/ui_progress_bar.gd")
@@ -70,10 +71,11 @@ func _rebuild(_unused: Variant = null) -> void:
 		canvas.queue_free()
 	detail_overlay = null
 	dark = _app().dark_mode
-	text_color = Color("#E8ECF4") if dark else Color("#171B24")
-	muted_color = Color("#A2ADBE") if dark else Color("#657080")
-	surface = Color("#141C2A") if dark else Color.WHITE
-	border = Color("#2F3A4D") if dark else Color("#E5E8EE")
+	var colors := Styles.palette(dark)
+	text_color = colors.text
+	muted_color = colors.muted
+	surface = colors.surface
+	border = colors.border
 	canvas = Control.new()
 	canvas.name = "Canvas"
 	add_child(canvas)
@@ -229,19 +231,7 @@ func _button(parent: Node, node_name: String, caption: String, action: Callable,
 	return button
 
 func _style_button(button: Button, color: Color = Color.TRANSPARENT, primary: bool = false) -> void:
-	button.add_theme_font_size_override("font_size", BUTTON_SIZE)
-	for state in ["normal", "hover", "pressed", "hover_pressed", "disabled"]:
-		var style := _style(BLUE if primary else color, 8)
-		style.content_margin_left = 16 if primary else 0
-		style.content_margin_right = 16 if primary else 0
-		button.add_theme_stylebox_override(state, style)
-	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color", "font_disabled_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_focus_color", "icon_disabled_color"]:
-		button.add_theme_color_override(state, Color.WHITE if primary else muted_color if button.disabled else text_color)
-	button.add_theme_constant_override("icon_max_width", ICON_SIZE)
-	button.add_theme_constant_override("h_separation", 12)
-	button.expand_icon = true
-	button.tooltip_text = ""
+	Styles.button(button, color, primary, dark, BUTTON_SIZE)
 	_motion().bind_button.call_deferred(button, primary)
 
 func _primary(parent: Node, caption: String, action: Callable, rect: Rect2) -> Button:
@@ -252,11 +242,7 @@ func _primary(parent: Node, caption: String, action: Callable, rect: Rect2) -> B
 
 func _style_choice(button: Button) -> void:
 	_style_button(button, surface)
-	var frame := _style(surface, 8, border)
-	frame.content_margin_left = 16
-	frame.content_margin_right = 16
-	button.add_theme_stylebox_override("normal", frame)
-	button.custom_minimum_size.y = 50
+	Styles.choice(button, dark)
 	if button is OptionButton:
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.add_theme_icon_override("arrow", _motion().choice_icon("arrow", muted_color))
@@ -272,13 +258,7 @@ func _display_panel(parent: Node, node_name: String, color: Color = Color.TRANSP
 	return panel
 
 func _style(color: Color, radius: int, outline: Color = Color.TRANSPARENT) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = color
-	style.set_corner_radius_all(radius)
-	if outline.a > 0:
-		style.border_color = outline
-		style.set_border_width_all(1)
-	return style
+	return Styles.box(color, radius, outline)
 
 func _icon(parent: Node, icon_name: String, rect: Rect2, color: Color) -> TextureRect:
 	var icon := TextureRect.new()
@@ -321,7 +301,7 @@ func _search(parent: Node, placeholder: String, changed: Callable, rect: Rect2) 
 	style.content_margin_left = 76
 	style.content_margin_right = 20
 	edit.add_theme_stylebox_override("normal", style)
-	edit.add_theme_stylebox_override("focus", style)
+	Styles.apply_focus(edit, edit.get_theme_stylebox("normal") as StyleBoxFlat)
 	edit.accessibility_name = placeholder
 	edit.text_changed.connect(changed)
 	parent.add_child(edit)

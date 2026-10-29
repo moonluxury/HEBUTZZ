@@ -1,8 +1,16 @@
 extends Window
+const CardArtwork = preload("res://scripts/card_artwork.gd")
+const CollectionStore = preload("res://scripts/collection_store.gd")
+const Avatar = preload("res://scripts/profile_avatar.gd")
 ## Native exclusive window supplies focus confinement and Escape handling.
 signal closed
-var page: Control
-var store: Node
+signal retiring(window: Window)
+const Styles = preload("res://scripts/ui_styles.gd")
+const Tokens = preload("res://scripts/ui_tokens.gd")
+var host: Control
+var colors: Dictionary
+var dark := false
+var store: CollectionStore
 var card_id := ""
 var selected_friend: Dictionary = {}
 var friend_rows: Array = []
@@ -26,22 +34,40 @@ var scroll_box: ScrollContainer
 var column: VBoxContainer
 var _account := ""
 
+func configure(owner_control: Control, collection: CollectionStore, selected_card: String, friend: Dictionary = {}) -> void:
+	host = owner_control
+	store = collection
+	card_id = selected_card
+	selected_friend = friend.duplicate(true)
+
+func _motion() -> Node:
+	return get_node("/root/UiMotion")
+
+func _texture(path: String) -> Texture2D:
+	return get_node("/root/UiResources").texture(path)
+
+func _stock_text() -> String:
+	var count: int = store.count(card_id)
+	return "拥有数量未接入" if count < 0 else "未拥有" if count == 0 else "拥有 %d 张" % count
+
 func _ready() -> void:
 	title = "赠送好友"
 	transient = true
 	exclusive = true
 	borderless = true
 	visible = false
-	theme = page.theme
+	theme = get_node("/root/UiResources").page_theme
+	dark = get_node("/root/AppState").dark_mode
+	colors = Styles.palette(dark)
 	_account = store.account_id
 	min_size = Vector2i(340, 280)
 	shade = ColorRect.new()
 	shade.color = Color(0.02, 0.04, 0.09, 0.22)
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	page.add_child(shade)
+	host.add_child(shade)
 	panel = PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	panel.add_theme_stylebox_override("panel", page._style(page.surface, 8, page.border))
+	panel.add_theme_stylebox_override("panel", Styles.box(colors.surface, 8, colors.border))
 	add_child(panel)
 	scroll_box = ScrollContainer.new()
 	scroll_box.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -65,30 +91,30 @@ func _ready() -> void:
 	info.add_theme_constant_override("separation", 20)
 	column.add_child(info)
 	var card: Dictionary = store.card(card_id)
-	var art: Control = page._picture(info, card, Rect2())
+	var art := CardArtwork.create(info, card)
+	art.custom_minimum_size = Vector2(84, 84 * CardArtwork.ratio(art))
 	card_art = art
-	art.custom_minimum_size = Vector2(84, 84 * page._picture_ratio(art))
 	var metadata := VBoxContainer.new()
 	metadata.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	info.add_child(metadata)
 	_text(metadata, str(card.name), 24)
-	_text(metadata, page._season_title(store.season(card.season_id)), 18)
-	stock = _text(metadata, page._count_text(card_id), 18)
+	_text(metadata, CardArtwork.season_title(store.season(card.season_id)), 18)
+	stock = _text(metadata, _stock_text(), 18)
 	_text(column, "选择好友", 20)
 	search = LineEdit.new()
 	search.placeholder_text = "搜索昵称或账号 ID"
 	search.accessibility_name = "搜索好友昵称或账号 ID"
 	search.custom_minimum_size.y = 44
-	search.add_theme_color_override("font_color", page.text_color)
-	search.add_theme_color_override("font_placeholder_color", page.muted_color)
-	var input_style: StyleBoxFlat = page._style(page.surface, 6, page.border)
+	search.add_theme_color_override("font_color", colors.text)
+	search.add_theme_color_override("font_placeholder_color", colors.muted)
+	var input_style: StyleBoxFlat = Styles.box(colors.surface, 6, colors.border)
 	input_style.content_margin_left = 12
 	input_style.content_margin_right = 12
 	search.add_theme_stylebox_override("normal", input_style)
-	search.add_theme_stylebox_override("focus", input_style)
+	Styles.apply_focus(search, search.get_theme_stylebox("normal") as StyleBoxFlat)
 	column.add_child(search)
-	page._suppress_collection_focus(search)
-	page._motion().bind_input(search)
+	search.set_meta("suppress_focus_feedback", true)
+	_motion().bind_input(search)
 	search.text_changed.connect(_search_friends)
 	friend_status = _text(column, "正在读取好友…", 18)
 	var list_scroll := ScrollContainer.new()
@@ -115,16 +141,16 @@ func _ready() -> void:
 	quantity.get_line_edit().accessibility_name = "赠送数量，正整数"
 	quantity_row.add_child(quantity)
 	var quantity_edit := quantity.get_line_edit()
-	quantity_edit.add_theme_color_override("font_color", page.text_color)
+	quantity_edit.add_theme_color_override("font_color", colors.text)
 	quantity_edit.add_theme_stylebox_override("normal", input_style.duplicate())
-	quantity_edit.add_theme_stylebox_override("focus", input_style.duplicate())
-	page._suppress_collection_focus(quantity_edit)
-	page._motion().bind_input(quantity_edit)
+	Styles.apply_focus(quantity_edit, quantity_edit.get_theme_stylebox("normal") as StyleBoxFlat)
+	quantity_edit.set_meta("suppress_focus_feedback", true)
+	_motion().bind_input(quantity_edit)
 	quantity.value_changed.connect(_sync.unbind(1))
 	review = _text(column, "", 20)
 	remaining = _text(column, "", 20)
 	error_label = _text(column, "", 18)
-	error_label.add_theme_color_override("font_color", page.muted_color)
+	error_label.add_theme_color_override("font_color", colors.muted)
 	recovery = _action(column, "查询上一笔赠送结果", _recover)
 	var actions := HBoxContainer.new()
 	actions.add_theme_constant_override("separation", 12)
@@ -137,8 +163,9 @@ func _ready() -> void:
 	confirm.pressed.connect(_submit)
 	actions.add_child(confirm)
 	confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	page._style_button(confirm, page.BLUE, true)
-	page._suppress_collection_focus(confirm)
+	Styles.button(confirm, Tokens.PRIMARY, true, dark)
+	_motion().bind_button.call_deferred(confirm, true)
+	Styles.apply_focus(confirm)
 	store.changed.connect(_sync)
 	store.operation_changed.connect(_sync)
 	store.gift_completed.connect(_finished)
@@ -149,23 +176,35 @@ func _ready() -> void:
 	_search_friends("")
 
 func _text(parent: Node, caption: String, font_size: int) -> Label:
-	var label: Label = page._label(parent, caption, font_size, page.text_color)
+	var label := Label.new()
+	label.text = caption
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.add_theme_font_size_override("font_size", font_size)
+	label.add_theme_color_override("font_color", colors.text)
 	label.clip_text = false
 	label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.custom_minimum_size.y = font_size + 6
+	parent.add_child(label)
 	return label
 
 func _action(parent: Node, caption: String, action: Callable) -> Button:
-	var button: Button = page._button(parent, "Action", caption, action)
+	var button := Button.new()
+	button.name = "Action"
+	button.text = caption
+	button.clip_text = true
+	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	button.custom_minimum_size = Vector2(84, 44)
-	button.add_theme_font_size_override("font_size", 20)
+	Styles.button(button, Color.TRANSPARENT, false, dark, 20)
+	button.pressed.connect(action)
+	parent.add_child(button)
+	_motion().bind_button.call_deferred(button)
 	return button
 
 func present() -> void:
 	popup_centered_clamped(Vector2i(600, 780), 0.9)
-	page._motion().enter(panel, page.Tokens.PANEL)
+	_motion().enter(panel, Tokens.PANEL)
 	search.grab_focus()
 
 func _search_friends(query: String) -> void:
@@ -191,10 +230,17 @@ func _friends_arrived(ticket: String, response: Dictionary) -> void:
 			continue
 		var row := _action(friends_list, "%s  ·  %s" % [friend.get("name", ""), friend.id], _choose_friend.bind(friend))
 		row.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		row.icon = page._texture("res://assets/minimal/icons/user-round.png")
-		var avatar := str(friend.get("avatar", ""))
-		if not avatar.is_empty() and ResourceLoader.exists(avatar):
-			row.icon = page._texture(avatar)
+		row.icon = _texture("res://assets/minimal/icons/user-round.png")
+		if not Avatar.path_for_card(str(friend.get("avatar_card_id", ""))).is_empty():
+			# Keep the existing icon slot, with the shared circular card rendering above it.
+			row.icon = ImageTexture.create_from_image(Image.create(26, 26, false, Image.FORMAT_RGBA8))
+			var avatar := Avatar.new()
+			avatar.name = "CardAvatar"
+			row.add_child(avatar)
+			avatar.show_profile(friend)
+			avatar.set_anchors_and_offsets_preset(Control.PRESET_CENTER_LEFT)
+			avatar.position = Vector2(0, -13)
+			avatar.size = Vector2(26, 26)
 		row.set_meta("friend_id", friend.id)
 		row.set_meta("eligible", friend.get("eligible", true))
 		row.disabled = busy or not friend.get("eligible", true)
@@ -213,8 +259,7 @@ func _sync() -> void:
 		dismiss()
 		return
 	var rule: Dictionary = store.gift_rule(card_id)
-	stock.text = page._count_text(card_id)
-	page._set_card_art_state(card_art, card_id)
+	stock.text = _stock_text()
 	# Preserve a now-invalid quantity after a service failure so the user sees why.
 	var n := int(quantity.value)
 	quantity.max_value = maxi(n, maxi(1, int(rule.max)))
@@ -235,10 +280,11 @@ func _sync() -> void:
 	quantity.editable = not busy and not store.pending() and int(rule.max) > 0
 	search.editable = not busy and not store.pending()
 	recovery.visible = store.pending()
-	recovery.disabled = busy or store._busy
+	recovery.disabled = busy or store.is_busy()
 	for row in friend_rows:
 		row.disabled = busy or store.pending() or not row.get_meta("eligible", true)
-		page._tab(row, row.get_meta("friend_id") == selected_friend.get("id", ""))
+		Styles.tab(row, row.get_meta("friend_id") == selected_friend.get("id", ""), dark)
+		_motion().bind_button.call_deferred(row)
 	if store.pending():
 		error_label.text = "上一笔赠送正在核实。关闭窗口不会取消已经提交的赠送。"
 	elif not str(rule.get("reason", "")).is_empty():
@@ -287,10 +333,10 @@ func dismiss() -> void:
 		return
 	closing = true
 	query_epoch += 1
-	page._retire_window(self)
+	retiring.emit(self)
 	hide()
 	if is_instance_valid(shade):
-		page._motion().retire(shade)
+		_motion().retire(shade)
 		shade = null
 	closed.emit()
 	queue_free()

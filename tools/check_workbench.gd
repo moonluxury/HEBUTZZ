@@ -129,7 +129,7 @@ func _run() -> void:
 	await process_frame
 	_expect(app.subject_id == "python" and current_scene.current_index == 5, "Course action should restore the question by ID")
 	# Program review is counted as learning, never as a correct answer.
-	var correct_before: int = app.spirit_progress.correct_answers
+	var correct_before: int = stats.answer_count(true)
 	quiz = current_scene
 	for index in quiz.questions.size():
 		if quiz.questions[index].type == "program":
@@ -137,7 +137,7 @@ func _run() -> void:
 			quiz._on_program_reference_toggled(true)
 			break
 	_expect(stats.summary().learned == 2, "Program reference review should update progress")
-	_expect(app.spirit_progress.correct_answers == correct_before, "Program review must not grant correctness")
+	_expect(stats.answer_count(true) == correct_before, "Program review must not grant correctness")
 	var saved = JSON.parse_string(FileAccess.get_file_as_string(stats.SAVE_PATH))
 	_expect(saved is Dictionary and saved.learned.size() == 2, "Learning records should persist")
 	home = await _open("res://scenes/Workbench.tscn")

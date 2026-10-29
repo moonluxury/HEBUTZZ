@@ -1,4 +1,6 @@
 extends Window
+const CardArtwork = preload("res://scripts/card_artwork.gd")
+const Styles = preload("res://scripts/ui_styles.gd")
 ## All I/O lives in SocialStore; a closed window never owns an awaited request.
 signal closed
 var page: Control
@@ -38,6 +40,8 @@ var _read_timer := 0.0
 var _request_rows: Array = []
 var _request_read_seq := 0
 var _requests_hash := ""
+var _inventory_requested := false
+var _waiting_inventory := false
 
 func _ready() -> void:
 	_epoch = store.epoch
@@ -85,6 +89,8 @@ func _ready() -> void:
 	column.add_child(content)
 	store.completed.connect(_response)
 	store.changed.connect(_changed)
+	if panel_mode in ["gift", "exchange"]:
+		page.collection.changed.connect(_inventory_changed)
 	close_requested.connect(dismiss)
 	window_input.connect(_window_input)
 	_build()
@@ -172,7 +178,7 @@ func edit(parent: Node, placeholder: String, limit: int) -> LineEdit:
 	var frame: StyleBoxFlat = page._style(page.surface, 6, page.border)
 	frame.set_content_margin_all(10)
 	input.add_theme_stylebox_override("normal", frame)
-	input.add_theme_stylebox_override("focus", page._style(page.surface, 6, page._accent()))
+	Styles.apply_focus(input, input.get_theme_stylebox("normal") as StyleBoxFlat)
 	parent.add_child(input)
 	return input
 
@@ -186,7 +192,7 @@ func multiline(parent: Node, placeholder: String) -> TextEdit:
 	var frame: StyleBoxFlat = page._style(page.surface, 6, page.border)
 	frame.set_content_margin_all(10)
 	input.add_theme_stylebox_override("normal", frame)
-	input.add_theme_stylebox_override("focus", page._style(page.surface, 6, page._accent()))
+	Styles.apply_focus(input, input.get_theme_stylebox("normal") as StyleBoxFlat)
 	parent.add_child(input)
 	return input
 
@@ -296,7 +302,7 @@ func _search_result(response: Dictionary) -> void:
 		avatar.custom_minimum_size = Vector2(56, 56)
 		avatar.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 		result.add_child(avatar)
-		avatar.show_avatar(str(person.get("avatar", "")))
+		avatar.show_profile(person)
 		text(result, str(person.get("name", "")), true)
 		text(result, "ID：" + str(person.get("public_id", "")))
 	if state == "available":
@@ -343,7 +349,7 @@ func _requests() -> void:
 			avatar.custom_minimum_size = Vector2(42, 42)
 			avatar.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 			row.add_child(avatar)
-			avatar.show_avatar(str(person.get("avatar", "")))
+			avatar.show_profile(person)
 			text(row, "%s · %s" % [person.get("name", ""), person.get("public_id", "")], true)
 			text(row, str(item.get("note", "未附说明")))
 			var state := str(item.get("status", ""))
@@ -410,9 +416,10 @@ func _wishlist(response: Dictionary) -> void:
 
 func _gift_cards() -> void:
 	text(content, "沿用收藏页的赠送额度、确认与至少保留一张规则。")
+	_waiting_inventory = not page.collection.inventory_known
 	if not page.collection.inventory_known:
-		text(content, "库存服务尚未接入或尚未读取，无法选择赠送卡牌。")
-		action(content, "刷新库存", page.collection.refresh)
+		text(content, "正在读取库存…" if page.collection.loading else "库存暂不可用，当前无法选择赠送卡牌。")
+		_request_inventory.call_deferred()
 		return
 	var count := 0
 	for card in page.collection.cards:
@@ -420,7 +427,7 @@ func _gift_cards() -> void:
 		if int(rule.max) <= 0:
 			continue
 		count += 1
-		text(content, "%s · %s · 拥有 %d · 可赠 %d" % [card.name, page._season_title(page.collection.season(card.season_id)), page.collection.count(card.id), rule.max])
+		text(content, "%s · %s · 拥有 %d · 可赠 %d" % [card.name, CardArtwork.season_title(page.collection.season(card.season_id)), page.collection.count(card.id), rule.max])
 		action(content, "选择并核对赠送", _gift.bind(str(card.id)))
 	if count == 0:
 		text(content, "当前没有可赠卡牌。至少保留一张及服务端额度仍然适用。")
@@ -433,9 +440,10 @@ func _exchange() -> void:
 	if not store.capabilities.get("exchange", false):
 		text(content, str(store.capabilities.get("exchange_reason", "换卡服务尚未接入，无法创建或交割真实邀请。")))
 		return
+	_waiting_inventory = not page.collection.inventory_known
 	if not page.collection.inventory_known:
-		text(content, "尚未取得真实库存，请刷新库存后重新打开。")
-		action(content, "刷新库存", page.collection.refresh)
+		text(content, "正在读取库存…" if page.collection.loading else "尚未取得真实库存，当前无法选择换卡内容。")
+		_request_inventory.call_deferred()
 		return
 	var sides := HBoxContainer.new()
 	sides.add_theme_constant_override("separation", 24)
@@ -505,7 +513,7 @@ func _edit_terms() -> void:
 func _trade_review() -> void:
 	var trade: Dictionary = context.get("trade", {})
 	if trade.is_empty():
-		text(content, "交易详情不可用，请重新加载。")
+		text(content, "交易详情暂不可用。")
 		return
 	text(content, "双方：%s · %s ↔ %s · %s" % [trade.get("initiator", {}).get("name", ""), trade.get("initiator", {}).get("public_id", ""), trade.get("recipient", {}).get("name", ""), trade.get("recipient", {}).get("public_id", "")], true)
 	text(content, "状态：%s · 条款版本 %s" % [page.trade_status(str(trade.get("status", ""))), trade.get("terms_version", "")])
@@ -593,6 +601,19 @@ func _return_conversation(id: String) -> void:
 func _navigate(next_mode: String, next_context: Dictionary) -> void:
 	dismiss()
 	page.show_panel.call_deferred(next_mode, next_context)
+
+func _request_inventory() -> void:
+	if closing or _inventory_requested or page.collection.inventory_known or page.collection.loading:
+		return
+	_inventory_requested = true
+	page.collection.refresh()
+
+func _inventory_changed() -> void:
+	if closing or busy or not is_instance_valid(content): return
+	# Preserve exchange selections once its form is ready; only fill an empty form.
+	if panel_mode == "gift" or (panel_mode == "exchange" and _waiting_inventory):
+		page._clear(content)
+		_build()
 
 func _changed() -> void:
 	if store.epoch != _epoch:

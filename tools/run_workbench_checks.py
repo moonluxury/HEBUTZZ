@@ -16,6 +16,8 @@ def main():
     root = Path(__file__).resolve().parents[1]
     fixture = Path(tempfile.mkdtemp(prefix="workbench-check-", dir=root / ".godot_appdata"))
     env = os.environ.copy()
+    # Isolation applies to visual runs as well as headless checks.
+    env["HEGONG_BACKEND_DISABLED"] = "1"
     for key in ["APPDATA", "LOCALAPPDATA"]:
         folder = fixture / key.lower()
         folder.mkdir()

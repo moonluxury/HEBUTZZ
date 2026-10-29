@@ -1,4 +1,5 @@
 extends "res://scripts/minimal_page.gd"
+const CardArtwork = preload("res://scripts/card_artwork.gd")
 const Avatar = preload("res://scripts/profile_avatar.gd")
 const Composer = preload("res://scripts/social_composer.gd")
 const Dialog = preload("res://scripts/social_dialog.gd")
@@ -30,7 +31,7 @@ var composer: TextEdit
 var send_button: Button
 var compose_hint: Label
 var new_messages: Button
-var connection: Button
+var connection: Label
 var bell: Button
 var add_button: Button
 var separator: ColorRect
@@ -52,9 +53,13 @@ var _last_message_seq := 0
 
 func _ready() -> void:
 	active_nav = "FriendsButton"
-	store = get_node("/root/PageRouter").social_store()
-	collection = get_node("/root/PageRouter").collection_store()
+	store = get_node("/root/AppServices").social_store()
+	collection = get_node("/root/AppServices").collection_store()
 	store.active = true
+	var navigation := get_node("/root/PageRouter")
+	if navigation.friends_notifications_requested:
+		store.bell_requested = true
+		navigation.friends_notifications_requested = false
 	store.changed.connect(_state_changed)
 	store.messages_changed.connect(_messages_changed)
 	store.completed.connect(_completed)
@@ -77,9 +82,9 @@ func _build_content() -> void:
 	add_button = _button(body, "AddFriend", "", show_panel.bind("add", {}))
 	add_button.icon = _texture("res://assets/profile/user-plus.svg")
 	add_button.accessibility_name = "添加好友与好友申请"
-	connection = _button(body, "Connection", "", _connect_or_login)
-	connection.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	connection.add_theme_font_size_override("font_size", 16)
+	connection = _label(body, "", 16, muted_color)
+	connection.name = "ConnectionStatus"
+	connection.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	contacts = Control.new()
 	contacts.name = "Contacts"
 	body.add_child(contacts)
@@ -135,7 +140,7 @@ func _build_content() -> void:
 	var frame := _style(surface, 8, border)
 	frame.set_content_margin_all(14)
 	composer.add_theme_stylebox_override("normal", frame)
-	composer.add_theme_stylebox_override("focus", _style(surface, 8, _accent()))
+	Styles.apply_focus(composer, composer.get_theme_stylebox("normal") as StyleBoxFlat)
 	chat.add_child(composer)
 	composer.text_changed.connect(_draft_changed)
 	composer.submit.connect(_send)
@@ -219,7 +224,6 @@ func _state_changed() -> void:
 		if is_instance_valid(gift_dialog):
 			gift_dialog.dismiss()
 	connection.text = "正在连接…" if store.loading else store.error
-	connection.disabled = store.loading
 	bell.text = str(store.unread_total()) if store.unread_total() > 0 else ""
 	bell.accessibility_name = "消息与通知，%d 条未读" % store.unread_total()
 	recent_menu.visible = store.tab == "recent"
@@ -256,7 +260,7 @@ func _render_contacts() -> void:
 	var old_scroll := contact_scroll.scroll_vertical
 	_clear(contact_rows)
 	contact_status.visible = rows.is_empty()
-	contact_status.text = "正在读取联系人…" if store.loading else store.unavailable() if not store.available() else "连接失败，请点击上方提示重试。" if not store.error.is_empty() else "没有匹配的好友或对话。" if not search.text.is_empty() else "还没有好友。点击添加好友，通过用户 ID 查找。" if store.tab == "friends" else "尚无会话，请刷新以获取官方通知通道。"
+	contact_status.text = "正在读取联系人…" if store.loading else store.unavailable() if not store.available() else "连接暂时失败，正在等待重新连接。" if not store.error.is_empty() else "没有匹配的好友或对话。" if not search.text.is_empty() else "还没有好友。点击添加好友，通过用户 ID 查找。" if store.tab == "friends" else "尚无会话，连接后将自动获取通知通道。"
 	for item in rows:
 		var is_friend: bool = store.tab == "friends"
 		var person: Dictionary = item if is_friend else item.get("peer", {})
@@ -275,7 +279,7 @@ func _render_contacts() -> void:
 			button.grab_focus.call_deferred()
 		var avatar := Avatar.new()
 		button.add_child(avatar)
-		avatar.show_avatar(str(person.get("avatar", "")))
+		avatar.show_profile(person)
 		_rect(avatar, Rect2(12, 18, 46, 46))
 		var title_label := _label(button, name_text + ("  官方" if official else ""), 20, text_color, Rect2(70, 8, maxf(80, contacts.size.x - 148), 32), true)
 		title_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
@@ -306,7 +310,7 @@ func _sync_header() -> void:
 	chat_id.text = "来自服务端的官方通知，只读通道" if official else (str(person.get("public_id", "")) + (" · 已拉黑" if item.get("blocked_by_me", false) else " · 未添加好友" if not friendly else ""))
 	if item.is_empty():
 		chat_id.text = ""
-	chat_avatar.show_avatar(str(person.get("avatar", "")))
+	chat_avatar.show_profile(person)
 	wants_button.visible = friendly and not official
 	gift_button.visible = friendly and not official
 	exchange_button.visible = friendly and not official
@@ -491,7 +495,7 @@ func card_summary(parent: Node, id: String, amount: int) -> void:
 	row.name = "CardSummary"
 	row.add_theme_constant_override("separation", 12)
 	parent.add_child(row)
-	var art := _picture(row, card, Rect2())
+	var art := CardArtwork.create(row, card, Rect2())
 	art.custom_minimum_size = Vector2(64, 77)
 	art.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	art.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -502,7 +506,7 @@ func card_summary(parent: Node, id: String, amount: int) -> void:
 	metadata.add_theme_constant_override("separation", 6)
 	row.add_child(metadata)
 	_text(metadata, "%s ×%d" % [card.get("name", id), amount], 18, text_color)
-	_text(metadata, _season_title(collection.season(str(card.get("season_id", "")))), 15, muted_color)
+	_text(metadata, CardArtwork.season_title(collection.season(str(card.get("season_id", "")))), 15, muted_color)
 
 func trade_status(value: String) -> String:
 	return {"pending": "待确认", "completed": "已完成", "rejected": "已拒绝", "cancelled": "已取消", "invalidated": "已失效", "expired": "已过期"}.get(value, "待加载")
@@ -589,12 +593,6 @@ func _handle_bell() -> void:
 	elif store.request_unread > 0:
 		show_panel("requests", {})
 
-func _connect_or_login() -> void:
-	if store.account_id.is_empty():
-		get_node("/root/PageRouter").open_identity()
-	else:
-		store.refresh()
-
 func _peer_panel(mode: String) -> void:
 	var item: Dictionary = store.conversation(_shown)
 	show_panel(mode, {"peer": item.get("peer", {}), "conversation": item})
@@ -631,10 +629,7 @@ func open_gift(id: String, person: Dictionary) -> void:
 		show_panel("notice", {"message": rule.reason})
 		return
 	gift_dialog = GiftDialog.new()
-	gift_dialog.page = self
-	gift_dialog.store = collection
-	gift_dialog.card_id = id
-	gift_dialog.selected_friend = {"id": person.id, "name": person.get("name", ""), "eligible": true}
+	gift_dialog.configure(self, collection, id, {"id": person.id, "name": person.get("name", ""), "eligible": true})
 	gift_dialog.closed.connect(func(): gift_dialog = null; _dialog_closed())
 	add_child(gift_dialog)
 	gift_dialog.present()
@@ -662,33 +657,3 @@ func _clear(node: Node) -> void:
 	for child in node.get_children():
 		node.remove_child(child)
 		child.queue_free()
-
-# Small view adapters let the existing collection gift window remain the single flow.
-func _picture(parent: Node, card: Dictionary, rect: Rect2) -> TextureRect:
-	var picture := TextureRect.new()
-	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	var path := str(card.get("artwork", ""))
-	if not path.is_empty() and ResourceLoader.exists(path):
-		picture.texture = _texture(path)
-	parent.add_child(picture)
-	_rect(picture, rect)
-	return picture
-
-func _picture_ratio(_picture_node: Control) -> float:
-	return 1.2
-
-func _season_title(season: Dictionary) -> String:
-	return str(season.get("label", "")) + " · " + str(season.get("name", ""))
-
-func _count_text(id: String) -> String:
-	return "拥有 ×%d，可赠 ×%d" % [collection.count(id), collection.gift_rule(id).max]
-
-func _set_card_art_state(_art: TextureRect, _id: String) -> void:
-	pass
-
-func _suppress_collection_focus(_control: Control) -> void:
-	pass
-
-func _retire_window(_window: Window) -> void:
-	pass

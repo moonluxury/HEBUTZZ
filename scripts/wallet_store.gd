@@ -1,4 +1,5 @@
 extends Node
+const JsonStore = preload("res://scripts/local_json_store.gd")
 ## Account-scoped client state. No client path can credit a wallet.
 signal changed
 signal completed(ticket: String, response: Dictionary)
@@ -485,7 +486,7 @@ func _intent_path() -> String:
 
 func _load_intent() -> void:
 	if account_id.is_empty() or not FileAccess.file_exists(_intent_path()): return
-	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(_intent_path()))
+	var data: Variant = JsonStore.read(_intent_path())
 	if data is Dictionary and data.get("account_hash") == account_id.sha256_text() and data.get("intent") is Dictionary:
 		var value: Dictionary = data.intent
 		if value.is_empty() or (["request_id", "package_id", "package_version", "channel"].all(func(k): return value.get(k) is String and not value[k].is_empty())):
@@ -498,13 +499,5 @@ func _load_intent() -> void:
 	_storage_error = true
 
 func _save_intent() -> bool:
-	if account_id.is_empty() or DirAccess.make_dir_recursive_absolute(SAVE_DIR) != OK: return false
-	var path := _intent_path()
-	var file := FileAccess.open(path + ".tmp", FileAccess.WRITE)
-	if file == null: return false
-	file.store_string(JSON.stringify({"account_hash": account_id.sha256_text(), "intent": intent, "snapshot": intent_snapshot, "order_id": current_order}))
-	file.flush()
-	var issue := file.get_error()
-	file.close()
-	if issue != OK: return false
-	return DirAccess.rename_absolute(path + ".tmp", path) == OK
+	if account_id.is_empty(): return false
+	return JsonStore.write(_intent_path(), {"account_hash": account_id.sha256_text(), "intent": intent, "snapshot": intent_snapshot, "order_id": current_order}) == OK

@@ -33,7 +33,7 @@ func _run() -> void:
 	profile = root.get_node("ProfileStore")
 	backend = Fixture.new()
 	root.add_child(backend)
-	store = root.get_node("PageRouter").wallet_store()
+	store = root.get_node("AppServices").wallet_store()
 	store.set_process(false) # Exercise explicit focus/time transitions deterministically.
 	store.activate(true)
 	await login()

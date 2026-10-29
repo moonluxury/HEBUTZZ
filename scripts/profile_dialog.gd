@@ -1,4 +1,5 @@
 extends Window
+const Styles = preload("res://scripts/ui_styles.gd")
 ## Exclusive, scrollable local panel. All async work belongs to the persistent store.
 signal closed
 const FIELD_LABELS := {"display_name": "显示名称", "bio": "个人简介", "school": "学校", "college": "学院", "major": "专业", "grade": "年级"}
@@ -15,10 +16,6 @@ var close_button: Button
 var cancel_button: Button
 var fields: Dictionary = {}
 var original_fields: Dictionary = {}
-var avatar_preview: TextureRect
-var avatar_path := ""
-var avatar_select: Button
-var file_picker: FileDialog
 var session_epoch := 0
 var ticket := ""
 var busy := false
@@ -106,25 +103,13 @@ func _field_style(edit: Control) -> void:
 	style.content_margin_top = 8
 	style.content_margin_bottom = 8
 	edit.add_theme_stylebox_override("normal", style)
-	edit.add_theme_stylebox_override("focus", style)
+	Styles.apply_focus(edit, edit.get_theme_stylebox("normal") as StyleBoxFlat)
 	edit.add_theme_color_override("font_color", page.text_color)
 	edit.add_theme_color_override("font_placeholder_color", page.muted_color)
 	edit.custom_minimum_size.y = 46
 	page._motion().bind_input(edit)
 
 func _build_edit() -> void:
-	var avatar_row := HBoxContainer.new()
-	avatar_row.add_theme_constant_override("separation", 20)
-	column.add_child(avatar_row)
-	avatar_preview = page.Avatar.new()
-	avatar_preview.custom_minimum_size = Vector2(70, 70)
-	avatar_preview.show_avatar(str(store.profile.get("avatar", "")))
-	avatar_row.add_child(avatar_preview)
-	if not store.avatar_rules().is_empty():
-		avatar_select = _action(avatar_row, "选择头像", _choose_avatar)
-		avatar_select.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	else:
-		page._text(avatar_row, "头像暂不可编辑", 18, page.muted_color)
 	for field in FIELD_LABELS:
 		page._text(column, FIELD_LABELS[field], 20, page.text_color)
 		if not store.editable_fields.has(field):
@@ -151,40 +136,9 @@ func _build_edit() -> void:
 	cancel_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	confirm = _action(actions, "保存", _save, true)
 	confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	confirm.disabled = fields.is_empty() and store.avatar_rules().is_empty()
+	confirm.disabled = fields.is_empty()
 	if confirm.disabled:
 		message.text = "当前账号未提供可编辑字段，资料保存服务尚未接入或没有编辑权限。"
-
-func _choose_avatar() -> void:
-	if is_instance_valid(file_picker):
-		return
-	file_picker = FileDialog.new()
-	file_picker.title = "选择头像"
-	file_picker.access = FileDialog.ACCESS_FILESYSTEM
-	file_picker.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	for extension in store.avatar_rules().extensions:
-		file_picker.add_filter("*." + str(extension))
-	add_child(file_picker)
-	file_picker.file_selected.connect(_avatar_chosen)
-	file_picker.canceled.connect(_close_picker)
-	file_picker.popup_centered_clamped(Vector2i(760, 500), 0.9)
-
-func _avatar_chosen(path: String) -> void:
-	var problem: String = store.validate_avatar(path)
-	if problem.is_empty():
-		avatar_path = path
-		avatar_preview.show_avatar(path)
-		message.text = "头像预览尚未保存。"
-	else:
-		message.text = problem
-	_close_picker()
-
-func _close_picker() -> void:
-	if is_instance_valid(file_picker):
-		file_picker.queue_free()
-	file_picker = null
-	if is_instance_valid(avatar_select):
-		avatar_select.grab_focus()
 
 func _save() -> void:
 	if busy or store.saving or confirm.disabled:
@@ -193,12 +147,12 @@ func _save() -> void:
 	for field in fields:
 		if fields[field].text != str(original_fields.get(field, "")):
 			patch[field] = fields[field].text
-	if patch.is_empty() and avatar_path.is_empty():
+	if patch.is_empty():
 		dismiss()
 		return
 	_set_busy(true)
 	message.text = "正在保存…"
-	store.save_profile(patch, avatar_path, ticket)
+	store.save_profile(patch, "", ticket)
 
 func _saved(id: String, response: Dictionary) -> void:
 	if closing or id != ticket or session_epoch != store.epoch:
@@ -218,16 +172,15 @@ func _set_busy(value: bool) -> void:
 		page.sync_button_state(confirm)
 	for field in fields.values():
 		field.editable = not value
-	if is_instance_valid(avatar_select):
-		avatar_select.disabled = value
-		page.sync_button_state(avatar_select)
 	if is_instance_valid(cancel_button):
 		cancel_button.disabled = value
 		page.sync_button_state(cancel_button)
 
 func _build_account() -> void:
 	message.text = "正在读取账号信息…"
-	confirm = _action(column, "重新加载", _run_action.bind("request_account"))
+	message.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.get_parent().size_flags_vertical = Control.SIZE_EXPAND_FILL
 	if store.authenticated() and is_instance_valid(store.provider) and store.provider.has_method("open_account_settings"):
 		_action(column, "管理登录与绑定信息", _run_action.bind("open_account_settings"))
 	_run_action("request_account")
@@ -277,11 +230,7 @@ func _input_window(event: InputEvent) -> void:
 		consume_back_action()
 
 func consume_back_action() -> void:
-	if is_instance_valid(file_picker):
-		file_picker.hide()
-		_close_picker()
-	else:
-		dismiss()
+	dismiss()
 
 func dismiss() -> void:
 	if closing:
@@ -289,7 +238,6 @@ func dismiss() -> void:
 	closing = true
 	fields.clear()
 	original_fields.clear()
-	avatar_path = ""
 	hide()
 	if is_instance_valid(shade):
 		page._motion().retire(shade)

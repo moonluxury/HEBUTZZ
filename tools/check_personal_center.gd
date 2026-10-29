@@ -145,7 +145,7 @@ func _run() -> void:
 	backend.profile_fail = true
 	store.refresh()
 	await create_timer(0.16).timeout
-	check(store.authenticated() and identity.username.text == "测试同学" and page.retry_button.visible, "Profile failures preserve real authentication and last committed identity")
+	check(store.authenticated() and identity.username.text == "测试同学" and page.status.visible and not page.status.text.is_empty(), "Profile failures preserve real authentication and last committed identity")
 	backend.profile_fail = false
 	backend.profile_delay = 0.0
 	store.refresh()
@@ -207,20 +207,16 @@ func _run() -> void:
 	editor._save()
 	await frames()
 	check(store.profile.college == "服务更新的测试学院" and store.profile.bio == "只修改简介", "Saving a draft does not overwrite untouched fields refreshed by the service")
-	var picture := Image.create(200, 120, false, Image.FORMAT_RGBA8)
-	picture.fill(Color("#092C87"))
-	picture.save_png("user://selected-test-avatar.png")
-	check(not store.validate_avatar("user://wrong-type.gif").is_empty(), "Avatar formats come from provider rules")
-	store.editable_fields.avatar.max_bytes = 1
-	check(not store.validate_avatar("user://selected-test-avatar.png").is_empty(), "Avatar sizes come from provider rules")
-	store.editable_fields.avatar.max_bytes = 1048576
-	editor = await panel("edit", page.edit_button)
-	editor._avatar_chosen("user://selected-test-avatar.png")
-	check(editor.avatar_path != "" and store.profile.avatar == "", "Avatar preview stays separate from committed state")
-	editor._save()
+	check(not store.validate_card_avatar("user://selected-test-avatar.png").is_empty(), "Local image files cannot be used as avatars")
+	editor = await panel("avatar", page.avatar_button)
+	check(editor.avatar_choices.size() == 8 and editor.find_children("*", "FileDialog", true, false).is_empty(), "Avatar settings offer the default and seven catalog cards without file upload")
+	check(editor.avatar_choices["0003"].button.disabled and not editor.avatar_choices["0001"].button.disabled, "Only owned cards can be selected")
+	editor._select_card_avatar("0001")
+	editor._confirm()
 	await frames()
-	check(store.profile.avatar.begins_with("user://profile-avatar-") and identity.avatar.texture != identity.avatar.DEFAULT, "Avatar uses the persisted reference, not the selected temporary path")
-	backend.accounts["test-account-a"].avatar = "res://missing-avatar.png"
+	check(store.profile.avatar_card_id == "0001" and identity.avatar.texture != identity.avatar.DEFAULT and page.avatar.source_path == identity.avatar.source_path, "Saved card avatar updates both profile and shared sidebar")
+	await close_panel()
+	backend.accounts["test-account-a"].avatar_card_id = "unknown-card"
 	store.refresh()
 	check(identity.avatar.texture == identity.avatar.DEFAULT and page.avatar.texture == page.avatar.DEFAULT, "Missing avatar falls back in both places")
 	page.show_panel("friends")
@@ -239,7 +235,7 @@ func _run() -> void:
 	await scene_changed
 	await frames()
 	var collection: Node = current_scene
-	check(collection.name == "MyCollection" and collection.store == router.collection_store(), "Profile shortcut enters the existing collection and state source")
+	check(collection.name == "MyCollection" and collection.store == get_root().get_node("AppServices").collection_store(), "Profile shortcut enters the existing collection and state source")
 	collection._set_filter("wanted")
 	var season: String = collection.selected_season
 	var expanded: Dictionary = collection.expanded.duplicate(true)
@@ -303,7 +299,7 @@ func _run() -> void:
 	check(store.authenticated() and "退出失败" in logout.message.text, "Failed logout preserves the session")
 	backend.logout_fail = false
 	backend.action_delay = 0.14
-	var collection_store: Node = router.collection_store()
+	var collection_store: Node = get_root().get_node("AppServices").collection_store()
 	collection_store.set_wanted(str(collection_store.cards[0].id), true)
 	var wanted_path: String = collection_store._path()
 	var wanted_before := FileAccess.get_file_as_string(wanted_path)

@@ -1,10 +1,10 @@
 extends "res://scripts/minimal_page.gd"
-## Presentation adapter. The existing quiz controller still owns answers, saves and drafts.
+## Quiz layout and number navigation. Reads the view model and emits intent via ContentView.
 const QUESTION_FONT_SIZE := 26
 const OPTION_FONT_SIZE := 24
 const FOCUS_QUESTION_FONT_SIZE := 28
 const FOCUS_OPTION_FONT_SIZE := 24
-var quiz: Node
+var content: Control
 var header: Control
 var rail: Control
 var number_scroll: ScrollContainer
@@ -50,12 +50,12 @@ func _build_content() -> void:
 	number_buttons.clear()
 	scroll.hide()
 	header = _display_panel(canvas, "QuizHeader")
-	_move(quiz.home_button, header)
-	quiz.home_button.text = "返回"
-	quiz.home_button.icon = _texture("res://assets/minimal/icons/arrow-left.png")
-	_rect(quiz.home_button, Rect2(30, 39, 112, 54))
+	_move(content.home_button, header)
+	content.home_button.text = "返回"
+	content.home_button.icon = _texture("res://assets/minimal/icons/arrow-left.png")
+	_rect(content.home_button, Rect2(30, 39, 112, 54))
 	_line(header, Rect2(164, 45, 1, 42))
-	heading = _label(header, str(quiz._subject().title), 28, text_color, Rect2(194, 32, 680, 64), true)
+	heading = _label(header, str(content._subject().title), 28, text_color, Rect2(194, 32, 680, 64), true)
 	_icon(header, "clock", Rect2(986, 53, 24, 24), muted_color).name = "Clock"
 	timer_label = _label(header, "00:00:00", BODY_SIZE, muted_color)
 	var clock_font := FontVariation.new()
@@ -93,33 +93,33 @@ func _build_content() -> void:
 	pane = _display_panel(canvas, "QuestionPane")
 	_line(pane, Rect2(0, 64, 1300, 1)).name = "MetaDivider"
 	question_meta = _label(pane, "", BODY_SIZE, text_color, Rect2(0, 10, 600, 44), true)
-	_move(quiz.question_scroll, pane)
-	quiz.question_scroll.get_child(0).custom_minimum_size.x = 0
-	_move(quiz.prev_button, pane)
-	_move(quiz.next_button, pane)
-	_move(quiz.wrong_toggle, pane)
-	quiz.wrong_toggle.set_meta("state_only_feedback", true)
+	_move(content.question_scroll, pane)
+	content.question_scroll.get_child(0).custom_minimum_size.x = 0
+	_move(content.prev_button, pane)
+	_move(content.next_button, pane)
+	_move(content.wrong_toggle, pane)
+	content.wrong_toggle.set_meta("state_only_feedback", true)
 	footer_line = _line(pane, Rect2())
-	_move(quiz.jump_input, rail)
-	_move(quiz.jump_button, rail)
-	quiz.jump_input.placeholder_text = "输入题号"
-	quiz.jump_button.text = "跳转"
-	quiz.jump_button.icon = null
-	quiz.prev_button.text = "上一题"
-	quiz.next_button.text = "下一题"
-	quiz.prev_button.icon = _texture("res://assets/minimal/icons/arrow-left.png")
-	quiz.next_button.icon = _texture("res://assets/minimal/icons/arrow-right.png")
-	quiz.next_button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	quiz.empty_label.hide()
-	if quiz.questions.is_empty():
-		_move(quiz.empty_label, pane)
-		_rect(quiz.empty_label, Rect2(0, 160, 800, 200))
-		quiz.empty_label.add_theme_font_size_override("font_size", SECTION_SIZE)
-		quiz.empty_label.add_theme_color_override("font_color", muted_color)
-		quiz.empty_label.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
-		quiz.empty_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		quiz.question_scroll.hide()
-		for control in [quiz.prev_button, quiz.next_button, quiz.wrong_toggle, finish]:
+	_move(content.jump_input, rail)
+	_move(content.jump_button, rail)
+	content.jump_input.placeholder_text = "输入题号"
+	content.jump_button.text = "跳转"
+	content.jump_button.icon = null
+	content.prev_button.text = "上一题"
+	content.next_button.text = "下一题"
+	content.prev_button.icon = _texture("res://assets/minimal/icons/arrow-left.png")
+	content.next_button.icon = _texture("res://assets/minimal/icons/arrow-right.png")
+	content.next_button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	content.empty_label.hide()
+	if content.questions.is_empty():
+		_move(content.empty_label, pane)
+		_rect(content.empty_label, Rect2(0, 160, 800, 200))
+		content.empty_label.add_theme_font_size_override("font_size", SECTION_SIZE)
+		content.empty_label.add_theme_color_override("font_color", muted_color)
+		content.empty_label.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+		content.empty_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		content.question_scroll.hide()
+		for control in [content.prev_button, content.next_button, content.wrong_toggle, finish]:
 			control.hide()
 	build_numbers()
 	refresh()
@@ -137,13 +137,13 @@ func _move(control: Control, parent: Node) -> void:
 func build_numbers() -> void:
 	number_rows.clear()
 	number_positions.clear()
-	number_count = quiz.questions.size()
+	number_count = content.questions.size()
 	var y := 0.0
 	var index := 0
 	while index < number_count:
-		var kind := str(quiz.questions[index].get("type_label", "题目"))
+		var kind := str(content.questions[index].get("type_label", "题目"))
 		var end := index + 1
-		while end < number_count and str(quiz.questions[end].get("type_label", "题目")) == kind:
+		while end < number_count and str(content.questions[end].get("type_label", "题目")) == kind:
 			end += 1
 		number_rows.append({"y": y, "title": kind})
 		y += 56
@@ -188,7 +188,7 @@ func _render_visible_numbers() -> void:
 	while number_pool.size() < indices.size():
 		var button := _button(number_column, "NumberSlot%d" % number_pool.size(), "", Callable())
 		button.add_theme_font_size_override("font_size", 20)
-		button.pressed.connect(func(): quiz._jump_to(int(button.get_meta("number_index"))))
+		button.pressed.connect(func(): content.request_jump(int(button.get_meta("number_index"))))
 		button.gui_input.connect(_number_key.bind(button))
 		number_pool.append(button)
 	number_buttons.clear()
@@ -220,8 +220,8 @@ func _style_number(index: int) -> void:
 	if not number_buttons.has(index):
 		return
 	var b: Button = number_buttons[index]
-	var answered := bool(quiz.question_states.get(quiz._question_state_key(index), {}).get("answered", false))
-	var selected: bool = index == quiz.current_index
+	var answered := bool(content.question_states.get(content._question_state_key(index), {}).get("answered", false))
+	var selected: bool = index == content.current_index
 	var state_key := "%s:%s:%s" % [answered, selected, dark]
 	if b.get_meta("number_state", "") == state_key:
 		return
@@ -237,18 +237,18 @@ func _style_number(index: int) -> void:
 func refresh_numbers() -> void:
 	if not is_instance_valid(number_column):
 		return
-	if number_count != quiz.questions.size():
+	if number_count != content.questions.size():
 		build_numbers()
 	_style_number(last_number)
-	_style_number(quiz.current_index)
-	if last_number != quiz.current_index:
+	_style_number(content.current_index)
+	if last_number != content.current_index:
 		_ensure_current_visible.call_deferred()
-	last_number = quiz.current_index
+	last_number = content.current_index
 
 func _ensure_current_visible() -> void:
-	if not is_inside_tree() or not is_instance_valid(quiz) or quiz.current_index >= number_positions.size():
+	if not is_inside_tree() or not is_instance_valid(content) or content.current_index >= number_positions.size():
 		return
-	_ensure_number_visible(quiz.current_index)
+	_ensure_number_visible(content.current_index)
 
 func _ensure_number_visible(index: int) -> void:
 	var y := number_positions[index].y
@@ -281,56 +281,56 @@ func _number_key(event: InputEvent, button: Button) -> void:
 func refresh() -> void:
 	if not is_instance_valid(pane):
 		return
-	quiz.theme = theme
-	quiz._style_fill_inputs()
-	_font_controls(quiz.question_scroll.get_child(0))
-	quiz.question_label.add_theme_font_override("normal_font", theme.default_font)
-	quiz.question_label.add_theme_color_override("default_color", text_color)
+	content.theme = theme
+	content._style_fill_inputs()
+	_font_controls(content.question_scroll.get_child(0))
+	content.question_label.add_theme_font_override("normal_font", theme.default_font)
+	content.question_label.add_theme_color_override("default_color", text_color)
 	_apply_question_typography()
-	for b in quiz.option_buttons:
+	for b in content.option_buttons:
 		b.add_theme_constant_override("h_separation", 18)
 		b.expand_icon = true
-	_style_button(quiz.submit_button, BLUE, true)
-	for b in [quiz.prev_button, quiz.next_button, quiz.wrong_toggle, quiz.home_button, quiz.jump_button]:
-		_style_button(b, surface, b == quiz.next_button)
+	_style_button(content.submit_button, BLUE, true)
+	for b in [content.prev_button, content.next_button, content.wrong_toggle, content.home_button, content.jump_button]:
+		_style_button(b, surface, b == content.next_button)
 		b.alignment = HORIZONTAL_ALIGNMENT_CENTER
-		if b == quiz.prev_button:
+		if b == content.prev_button:
 			b.add_theme_stylebox_override("normal", _style(surface, 8, border))
-	quiz.jump_input.add_theme_font_size_override("font_size", BUTTON_SIZE)
-	quiz.jump_input.add_theme_color_override("font_color", text_color)
-	quiz.jump_input.add_theme_color_override("font_placeholder_color", muted_color)
+	content.jump_input.add_theme_font_size_override("font_size", BUTTON_SIZE)
+	content.jump_input.add_theme_color_override("font_color", text_color)
+	content.jump_input.add_theme_color_override("font_placeholder_color", muted_color)
 	var input_style := _style(surface, 8, border)
 	input_style.content_margin_left = 12
 	for state in ["normal", "focus"]:
-		quiz.jump_input.add_theme_stylebox_override(state, input_style)
-	_motion().bind_input.call_deferred(quiz.jump_input)
-	quiz.answer_label.add_theme_color_override("font_color", text_color)
-	if quiz.has_answered:
-		quiz.result_label.add_theme_color_override("font_color", quiz._correct_feedback_color() if quiz._is_selection_correct() else quiz._wrong_feedback_color())
-	if quiz.questions.is_empty():
+		content.jump_input.add_theme_stylebox_override(state, input_style)
+	_motion().bind_input.call_deferred(content.jump_input)
+	content.answer_label.add_theme_color_override("font_color", text_color)
+	if content.has_answered:
+		content.result_label.add_theme_color_override("font_color", content._correct_feedback_color() if content._is_selection_correct() else content._wrong_feedback_color())
+	if content.questions.is_empty():
 		return
-	var question: Dictionary = quiz.questions[quiz.current_index]
-	question_meta.text = "%s · %d / %d" % [question.get("type_label", "题目"), quiz.current_index + 1, quiz.questions.size()]
-	quiz.wrong_toggle.icon = _texture("res://assets/minimal/icons/clipboard-x.png")
-	var in_wrongs: bool = quiz.wrong_ids.has(str(question.id))
-	quiz.wrong_toggle.add_theme_stylebox_override("normal", _style(surface, 8))
-	quiz.wrong_toggle.add_theme_color_override("font_color", _accent() if in_wrongs else text_color)
-	quiz.wrong_toggle.add_theme_color_override("icon_normal_color", _accent() if in_wrongs else text_color)
+	var question: Dictionary = content.questions[content.current_index]
+	question_meta.text = "%s · %d / %d" % [question.get("type_label", "题目"), content.current_index + 1, content.questions.size()]
+	content.wrong_toggle.icon = _texture("res://assets/minimal/icons/clipboard-x.png")
+	var in_wrongs: bool = content.wrong_ids.has(str(question.id))
+	content.wrong_toggle.add_theme_stylebox_override("normal", _style(surface, 8))
+	content.wrong_toggle.add_theme_color_override("font_color", _accent() if in_wrongs else text_color)
+	content.wrong_toggle.add_theme_color_override("icon_normal_color", _accent() if in_wrongs else text_color)
 	# Capture the saved/unsaved colors before a same-frame focus change can repaint them.
-	_motion().bind_button(quiz.wrong_toggle)
-	quiz._refresh_all_option_visuals()
+	_motion().bind_button(content.wrong_toggle)
+	content._refresh_all_option_visuals()
 	refresh_numbers()
 	_update_timer()
 
 func _apply_question_typography() -> void:
 	var compact_height := canvas.size.y - (0.0 if distraction_free else 125.0) < 650.0
-	quiz.question_label.add_theme_font_size_override("normal_font_size", FOCUS_QUESTION_FONT_SIZE if distraction_free else QUESTION_FONT_SIZE)
-	quiz.question_label.add_theme_constant_override("line_separation", 8)
+	content.question_label.add_theme_font_size_override("normal_font_size", FOCUS_QUESTION_FONT_SIZE if distraction_free else QUESTION_FONT_SIZE)
+	content.question_label.add_theme_constant_override("line_separation", 8)
 	# fit_content grows with wrapped text; short stems do not reserve empty lines.
-	quiz.question_label.custom_minimum_size.y = 0
-	quiz.question_scroll.get_child(0).add_theme_constant_override("separation", 16 if compact_height else 24)
-	quiz.submit_button.custom_minimum_size = Vector2(170, 44 if compact_height else 48)
-	for button in quiz.option_buttons:
+	content.question_label.custom_minimum_size.y = 0
+	content.question_scroll.get_child(0).add_theme_constant_override("separation", 16 if compact_height else 24)
+	content.submit_button.custom_minimum_size = Vector2(170, 44 if compact_height else 48)
+	for button in content.option_buttons:
 		button.custom_minimum_size.y = 48 if compact_height else 56
 		button.add_theme_font_size_override("font_size", FOCUS_OPTION_FONT_SIZE if distraction_free else OPTION_FONT_SIZE)
 		button.add_theme_constant_override("line_spacing", 6)
@@ -363,7 +363,7 @@ func _layout() -> void:
 	if is_instance_valid(wallet_badge): wallet_badge.visible = not distraction_free
 	var available := canvas.size.x - sidebar_width
 	_rect(header, Rect2(sidebar_width, 0, available, 125))
-	_rect(quiz.home_button, Rect2(30, 39, 112, 54))
+	_rect(content.home_button, Rect2(30, 39, 112, 54))
 	heading.size.x = available - 510
 	_rect(header.get_node("Clock"), Rect2(available - 320, 53, 24, 24))
 	_rect(timer_label, Rect2(available - 280, 43, 120, 44))
@@ -373,8 +373,8 @@ func _layout() -> void:
 	_rect(rail, Rect2(canvas.size.x - rail_width, header_height, rail_width, canvas.size.y - header_height))
 	rail.visible = rail_width > 0
 	_rect(number_scroll, Rect2(32, 88, 318, maxf(150, rail.size.y - 244)))
-	_rect(quiz.jump_input, Rect2(32, rail.size.y - 144, 205, 48))
-	_rect(quiz.jump_button, Rect2(245, rail.size.y - 144, 84, 48))
+	_rect(content.jump_input, Rect2(32, rail.size.y - 144, 205, 48))
+	_rect(content.jump_button, Rect2(245, rail.size.y - 144, 84, 48))
 	_rect(rail.get_node("Legend"), Rect2(32, rail.size.y - 88, 310, 72))
 	var left := sidebar_width + 36.0
 	var right := canvas.size.x - (0.0 if compact else rail_width) - 36.0
@@ -386,16 +386,16 @@ func _layout() -> void:
 	_rect(show_numbers, Rect2(pane.size.x - 130, 10, 130, 44))
 	pane.get_node("MetaDivider").size.x = pane.size.x
 	var footer_y := pane.size.y - 76
-	_rect(quiz.question_scroll, Rect2(0, 82, pane.size.x, maxf(100, footer_y - 32 - 82)))
+	_rect(content.question_scroll, Rect2(0, 82, pane.size.x, maxf(100, footer_y - 32 - 82)))
 	_rect(footer_line, Rect2(0, footer_y - 16, pane.size.x, 1))
-	_rect(quiz.prev_button, Rect2(0, footer_y, 166, 52))
-	_rect(quiz.next_button, Rect2(184, footer_y, 176, 52))
-	_rect(quiz.wrong_toggle, Rect2(pane.size.x - 198, footer_y, 198, 52))
+	_rect(content.prev_button, Rect2(0, footer_y, 166, 52))
+	_rect(content.next_button, Rect2(184, footer_y, 176, 52))
+	_rect(content.wrong_toggle, Rect2(pane.size.x - 198, footer_y, 198, 52))
 	if pane.size.x < 700:
-		_rect(quiz.prev_button, Rect2(0, footer_y, 140, 52))
-		_rect(quiz.next_button, Rect2(154, footer_y, 140, 52))
-	for picture in quiz.question_images.get_children():
-		quiz._fit_question_image.call_deferred(picture)
+		_rect(content.prev_button, Rect2(0, footer_y, 140, 52))
+		_rect(content.next_button, Rect2(154, footer_y, 140, 52))
+	for picture in content.question_images.get_children():
+		content._fit_question_image.call_deferred(picture)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.keycode == KEY_F6 and event.pressed:
@@ -431,9 +431,9 @@ func _toggle_rail() -> void:
 
 func question_changed() -> void:
 	# No fade of header, timer, rail, footer, or sidebar; answers are already installed.
-	_motion().cancel(quiz.answer_label)
-	quiz.answer_label.modulate.a = 1.0
-	_motion().enter(quiz.question_scroll, Tokens.STATE)
+	_motion().cancel(content.answer_label)
+	content.answer_label.modulate.a = 1.0
+	_motion().enter(content.question_scroll, Tokens.STATE)
 
 func _sync_clock() -> void:
 	if not is_inside_tree() or not is_instance_valid(clock_timer):
@@ -449,4 +449,4 @@ func _update_timer() -> void:
 	timer_label.text = "%02d:%02d:%02d" % [seconds / 3600, seconds / 60 % 60, seconds % 60]
 
 func _finish_session() -> void:
-	quiz._go_home()
+	content.request_finish()

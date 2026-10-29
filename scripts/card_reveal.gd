@@ -21,7 +21,6 @@ var back_texture: Texture2D
 var face: TextureRect
 var entry: Control
 var sparks: Control
-var retry_button: Button
 var status_label: Label
 var flip_material: ShaderMaterial
 var gray_material: ShaderMaterial
@@ -72,36 +71,9 @@ func _ready() -> void:
 	status_label.add_theme_font_size_override("font_size", 14)
 	status_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(status_label)
-	retry_button = _action("重新加载", retry)
 	resized.connect(_layout)
 	set_process(false)
 	_layout()
-
-func _action(caption: String, callback: Callable) -> Button:
-	var button := Button.new()
-	button.text = caption
-	button.accessibility_name = caption
-	button.add_theme_font_size_override("font_size", 14)
-	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("#F5F8FE")
-	style.set_corner_radius_all(8)
-	style.content_margin_left = 12
-	style.content_margin_right = 12
-	for key in ["normal", "hover", "pressed", "focus"]:
-		var variant: StyleBoxFlat = style.duplicate()
-		if key == "hover" or key == "pressed":
-			variant.bg_color = Tokens.SOFT
-		if key == "focus":
-			variant.set_border_width_all(2)
-			variant.border_color = Tokens.PRIMARY
-		button.add_theme_stylebox_override(key, variant)
-	for key in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
-		button.add_theme_color_override(key, Tokens.PRIMARY)
-	button.pressed.connect(callback)
-	button.hide()
-	add_child(button)
-	return button
 
 func present(value: Dictionary, gray := false) -> void:
 	_dispose()
@@ -119,7 +91,6 @@ func present(value: Dictionary, gray := false) -> void:
 	state = "loading"
 	status_label.text = "正在准备卡片…"
 	status_label.show()
-	retry_button.hide()
 	detail_alpha = 0.0
 	detail_offset = 6.0
 	interactive = false
@@ -191,7 +162,6 @@ func _play() -> void:
 
 func _set_elapsed(value: float) -> void:
 	session.elapsed = value
-	retry_button.hide()
 	status_label.hide()
 	interactive = false
 	orbit_alpha = 0.0
@@ -288,7 +258,6 @@ func _finish(notify: bool) -> void:
 	sparkle_progress = 0.0
 	glow_strength = 0.0
 	status_label.hide()
-	retry_button.hide()
 	detail_alpha = 1.0
 	detail_offset = 0.0
 	interactive = true
@@ -305,9 +274,8 @@ func _fail() -> void:
 	set_process(false)
 	state = "error"
 	session.state = state
-	status_label.text = "卡图暂不可用，可重新加载"
+	status_label.text = "卡图暂不可用"
 	status_label.show()
-	retry_button.show()
 	face.texture = null
 	detail_alpha = 1.0
 	detail_offset = 0.0
@@ -374,9 +342,7 @@ func _layout() -> void:
 	face.size = card_rect.size
 	flip_material.set_shader_parameter("card_size", card_rect.size)
 	status_label.position = Vector2(0, 0)
-	status_label.size = Vector2(size.x - (116 if state == "error" else 0), 44)
-	retry_button.position = Vector2(maxf(0, size.x - 108), 0)
-	retry_button.size = Vector2(108, 44)
+	status_label.size = Vector2(size.x, 44)
 	if state in ["ready", "revealing"]:
 		_set_elapsed(float(session.elapsed))
 	queue_redraw()

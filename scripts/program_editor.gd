@@ -1,4 +1,5 @@
 extends VBoxContainer
+const Styles = preload("res://scripts/ui_styles.gd")
 
 signal draft_changed(code: String)
 signal reference_toggled(revealed: bool)
@@ -153,25 +154,11 @@ func _code_edit(editable_code: bool) -> CodeEdit:
 
 
 func apply_palette(dark: bool) -> void:
-	var ink := Color("#E8EEF8") if dark else Color("#172235")
-	var surface := Color("#19263A") if dark else Color("#F8FAFE")
-	var accent := Tokens.DARK_ACCENT if dark else Tokens.PRIMARY
+	var colors := Styles.code_palette(dark)
+	var ink: Color = colors.ink
 	for field in [editor, reference_editor, stdin_editor, output_editor]:
-		var style := StyleBoxFlat.new()
-		style.bg_color = surface
-		style.border_color = Color("#455878") if dark else Color("#CBD5E5")
-		style.set_border_width_all(2)
-		style.set_content_margin_all(18)
-		field.add_theme_stylebox_override("normal", style)
-		field.add_theme_stylebox_override("read_only", style)
-		var focus := style.duplicate()
-		focus.border_color = accent
-		field.add_theme_stylebox_override("focus", focus)
+		Styles.code_editor(field, dark)
 		get_node("/root/UiMotion").bind_input.call_deferred(field)
-		for color_name in ["font_color", "font_readonly_color", "caret_color", "line_number_color"]:
-			field.add_theme_color_override(color_name, ink)
-		field.add_theme_color_override("font_placeholder_color", Color("#8795AB") if dark else Color("#69788F"))
-		field.add_theme_color_override("selection_color", Color(accent, 0.25))
 		var syntax := CodeHighlighter.new()
 		for keyword in ["False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield"]:
 			syntax.add_keyword_color(keyword, Color("#B9A2FF") if dark else Color("#7041AA"))
@@ -184,21 +171,5 @@ func apply_palette(dark: bool) -> void:
 		if field in [editor, reference_editor]:
 			field.syntax_highlighter = syntax
 	for button in [reveal_button, run_button, stop_button]:
-		var normal := StyleBoxFlat.new()
-		normal.bg_color = Tokens.DARK_SOFT if dark else Tokens.SOFT
-		normal.border_color = Color("#455878") if dark else Color("#CBD5E5")
-		normal.set_border_width_all(2)
-		normal.set_corner_radius_all(8)
-		normal.set_content_margin_all(16)
-		button.add_theme_stylebox_override("normal", normal)
-		button.add_theme_stylebox_override("disabled", normal)
-		var hover := normal.duplicate()
-		hover.border_color = accent
-		button.add_theme_stylebox_override("hover", hover)
-		button.add_theme_stylebox_override("pressed", hover)
-		button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-		button.add_theme_color_override("font_color", ink)
-		button.add_theme_color_override("font_hover_color", ink)
-		button.add_theme_color_override("font_focus_color", ink)
-		button.add_theme_color_override("font_disabled_color", Color("#8795AB") if dark else Color("#69788F"))
+		Styles.code_button(button, dark)
 		get_node("/root/UiMotion").bind_button.call_deferred(button)

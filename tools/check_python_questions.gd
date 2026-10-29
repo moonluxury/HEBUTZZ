@@ -88,9 +88,9 @@ func _run() -> void:
 	_expect(code_editor.syntax_highlighter is CodeHighlighter, "Python syntax highlighting")
 	_expect(not quiz.program_editor.reference_box.visible, "Reference is hidden before reveal")
 	_expect(not quiz.submit_button.visible and not quiz.option_buttons[0].visible, "Programming questions use editor controls")
-	var before_running: int = state.spirit_progress["correct_answers"] + state.spirit_progress["wrong_answers"]
+	var before_running: int = root.get_node("StudyStats").answer_count()
 	await _check_execution(quiz.program_editor)
-	_expect(not quiz.has_answered and state.spirit_progress["correct_answers"] + state.spirit_progress["wrong_answers"] == before_running, "Running code does not grade or award XP")
+	_expect(not quiz.has_answered and root.get_node("StudyStats").answer_count() == before_running, "Running code does not grade or count an answer")
 	code_editor.text = "if True:"
 	code_editor.grab_focus()
 	code_editor.set_caret_column(8)
@@ -110,10 +110,10 @@ func _run() -> void:
 	state._save_program_drafts()
 	var saved = JSON.parse_string(FileAccess.get_file_as_string(state.PROGRAM_DRAFTS_PATH))
 	_expect(saved["py-v2-program-1"] == "def solve():\n    return 42\n", "Code draft saved to disk")
-	var answers_before: int = state.spirit_progress["correct_answers"] + state.spirit_progress["wrong_answers"]
+	var answers_before: int = root.get_node("StudyStats").answer_count()
 	quiz.program_editor.reveal_button.pressed.emit()
 	_expect(quiz.program_editor.reference_box.visible and not quiz.has_answered, "Viewing reference does not count as a graded answer")
-	_expect(state.spirit_progress["correct_answers"] + state.spirit_progress["wrong_answers"] == answers_before, "Reveal awards no XP")
+	_expect(root.get_node("StudyStats").answer_count() == answers_before, "Reveal does not count a graded answer")
 	quiz.program_editor.reveal_button.pressed.emit()
 	_expect(not quiz.program_editor.reference_box.visible, "Second click collapses reference")
 	quiz._jump_to(0)
@@ -126,7 +126,7 @@ func _run() -> void:
 	_expect(quiz.program_editor.reference_box.visible and not quiz.program_editor.reveal_button.disabled, "Expanded reference is restored and remains collapsible")
 	quiz.wrong_toggle.pressed.emit()
 	_expect(quiz.wrong_ids.has(str(quiz.questions[quiz.current_index]["id"])), "Program can be manually added to wrong bank")
-	_expect(not quiz.has_answered and state.spirit_progress["correct_answers"] + state.spirit_progress["wrong_answers"] == answers_before, "Reference toggling and collecting do not grade or award XP")
+	_expect(not quiz.has_answered and root.get_node("StudyStats").answer_count() == answers_before, "Reference toggling and collecting do not grade or count an answer")
 	for kind in ["single","fill","output"]:
 		quiz._jump_to(sample[kind])
 		_expect(quiz.program_editor == null, "Editor removed when switching to other question types")

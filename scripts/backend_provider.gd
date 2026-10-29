@@ -1,0 +1,257 @@
+extends Node
+## HTTPS adapter. Remembered sessions use OS-protected storage and server validation.
+signal remembered_changed
+const DEFAULT_URL := "https://39.107.44.18"
+const DialogScript = preload("res://scripts/backend_login_dialog.gd")
+const LoginStore = preload("res://scripts/local_login_store.gd")
+var base_url := DEFAULT_URL
+var access_token := ""
+var account_id := ""
+var auth_generation := 0
+var active_dialog: Window
+var login_store: Node
+var remember_error := ""
+
+func _ready() -> void:
+	var configured := OS.get_environment("HEGONG_API_URL").strip_edges().trim_suffix("/")
+	if not configured.is_empty():
+		base_url = configured
+	if OS.get_environment("HEGONG_BACKEND_DISABLED") == "1":
+		return
+	# Existing headless suites use isolated providers and must not touch live accounts.
+	if DisplayServer.get_name() == "headless" and OS.get_environment("HEGONG_BACKEND_LIVE_TEST") != "1":
+		return
+	attach.call_deferred()
+
+func attach() -> void:
+	get_node("/root/ProfileStore").use_provider(self, {"state": "signed_out"})
+
+func _request(path: String, body: Dictionary, authenticated := true, credential: Dictionary = {}) -> Dictionary:
+	var owner := str(credential.get("account_id", account_id))
+	var request_token := str(credential.get("access_token", access_token))
+	if not base_url.begins_with("https://"):
+		return {"ok": false, "account_id": owner, "code": "unavailable", "message": "后端必须使用 HTTPS 地址。"}
+	if authenticated and request_token.is_empty():
+		return {"ok": false, "account_id": owner, "code": "unauthenticated", "message": "请先登录。"}
+	var headers := PackedStringArray(["Content-Type: application/json"])
+	if authenticated:
+		headers.append("Authorization: Bearer " + access_token)
+	var http := HTTPRequest.new()
+	http.timeout = 15.0
+	http.max_redirects = 0
+	http.body_size_limit = 4194304
+	add_child(http)
+	var error := http.request(base_url + path, headers, HTTPClient.METHOD_POST, JSON.stringify(body))
+	if error != OK:
+		http.queue_free()
+		return {"ok": false, "account_id": owner, "code": "network", "message": "无法发起连接，请检查网络。"}
+	var result: Array = await http.request_completed
+	http.queue_free()
+	if result[0] != HTTPRequest.RESULT_SUCCESS:
+		return {"ok": false, "account_id": owner, "code": "unknown", "message": "连接中断或超时，操作结果尚未确认。"}
+	var status := int(result[1])
+	if status == 401 and authenticated:
+		if credential.is_empty() and account_id == owner and access_token == request_token:
+			_login_store().invalidate(owner)
+			access_token = ""
+			account_id = ""
+			auth_generation += 1
+			get_node("/root/ProfileStore").use_provider(self, {"state": "signed_out"})
+		return {"ok": false, "account_id": owner, "code": "unauthenticated", "message": "登录已失效，请重新登录。"}
+	var parser := JSON.new()
+	if parser.parse(result[3].get_string_from_utf8()) != OK or not parser.data is Dictionary:
+		return {"ok": false, "account_id": owner, "code": "unknown", "message": "服务响应异常，请稍后重试。"}
+	var response: Dictionary = parser.data
+	if status < 200 or status >= 300:
+		response.ok = false
+	response["http_status"] = status
+	return response
+
+func _normalize_numbers(value: Variant) -> Variant:
+	if value is Dictionary:
+		var result: Dictionary = value.duplicate(true)
+		for key in result:
+			if key in ["quantity", "terms_version", "through_seq", "limit", "expected_version"] and result[key] is float and result[key] == floor(result[key]):
+				result[key] = int(result[key])
+			else:
+				result[key] = _normalize_numbers(result[key])
+		return result
+	if value is Array:
+		var result: Array = []
+		for item in value:
+			result.append(_normalize_numbers(item))
+		return result
+	return value
+
+func social_request(action: String, payload: Dictionary) -> Dictionary:
+	return await _request("/v1/rpc", {"version": 1, "action": action, "payload": _normalize_numbers(payload)})
+
+func request_profile(_owner: String) -> Dictionary:
+	return await social_request("profile", {})
+
+func save_profile(_owner: String, patch: Dictionary, avatar_card_id: String) -> Dictionary:
+	if _owner != account_id: return {"ok": false, "account_id": _owner, "code": "stale"}
+	return await social_request("save_profile", {"patch": patch, "avatar_card_id": avatar_card_id})
+
+func save_avatar(owner: String, avatar_card_id: String, request_id: String) -> Dictionary:
+	if owner != account_id: return {"ok": false, "account_id": owner, "code": "stale"}
+	return await social_request("save_profile", {"patch": {}, "avatar_card_id": avatar_card_id, "avatar_change": true, "operation_id": request_id})
+
+func request_account(_owner: String) -> Dictionary:
+	return await social_request("account", {})
+
+func request_snapshot(_owner: String) -> Dictionary:
+	return await social_request("snapshot", {})
+
+func request_friends(_owner: String, query: String) -> Dictionary:
+	return await social_request("friends", {"query": query, "eligible_for_gift": true})
+
+func send_gift(operation: Dictionary) -> Dictionary:
+	return await social_request("send_gift", {"operation_id": str(operation.get("id", "")),
+		"card_id": str(operation.get("card_id", "")), "friend_id": str(operation.get("friend_id", "")),
+		"quantity": int(operation.get("quantity", 0))})
+
+func gift_status(_owner: String, operation_id: String) -> Dictionary:
+	return await social_request("gift_status", {"operation_id": operation_id})
+
+func password_auth(username: String, password: String, register := false) -> Dictionary:
+	var server := base_url
+	var response: Dictionary = await _request("/v1/auth/register" if register else "/v1/auth/login",
+		{"username": username, "password": password}, false)
+	if server != base_url: return {"ok": false, "code": "stale", "message": "登录服务已改变，请重试。"}
+	if response.get("ok", false): response.username = username.strip_edges().to_lower()
+	return response
+
+func _login_store() -> Node:
+	if not is_instance_valid(login_store):
+		login_store = LoginStore.new()
+		login_store.name = "LocalLoginStore"
+		add_child(login_store)
+		login_store.configure(base_url)
+		login_store.changed.connect(remembered_changed.emit)
+	elif login_store.endpoint != base_url.trim_suffix("/"):
+		login_store.configure(base_url)
+	return login_store
+
+func remembered_account() -> Dictionary:
+	var memory := _login_store()
+	return memory.account() if memory.endpoint == base_url.trim_suffix("/") else {}
+
+func forget_remembered_account() -> bool:
+	return _login_store().forget()
+
+func remembered_auth() -> Dictionary:
+	var memory := _login_store()
+	var saved: Dictionary = remembered_account()
+	if saved.is_empty() or not saved.can_resume:
+		return {"ok": false, "code": "unavailable", "message": "请使用密码登录该账号。"}
+	var generation := auth_generation
+	var ticket: int = memory.revision
+	var server := base_url
+	var credential: Dictionary = await memory.credential()
+	if generation != auth_generation or ticket != memory.revision or server != base_url:
+		return {"ok": false, "code": "stale", "message": "本机登录记录已改变，请重新选择。"}
+	if credential.is_empty():
+		memory.invalidate(str(saved.account_id))
+		return {"ok": false, "code": "invalid_local_session", "message": "本机登录凭证无法使用，请输入密码重新登录。"}
+	# Validate the stored bearer with the server before changing any application session.
+	var response: Dictionary = await _request("/v1/rpc", {"version": 1, "action": "profile", "payload": {}}, true, credential)
+	if generation != auth_generation or ticket != memory.revision or server != base_url:
+		return {"ok": false, "code": "stale", "message": "账号状态已改变，请重新打开登录窗口。"}
+	if not response.get("ok", false):
+		if response.get("code") == "unauthenticated" or int(response.get("http_status", 0)) == 401:
+			memory.invalidate(str(saved.account_id))
+			response.message = "上次登录已过期，请输入密码重新登录。"
+		return response
+	if response.get("account_id") != credential.account_id or not response.get("profile") is Dictionary:
+		memory.invalidate(str(saved.account_id))
+		return {"ok": false, "code": "invalid_response", "message": "登录信息无法确认，请使用密码登录。"}
+	response.access_token = credential.access_token
+	response.username = credential.username
+	response["_remembered_login"] = true
+	return response
+
+func _remember_session(response: Dictionary) -> void:
+	if response.get("_remembered_login", false) or not LoginStore.valid_username(str(response.get("username", ""))): return
+	var generation := auth_generation
+	var success: bool = await _login_store().remember(str(response.username), account_id, access_token, str(response.get("expires_at", "")))
+	if generation == auth_generation:
+		remember_error = "" if success else "已登录，但本机快捷登录凭证未能保存。"
+
+func accept_session(response: Dictionary) -> bool:
+	if not response.get("ok", false) or str(response.get("access_token", "")).is_empty() or str(response.get("account_id", "")).is_empty():
+		return false
+	access_token = str(response.access_token)
+	account_id = str(response.account_id)
+	auth_generation += 1
+	remember_error = ""
+	_remember_session(response)
+	get_node("/root/ProfileStore").use_provider(self, {"state": "authenticated", "account_id": account_id}, self)
+	get_node("/root/AppServices").collection_store().refresh()
+	return true
+
+func logout(_owner: String) -> Dictionary:
+	var generation := auth_generation
+	var response: Dictionary = await _request("/v1/auth/logout", {})
+	if generation != auth_generation:
+		return {"ok": false, "code": "stale", "account_id": _owner, "message": "账号状态已改变。"}
+	if response.get("ok", false):
+		_login_store().invalidate(_owner)
+		access_token = ""
+		account_id = ""
+		auth_generation += 1
+	return response
+
+func change_password(current: String, replacement: String) -> Dictionary:
+	var owner := account_id
+	var response: Dictionary = await _request("/v1/auth/password", {"current_password": current, "new_password": replacement})
+	if response.get("ok", false): _login_store().invalidate(owner)
+	return response
+
+func begin_login() -> Dictionary:
+	return await _show_auth(false)
+
+func begin_avatar_login(flow: String) -> Dictionary:
+	var response := await _show_auth(false)
+	if response.get("ok", false):
+		response.avatar_login_context = flow
+		response.session_epoch = get_node("/root/ProfileStore").epoch
+	return response
+
+func open_account_settings(_owner: String) -> Dictionary:
+	return await _show_auth(true)
+
+func _show_auth(password_mode: bool) -> Dictionary:
+	if is_instance_valid(active_dialog):
+		active_dialog.grab_focus()
+		return {"ok": false, "account_id": account_id, "message": "请先完成已打开的账号窗口。"}
+	var parent: Node = get_tree().root
+	var session_epoch: int = get_node("/root/ProfileStore").epoch
+	# Nest inside the existing exclusive profile window so input remains accessible.
+	for candidate in get_tree().root.find_children("*", "Window", true, false):
+		if candidate is Window and candidate.visible and candidate.get_script() != null and candidate.get_script().resource_path in ["res://scripts/profile_dialog.gd", "res://scripts/avatar_settings_dialog.gd"]:
+			parent = candidate
+			break
+	var dialog: Window = DialogScript.new()
+	active_dialog = dialog
+	dialog.provider = self
+	dialog.password_mode = password_mode
+	parent.add_child(dialog)
+	dialog.present()
+	var result: Dictionary = await dialog.finished
+	active_dialog = null
+	if session_epoch != get_node("/root/ProfileStore").epoch:
+		return {"ok": false, "account_id": account_id, "message": "登录期间账号状态已改变，请重新打开设置。"}
+	if result.get("ok", false):
+		if password_mode:
+			access_token = ""
+			account_id = ""
+			auth_generation += 1
+			get_node("/root/ProfileStore").use_provider(self, {"state": "signed_out"})
+		else:
+			if not accept_session(result):
+				result = {"ok": false, "message": "登录信息无法确认，请重试。"}
+	# Never propagate a token to UI status panels or diagnostics.
+	result.erase("access_token")
+	result.erase("_remembered_login")
+	return result

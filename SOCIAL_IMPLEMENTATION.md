@@ -72,7 +72,7 @@
 
 完整字段与事务要求见 [SOCIAL_SERVICE_CONTRACT.md](SOCIAL_SERVICE_CONTRACT.md)。宿主继续通过 `ProfileStore.use_provider` 提供已验证会话与原收藏适配器；资料适配器增加 `social_request(action, payload)`。不需要 Steam，不创建新账号系统或云服务。
 
-可选择组合 `social_http_transport.gd`，由宿主配置已有服务的 `endpoint`、即时返回现有会话头的 `authorization` Callable、返回当前账号关联键的 `response_account` Callable。业务 JSON 不包含客户端任意操作者身份。密钥留在宿主现有安全会话存储，不写入项目文件。没有默认域名或自动配置，HTTP 明文仅允许显式回环测试。正式适配器应将头像下载到既有缓存，客户端沿用本地资源/缓存路径与缺失头像回退。
+可选择组合 `social_http_transport.gd`，由宿主配置已有服务的 `endpoint`、即时返回现有会话头的 `authorization` Callable、返回当前账号关联键的 `response_account` Callable。业务 JSON 不包含客户端任意操作者身份。密钥留在宿主现有安全会话存储，不写入项目文件。没有默认域名或自动配置，HTTP 明文仅允许显式回环测试。正式适配器返回用户已保存的 `avatar_card_id`；客户端从卡牌目录解析原画并圆形裁切，缺失时回退默认头像，不提供头像上传或任意图片下载。
 
 **没有执行任何数据库迁移或部署。** 当前无可识别的后端数据库，因此没有编造可直接运行的 SQL 迁移。需真实后端补充：关系唯一约束、会话成员/阅读水位、消息唯一键与排序、官方事件投影、交换记录/库存流水及事务 outbox、举报接收。具体事务和索引验收项在服务契约中。
 

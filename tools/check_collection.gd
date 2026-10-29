@@ -228,13 +228,13 @@ func _run() -> void:
 	page = current_scene
 	store = page.store
 	check(store.cards.size() == 7 and store.seasons.size() == 1, "Approved public seven-card catalogue")
-	check(not page.toolbar.has_node("SeasonNavigation") and store.seasons[0].id == "season-001", "Season dropdown removed without changing catalogue identity")
+	check(not page.has_node("SeasonNavigation") and store.seasons[0].id == "season-001", "Season dropdown removed without changing catalogue identity")
 	check(not page.status_label.visible and page.status_label.text.is_empty(), "Permanent integration banner removed")
 	check(not store.inventory_known and page.tiles.is_empty(), "Missing inventory never fabricates holdings")
 	check(page.summary_label.text.contains("—"), "Unavailable totals are explicit")
 	check_filter_row()
-	check(not page.has_node("ReturnCollection") and not page.toolbar.has_node("ReturnCollection"), "Return-to-collection button is removed")
-	check(not page.toolbar.visible and is_equal_approx(page.content.position.y, 126), "Overview removes the empty toolbar row and moves its contents upward")
+	check(not page.has_node("ReturnCollection") and not page.body.has_node("CollectionToolbar"), "Return-to-collection button is removed")
+	check(not page.body.has_node("CollectionToolbar") and is_equal_approx(page.content.position.y, 126), "Overview removes the empty toolbar row and moves its contents upward")
 	await capture("01-live-empty", false)
 	page._set_filter("all")
 	await frames()
@@ -247,7 +247,7 @@ func _run() -> void:
 	await check_disclosure()
 	page._select_card("0001")
 	await frames()
-	check(is_equal_approx(page.content.position.y, 126) and not page.toolbar.visible, "Detail shares the raised content position without the removed back-button row")
+	check(is_equal_approx(page.content.position.y, 126) and not page.body.has_node("CollectionToolbar"), "Detail shares the raised content position without the removed back-button row")
 	check(page.detail_panel.get_node("Gift").disabled and page.detail_panel.get_node("Gift").text == "库存未接入" and page.detail_panel.get_node("Facts").text.is_empty(), "Missing inventory remains explicit and cannot enable gifting")
 	root.size = Vector2i(1920, 1032)
 	root.content_scale_size = Vector2i(1920, 1032)
@@ -271,8 +271,9 @@ func _run() -> void:
 	await check_keep_one_limits()
 	backend.snapshot_delay = 12
 	await frames()
-	await click(page.refresh_button, MOUSE_BUTTON_LEFT)
-	check(store.loading, "Toolbar refresh remains clickable after removing season navigation")
+	check(page.find_child("RefreshInventory", true, false) == null and not page.body.has_node("CollectionToolbar"), "Signed-in collection has no refresh control or reserved toolbar")
+	store.refresh()
+	check(store.loading, "Existing inventory loading still works without a manual refresh control")
 	await frames(15)
 	backend.snapshot_delay = 0
 	page._set_filter("owned")
@@ -441,6 +442,7 @@ func _run() -> void:
 	var dialog: Window = page.gift_dialog
 	check(dialog.card_art.texture.resource_path == store.card("0001").artwork, "Gift thumbnail uses unframed illustration")
 	check(dialog.friend_rows.size() == 2 and dialog.confirm.disabled, "Gift waits for real stable recipient selection")
+	check(dialog.friend_rows[0].get_node("CardAvatar").source_path == store.card("0004").artwork, "Gift recipients share the circular card-avatar identity")
 	await key(dialog, KEY_TAB)
 	check(dialog.gui_get_focus_owner() != null and dialog.is_ancestor_of(dialog.gui_get_focus_owner()), "Gift keyboard focus stays in exclusive window")
 	dialog._search_friends("甲")

@@ -3,6 +3,7 @@ extends Node
 signal changed
 signal saved(ticket: String, result: Dictionary)
 signal action_finished(ticket: String, result: Dictionary)
+signal avatar_login_finished(flow: String, result: Dictionary)
 const FIELDS := ["display_name", "bio", "school", "college", "major", "grade"]
 var provider: Node
 var account_id := ""
@@ -15,6 +16,16 @@ var action_busy := false
 var error := ""
 var epoch := 0
 var _read := 0
+var avatar_pending: Dictionary = {}
+var avatar_timeout_seconds := 20.0
+
+class BoundedResult extends RefCounted:
+	signal finished(response: Dictionary)
+	var done := false
+	func resolve(response: Dictionary) -> void:
+		if done: return
+		done = true
+		finished.emit(response)
 
 func authenticated() -> bool:
 	return session_state == "authenticated" and not account_id.is_empty()
@@ -32,9 +43,10 @@ func use_provider(value: Node, session: Dictionary, collection_provider: Node = 
 	editable_fields = {}
 	loading = false
 	saving = false
+	avatar_pending = {}
 	action_busy = false
 	error = ""
-	var collection: Node = get_node("/root/PageRouter").collection_store()
+	var collection: Node = get_node("/root/AppServices").collection_store()
 	var adapter: Node = collection_provider
 	if adapter == null and is_instance_valid(value) and value.has_method("request_snapshot") and value.has_method("request_friends"):
 		adapter = value
@@ -72,40 +84,35 @@ func _apply_profile(response: Dictionary) -> bool:
 	if not str(profile.get("public_id", "")).is_empty() and data.get("public_id", "") != profile.public_id:
 		return false
 	var next: Dictionary = {}
-	for field in FIELDS + ["public_id", "avatar"]:
+	for field in FIELDS + ["public_id", "avatar_card_id"]:
 		next[field] = str(data.get(field, ""))
 	profile = next
 	editable_fields = {}
 	var permissions: Variant = response.get("editable_fields", {})
 	if permissions is Dictionary:
-		for field in FIELDS + ["avatar"]:
+		for field in FIELDS + ["avatar_card_id"]:
 			if permissions.get(field) is Dictionary:
 				editable_fields[field] = permissions[field].duplicate(true)
 	return true
 
-func avatar_rules() -> Dictionary:
-	var rules: Dictionary = editable_fields.get("avatar", {})
-	# Do not invent upload restrictions where the backend has not defined them.
-	if not rules.get("extensions") is Array or rules.get("extensions", []).is_empty() or int(rules.get("max_bytes", 0)) <= 0:
-		return {}
-	return rules
+func avatar_editable() -> bool:
+	return authenticated() and is_instance_valid(provider) and provider.has_method("save_profile") and editable_fields.has("avatar_card_id")
 
-func validate_avatar(path: String) -> String:
-	var rules := avatar_rules()
-	if rules.is_empty():
-		return "头像上传能力尚未接入。"
-	if path.get_extension().to_lower() not in rules.extensions:
-		return "请选择支持的头像格式：" + ", ".join(rules.extensions)
-	var file := FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		return "无法读取所选头像，请重新选择。"
-	if file.get_length() > int(rules.max_bytes):
-		return "头像超过服务允许的大小（%s 字节）。" % rules.max_bytes
-	if Image.load_from_file(path) == null:
-		return "无法识别这张图片，请重新选择。"
+func validate_card_avatar(card_id: String) -> String:
+	if not avatar_editable():
+		return "头像设置暂不可用，请登录或稍后重试。"
+	if card_id.is_empty():
+		return "" if editable_fields.get("avatar_card_id", {}).get("reset_supported", false) else "当前服务尚不支持重置默认头像，请等待服务更新。"
+	var collection: Node = get_node("/root/AppServices").collection_store()
+	if collection.card(card_id).is_empty():
+		return "只能选择卡牌目录中的头像。"
+	if collection.account_id != account_id or not collection.inventory_known or collection.loading:
+		return "正在确认卡牌拥有情况，请稍后重试。"
+	if collection.count(card_id) <= 0:
+		return "尚未拥有这张卡，暂时不能用作头像。"
 	return ""
 
-func save_profile(patch: Dictionary, avatar_file: String, ticket: String) -> void:
+func save_profile(patch: Dictionary, avatar_card_id: String, ticket: String) -> void:
 	if saving:
 		return
 	if not authenticated() or not is_instance_valid(provider) or not provider.has_method("save_profile"):
@@ -119,8 +126,8 @@ func save_profile(patch: Dictionary, avatar_file: String, ticket: String) -> voi
 		if limit > 0 and str(patch[field]).length() > limit:
 			saved.emit(ticket, {"ok": false, "message": "输入超出服务允许的长度，请缩短后重试。"})
 			return
-	if not avatar_file.is_empty():
-		var issue := validate_avatar(avatar_file)
+	if not avatar_card_id.is_empty():
+		var issue := validate_card_avatar(avatar_card_id)
 		if not issue.is_empty():
 			saved.emit(ticket, {"ok": false, "message": issue})
 			return
@@ -129,19 +136,86 @@ func save_profile(patch: Dictionary, avatar_file: String, ticket: String) -> voi
 	_read += 1
 	var session_epoch := epoch
 	changed.emit()
-	# Adapter must authorize, upload and persist before returning a canonical profile.
-	var response: Dictionary = await provider.save_profile(account_id, patch.duplicate(true), avatar_file)
+	# The service must verify current ownership and persist the card ID atomically.
+	# A file path or a client-supplied inventory is never an avatar credential.
+	var response: Dictionary = await provider.save_profile(account_id, patch.duplicate(true), avatar_card_id)
 	if session_epoch != epoch:
 		return
 	saving = false
 	var committed := bool(response.get("ok", false)) and bool(response.get("persisted", false))
-	if committed and not avatar_file.is_empty():
-		committed = response.get("profile") is Dictionary and not str(response.profile.get("avatar", "")).is_empty() and response.profile.get("avatar") != avatar_file
+	if committed and not avatar_card_id.is_empty():
+		committed = response.get("profile") is Dictionary and response.profile.get("avatar_card_id") == avatar_card_id
 	if committed:
 		committed = _apply_profile(response)
 	error = "" if committed else str(response.get("message", "未能确认资料已保存，请重试。"))
 	changed.emit()
 	saved.emit(ticket, {"ok": committed, "message": "资料已保存" if committed else error})
+
+func _invoke_bounded(callback: Callable, result: BoundedResult) -> void:
+	if not callback.is_valid():
+		result.resolve({"ok": false, "code": "unavailable"})
+		return
+	var response: Variant = await callback.call()
+	result.resolve(response if response is Dictionary else {"ok": false, "code": "unknown"})
+
+func _bounded(callback: Callable, seconds: float) -> Dictionary:
+	var result := BoundedResult.new()
+	var timer := get_tree().create_timer(seconds)
+	var timeout := result.resolve.bind({"ok": false, "code": "unknown"})
+	timer.timeout.connect(timeout, CONNECT_ONE_SHOT)
+	_invoke_bounded.call_deferred(callback, result)
+	var response: Dictionary = await result.finished
+	if timer.timeout.is_connected(timeout): timer.timeout.disconnect(timeout)
+	return response
+
+func save_avatar(card_id: String, ticket: String, request_id: String) -> void:
+	if saving: return
+	if not authenticated() or not is_instance_valid(provider) or not provider.has_method("save_avatar"):
+		saved.emit(ticket, {"ok": false, "message": "头像保存服务暂不可用，请稍后重试。"})
+		return
+	if not avatar_pending.is_empty():
+		if card_id != avatar_pending.card_id:
+			saved.emit(ticket, {"ok": false, "message": "上一项保存结果待核实，请先核实原请求。"})
+			return
+		request_id = str(avatar_pending.request_id)
+	else:
+		var issue := validate_card_avatar(card_id)
+		if not issue.is_empty():
+			saved.emit(ticket, {"ok": false, "message": issue})
+			return
+		avatar_pending = {"card_id": card_id, "request_id": request_id, "account_id": account_id}
+	var owner := account_id
+	var generation := epoch
+	var adapter: Node = provider
+	saving = true
+	loading = false
+	_read += 1
+	error = ""
+	changed.emit()
+	var response := await _bounded(adapter.save_avatar.bind(owner, card_id, request_id), avatar_timeout_seconds)
+	if generation != epoch: return
+	var committed: bool = response.get("ok", false) and response.get("persisted", false) and response.get("account_id") == owner and response.get("profile") is Dictionary and response.profile.get("avatar_card_id") == card_id
+	var unknown: bool = response.get("ok", false) or str(response.get("code", "")) in ["unknown", "network", "invalid_response"]
+	if committed:
+		committed = _apply_profile(response)
+	elif unknown:
+		# A timeout is not proof of failure. Read the authoritative value before allowing retry.
+		var current := await _bounded(adapter.request_profile.bind(owner), avatar_timeout_seconds)
+		if generation != epoch: return
+		if current.get("ok", false) and current.get("account_id") == owner and current.get("profile") is Dictionary:
+			committed = current.profile.get("avatar_card_id") == card_id and _apply_profile(current)
+	if committed or not unknown: avatar_pending = {}
+	saving = false
+	error = "" if committed else "保存结果尚未确认，请核实原请求后再继续。" if unknown else str(response.get("message", "保存失败，请重试。"))
+	changed.emit()
+	saved.emit(ticket, {"ok": committed, "unknown": unknown and not committed, "message": "头像已更新" if committed else error})
+
+func begin_avatar_login(flow: String) -> void:
+	if not is_instance_valid(provider) or not provider.has_method("begin_avatar_login"):
+		avatar_login_finished.emit(flow, {"ok": false, "message": "当前登录服务暂不可用，请稍后重试。"})
+		return
+	var response: Dictionary = await provider.begin_avatar_login(flow)
+	avatar_login_finished.emit(flow, response)
 
 func run_action(action: String, ticket: String) -> void:
 	if action_busy:

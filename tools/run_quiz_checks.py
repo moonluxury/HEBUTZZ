@@ -37,6 +37,7 @@ def main():
     config = fixture / "project.godot"
     config.write_text(config.read_text(encoding="utf-8").replace('config/name="河工开物"', 'config/name="Quiz integration check"'), encoding="utf-8")
     environment = os.environ.copy()
+    environment["HEGONG_BACKEND_DISABLED"] = "1"
     for key in ["APPDATA", "LOCALAPPDATA"]:
         location = fixture / key.lower()
         location.mkdir()

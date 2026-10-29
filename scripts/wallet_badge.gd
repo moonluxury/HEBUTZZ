@@ -6,7 +6,7 @@ func configure(page: Control) -> void:
 	setup(page, "—", 28.0, 18, 16)
 	unit.hide()
 	add_theme_constant_override("separation", 8)
-	wallet = get_node("/root/PageRouter").wallet_store()
+	wallet = get_node("/root/AppServices").wallet_store()
 	wallet.changed.connect(refresh)
 	refresh()
 

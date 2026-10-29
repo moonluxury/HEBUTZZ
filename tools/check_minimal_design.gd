@@ -78,6 +78,10 @@ func _run() -> void:
 	root.borderless = true
 	root.content_scale_size = Vector2i(1600, 984)
 	root.size = Vector2i(1600, 984)
+	# Restoring a maximized window resets its position; hide the test window
+	# after the mode/size changes so desktop clicks cannot affect this run.
+	if DisplayServer.get_name() != "headless":
+		root.position = Vector2i(-10000, -10000)
 	await _settle()
 	var page: Node = await _open("Workbench")
 	_common(page)
@@ -189,7 +193,7 @@ func _run() -> void:
 	await _capture("04-announcement")
 	page = await _open("MyCollection")
 	_common(page)
-	_expect(page.find_child("EmptyTitle", true, false).text == "暂无收藏", "Empty collection")
+	_expect(not page.store.inventory_known and page.tiles.is_empty() and page.summary_label.text.contains("—"), "Collection starts with unknown holdings without inventing owned cards")
 	await _capture("06-collection")
 	# Check constrained layout and large text in the same native renderer.
 	root.content_scale_size = Vector2i(1100, 820)

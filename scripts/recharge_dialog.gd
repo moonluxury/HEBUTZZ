@@ -159,8 +159,9 @@ func _order() -> void:
 		else:
 			_text("支付入口暂不可用或已过期，请先查询原订单。" if not store.preview else "隔离测试订单，不提供真实二维码或支付跳转。")
 		_text("关闭此窗口不会取消订单。支付页面返回后请查询原订单。")
-	var query := _action("我已支付 · 查询状态" if value.payment_status == "pending" else "刷新订单状态", _query)
-	query.disabled = _busy
+	if value.payment_status == "pending":
+		var query := _action("我已支付 · 查询状态", _query)
+		query.disabled = _busy
 	_action("查看充值记录 →", _navigate.bind("orders", ""))
 	if value.get("credit_status") == "credited": _action("查看电池明细 →", _navigate.bind("ledger", ""))
 	if not store.error.is_empty(): status_label.text = store.error

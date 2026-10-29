@@ -28,7 +28,9 @@ WindowIcon="*res://scripts/window_icon.gd"
 UiMotion="*res://scripts/ui_motion.gd"
 UiResources="*res://scripts/ui_resources.gd"
 ProfileStore="*res://scripts/profile_store.gd"
+AppServices="*res://scripts/app_services.gd"
 PageRouter="*res://scripts/page_router.gd"
+BackendProvider="*res://scripts/backend_provider.gd"
 
 [display]
 

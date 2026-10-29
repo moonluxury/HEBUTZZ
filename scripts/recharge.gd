@@ -3,7 +3,7 @@ const Amount = preload("res://scripts/battery_amount.gd")
 const Dialog = preload("res://scripts/recharge_dialog.gd")
 var store: Node
 var balance_amount: HBoxContainer
-var balance_retry: Button
+var balance_status: Label
 var record_links: HBoxContainer
 var balance_line: ColorRect
 var left: VBoxContainer
@@ -11,7 +11,6 @@ var right: VBoxContainer
 var separator: ColorRect
 var package_grid: GridContainer
 var package_status: Label
-var package_retry: Button
 var channel_box: VBoxContainer
 var account_value: Label
 var quantity_value: Label
@@ -31,7 +30,7 @@ var _queued := false
 
 func _ready() -> void:
 	active_nav = "RechargeButton"
-	store = get_node("/root/PageRouter").wallet_store()
+	store = get_node("/root/AppServices").wallet_store()
 	store.changed.connect(_state_changed)
 	store.order_ready.connect(_order_ready)
 	get_node("/root/ProfileStore").changed.connect(_state_changed)
@@ -52,9 +51,9 @@ func _build_content() -> void:
 	balance_amount.name = "BalanceAmount"
 	body.add_child(balance_amount)
 	balance_amount.setup(self, "—")
-	balance_retry = _button(body, "BalanceRetry", "", _retry_balance)
-	balance_retry.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	balance_retry.add_theme_font_size_override("font_size", 15)
+	balance_status = _label(body, "", 15, muted_color)
+	balance_status.name = "BalanceStatus"
+	balance_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	record_links = HBoxContainer.new()
 	record_links.add_theme_constant_override("separation", 18)
 	body.add_child(record_links)
@@ -73,7 +72,6 @@ func _build_content() -> void:
 	body.add_child(left)
 	_text(left, "选择充值金额", 25, text_color, true)
 	package_status = _text(left, "", 18, muted_color)
-	package_retry = _action(left, "重新获取套餐", store.refresh_catalog)
 	package_grid = GridContainer.new()
 	package_grid.name = "Packages"
 	package_grid.columns = 2
@@ -199,9 +197,8 @@ func _render() -> void:
 	balance_amount.set_value(Amount.grouped(int(store.balance)) if store.balance != null else "—")
 	# Fit the full safe-integer range without hiding either the amount or its unit.
 	balance_amount.number.add_theme_font_size_override("font_size", 46 if balance_amount.number.text.length() <= 10 else 29)
-	balance_retry.text = "正在获取余额…" if store.balance_loading else (store.unavailable() if not store.available() else ("获取失败 · 点击重试" if not store.balance_error.is_empty() else ""))
-	balance_retry.disabled = store.balance_loading
-	balance_retry.visible = not balance_retry.text.is_empty()
+	balance_status.text = "正在获取余额…" if store.balance_loading else (store.unavailable() if not store.available() else ("余额暂时无法获取" if not store.balance_error.is_empty() else ""))
+	balance_status.visible = not balance_status.text.is_empty()
 	var hash_value := JSON.stringify(store.packages)
 	if hash_value != _catalog_hash:
 		_catalog_hash = hash_value
@@ -209,7 +206,6 @@ func _render() -> void:
 	package_status.visible = store.packages.is_empty()
 	package_status.text = "正在获取充值套餐…" if store.catalog_loading else ("正式充值尚未开放\n套餐配置完成后将在这里展示。" if store.catalog_error.is_empty() else store.catalog_error)
 	package_status.custom_minimum_size.y = 112 if store.packages.is_empty() else 0
-	package_retry.visible = not store.catalog_error.is_empty() and not store.catalog_loading
 	for button in package_grid.get_children():
 		var chosen: bool = button.get_meta("package_id") == store.selected
 		button.disabled = store.locked()
@@ -302,7 +298,7 @@ func _build_channels() -> void:
 			button.icon = _texture("res://assets/recharge/%s.svg" % brand)
 			button.add_theme_constant_override("icon_max_width", 26)
 			button.expand_icon = true
-		button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+		Styles.apply_focus(button)
 		button.pressed.connect(store.select_channel.bind(str(item.id)))
 		channel_box.add_child(button)
 
@@ -313,8 +309,8 @@ func _layout_content(width: float) -> void:
 	var narrow := width < 1000
 	var link_width := maxf(355, record_links.get_combined_minimum_size().x)
 	_rect(record_links, Rect2(0 if narrow else width - link_width - 76, 76 if narrow else 12, link_width, 40))
-	_rect(balance_retry, Rect2(0, 120 if narrow else 70, width, 28))
-	var main_y := (182.0 if narrow else 132.0) if balance_retry.visible else (150.0 if narrow else 106.0)
+	_rect(balance_status, Rect2(0, 120 if narrow else 70, width, 28))
+	var main_y := (182.0 if narrow else 132.0) if balance_status.visible else (150.0 if narrow else 106.0)
 	_rect(balance_line, Rect2(0, main_y - 25, width, 1))
 	var left_width := width if narrow else (width - 68) * 0.58
 	var card_width := 0.0
@@ -332,10 +328,6 @@ func _layout_content(width: float) -> void:
 	# Container minimum sizes settle after text wrapping; defer one layout pass.
 	if not left.minimum_size_changed.is_connected(_layout): left.minimum_size_changed.connect(_layout)
 	if not right.minimum_size_changed.is_connected(_layout): right.minimum_size_changed.connect(_layout)
-
-func _retry_balance() -> void:
-	if store.account_id.is_empty(): get_node("/root/PageRouter").open_identity()
-	else: store.refresh_balance()
 
 func _publication() -> void:
 	# Reuse a host's existing entry, never invent an editor or publish from this client.

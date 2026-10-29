@@ -13,7 +13,7 @@
 ## 读取结构
 
 ```text
-PublicUser = {id, public_id, name, avatar?, remark?}
+PublicUser = {id, public_id, name, avatar_card_id?, remark?}
 Friend = PublicUser + {conversation_id?, eligible?}
 Conversation = {
   id, kind: direct|system, peer?: PublicUser, name?, is_friend?,
@@ -36,7 +36,7 @@ Trade = {
 }
 ```
 
-`id` 是稳定业务标识，`public_id` 是对外展示/核对标识，不能拿昵称作提交身份。sender_id/initiator_id/recipient_id 必须与当前账号身份键采用同一命名空间，才能正确显示自己的气泡与条款视角。不下发邮箱、手机、口令、后台角色或库存明细。avatar 由已有资源适配层下载缓存为本地可访问图片；卡图、季和卡名由同一 `collection_catalog.json` 的稳定 card_id 解析。
+`id` 是稳定业务标识，`public_id` 是对外展示/核对标识，不能拿昵称作提交身份。sender_id/initiator_id/recipient_id 必须与当前账号身份键采用同一命名空间，才能正确显示自己的气泡与条款视角。不下发邮箱、手机、口令、后台角色或库存明细。`avatar_card_id` 来自本人已保存的卡牌头像配置，由同一 `collection_catalog.json` 解析原画并圆形裁切；空值或未知卡牌显示默认头像。头像只允许选取拥有的卡牌，不接收上传文件、远程图片 URL 或本地图片路径；设置权限与服务端拥有校验见 README 的个人中心契约。
 
 `kind=system` 必须服务端可信投影，只给本人访问且唯一；不能由昵称/头像/客户端字段推导。没有管理员登录账号。text 接口只产生 text 消息；其余三种由服务事件产生，必须验证业务记录双方与会话成员相同。notification 的可导航 event 白名单为 `friend_request/trade/gift`，其他公告显示正文且不执行动作。
 

@@ -58,4 +58,4 @@ func refresh() -> void:
 	username.text = store.display_name()
 	tooltip_text = username.text if username.text.length() > 7 else ""
 	accessibility_name = username.text + "，个人中心" if store.authenticated() else username.text
-	avatar.show_avatar(str(store.profile.get("avatar", "")))
+	avatar.show_profile(store.profile)

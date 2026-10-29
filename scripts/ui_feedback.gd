@@ -1,4 +1,5 @@
 extends Node
+const Styles = preload("res://scripts/ui_styles.gd")
 ## One live StyleBox per control; native hover cannot override semantic/disabled state.
 const T = preload("res://scripts/ui_tokens.gd")
 var control: Control
@@ -97,18 +98,7 @@ func configure_panel(duration: float) -> void:
 	control.mouse_filter = Control.MOUSE_FILTER_PASS
 
 func _install_focus() -> void:
-	if control is BaseButton or foreground_only or control.get_meta("suppress_focus_feedback", false):
-		control.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-		return
-	var focus := base.duplicate()
-	focus.bg_color = Color.TRANSPARENT
-	focus.border_color = T.PRIMARY
-	focus.set_border_width_all(2)
-	# A shadow behind a transparent focus box also tints the control's interior.
-	# Keep the input fill intact and mark text-entry focus with the border alone.
-	focus.shadow_color = Color.TRANSPARENT
-	focus.shadow_size = 0
-	control.add_theme_stylebox_override("focus", focus)
+	Styles.apply_focus(control, base)
 
 func _check_disabled() -> void:
 	if control.disabled != last_disabled:

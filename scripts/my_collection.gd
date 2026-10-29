@@ -1,5 +1,4 @@
 extends "res://scripts/minimal_page.gd"
-const Store = preload("res://scripts/collection_store.gd")
 const GiftDialog = preload("res://scripts/collection_gift_dialog.gd")
 const CardReveal = preload("res://scripts/card_reveal.gd")
 const UnownedShader = preload("res://shaders/collection_unowned.gdshader")
@@ -17,11 +16,9 @@ var groups: Dictionary = {}
 var content: Control
 var detail_panel: Control
 var card_scroll: ScrollContainer
-var toolbar: Control
 var filter_buttons: Dictionary = {}
 var summary_label: Label
 var status_label: Label
-var refresh_button: Button
 var recovery_button: Button
 var gift_dialog: Window
 var _rebuilding := false
@@ -41,16 +38,11 @@ func _button(parent: Node, node_name: String, caption: String, action: Callable,
 func _suppress_collection_focus(control: Control) -> void:
 	# Remove focus decoration, retaining keyboard navigation and focus restoration.
 	control.set_meta("suppress_focus_feedback", true)
-	control.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	Styles.apply_focus(control)
 
 func _ready() -> void:
 	active_nav = "CollectionButton"
-	var router := get_node("/root/PageRouter")
-	store = router.get_node_or_null("CollectionStore")
-	if store == null:
-		store = Store.new()
-		store.name = "CollectionStore"
-		router.add_child(store)
+	store = get_node("/root/AppServices").collection_store()
 	if selected_season.is_empty() and not store.seasons.is_empty():
 		selected_season = str(store.seasons[-1].id)
 		expanded[selected_season] = true
@@ -75,10 +67,6 @@ func _build_content() -> void:
 	status_label = _label(body, "", 18, muted_color)
 	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	recovery_button = _button(body, "RecoverGift", "查询赠送结果", store.recover_gift)
-	toolbar = Control.new()
-	toolbar.name = "CollectionToolbar"
-	body.add_child(toolbar)
-	refresh_button = _button(toolbar, "RefreshInventory", "刷新", store.refresh)
 	filter_buttons.clear()
 	for item in [["owned", "已拥有"], ["all", "全部卡牌"], ["wanted", "想要"]]:
 		filter_buttons[item[0]] = _button(body, "Filter_" + item[0], item[1], _set_filter.bind(item[0]))
@@ -132,8 +120,6 @@ func _render() -> void:
 	var totals: Dictionary = store.summary()
 	summary_label.text = "已拥有 %d 款 · 共 %d 张" % [totals.kinds, totals.total] if totals.known else "已拥有 — 款 · 共 — 张"
 	status_label.text = "正在读取收藏…" if store.loading else store.status
-	refresh_button.visible = is_instance_valid(store.provider)
-	refresh_button.disabled = store.loading
 	recovery_button.visible = store.pending()
 	recovery_button.disabled = store._busy or not is_instance_valid(store.provider)
 	for button in filter_buttons.values():
@@ -331,8 +317,6 @@ func _layout_content(width: float) -> void:
 		return
 	_rect(summary_label, Rect2(maxf(0, width - 340), 12 if width > 950 else 108, 340, 36))
 	var top := 126.0 if width > 950 else 160.0
-	toolbar.visible = refresh_button.visible
-	_rect(toolbar, Rect2(0, top, width, 42))
 	var filter_width := minf(120, width * 0.17)
 	_rect(body.get_node("Subtitle"), Rect2(0, 60, width - filter_width * 3 - 20, 38))
 	var index := 0
@@ -341,9 +325,8 @@ func _layout_content(width: float) -> void:
 		index += 1
 	_update_filter_tabs()
 	status_label.visible = not status_label.text.is_empty()
-	var status_top := top + (54.0 if toolbar.visible else 0.0)
+	var status_top := top
 	_rect(status_label, Rect2(0, status_top, width - (172 if recovery_button.visible else 0), 42))
-	_rect(refresh_button, Rect2(0, 0, 88, 42))
 	_rect(recovery_button, Rect2(width - 156, status_top, 156, 42))
 	_rect(content, Rect2(0, status_top + (54.0 if status_label.visible or recovery_button.visible else 0.0), width, 100))
 	var height := 0.0
@@ -758,9 +741,8 @@ func _open_gift(id: String) -> void:
 		gift_dialog.grab_focus()
 		return
 	gift_dialog = GiftDialog.new()
-	gift_dialog.page = self
-	gift_dialog.store = store
-	gift_dialog.card_id = id
+	gift_dialog.configure(self, store, id)
+	gift_dialog.retiring.connect(_retire_window)
 	add_child(gift_dialog)
 	gift_dialog.closed.connect(func(): gift_dialog = null; _restore_focus.call_deferred(id))
 	gift_dialog.present()

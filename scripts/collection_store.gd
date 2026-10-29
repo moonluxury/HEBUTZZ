@@ -1,4 +1,5 @@
 extends Node
+const JsonStore = preload("res://scripts/local_json_store.gd")
 ## Collection-only state. No inventory mutations are performed by this client.
 signal changed
 signal operation_changed
@@ -51,6 +52,9 @@ func card(id: String) -> Dictionary:
 		if str(item.id) == id:
 			return item
 	return {}
+
+func is_busy() -> bool:
+	return _busy
 
 func season(id: String) -> Dictionary:
 	for item in seasons:
@@ -108,7 +112,7 @@ func gift_rule(id: String) -> Dictionary:
 	if not is_instance_valid(provider):
 		return {"max": 0, "reason": "赠送服务尚未接入，暂时无法赠送。"}
 	if not inventory_known:
-		return {"max": 0, "reason": "尚未取得当前库存，请刷新后重试。"}
+		return {"max": 0, "reason": "尚未取得当前库存，暂时无法赠送。"}
 	if count(id) <= 0:
 		return {"max": 0, "reason": "尚未拥有这张卡。"}
 	if count(id) == 1:
@@ -157,7 +161,7 @@ func _apply_snapshot(response: Dictionary) -> bool:
 	return true
 
 func friends(query: String) -> Dictionary:
-	var social := get_node_or_null("/root/PageRouter/SocialStore")
+	var social := get_node_or_null("/root/AppServices/SocialStore")
 	if social != null and social.account_id == account_id and social.available():
 		return await social.request("friends", {"query": query, "eligible_for_gift": true})
 	if not is_instance_valid(provider):
@@ -247,7 +251,7 @@ func _load_local() -> void:
 	var path := _path()
 	if not FileAccess.file_exists(path):
 		return
-	var parsed = JSON.parse_string(FileAccess.get_file_as_string(path))
+	var parsed = JsonStore.read(path)
 	if not parsed is Dictionary or parsed.get("account_id") != account_id or not parsed.get("wanted") is Dictionary:
 		status = "本机收藏存档无法读取，已保留原文件；请检查存档。"
 		_save_error = status
@@ -259,19 +263,8 @@ func _load_local() -> void:
 func _save_local() -> bool:
 	if not _save_error.is_empty() and _save_error.contains("原文件"):
 		return false
-	DirAccess.make_dir_recursive_absolute(SAVE_DIR)
-	var path := _path()
-	var temp := path + ".tmp"
-	var file := FileAccess.open(temp, FileAccess.WRITE)
-	if file == null:
-		_save_error = "保存失败，请检查本机存储空间和写入权限后重试。"
-		return false
-	file.store_string(JSON.stringify({"version": 1, "account_id": account_id, "wanted": wanted, "operation": operation}))
-	file.flush()
-	var error := file.get_error()
-	file.close()
-	if error != OK or DirAccess.rename_absolute(temp, path) != OK:
-		_save_error = "保存失败，原状态已保留，请重试。"
+	if JsonStore.write(_path(), {"version": 1, "account_id": account_id, "wanted": wanted, "operation": operation}) != OK:
+		_save_error = "保存失败，原状态已保留，请检查本机存储空间和写入权限后重试。"
 		return false
 	_save_error = ""
 	return true

@@ -10,7 +10,7 @@ var operations: Dictionary = {}
 var snapshot_delay := 0
 var friends_fail := false
 var snapshot_fail := false
-var friend_data := [{"id": "test-friend-a", "name": "测试好友甲", "eligible": true}, {"id": "test-friend-b", "name": "测试好友乙", "eligible": true}]
+var friend_data := [{"id": "test-friend-a", "name": "测试好友甲", "eligible": true, "avatar_card_id": "0004"}, {"id": "test-friend-b", "name": "测试好友乙", "eligible": true}]
 
 func snapshot(account: String) -> Dictionary:
 	return {"ok": true, "account_id": account, "inventory_complete": true, "revision": revision, "inventory": inventory.duplicate(true)}

@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "seasons": [
+    {
+      "id": "season-001",
+      "name": "空天探索",
+      "label": "第一季",
+      "back_image": "res://assets/collection/cards/HEBUT_团队Logo卡背.png"
+    }
+  ],
+  "cards": [
+    {
+      "id": "0001",
+      "season_id": "season-001",
+      "number": "01",
+      "name": "火箭",
+      "description": "从古老火药到现代长征\n以炽热尾焰托举人类的飞天梦想。",
+      "image": "res://assets/collection/cards/01_火箭.png",
+      "artwork": "res://assets/collection/artworks/01_rocket.png"
+    },
+    {
+      "id": "0002",
+      "season_id": "season-001",
+      "number": "02",
+      "name": "人造卫星",
+      "description": "从东方红奏响太空\n到北斗指引归途\n连接地球与星空。",
+      "image": "res://assets/collection/cards/02_人造卫星.png",
+      "artwork": "res://assets/collection/artworks/02_satellite.png"
+    },
+    {
+      "id": "0003",
+      "season_id": "season-001",
+      "number": "03",
+      "name": "空间站",
+      "description": "让人类在失重中长期驻留\n在地球之外续写科学与生活。",
+      "image": "res://assets/collection/cards/03_空间站.png",
+      "artwork": "res://assets/collection/artworks/03_space_station.png"
+    },
+    {
+      "id": "0004",
+      "season_id": "season-001",
+      "number": "04",
+      "name": "宇航员",
+      "description": "从加加林到杨利伟\n以勇气与智慧拓展人类活动的边界。",
+      "image": "res://assets/collection/cards/04_宇航员.png",
+      "artwork": "res://assets/collection/artworks/04_astronaut.png"
+    },
+    {
+      "id": "0005",
+      "season_id": "season-001",
+      "number": "05",
+      "name": "空天飞机",
+      "description": "将航空与航天的梦想相连\n探索可重复往返天地的未来。",
+      "image": "res://assets/collection/cards/05_空天飞机.png",
+      "artwork": "res://assets/collection/artworks/05_spaceplane.png"
+    },
+    {
+      "id": "0006",
+      "season_id": "season-001",
+      "number": "06",
+      "name": "射电望远镜",
+      "description": "捕捉来自宇宙的无线电波\n在无声星海中聆听远古回响。",
+      "image": "res://assets/collection/cards/06_射电望远镜.png",
+      "artwork": "res://assets/collection/artworks/06_radio_telescope.png"
+    },
+    {
+      "id": "0007",
+      "season_id": "season-001",
+      "number": "07",
+      "name": "环状行星",
+      "description": "碎片与尘埃绕行成环\n在引力的舞步中留存行星演化的线索。",
+      "image": "res://assets/collection/cards/07_环状行星.png",
+      "artwork": "res://assets/collection/artworks/07_ringed_planet.png"
+    }
+  ]
+}

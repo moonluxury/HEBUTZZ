@@ -1,4 +1,5 @@
 extends Node
+const JsonStore = preload("res://scripts/local_json_store.gd")
 ## Session-scoped social state. Only a trusted provider can return official/business events.
 signal changed
 signal messages_changed(conversation_id: String)
@@ -47,7 +48,7 @@ var _intents: Dictionary = {}
 
 func _ready() -> void:
 	get_node("/root/ProfileStore").changed.connect(_session_changed)
-	get_node("/root/PageRouter").collection_store().gift_completed.connect(_gift_finished)
+	get_node("/root/AppServices").collection_store().gift_completed.connect(_gift_finished)
 	_session_changed()
 
 func _session_changed() -> void:
@@ -142,7 +143,7 @@ func refresh() -> void:
 
 func _refresh_legacy_friends() -> void:
 	# A host may already expose the older friend lookup without a chat service.
-	var collection: Node = get_node("/root/PageRouter").collection_store()
+	var collection: Node = get_node("/root/AppServices").collection_store()
 	if account_id.is_empty() or not is_instance_valid(collection.provider) or not collection.provider.has_method("request_friends"):
 		return
 	_refreshing = true
@@ -186,7 +187,7 @@ func _merge_trade(trade: Dictionary) -> void:
 	var newly_completed: bool = trade.get("status") == "completed" and trades.get(id, {}).get("status") != "completed"
 	trades[id] = trade.duplicate(true)
 	if newly_completed:
-		get_node("/root/PageRouter").collection_store().refresh()
+		get_node("/root/AppServices").collection_store().refresh()
 
 func conversation(id: String) -> Dictionary:
 	for item in conversations:
@@ -419,18 +420,9 @@ func forget_intent(action: String, payload: Dictionary) -> void:
 	_save_preferences()
 
 func _save_preferences() -> bool:
-	if account_id.is_empty():
-		return false
-	DirAccess.make_dir_recursive_absolute(SAVE_DIR)
+	if account_id.is_empty(): return false
 	var path := SAVE_DIR.path_join(account_id.sha256_text() + ".json")
-	var file := FileAccess.open(path + ".tmp", FileAccess.WRITE)
-	if file == null:
-		return false
-	file.store_string(JSON.stringify({"account_id": account_id, "tab": tab, "selected": selected, "intents": _intents}))
-	file.flush()
-	var result := file.get_error()
-	file.close()
-	return result == OK and DirAccess.rename_absolute(path + ".tmp", path) == OK
+	return JsonStore.write(path, {"account_id": account_id, "tab": tab, "selected": selected, "intents": _intents}) == OK
 
 func _load_preferences() -> void:
 	if account_id.is_empty():
@@ -438,7 +430,7 @@ func _load_preferences() -> void:
 	var path := SAVE_DIR.path_join(account_id.sha256_text() + ".json")
 	if not FileAccess.file_exists(path):
 		return
-	var value: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	var value: Variant = JsonStore.read(path)
 	if value is Dictionary and value.get("account_id") == account_id:
 		tab = str(value.get("tab", "friends"))
 		selected = str(value.get("selected", ""))

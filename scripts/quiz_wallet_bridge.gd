@@ -1,6 +1,7 @@
 extends Node
 ## Optional bridge: send answers to a server-issued attempt, never local correctness.
-var quiz: Node
+signal feedback_changed
+var session: RefCounted
 var store: Node
 var serial := 0
 var attempt_id := ""
@@ -11,13 +12,13 @@ var session_epoch := -1
 var feedback := ""
 
 func _ready() -> void:
-	store = get_node("/root/PageRouter").wallet_store()
+	store = get_node("/root/AppServices").wallet_store()
 	store.changed.connect(_session_changed)
 
 func _session_changed() -> void:
 	if session_epoch != store.epoch and not feedback.is_empty():
 		feedback = ""
-		if is_instance_valid(quiz): quiz._refresh_answer_feedback()
+		feedback_changed.emit()
 
 func prepare(subject: String, question: Dictionary) -> void:
 	serial += 1
@@ -46,9 +47,9 @@ func prepare(subject: String, question: Dictionary) -> void:
 func submit() -> void:
 	if submitted or session_epoch != store.epoch: return
 	var keys: Array[String] = []
-	for index in quiz.selected_indices: keys.append(str(quiz.shuffled_options[index].get("key", "")))
+	for index in session.selected_indices: keys.append(str(session.shuffled_options[index].get("key", "")))
 	keys.sort()
-	pending_answer = {"selected_keys": keys, "entered_answers": quiz.entered_answers.duplicate()}
+	pending_answer = {"selected_keys": keys, "entered_answers": session.entered_answers.duplicate()}
 	if prepared: _send()
 
 func _send() -> void:
@@ -67,11 +68,6 @@ func _send() -> void:
 	elif not response.get("ok", false): _feedback("电池奖励待核实，可查看明细")
 
 func _feedback(value: String) -> void:
-	if is_instance_valid(quiz) and quiz.has_answered:
+	if is_instance_valid(session) and session.has_answered:
 		feedback = value
-		quiz._refresh_answer_feedback()
-		get_node("/root/UiMotion").enter(quiz.result_label)
-
-func apply_feedback() -> void:
-	if session_epoch == store.epoch and not feedback.is_empty() and quiz.has_answered:
-		quiz.result_label.text += " · " + feedback
+		feedback_changed.emit()

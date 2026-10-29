@@ -1,5 +1,6 @@
 extends Node
-## Workbench-only records. Existing wrong answers, drafts and spirit saves stay independent.
+const JsonStore = preload("res://scripts/local_json_store.gd")
+## Workbench-only records. Wrong questions and program drafts have separate persistence owners.
 
 const FillAnswer = preload("res://scripts/fill_answer.gd")
 const OutputAnswer = preload("res://scripts/output_answer.gd")
@@ -17,7 +18,7 @@ var banks: Dictionary = {}
 
 func _ready() -> void:
 	if FileAccess.file_exists(SAVE_PATH):
-		var saved = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
+		var saved = JsonStore.read(SAVE_PATH)
 		if saved is Dictionary:
 			if saved.get("history") is Dictionary:
 				history = saved.history
@@ -69,10 +70,14 @@ func _record(subject: String, question: Dictionary, answered: bool, correct: boo
 
 
 func _save() -> void:
-	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-	if file != null:
-		file.store_string(JSON.stringify({"version": 2, "history": history, "learned": learned, "last_question": last_question}))
+	if JsonStore.write(SAVE_PATH, {"version": 2, "history": history, "learned": learned, "last_question": last_question}) != OK:
+		push_warning("学习记录保存失败，原文件已保留。")
 
+func answer_count(correct_only := false) -> int:
+	var count := 0
+	for day in history.values():
+		count += int(day.get("correct" if correct_only else "attempts", 0))
+	return count
 
 func _ensure_subject_records(day: Dictionary) -> void:
 	if day.get("subjects") is Dictionary:
