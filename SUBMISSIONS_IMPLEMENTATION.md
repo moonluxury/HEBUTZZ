@@ -116,3 +116,15 @@ CEF Windows x64 运行时约 386 MB，不进入 Git；发布时必须随 EXE 携
 正式 release 模板禁用外部 `--script/--path` 覆盖，因此发布检查改为启动真实的 `--open-submissions` 入口，读取实际 JS/原生桥接就绪结果，再人工查看窗口。不会把外部脚本没有执行当作验收通过。当前候选目录为 `.godot_appdata/submission-final/`，旧的 `submission-release/` 仅为诊断遗留，不用于交付。
 
 最终 release 导出退出码 0；`tools/run_submission_export_check.py --exe .godot_appdata/submission-final/Hegong.exe` 通过，实际发布日志包含 `SUBMISSION EDITOR READY` 和 `remote_debugging=false`，无 ERROR。之后已打开实际发布窗口，看到完整侧栏、投稿登录引导和按钮；截图为 [08-packaged-login.png](outputs/submissions-validation/08-packaged-login.png)，日志为 [packaged.log](outputs/submissions-validation/packaged.log)。候选 EXE 与同目录 addons 必须一起使用。
+
+## 正常启动不弹控制台（2026-10-30）
+
+用户反馈进入投稿时出现黑色调试窗口，已复现。原因是 CEF 插件在父/子进程中强制传递 `enable-logging`，Chromium 会为无控制台启动的 GUI 程序创建控制台；只把 stderr 改成文件日志仍会出现。
+
+现使用单独的 `x86_64-pc-windows-msvc-quiet` 运行目录，按固定上游哈希准备取消强制控制台日志的插件；补丁过程、原始/结果哈希和许可记录在 `addons/godot_cef/LOCAL_PATCHES.md` 及运行时清单中。正常应用错误继续记入 Godot 日志。Windows 导出关闭额外 `.console.exe` 启动器。
+
+现有开发目录可以运行 `python tools/prepare_submission_runtime.py` 生成修复后的运行时；首次安装继续运行 `python tools/setup_submission_editor.py`，会自动完成。所有运行时 DLL 仍由安装脚本准备，不提交 Git。旧进程不被强制关闭，停止当前运行后重新打开即可使用修复。
+
+验证使用 GUI 版 Godot，以 DETACHED_PROCESS 启动，不重定向 stdout/stderr，也不以 CREATE_NO_WINDOW 隐藏应用。旧版本在同样条件下出现 conhost；新版本 `tools/check_submission_console.py` 检查编辑器就绪及其进程树，0 个控制台进程。完整投稿链路（含 Word 导入/导出）再次通过，0 失败。
+
+源码 GUI 与独立 release EXE 的无控制台检查均通过，记录见 outputs/submissions-validation/console-audit-debug.json 和 console-audit-release.json。新打包候选目录为 .godot_appdata/submission-no-console/，该目录无 .console.exe 启动器。

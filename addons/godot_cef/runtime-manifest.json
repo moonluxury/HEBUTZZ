@@ -90,5 +90,21 @@
       "bytes": 582266,
       "sha256": "04fe059b62e211571307ef2937b2c966e6a7b0e58e9d2149ffda618679e65fad"
     }
+  },
+  "local_patch": {
+    "id": "windows-no-console-v1",
+    "runtime_directory": "bin/x86_64-pc-windows-msvc-quiet",
+    "binaries": {
+      "gdcef.dll": {
+        "upstream_sha256": "736df5295c18e15a0cdec6001f6cc6f4faacd67137409481beb767ed4e900b00",
+        "patched_sha256": "1eecf0be9926a06f44b1281ed2ad44f7564fa8761cb657a6d28d5927e2e19c97",
+        "replacement_count": 1
+      },
+      "gdcef_helper.exe": {
+        "upstream_sha256": "bec363209c2415613fc548d62e56b0c5bcfd908af7a31730129b2a49f2bde62c",
+        "patched_sha256": "542c05644818d4143bb9f482ec3c6d853d315a3551a5b94cd3bf5bf0545964bb",
+        "replacement_count": 1
+      }
+    }
   }
 }

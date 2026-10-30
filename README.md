@@ -122,3 +122,5 @@ F5 运行后，在「我的好友」下方进入「我要充值」。原生 Godo
 ## 投稿模块（2026-10-30 接续）
 
 侧栏“投稿”接入基础信息、沉浸式写作和我的投稿；已发表文章由河工开物资源页进入同一阅读页。采用原生 Godot 外壳内的 CEF/Tiptap，设置和写作共用一个版本化稿件；支持自动保存、本机断网恢复、公式/表格/图片和 `.docx` 导入导出。五屏截图、运行命令、权限接口、依赖许可及明确的 Word 限制见 [投稿交付记录](SUBMISSIONS_IMPLEMENTATION.md)。投稿后端已部署现有服务器，服务器隔离库 44 项和正式 HTTPS 27 项检查通过，见 [部署记录](SUBMISSIONS_DEPLOYMENT.md)。审核员账号和正式奖励钱包尚未配置；不会显示虚假的发表或到账结果。
+
+投稿编辑器的 Windows 运行时已修复启动时弹出黑色调试窗口的问题。更新旧开发目录后执行 `python tools/prepare_submission_runtime.py`；全新环境执行 `python tools/setup_submission_editor.py` 会自动准备。重启当前运行后生效，正常错误仍写入应用日志。

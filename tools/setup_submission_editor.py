@@ -90,6 +90,8 @@ def main():
         elif windows:
             lines[index] = line.replace(': ""', ': "addons/godot_cef/bin/x86_64-pc-windows-msvc"')
     extension.write_text('\n'.join(lines)+'\n', encoding='utf-8')
+    from prepare_submission_runtime import prepare
+    prepare()
     print('CEF runtime installed:', sum(item['bytes'] for item in files.values()), 'bytes')
 
 

@@ -1,0 +1,38 @@
+{
+  "renderer_ready": true,
+  "console_count": 0,
+  "samples": [
+    {
+      "consoles": 0,
+      "cef_helpers": 0
+    },
+    {
+      "consoles": 0,
+      "cef_helpers": 5
+    },
+    {
+      "consoles": 0,
+      "cef_helpers": 0
+    },
+    {
+      "consoles": 0,
+      "cef_helpers": 0
+    },
+    {
+      "consoles": 0,
+      "cef_helpers": 0
+    },
+    {
+      "consoles": 0,
+      "cef_helpers": 0
+    },
+    {
+      "consoles": 0,
+      "cef_helpers": 0
+    },
+    {
+      "consoles": 0,
+      "cef_helpers": 0
+    }
+  ]
+}

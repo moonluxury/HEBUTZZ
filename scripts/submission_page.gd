@@ -47,9 +47,9 @@ func _layout_content(_width: float) -> void:
 
 func _ensure_browser() -> void:
 	if OS.get_name() != "Windows": fallback.text = "投稿写作目前支持 Windows 电脑版。"; return
-	var runtime := ProjectSettings.globalize_path("res://addons/godot_cef/bin/x86_64-pc-windows-msvc")
+	var runtime := ProjectSettings.globalize_path("res://addons/godot_cef/bin/x86_64-pc-windows-msvc-quiet")
 	var exported := OS.get_executable_path().get_base_dir()
-	var packaged := exported.path_join("addons/godot_cef/bin/x86_64-pc-windows-msvc")
+	var packaged := exported.path_join("addons/godot_cef/bin/x86_64-pc-windows-msvc-quiet")
 	if FileAccess.file_exists(packaged.path_join("libcef.dll")): runtime = packaged
 	elif FileAccess.file_exists(exported.path_join("libcef.dll")): runtime = exported
 	elif not runtime.is_absolute_path(): runtime = exported.path_join(runtime)
@@ -61,10 +61,10 @@ func _ensure_browser() -> void:
 	if cache_root.is_empty(): cache_root = OS.get_user_data_dir().get_base_dir()
 	var support_directory := cache_root.path_join("HegongSubmission").replace("\\", "/")
 	DirAccess.make_dir_recursive_absolute(support_directory)
-	# Chromium can still open --log-file while logging to stderr. It must never
-	# inherit Godot's already-open log or share a log with another app process.
+	# The packaged CEF runtime removes the vendor's forced enable-logging flag,
+	# which makes Chromium allocate a console even when logging to a file.
 	var cef_log := support_directory.path_join("cef-" + str(OS.get_process_id()) + ".log")
-	ProjectSettings.set_setting("godot_cef/advanced/custom_command_line_switches", "resources-dir-path=" + runtime + "\nlocales-dir-path=" + runtime.path_join("locales") + "\nenable-logging=stderr\nlog-file=" + cef_log)
+	ProjectSettings.set_setting("godot_cef/advanced/custom_command_line_switches", "resources-dir-path=" + runtime + "\nlocales-dir-path=" + runtime.path_join("locales") + "\nlog-file=" + cef_log)
 	ProjectSettings.set_setting("godot_cef/storage/data_path", cache_root.path_join("HegongSubmission/BrowserCache").replace("\\", "/"))
 	if not ClassDB.class_exists("CefTexture"): GDExtensionManager.load_extension("res://addons/godot_cef/godot_cef.gdextension")
 	if not ClassDB.class_exists("CefTexture"): fallback.text = "编辑器组件无法启动。"; return
