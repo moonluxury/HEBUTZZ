@@ -8,6 +8,7 @@ var recent: Array[String] = []
 var scenes: Dictionary = {}
 var sidebar: Panel
 var pending := ""
+var pending_entry_view := "mine"
 var switch_queued := false
 var identity_login_requested := false
 var friends_notifications_requested := false
@@ -39,8 +40,9 @@ func packed_scene(path: String) -> PackedScene:
 		scenes[path] = load(path)
 	return scenes[path]
 
-func go(path: String) -> void:
+func go(path: String, entry_view := "mine") -> void:
 	pending = path
+	pending_entry_view = entry_view
 	if not switch_queued:
 		switch_queued = true
 		_switch.call_deferred()
@@ -77,6 +79,7 @@ func _switch() -> void:
 	if is_instance_valid(previous) and previous.has_method("prepare_navigation"):
 		if not await previous.prepare_navigation(): switch_queued = false; return
 	var path := pending
+	var entry_view := pending_entry_view
 	var key := key_for(path, get_node("/root/AppState").quiz_mode)
 	switch_queued = false
 	if is_instance_valid(previous) and previous.get_meta("route_key", "") == key and _cacheable(previous):
@@ -116,6 +119,7 @@ func _switch() -> void:
 		pages[expired].free()
 		pages.erase(expired)
 	next.set_meta("route_key", key)
+	next.set_meta("entry_view", entry_view)
 	next.process_mode = Node.PROCESS_MODE_INHERIT
 	tree.root.add_child(next)
 	tree.current_scene = next

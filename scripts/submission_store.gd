@@ -14,7 +14,7 @@ var counts: Dictionary = {}
 var config: Dictionary = {}
 var article: Dictionary = {}
 var public_items: Array = []
-var view := "settings"
+var view := "mine"
 var status := ""
 var error := ""
 var conflict: Dictionary = {}
@@ -46,7 +46,7 @@ func _session_changed() -> void:
 	provider = profile.provider
 	current = {}; records = []; counts = {}; assets = {}; article = {}; public_items = []; config = {}; conflict = {}; pending = {}; pending_action = {}
 	_public_request += 1
-	busy = false; dirty = false; sequence = 0; error = ""; status = ""; view = "settings"
+	busy = false; dirty = false; sequence = 0; error = ""; status = ""; view = "mine"
 	_last_key = ""
 	_timer.stop()
 	changed.emit("account")
@@ -79,21 +79,16 @@ func persist() -> bool:
 		if JsonStore.write(_directory().path_join("session.json"), {"account_id":account_id,"last_key":current.client_key}) == OK: _last_key = str(current.client_key)
 	return issue == OK
 
-func activate() -> void:
+func activate(entry_view := "mine") -> void:
+	# Opening the module only lists manuscripts. Creation/restoration is an
+	# explicit row/new action; merely visiting must never create a blank draft.
+	if not persist(): return
+	view = entry_view if entry_view in ["settings", "writer", "preview"] and not current.is_empty() else "mine"
+	changed.emit("view")
 	if account_id.is_empty(): changed.emit("account"); return
-	if view == "article": view = "settings"
-	if current.is_empty():
-		var previous: Variant = JsonStore.read(_directory().path_join("session.json"))
-		var restored: bool = previous is Dictionary and previous.get("account_id") == account_id and load_local(str(previous.get("last_key", "")))
-		var recoveries := local_records()
-		if restored:
-			status = "已恢复上次编辑的稿件"
-			if not str(current.id).is_empty(): await open_draft(str(current.id))
-		elif not recoveries.is_empty():
-			load_local(str(recoveries[0].client_key))
-			status = "已恢复此账号的本机草稿；连接后可继续同步"
-		else: new_draft()
+	var generation := epoch
 	await refresh_config()
+	if generation == epoch and view == "mine": await refresh_mine()
 
 func refresh_config() -> void:
 	var generation := epoch

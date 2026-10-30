@@ -29,7 +29,7 @@ func _ready() -> void:
 	# Run after CefTexture's default process, which uses unzoomed IME bounds.
 	process_priority = 100
 	_ensure_browser.call_deferred()
-	if not public_mode: store.activate()
+	if not public_mode: store.activate(str(get_meta("entry_view", "mine")))
 	else: store.refresh_public()
 
 func _build_content() -> void:
@@ -101,7 +101,7 @@ func _guard_navigation(url: String) -> void:
 		browser.call_deferred("load_url", _trusted_url)
 
 func _push_state(reason := "status") -> void:
-	if not browser_ready or not is_instance_valid(browser): return
+	if not is_inside_tree() or is_queued_for_deletion() or not browser_ready or not is_instance_valid(browser): return
 	var value: Dictionary = store.state()
 	value.dark = dark
 	value.reduced_motion = get_node("/root/UiMotion").reduced()
@@ -123,6 +123,7 @@ func _send(value: Dictionary) -> void:
 	if is_instance_valid(browser): browser.call("eval", "window.hegong && window.hegong.receive(" + JSON.stringify(value) + ");")
 
 func _message(raw: String) -> void:
+	if not is_inside_tree() or is_queued_for_deletion(): return
 	if raw.length() > 1100000: return
 	if not is_instance_valid(browser) or str(browser.get("url")) != _trusted_url: return
 	var message: Variant = JSON.parse_string(raw)
@@ -157,7 +158,7 @@ func _message(raw: String) -> void:
 		"delete_draft": result = await store.delete_draft(str(params.get("id", "")), str(params.get("key", "")))
 		"open_draft":
 			result = await store.open_draft(str(params.get("id", "")), str(params.get("key", "")))
-			if result.get("ok", false) and public_mode: get_node("/root/PageRouter").go("res://scenes/Submissions.tscn")
+			if result.get("ok", false) and public_mode: get_node("/root/PageRouter").go("res://scenes/Submissions.tscn", store.view)
 		"open_article":
 			result = await store.open_article(str(params.get("id", "")))
 			if result.get("ok", false) and not public_mode: get_node("/root/PageRouter").go("res://scenes/SubmissionArticle.tscn")
@@ -166,7 +167,7 @@ func _message(raw: String) -> void:
 		"revise_article":
 			result = await store.open_draft(str(params.get("id", "")))
 			if result.get("ok", false): result = await store.transition("submission_revise")
-			if result.get("ok", false): get_node("/root/PageRouter").go("res://scenes/Submissions.tscn")
+			if result.get("ok", false): get_node("/root/PageRouter").go("res://scenes/Submissions.tscn", store.view)
 		"conflict": store.resolve_conflict(bool(params.get("use_local", false)))
 		"asset": result = await store.image_data(str(params.get("id", "")))
 		"choose_image":
@@ -274,5 +275,7 @@ func _close_safely() -> void:
 	else: _closing = false
 
 func _exit_tree() -> void:
-	if is_instance_valid(store): store.persist()
+	if is_instance_valid(store):
+		if store.changed.is_connected(_state_changed): store.changed.disconnect(_state_changed)
+		store.persist()
 	if get_tree() != null: get_tree().auto_accept_quit = _original_quit

@@ -25,7 +25,7 @@ func _run() -> void:
 	data.document = {"type":"doc","content":[{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"中文输入与剪贴板"}]},{"type":"paragraph","content":[{"type":"text","text":"在这里验证真实键盘输入。"}]}]}
 	store.update(data)
 	store.view = "writer"
-	root.get_node("PageRouter").go("res://scenes/Submissions.tscn")
+	root.get_node("PageRouter").go("res://scenes/Submissions.tscn", "writer")
 	await scene_changed
 	if not await attach_page(): quit(1); return
 	print("VISIBLE SUBMISSION CHECK READY")

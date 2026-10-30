@@ -71,6 +71,22 @@ func _run() -> void:
 	await until(func(): return not profile.loading)
 	store = root.get_node("AppServices").submission_store()
 	if not is_instance_valid(store): quit(1); return
+	var initial_list: Dictionary = await api.social_request("submission_mine", {})
+	root.get_node("PageRouter").go("res://scenes/Submissions.tscn")
+	await scene_changed
+	if not await attach_page(): quit(1); return
+	await until(func(): return not store.config.is_empty() and store.records.size() >= 6)
+	check(store.view == "mine" and store.current.is_empty(), "The submission entry opens the list without creating or restoring a working draft")
+	check(bool(await script("document.querySelector('.page-head h1')?.textContent==='我的投稿'")), "The first visible submission screen is My Submissions")
+	check(store.local_records().is_empty(), "Opening the module does not leave an empty local draft")
+	await capture("00-submission-entry")
+	await script("[...document.querySelectorAll('.page-head button')].find(button=>button.textContent.includes('写新投稿')).click()")
+	await until(func(): return store.view == "settings" and not store.current.is_empty())
+	var explicit_new_key: String = store.current.client_key
+	check(str(store.current.id).is_empty(), "Only clicking Write New opens a newly created local draft")
+	var removed_new: Dictionary = await store.delete_draft(str(store.current.id), explicit_new_key)
+	check(removed_new.get("ok", false), "Remove only the intentionally created test draft")
+	await until(func(): return not store.busy)
 	var opened: Dictionary = await store.open_draft(str(session.draft_id))
 	check(opened.get("ok", false), "Open the real server-owned test draft")
 	if store.current.get("state") == "pending": await store.transition("submission_withdraw")
@@ -80,7 +96,14 @@ func _run() -> void:
 	root.get_node("PageRouter").go("res://scenes/Submissions.tscn")
 	await scene_changed
 	if not await attach_page(): quit(1); return
-	await until(func(): return not store.config.is_empty())
+	await until(func(): return store.view == "mine" and store.records.size() >= 6)
+	check(str(store.current.id) == str(session.draft_id), "Re-entering via navigation shows the list and preserves the previously edited draft")
+	var revisited_list: Dictionary = await api.social_request("submission_mine", {})
+	check(revisited_list.total == initial_list.total, "Repeated entry does not increase the server manuscript count")
+	var continue_selector := ".submission-row[data-draft-key=\"" + str(store.current.client_key) + "\"] .row-actions button:first-child"
+	await script("document.querySelector(" + JSON.stringify(continue_selector) + ").click()")
+	await until(func(): return store.view == "settings")
+	await frames()
 	await capture("01-settings")
 	root.size = Vector2i(1366, 768); root.content_scale_size = root.size
 	await frames(20)
@@ -208,6 +231,11 @@ func _run() -> void:
 	await frames(20)
 	await capture("06-reader-narrow")
 	check(bool(await script("document.documentElement.scrollWidth<=innerWidth")), "Narrow reading has no horizontal page overflow")
+	await script("[...document.querySelectorAll('.article-top button')].find(button=>button.textContent==='编辑文章').click()")
+	await until(func(): return current_scene.scene_file_path == "res://scenes/Submissions.tscn")
+	if not await attach_page(): quit(1); return
+	check(store.view == "settings" and str(store.current.article_id) == str(session.article_id), "An explicit Edit Article action still enters the selected revision editor")
+	await until(func(): return not store.busy)
 	await store.open_draft(str(session.draft_id))
 	await store.transition("submission_withdraw")
 	api.base_url = "http://127.0.0.1:1"
@@ -219,6 +247,9 @@ func _run() -> void:
 	var recovered := preload("res://scripts/submission_store.gd").new()
 	root.add_child(recovered)
 	await recovered.activate()
+	check(recovered.view == "mine" and recovered.current.is_empty(), "Even offline recovery starts at the list instead of silently opening a manuscript")
+	check(recovered.local_records().any(func(item): return item.client_key == store.current.client_key), "The unsynced manuscript remains available in the list recovery data")
+	await recovered.open_draft("", str(store.current.client_key))
 	check(recovered.current.get("data", {}).get("title") == "断网恢复验证" and recovered.dirty, "A fresh store restores the account's disconnected draft from disk")
 	api.base_url = "http://127.0.0.1:8059"
 	var resumed: Dictionary = await recovered.save()
