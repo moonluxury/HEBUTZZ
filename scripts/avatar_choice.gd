@@ -2,7 +2,6 @@ extends Button
 ## Local radio-style option. Artwork stays untouched; all decoration is a sibling overlay.
 const Avatar = preload("res://scripts/profile_avatar.gd")
 const Tokens = preload("res://scripts/ui_tokens.gd")
-const Styles = preload("res://scripts/ui_styles.gd")
 var picture: TextureRect
 var decoration: Control
 var accent := Tokens.PRIMARY
@@ -24,12 +23,8 @@ class SelectionOverlay extends Control:
 			draw_circle(badge, 13, choice.surface, true, -1, true)
 			draw_circle(badge, 10.5, color, true, -1, true)
 			draw_polyline(PackedVector2Array([badge + Vector2(-5, 0), badge + Vector2(-1, 4), badge + Vector2(5, -4)]), Color.WHITE, 2, true)
-		elif choice.hover_alpha > 0 or choice.has_focus():
-			draw_arc(center, 73, 0, TAU, 128, Color(color, 0.55 if choice.has_focus() else choice.hover_alpha * 0.35), 2, true)
-		if choice.has_focus() and Styles.focus_visible(choice):
-			for index in 24:
-				var angle := TAU * index / 24.0
-				draw_arc(center, 78, angle, angle + 0.12, 4, color, 1.5, true)
+		elif choice.hover_alpha > 0:
+			draw_arc(center, 73, 0, TAU, 128, Color(color, choice.hover_alpha * 0.35), 2, true)
 
 func _init() -> void:
 	custom_minimum_size = Vector2(148, 148)
@@ -52,8 +47,6 @@ func _init() -> void:
 func _ready() -> void:
 	mouse_entered.connect(_hover.bind(true))
 	mouse_exited.connect(_hover.bind(false))
-	focus_entered.connect(decoration.queue_redraw)
-	focus_exited.connect(decoration.queue_redraw)
 
 func _hover(inside: bool) -> void:
 	var motion := get_node("/root/UiMotion")

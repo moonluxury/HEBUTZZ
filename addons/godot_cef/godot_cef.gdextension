@@ -1,0 +1,56 @@
+[configuration]
+entry_symbol = "gdext_rust_init"
+compatibility_minimum = 4.6
+reloadable = true
+
+[libraries]
+linux.x86_64   = "bin/x86_64-unknown-linux-gnu/libgdcef.so"
+macos          = "bin/universal-apple-darwin/Godot CEF.framework"
+windows.x86_64 = "bin/x86_64-pc-windows-msvc/gdcef.dll"
+
+[icons]
+CefTexture = "icons/webview.png"
+CefIpcInspector = "icons/webview.png"
+
+[dependencies]
+
+windows.x86_64 = {
+  "bin/x86_64-pc-windows-msvc/gdcef.dll" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/gdcef_helper.exe" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+
+  "bin/x86_64-pc-windows-msvc/locales" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/bootstrap.exe" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/bootstrapc.exe" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/chrome_100_percent.pak" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/chrome_200_percent.pak" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/chrome_elf.dll" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/d3dcompiler_47.dll" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/dxcompiler.dll" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/dxil.dll" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/icudtl.dat" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/libcef.dll" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/resources.pak" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/v8_context_snapshot.bin" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/vk_swiftshader.dll" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/vk_swiftshader_icd.json" : "addons/godot_cef/bin/x86_64-pc-windows-msvc",
+  "bin/x86_64-pc-windows-msvc/vulkan-1.dll" : "addons/godot_cef/bin/x86_64-pc-windows-msvc"
+}
+
+
+linux.x86_64 = {
+  "bin/x86_64-unknown-linux-gnu/libgdcef.so" : "",
+  "bin/x86_64-unknown-linux-gnu/gdcef_helper" : "",
+
+  "bin/x86_64-unknown-linux-gnu/chrome-sandbox" : "",
+  "bin/x86_64-unknown-linux-gnu/libcef.so" : "",
+  "bin/x86_64-unknown-linux-gnu/libvk_swiftshader.so" : "",
+  "bin/x86_64-unknown-linux-gnu/libvulkan.so.1" : "",
+  "bin/x86_64-unknown-linux-gnu/v8_context_snapshot.bin" : "",
+  "bin/x86_64-unknown-linux-gnu/vk_swiftshader_icd.json" : "",
+  "bin/x86_64-unknown-linux-gnu/icudtl.dat" : "",
+  "bin/x86_64-unknown-linux-gnu/resources.pak" : "",
+  "bin/x86_64-unknown-linux-gnu/chrome_100_percent.pak" : "",
+  "bin/x86_64-unknown-linux-gnu/chrome_200_percent.pak" : "",
+  "bin/x86_64-unknown-linux-gnu/locales" : ""
+}
+

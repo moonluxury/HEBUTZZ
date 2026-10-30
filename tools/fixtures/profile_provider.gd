@@ -10,6 +10,10 @@ var malformed_save := false
 var wrong_avatar_response := false
 var last_avatar_id := ""
 var avatar_operations: Dictionary = {}
+var profile_operations: Dictionary = {}
+var profile_requests: Array = []
+var profile_unknown_before := false
+var profile_unknown_after := false
 var unknown_after_save := false
 var unknown_before_save := false
 var login_delay := 0.0
@@ -59,6 +63,16 @@ func save_profile(account: String, patch: Dictionary, avatar_card_id: String, re
 	response.persisted = not malformed_save
 	if wrong_avatar_response:
 		response.profile.avatar_card_id = "0007"
+	return response
+
+func save_profile_request(account: String, patch: Dictionary, card_id: String, operation_id: String) -> Dictionary:
+	var key := account + ":" + operation_id
+	profile_requests.append({"account_id": account, "patch": patch.duplicate(true), "request_id": operation_id})
+	if profile_operations.has(key): return profile_operations[key].duplicate(true)
+	if profile_unknown_before: return {"ok": false, "account_id": account, "code": "unknown"}
+	var response := await save_profile(account, patch, card_id)
+	if response.get("ok", false) and response.get("persisted", false): profile_operations[key] = response.duplicate(true)
+	if profile_unknown_after: return {"ok": false, "account_id": account, "code": "unknown"}
 	return response
 
 func save_avatar(account: String, card_id: String, operation_id: String) -> Dictionary:

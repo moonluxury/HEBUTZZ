@@ -6,7 +6,7 @@
 
 - `AppState`：当前课程/练习入口、显示偏好、全局快捷键、窗口初始化及编程草稿。
 - `StudyStats`：题库统一加载/校验/题型分组、学习记录、继续学习位置。
-- `ProfileStore`：宿主提供的账号会话与资料状态。
+- `ProfileStore`：宿主提供的账号会话与资料状态；持有资料保存快照、请求标识和待核实结果，弹窗关闭不取消已经发出的保存。
 - `AppServices`：按需创建并持有 `CollectionStore`、`SocialStore`、`WalletStore`、`WrongQuestions`。这些服务独立于页面和路由缓存生存。
 - `PageRouter`：页面切换、返回层级、缓存和公共侧栏；不再创建或持有业务 Store。
 - `UiResources`：字体、主题资源、纹理缓存和滚动条显示策略。
@@ -32,7 +32,8 @@ flowchart LR
 - `quiz_grader.gd` 是纯判题模块，继续复用 `FillAnswer`、`OutputAnswer` 的规范化规则。
 - `quiz.gd` 接收操作信号，协调会话、存档、统计、奖励及导航；不定义控件样式或具体判题规则。
 - `quiz_content_view.gd` 创建和更新题干、选项、填空、输出及代码控件。用户操作通过信号传给控制器。
-- `minimal_quiz_view.gd` 负责页面布局、题号虚拟化、F6 专注模式和计时显示，只与内容视图交互。
+- `minimal_quiz_view.gd` 负责页面布局、题号虚拟化、F6 专注模式、计时及右栏视图组装。标记与讨论分别从 AppServices 取得 QuizMarks / BankDiscussions，仍不承担判题。
+- `quiz_right_panes.gd` 仅负责固定右栏内的可中断过渡和输入/焦点管理；`bank_discussion_view.gd` 是原生评论控件，`bank_discussion_store.gd` 持有按会话和题库隔离的网络、草稿、分页及请求序列。`quiz_marks.gd` 使用 LocalJsonStore 单独保存稳定题目标记。
 - `quiz_wallet_bridge.gd` 读取会话答案并对接奖励服务，通过 `feedback_changed` 发出反馈，不直接改界面控件。
 
 控制器保留了已有集成检查使用的属性访问器；新增界面组件应接入会话/内容视图和信号，不依赖控制器的内部方法。
@@ -50,6 +51,10 @@ flowchart LR
 ## 样式与动效
 
 `UiTokens` 保存品牌色和时长；`UiStyles` 保存组件样式、配色变体、按钮/输入框焦点规则、代码控件及菜单外观。
+
+圆角弹窗统一通过 `UiStyles.dialog_panel()` 设置透明窗口底色、无系统外框和无外层描边的面板；标题与关闭操作由弹窗内容提供。主题切换同样复用该入口，避免圆角外重新露出矩形底色。嵌入窗口额外通过 `DialogSurface` 保留圆角边缘的直通 RGB/Alpha，透明像素的 Alpha 始终为 0，避免合成时重复乘透明度及缩放采样黑色形成暗线；原生窗口不应用此转换。验收使用 `check_dialog_compositing.gd --visual` 对最终主窗口合成结果与真实遮罩背景逐像素比较，不能只检查子窗口纹理的四角。
+
+`AccountDialogUi` 仅供资料编辑和账号表单复用标签、关闭/显隐图标、按钮与页面缩放；不调整其他页面布局。`BackendProvider` 打开账号表单时暂时隐藏来源弹窗和遮罩，结束后按原流程恢复，并以会话 epoch 拒绝旧认证结果。
 
 页面负责布局尺寸与业务状态，基础页面的 `_style()`、`_style_button()` 是对 `UiStyles` 的兼容包装。`UiFeedback` 负责组合悬停、按下、禁用等状态并驱动过渡，不再自行定义焦点边框。按钮焦点仍可供键盘导航使用，但不绘制蓝色焦点框。
 

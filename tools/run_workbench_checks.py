@@ -26,6 +26,7 @@ def main():
                "--script", "res://tools/" + args.script, "--log-file", str(fixture / "check.log")]
     if not args.visual:
         command.append("--headless")
+    print(f"Running isolated check; log: {fixture / 'check.log'}", flush=True)
     completed = subprocess.run(command, env=env, capture_output=True, timeout=args.timeout)
     output = (completed.stdout + completed.stderr).decode("utf-8", errors="replace")
     print(output)

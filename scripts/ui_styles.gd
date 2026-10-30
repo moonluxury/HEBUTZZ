@@ -1,6 +1,7 @@
 extends RefCounted
 ## Widget appearance policy. Pages provide layout; UiFeedback only animates it.
 const Tokens = preload("res://scripts/ui_tokens.gd")
+const DialogSurface = preload("res://scripts/dialog_surface.gd")
 
 static func palette(dark: bool) -> Dictionary:
 	return {"text": Color("#E8ECF4") if dark else Color("#171B24"),
@@ -18,6 +19,18 @@ static func box(color: Color, radius: int, outline: Color = Color.TRANSPARENT, w
 		style.border_color = outline
 		style.set_border_width_all(width)
 	return style
+
+static func dialog_panel(window: Window, panel: PanelContainer, color: Color, radius := 8) -> StyleBoxFlat:
+	# Rounded modal surfaces must not expose an opaque viewport or outer outline.
+	window.borderless = true
+	window.transparent_bg = true
+	window.transparent = true
+	var surface := window.get_node_or_null("DialogSurface")
+	if surface == null:
+		surface = DialogSurface.new()
+		window.add_child(surface)
+	surface.configure(panel, color)
+	return box(color, radius)
 
 static func install_theme(theme: Theme) -> void:
 	var empty := StyleBoxEmpty.new()

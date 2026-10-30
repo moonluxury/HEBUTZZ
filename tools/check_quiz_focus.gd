@@ -12,10 +12,10 @@ func _key(code: Key, echo := false) -> void:
 		await process_frame
 
 func _right_rail(view: Control, overlay := false) -> void:
-	_expect(view.rail.visible, "Question list remains available on the right")
-	_expect(is_equal_approx(view.rail.position.x + view.rail.size.x, view.canvas.size.x), "Question list is anchored to the right edge")
+	_expect(view.rail.is_visible_in_tree(), "Question list remains available on the right")
+	_expect(is_equal_approx(view.right_panes.position.x + view.right_panes.size.x, view.canvas.size.x), "Question list is anchored to the right edge")
 	if not overlay:
-		_expect(view.pane.position.x + view.pane.size.x < view.rail.position.x, "Question content does not overlap the right list")
+		_expect(view.pane.position.x + view.pane.size.x < view.right_panes.position.x, "Question content does not overlap the right list")
 
 func _wrong_button_pixel(button: Button) -> Color:
 	if DisplayServer.get_name() == "headless":
@@ -126,17 +126,16 @@ func _run() -> void:
 	view.hide_numbers.pressed.emit()
 	await _key(KEY_F6)
 	await _key(KEY_F6)
-	_expect(not view.rail.visible and view.pane.get_node("ShowNumbers").visible, "F6 preserves a manually hidden number list")
+	_expect(not view.rail.is_visible_in_tree() and view.pane.get_node("ShowNumbers").visible, "F6 preserves a manually hidden number list")
 	view.pane.get_node("ShowNumbers").pressed.emit()
 	_right_rail(view)
 	root.content_scale_size = Vector2i(1100, 820)
 	root.size = Vector2i(1100, 820)
 	await _settle()
-	view.pane.get_node("ShowNumbers").pressed.emit()
-	_right_rail(view, true)
+	_right_rail(view)
 	await _capture("quiz-right-list-narrow")
 	await _key(KEY_F6)
-	_right_rail(view, true)
+	_right_rail(view)
 	view.hide_numbers.pressed.emit()
 	app._set_font_scale(1.4)
 	await _capture("quiz-focus-large-text")

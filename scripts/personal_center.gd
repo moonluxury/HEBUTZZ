@@ -225,6 +225,9 @@ func show_panel(mode: String, trigger: Control = null) -> void:
 		return
 	if is_instance_valid(dialog):
 		return
+	if mode == "login" and is_instance_valid(profile_store.provider) and profile_store.provider.has_method("begin_login"):
+		_open_account_login(trigger)
+		return
 	dialog_return = weakref(trigger) if trigger != null else null
 	dialog = AvatarDialog.new() if mode == "avatar" else ProfileDialog.new()
 	dialog.page = self
@@ -232,6 +235,14 @@ func show_panel(mode: String, trigger: Control = null) -> void:
 	dialog.closed.connect(_dialog_closed)
 	add_child(dialog)
 	dialog.present()
+
+func _open_account_login(trigger: Control) -> void:
+	var adapter: Node = profile_store.provider
+	var response: Dictionary = await adapter.begin_login()
+	if not is_inside_tree() or profile_store.provider != adapter: return
+	if response.get("ok", false): feedback.text = "登录成功"
+	elif not str(response.get("message", "")).is_empty(): feedback.text = str(response.message)
+	if is_instance_valid(trigger) and trigger.is_inside_tree() and trigger.is_visible_in_tree(): trigger.grab_focus()
 
 func _dialog_closed() -> void:
 	var return_to_avatar: bool = is_instance_valid(dialog) and dialog.panel_mode == "avatar"

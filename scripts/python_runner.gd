@@ -19,6 +19,9 @@ var last_output := ""
 func supported() -> bool:
 	return OS.get_name() == "Windows" and Engine.get_architecture_name() == "x86_64"
 
+func prepare_runtime() -> String:
+	return _prepare_runtime() if supported() else ""
+
 
 func is_running() -> bool:
 	return pid > 0

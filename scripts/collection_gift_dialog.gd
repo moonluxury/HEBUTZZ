@@ -67,7 +67,7 @@ func _ready() -> void:
 	host.add_child(shade)
 	panel = PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	panel.add_theme_stylebox_override("panel", Styles.box(colors.surface, 8, colors.border))
+	panel.add_theme_stylebox_override("panel", Styles.dialog_panel(self, panel, colors.surface))
 	add_child(panel)
 	scroll_box = ScrollContainer.new()
 	scroll_box.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED

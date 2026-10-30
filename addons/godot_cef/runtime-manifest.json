@@ -1,0 +1,94 @@
+{
+  "version": "2.1.1",
+  "source": "https://github.com/dsh0416/godot-cef/releases/download/v2.1.1/godot_cef-store-v2.1.1.zip",
+  "files": {
+    "icons/webview.png": {
+      "bytes": 845602,
+      "sha256": "40242caac3272dc77047eb53d9be3c4dd0359f7a269470889fbe0118e95e832c"
+    },
+    "icons/webview.png.import": {
+      "bytes": 947,
+      "sha256": "d48de8bfcaff8a5371e49271f09ef3870a790b540d4c72ac31a54a77dec49904"
+    },
+    "godot_cef.gdextension": {
+      "bytes": 2100,
+      "sha256": "83ab1be72868d0c1e91d02f39bd7aad8be092d8a63308bd56a7a14e2d905ef80"
+    },
+    "bin/x86_64-pc-windows-msvc/dxil.dll": {
+      "bytes": 1502784,
+      "sha256": "0850398076e9e30cd9ac28fc7d56a7d350ea755b0f3b6b2fc8f35a930888c845"
+    },
+    "bin/x86_64-pc-windows-msvc/v8_context_snapshot.bin": {
+      "bytes": 757576,
+      "sha256": "4cfa19d8bed5d24f0567f165f3396f5e06c4676ebb913249d317e93e539ea384"
+    },
+    "bin/x86_64-pc-windows-msvc/bootstrap.exe": {
+      "bytes": 4315648,
+      "sha256": "0b6c80b6c81615f8c2b6c051d698cb9ff93d626fb82016ce61eefd62d8cc4fec"
+    },
+    "bin/x86_64-pc-windows-msvc/icudtl.dat": {
+      "bytes": 10819840,
+      "sha256": "495c45cc7a65562ec461f860c310c6b66e006acd96833f61d1aa31f77fe18cf1"
+    },
+    "bin/x86_64-pc-windows-msvc/bootstrapc.exe": {
+      "bytes": 4318208,
+      "sha256": "bd0d6dcf683171305c02bcee6b6f5dad2abdd2f90ff8ef0593be585e78e164c9"
+    },
+    "bin/x86_64-pc-windows-msvc/vk_swiftshader.dll": {
+      "bytes": 5410816,
+      "sha256": "8de8ba210a07034adcbdc63055314c1ebea8634a4e9fbacc6b64cafce67e4fef"
+    },
+    "bin/x86_64-pc-windows-msvc/libcef.dll": {
+      "bytes": 289818624,
+      "sha256": "e3da6707a840a8f33f565e011542169fd51aaa5218603eb7a89039fb16d79ae7"
+    },
+    "bin/x86_64-pc-windows-msvc/gdcef.dll": {
+      "bytes": 7024640,
+      "sha256": "736df5295c18e15a0cdec6001f6cc6f4faacd67137409481beb767ed4e900b00"
+    },
+    "bin/x86_64-pc-windows-msvc/resources.pak": {
+      "bytes": 23449876,
+      "sha256": "8ee8b095ac381ebee66ee2a24ec6cd72adce90c101b82c132b753a2abaf4b246"
+    },
+    "bin/x86_64-pc-windows-msvc/vk_swiftshader_icd.json": {
+      "bytes": 106,
+      "sha256": "32d83ff113fef532a9f97e0d2831f8656628ab1c99e9060f0332b1532839afd9"
+    },
+    "bin/x86_64-pc-windows-msvc/chrome_200_percent.pak": {
+      "bytes": 944886,
+      "sha256": "4b0802784c08feaa31dc3dca8953be8e217cf2e7f53d5ab8751ba998f391eecf"
+    },
+    "bin/x86_64-pc-windows-msvc/d3dcompiler_47.dll": {
+      "bytes": 4753864,
+      "sha256": "f5c95e919b4ffa1ac71049cd45b9f986d2965e6888395ca2806337985334fa56"
+    },
+    "bin/x86_64-pc-windows-msvc/chrome_elf.dll": {
+      "bytes": 2829312,
+      "sha256": "f26656bfe38e1b78e42f292b6a8be1b5f0b5db15395ac571d6e20a1dedf698fb"
+    },
+    "bin/x86_64-pc-windows-msvc/dxcompiler.dll": {
+      "bytes": 25845760,
+      "sha256": "d2bcdaab7772d60d2f2c53781bf4449dde9e6491ec82b24da3f581c21c12d110"
+    },
+    "bin/x86_64-pc-windows-msvc/vulkan-1.dll": {
+      "bytes": 982528,
+      "sha256": "11329b3cc832eaa2569e6f5a25aaffa4d065651386251e4857ffbe572d8d3382"
+    },
+    "bin/x86_64-pc-windows-msvc/gdcef_helper.exe": {
+      "bytes": 281600,
+      "sha256": "bec363209c2415613fc548d62e56b0c5bcfd908af7a31730129b2a49f2bde62c"
+    },
+    "bin/x86_64-pc-windows-msvc/locales/en-US.pak": {
+      "bytes": 589612,
+      "sha256": "283f125719e3954d24de78a41329840a281e5b255379daf77cb66cbf2887a920"
+    },
+    "bin/x86_64-pc-windows-msvc/locales/zh-CN.pak": {
+      "bytes": 597435,
+      "sha256": "b902e7fbeb810d88926996caf7af203d9a8acfbdc48f471886cfcb850bc5c4f7"
+    },
+    "bin/x86_64-pc-windows-msvc/chrome_100_percent.pak": {
+      "bytes": 582266,
+      "sha256": "04fe059b62e211571307ef2937b2c966e6a7b0e58e9d2149ffda618679e65fad"
+    }
+  }
+}

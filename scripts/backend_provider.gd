@@ -26,16 +26,19 @@ func _ready() -> void:
 func attach() -> void:
 	get_node("/root/ProfileStore").use_provider(self, {"state": "signed_out"})
 
+func _endpoint_allowed() -> bool:
+	return base_url.begins_with("https://")
+
 func _request(path: String, body: Dictionary, authenticated := true, credential: Dictionary = {}) -> Dictionary:
 	var owner := str(credential.get("account_id", account_id))
 	var request_token := str(credential.get("access_token", access_token))
-	if not base_url.begins_with("https://"):
+	if not _endpoint_allowed():
 		return {"ok": false, "account_id": owner, "code": "unavailable", "message": "后端必须使用 HTTPS 地址。"}
 	if authenticated and request_token.is_empty():
 		return {"ok": false, "account_id": owner, "code": "unauthenticated", "message": "请先登录。"}
 	var headers := PackedStringArray(["Content-Type: application/json"])
 	if authenticated:
-		headers.append("Authorization: Bearer " + access_token)
+		headers.append("Authorization: Bearer " + request_token)
 	var http := HTTPRequest.new()
 	http.timeout = 15.0
 	http.max_redirects = 0
@@ -71,7 +74,7 @@ func _normalize_numbers(value: Variant) -> Variant:
 	if value is Dictionary:
 		var result: Dictionary = value.duplicate(true)
 		for key in result:
-			if key in ["quantity", "terms_version", "through_seq", "limit", "expected_version"] and result[key] is float and result[key] == floor(result[key]):
+			if key in ["quantity", "terms_version", "through_seq", "limit", "expected_version", "expected_revision", "level", "start", "colspan", "rowspan", "width", "height"] and result[key] is float and result[key] == floor(result[key]):
 				result[key] = int(result[key])
 			else:
 				result[key] = _normalize_numbers(result[key])
@@ -86,12 +89,51 @@ func _normalize_numbers(value: Variant) -> Variant:
 func social_request(action: String, payload: Dictionary) -> Dictionary:
 	return await _request("/v1/rpc", {"version": 1, "action": action, "payload": _normalize_numbers(payload)})
 
+func comment_request(action: String, payload: Dictionary) -> Dictionary:
+	if action in ["comment_list", "comment_replies"]:
+		return await _request("/v1/comments/query", {"version": 1, "action": action, "payload": _normalize_numbers(payload)}, not access_token.is_empty())
+	return await social_request(action, payload)
+
+func submission_upload(asset: Dictionary) -> Dictionary:
+	return await _request("/v1/submission-assets", asset)
+
+func submission_get(path: String, binary := false) -> Dictionary:
+	if not _endpoint_allowed():
+		return {"ok": false, "message": "后端必须使用 HTTPS。"}
+	if not path.begins_with("/v1/articles") and not path.begins_with("/v1/submission-assets/"):
+		return {"ok": false, "message": "不支持的资源路径。"}
+	var http := HTTPRequest.new()
+	http.timeout = 15
+	http.max_redirects = 0
+	http.body_size_limit = 8388608
+	add_child(http)
+	var headers := PackedStringArray()
+	if not access_token.is_empty(): headers.append("Authorization: Bearer " + access_token)
+	if http.request(base_url + path, headers) != OK:
+		http.queue_free()
+		return {"ok": false, "message": "无法连接文章服务。"}
+	var response: Array = await http.request_completed
+	http.queue_free()
+	if response[0] != HTTPRequest.RESULT_SUCCESS or response[1] != 200:
+		return {"ok": false, "message": "资源不存在、尚未公开或暂时无法访问。"}
+	if binary:
+		var mime := ""
+		for header in response[2]:
+			if str(header).to_lower().begins_with("content-type:"): mime = str(header).split(":", true, 1)[1].strip_edges().split(";")[0]
+		return {"ok": true, "data": response[3], "mime": mime}
+	var parsed: Variant = JSON.parse_string(response[3].get_string_from_utf8())
+	return parsed if parsed is Dictionary else {"ok": false, "message": "服务响应异常。"}
+
 func request_profile(_owner: String) -> Dictionary:
 	return await social_request("profile", {})
 
 func save_profile(_owner: String, patch: Dictionary, avatar_card_id: String) -> Dictionary:
 	if _owner != account_id: return {"ok": false, "account_id": _owner, "code": "stale"}
 	return await social_request("save_profile", {"patch": patch, "avatar_card_id": avatar_card_id})
+
+func save_profile_request(owner: String, patch: Dictionary, avatar_card_id: String, request_id: String) -> Dictionary:
+	if owner != account_id: return {"ok": false, "account_id": owner, "code": "stale"}
+	return await social_request("save_profile", {"patch": patch, "avatar_card_id": avatar_card_id, "operation_id": request_id})
 
 func save_avatar(owner: String, avatar_card_id: String, request_id: String) -> Dictionary:
 	if owner != account_id: return {"ok": false, "account_id": owner, "code": "stale"}
@@ -225,32 +267,51 @@ func _show_auth(password_mode: bool) -> Dictionary:
 	if is_instance_valid(active_dialog):
 		active_dialog.grab_focus()
 		return {"ok": false, "account_id": account_id, "message": "请先完成已打开的账号窗口。"}
-	var parent: Node = get_tree().root
-	var session_epoch: int = get_node("/root/ProfileStore").epoch
-	# Nest inside the existing exclusive profile window so input remains accessible.
+	var profile_store: Node = get_node("/root/ProfileStore")
+	var session_epoch: int = profile_store.epoch
+	var origin: Window
+	var origin_focus: Control
+	var origin_shade: CanvasItem
+	# Keep the source draft alive, but show only the account modal and one shade.
 	for candidate in get_tree().root.find_children("*", "Window", true, false):
 		if candidate is Window and candidate.visible and candidate.get_script() != null and candidate.get_script().resource_path in ["res://scripts/profile_dialog.gd", "res://scripts/avatar_settings_dialog.gd"]:
-			parent = candidate
+			origin = candidate
+			origin_focus = origin.gui_get_focus_owner()
+			origin_shade = origin.get("shade") as CanvasItem
+			if is_instance_valid(origin_shade): origin_shade.hide()
+			origin.hide()
 			break
 	var dialog: Window = DialogScript.new()
 	active_dialog = dialog
 	dialog.provider = self
 	dialog.password_mode = password_mode
-	parent.add_child(dialog)
+	get_tree().root.add_child(dialog)
+	var invalidate := func():
+		if is_instance_valid(dialog) and not dialog.done and profile_store.epoch != session_epoch:
+			dialog._cancel()
+	profile_store.changed.connect(invalidate)
+	var origin_closed := func():
+		if is_instance_valid(dialog) and not dialog.done: dialog._cancel()
+	if is_instance_valid(origin): origin.closed.connect(origin_closed, CONNECT_ONE_SHOT)
 	dialog.present()
 	var result: Dictionary = await dialog.finished
+	if profile_store.changed.is_connected(invalidate): profile_store.changed.disconnect(invalidate)
+	if is_instance_valid(origin) and origin.closed.is_connected(origin_closed): origin.closed.disconnect(origin_closed)
 	active_dialog = null
-	if session_epoch != get_node("/root/ProfileStore").epoch:
-		return {"ok": false, "account_id": account_id, "message": "登录期间账号状态已改变，请重新打开设置。"}
-	if result.get("ok", false):
+	if session_epoch != profile_store.epoch:
+		result = {"ok": false, "account_id": account_id, "message": "登录期间账号状态已改变，请重新打开设置。"}
+	elif result.get("ok", false):
 		if password_mode:
 			access_token = ""
 			account_id = ""
 			auth_generation += 1
-			get_node("/root/ProfileStore").use_provider(self, {"state": "signed_out"})
-		else:
-			if not accept_session(result):
-				result = {"ok": false, "message": "登录信息无法确认，请重试。"}
+			profile_store.use_provider(self, {"state": "signed_out"})
+		elif not accept_session(result):
+			result = {"ok": false, "message": "登录信息无法确认，请重试。"}
+	if is_instance_valid(origin) and not origin.is_queued_for_deletion() and not origin.closing:
+		if is_instance_valid(origin_shade): origin_shade.show()
+		origin.present()
+		if is_instance_valid(origin_focus) and origin_focus.is_inside_tree() and origin_focus.is_visible_in_tree(): origin_focus.grab_focus()
 	# Never propagate a token to UI status panels or diagnostics.
 	result.erase("access_token")
 	result.erase("_remembered_login")

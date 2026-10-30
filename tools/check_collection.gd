@@ -130,7 +130,7 @@ func check_rendered_art(art: Control, gray: bool) -> void:
 			var point := (rect.position + rect.size * Vector2(x, y)) * pixel_scale
 			var color := image.get_pixelv(Vector2i(point))
 			chroma = maxf(chroma, maxf(color.r, maxf(color.g, color.b)) - minf(color.r, minf(color.g, color.b)))
-	check(chroma < 0.02 if gray else chroma > 0.1, "Wanted unowned card is grayscale" if gray else "Catalogue artwork retains source colors")
+	check(chroma < 0.02 if gray else chroma > 0.1, "Unowned artwork is grayscale" if gray else "Owned or unknown artwork retains source colors")
 
 func check_complete_detail() -> void:
 	check(not page.content.has_node("CardDetailsScroll") and page.detail_panel.get_parent() == page.content, "Right detail has no independent scroll container")
@@ -220,6 +220,7 @@ func _run() -> void:
 	root.content_scale_size = Vector2i(1600, 1000)
 	root.size = Vector2i(1600, 1000)
 	root.mode = Window.MODE_WINDOWED
+	if DisplayServer.get_name() != "headless": root.position = Vector2i(-10000, -10000)
 	root.gui_embed_subwindows = true
 	var router := root.get_node("PageRouter")
 	router.go("res://scenes/MyCollection.tscn")
@@ -283,6 +284,17 @@ func _run() -> void:
 	page._set_filter("all")
 	check(page.tiles.size() == 7 and store.summary().total == 6, "Global summary unaffected by filters")
 	await frames()
+	await check_rendered_art(page.tiles["0001"].get_node("Art"), false)
+	await check_rendered_art(page.tiles["0003"].get_node("Art"), true)
+	await capture("11-fixture-ownership-colors")
+	backend.inventory["0003"].count = 1
+	backend.revision += 1
+	await store.refresh()
+	check(page.tiles["0003"].get_node("Art").material == null, "Newly owned cards regain their colors without reopening the page")
+	backend.inventory["0003"].count = 0
+	backend.revision += 1
+	await store.refresh()
+	check(page.tiles["0003"].get_node("Art").material == page.unowned_material, "Zero inventory restores grayscale in the all-cards list")
 	await click(page.tiles["0001"], MOUSE_BUTTON_RIGHT)
 	check(not page.in_detail and store.wanted.is_empty(), "Right click no longer opens actions or mutates collection")
 	page.tiles["0002"].grab_focus()
@@ -431,8 +443,8 @@ func _run() -> void:
 	page._on_data_changed()
 	await check_unowned_static()
 	await capture("08-fixture-unowned-detail")
-	check(page.tiles["0003"].get_node("Art").material == null, "Public artwork remains in source colors")
-	await check_rendered_art(page.tiles["0003"].get_node("Art"), false)
+	check(page.tiles["0003"].get_node("Art").material == page.unowned_material, "The all-cards detail list follows actual ownership")
+	await check_rendered_art(page.tiles["0003"].get_node("Art"), true)
 	await check_rendered_art(page.detail_panel.get_node("Preview"), true)
 	page._select_card("0001")
 	check(not page.reveal.session.static, "Owned cards retain the animated reveal")

@@ -274,9 +274,8 @@ func _picture_ratio(image: Control) -> float:
 	return image.texture.get_height() / float(image.texture.get_width()) if image.texture != null else 1.5
 
 func _set_card_art_state(image: TextureRect, id: String) -> void:
-	# The public catalogue always shows the original artwork. Other views may
-	# distinguish known unowned cards; unknown inventory is never treated as zero.
-	if filter != "all" and store.count(id) == 0:
+	# Ownership determines artwork in every filter; unknown inventory is not zero.
+	if store.count(id) == 0:
 		if unowned_material == null:
 			unowned_material = ShaderMaterial.new()
 			unowned_material.shader = UnownedShader

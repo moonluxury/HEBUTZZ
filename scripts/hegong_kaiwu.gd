@@ -13,6 +13,7 @@ var stats_root: Control
 var divider: Control
 var active_preview := ""
 var results_height := 500.0
+var submissions: Node
 
 func _ready() -> void:
 	for child in get_children():
@@ -26,6 +27,26 @@ func _ready() -> void:
 		elif parsed is Dictionary:
 			entries.append_array(parsed.get("articles", parsed.get("items", [parsed] if parsed.has("title") else [])))
 	super._ready()
+	submissions = get_node("/root/AppServices").submission_store()
+	submissions.changed.connect(_publication_changed)
+	submissions.refresh_public()
+
+func _publication_changed(reason: String) -> void:
+	if reason != "public" or not is_inside_tree(): return
+	entries = entries.filter(func(item: Dictionary): return not item.has("article_id"))
+	for item in submissions.public_items:
+		entries.append({"id":"article_" + str(item.id),"article_id":item.id,"title":item.data.title,"category":"优秀文章","type":"已发表文章","summary":item.data.get("course", ""),"keywords":item.data.get("tags", [])})
+	for index in 4:
+		var category: String = (["全部资源"] + CONTENT_CATEGORIES)[index]
+		var count: int = entries.size() if index == 0 else entries.filter(func(entry: Dictionary): return entry.get("category", "") == category).size()
+		stats_root.get_node("Stat%d" % index).get_child(1).text = str(count)
+	_update_results()
+	_layout()
+
+func _refresh_cached_content() -> void:
+	if is_instance_valid(submissions):
+		_publication_changed("public")
+		submissions.refresh_public()
 
 func _build_content() -> void:
 	back_button = sidebar.get_node("HomeButton")
@@ -140,7 +161,10 @@ func _clear_filters() -> void:
 	_select_category("全部资源")
 
 func _open_entry(entry: Dictionary) -> void:
-	if entry.get("demo", false):
+	if entry.has("article_id"):
+		var response: Dictionary = await submissions.open_article(str(entry.article_id))
+		if response.get("ok", false): _go("res://scenes/SubmissionArticle.tscn")
+	elif entry.get("demo", false):
 		active_preview = "" if active_preview == str(entry.get("id", "")) else str(entry.get("id", ""))
 		_update_results()
 		_layout()

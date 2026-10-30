@@ -4,6 +4,17 @@ const QUESTION_FONT_SIZE := 26
 const OPTION_FONT_SIZE := 24
 const FOCUS_QUESTION_FONT_SIZE := 28
 const FOCUS_OPTION_FONT_SIZE := 24
+const RightPanes = preload("res://scripts/quiz_right_panes.gd")
+const DiscussionView = preload("res://scripts/bank_discussion_view.gd")
+var right_panes: Control
+var right_mode := "numbers"
+var discussion_view: Control
+var mark_button: Button
+var discussion_button: Button
+var marks: Node
+var discussions: Node
+var bank_id := ""
+var saved_number_scroll := 0
 var content: Control
 var header: Control
 var rail: Control
@@ -34,6 +45,10 @@ var clock_timer: Timer
 
 func _ready() -> void:
 	active_nav = "WrongButton" if _app().quiz_mode == "wrong" else "AllButton"
+	bank_id = str(_app().subject_id)
+	marks = get_node("/root/AppServices").quiz_marks()
+	discussions = get_node("/root/AppServices").bank_discussions()
+	marks.changed.connect(_refresh_marks)
 	super._ready()
 	clock_timer = Timer.new()
 	clock_timer.wait_time = 1.0
@@ -43,6 +58,11 @@ func _ready() -> void:
 	_motion().preference_changed.connect(_sync_clock)
 	_sync_clock()
 	question_changed()
+
+func _rebuild(value: Variant = null) -> void:
+	if is_instance_valid(number_scroll): saved_number_scroll = number_scroll.scroll_vertical
+	super._rebuild(value)
+	if is_instance_valid(number_scroll): number_scroll.set_deferred("scroll_vertical", saved_number_scroll)
 
 func _build_content() -> void:
 	number_pool.clear()
@@ -65,9 +85,17 @@ func _build_content() -> void:
 	finish = _button(header, "FinishPractice", "结束练习", _finish_session)
 	finish.add_theme_stylebox_override("normal", _style(surface, 8, BLUE))
 	finish.add_theme_color_override("font_color", _accent())
+	mark_button = _header_action("MarkQuestion", "标记", "res://assets/minimal/icons/flag.png", _toggle_mark)
+	discussion_button = _header_action("OpenDiscussion", "讨论", "res://assets/discussion/message-circle.svg", _toggle_right.bind("discussion"))
 	_line(header, Rect2(0, 124, 1600, 1))
-	rail = _display_panel(canvas, "QuestionRail", surface)
-	rail.z_index = 2
+	right_panes = RightPanes.new()
+	right_panes.name = "RightPanes"
+	right_panes.mode = right_mode
+	canvas.add_child(right_panes)
+	right_panes.z_index = 2
+	rail = _display_panel(right_panes, "QuestionRail")
+	right_panes.remove_child(rail)
+	right_panes.install("numbers", rail)
 	_label(rail, "题号列表", SECTION_SIZE, text_color, Rect2(32, 25, 220, 48), true)
 	hide_numbers = _button(rail, "HideNumbers", "隐藏", _toggle_rail)
 	_rect(hide_numbers, Rect2(265, 29, 64, 42))
@@ -90,6 +118,10 @@ func _build_content() -> void:
 			_icon(box, "check", Rect2(2, 2, 16, 16), BLUE)
 		_label(legend, ["当前题", "已答", "未答"][index], 18, muted_color, Rect2(point + Vector2(30, 0), Vector2(110, 34)))
 	_line(rail, Rect2(0, 0, 1, 2000))
+	discussion_view = DiscussionView.new()
+	right_panes.install("discussion", discussion_view)
+	discussion_view.configure(self, discussions, bank_id)
+	_line(right_panes, Rect2(0, 0, 1, 2000))
 	pane = _display_panel(canvas, "QuestionPane")
 	_line(pane, Rect2(0, 64, 1300, 1)).name = "MetaDivider"
 	question_meta = _label(pane, "", BODY_SIZE, text_color, Rect2(0, 10, 600, 44), true)
@@ -102,6 +134,8 @@ func _build_content() -> void:
 	footer_line = _line(pane, Rect2())
 	_move(content.jump_input, rail)
 	_move(content.jump_button, rail)
+	var remember_jump := _remember_number_focus.bind(content.jump_input)
+	if not content.jump_input.focus_entered.is_connected(remember_jump): content.jump_input.focus_entered.connect(remember_jump)
 	content.jump_input.placeholder_text = "输入题号"
 	content.jump_button.text = "跳转"
 	content.jump_button.icon = null
@@ -190,6 +224,7 @@ func _render_visible_numbers() -> void:
 		button.add_theme_font_size_override("font_size", 20)
 		button.pressed.connect(func(): content.request_jump(int(button.get_meta("number_index"))))
 		button.gui_input.connect(_number_key.bind(button))
+		button.focus_entered.connect(_remember_number_focus.bind(button))
 		number_pool.append(button)
 	number_buttons.clear()
 	for slot in number_pool.size():
@@ -222,7 +257,8 @@ func _style_number(index: int) -> void:
 	var b: Button = number_buttons[index]
 	var answered := bool(content.question_states.get(content._question_state_key(index), {}).get("answered", false))
 	var selected: bool = index == content.current_index
-	var state_key := "%s:%s:%s" % [answered, selected, dark]
+	var marked: bool = marks.marked(bank_id, str(content.questions[index].id))
+	var state_key := "%s:%s:%s:%s" % [answered, selected, dark, marked]
 	if b.get_meta("number_state", "") == state_key:
 		return
 	b.set_meta("number_state", state_key)
@@ -231,7 +267,14 @@ func _style_number(index: int) -> void:
 		b.add_theme_stylebox_override(state, _style(color, 6, BLUE if selected else border))
 		b.add_theme_color_override("font_" + ("color" if state == "normal" else state + "_color"), Color.WHITE if selected else _accent() if answered else text_color)
 	b.icon = null
+	var flag := b.get_node_or_null("MarkedFlag") as TextureRect
+	if flag == null:
+		flag = _icon(b, "flag", Rect2(36, 3, 10, 12), _accent())
+		flag.name = "MarkedFlag"
+	flag.self_modulate = Color.WHITE if selected else _accent()
+	flag.visible = marked
 	b.accessibility_name = "第 %d 题，%s%s" % [index + 1, "当前题，" if selected else "", "已答" if answered else "未答"]
+	if marked: b.accessibility_name += "，已标记"
 	_motion().bind_button(b)
 
 func refresh_numbers() -> void:
@@ -244,6 +287,7 @@ func refresh_numbers() -> void:
 	if last_number != content.current_index:
 		_ensure_current_visible.call_deferred()
 	last_number = content.current_index
+	_refresh_header_actions()
 
 func _ensure_current_visible() -> void:
 	if not is_inside_tree() or not is_instance_valid(content) or content.current_index >= number_positions.size():
@@ -364,20 +408,24 @@ func _layout() -> void:
 	var available := canvas.size.x - sidebar_width
 	_rect(header, Rect2(sidebar_width, 0, available, 125))
 	_rect(content.home_button, Rect2(30, 39, 112, 54))
-	heading.size.x = available - 510
+	heading.size.x = maxf(30, available - 668)
+	for index in 2:
+		_rect([mark_button, discussion_button][index], Rect2(available - 458 + index * 58, 40, 50, 50))
 	_rect(header.get_node("Clock"), Rect2(available - 320, 53, 24, 24))
 	_rect(timer_label, Rect2(available - 280, 43, 120, 44))
 	_rect(finish, Rect2(available - 142, 39, 126, 54))
-	var compact := canvas.size.x < 1400
-	var rail_width := 365.0 if (compact_rail_open if compact else rail_visible) else 0.0
-	_rect(rail, Rect2(canvas.size.x - rail_width, header_height, rail_width, canvas.size.y - header_height))
-	rail.visible = rail_width > 0
+	var rail_width := 365.0 if rail_visible else 0.0
+	# Both modes share a reserved column, even in narrow windows.
+	if right_mode != "numbers": rail_width = 365.0
+	_rect(right_panes, Rect2(canvas.size.x - rail_width, header_height, rail_width, canvas.size.y - header_height))
+	right_panes.visible = rail_width > 0
+	for view in [rail, discussion_view]: view.size = Vector2(365, right_panes.size.y)
 	_rect(number_scroll, Rect2(32, 88, 318, maxf(150, rail.size.y - 244)))
 	_rect(content.jump_input, Rect2(32, rail.size.y - 144, 205, 48))
 	_rect(content.jump_button, Rect2(245, rail.size.y - 144, 84, 48))
 	_rect(rail.get_node("Legend"), Rect2(32, rail.size.y - 88, 310, 72))
 	var left := sidebar_width + 36.0
-	var right := canvas.size.x - (0.0 if compact else rail_width) - 36.0
+	var right := canvas.size.x - rail_width - 36.0
 	_rect(pane, Rect2(left, header_height, right - left, canvas.size.y - header_height))
 	var show_numbers := pane.get_node_or_null("ShowNumbers")
 	if show_numbers == null:
@@ -386,6 +434,7 @@ func _layout() -> void:
 	_rect(show_numbers, Rect2(pane.size.x - 130, 10, 130, 44))
 	pane.get_node("MetaDivider").size.x = pane.size.x
 	var footer_y := pane.size.y - 76
+	if pane.size.x < 550: footer_y -= 58
 	_rect(content.question_scroll, Rect2(0, 82, pane.size.x, maxf(100, footer_y - 32 - 82)))
 	_rect(footer_line, Rect2(0, footer_y - 16, pane.size.x, 1))
 	_rect(content.prev_button, Rect2(0, footer_y, 166, 52))
@@ -394,6 +443,8 @@ func _layout() -> void:
 	if pane.size.x < 700:
 		_rect(content.prev_button, Rect2(0, footer_y, 140, 52))
 		_rect(content.next_button, Rect2(154, footer_y, 140, 52))
+	if pane.size.x < 550:
+		_rect(content.wrong_toggle, Rect2(pane.size.x - 198, footer_y + 58, 198, 52))
 	for picture in content.question_images.get_children():
 		content._fit_question_image.call_deferred(picture)
 
@@ -421,19 +472,64 @@ func _toggle_distraction_free() -> void:
 		hidden_focus_path = NodePath()
 
 func _toggle_rail() -> void:
-	if canvas.size.x < 1400:
-		compact_rail_open = not compact_rail_open
-	else:
-		rail_visible = not rail_visible
+	rail_visible = not rail_visible
+	compact_rail_open = rail_visible and canvas.size.x < 1400
 	_layout()
-	if rail.visible:
-		_motion().enter(rail, Tokens.STATE)
+	if right_panes.visible:
+		_motion().enter(right_panes, Tokens.STATE)
 
 func question_changed() -> void:
 	# No fade of header, timer, rail, footer, or sidebar; answers are already installed.
 	_motion().cancel(content.answer_label)
 	content.answer_label.modulate.a = 1.0
 	_motion().enter(content.question_scroll, Tokens.STATE)
+	_refresh_header_actions()
+
+func _header_action(node_name: String, accessible_name: String, path: String, action: Callable) -> Button:
+	var button := _button(header, node_name, "", action)
+	button.icon = _texture(path)
+	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	button.vertical_icon_alignment = VERTICAL_ALIGNMENT_CENTER
+	button.add_theme_constant_override("icon_max_width", 21)
+	button.add_theme_constant_override("h_separation", 3)
+	button.accessibility_name = accessible_name
+	return button
+
+func _toggle_right(mode: String) -> void:
+	show_right_pane("numbers" if right_mode == mode else mode)
+
+func show_right_pane(mode: String) -> void:
+	if mode not in ["numbers", "discussion"]: return
+	right_mode = mode
+	if mode == "discussion": discussions.activate(bank_id)
+	right_panes.switch_to(mode)
+	_refresh_header_actions()
+	_layout()
+
+func _toggle_mark() -> void:
+	if content.questions.is_empty(): return
+	if not marks.toggle(bank_id, str(content.questions[content.current_index].id)):
+		content.result_label.text = "标记保存失败，请重试。"
+
+func _remember_number_focus(control: Control) -> void:
+	if is_instance_valid(right_panes): right_panes.focus_memory["numbers"] = weakref(control)
+
+func _refresh_marks() -> void:
+	if not is_inside_tree(): return
+	for index in number_buttons: _style_number(index)
+	_refresh_header_actions()
+
+func _refresh_header_actions() -> void:
+	if not is_instance_valid(mark_button): return
+	var marked: bool = not content.questions.is_empty() and marks.marked(bank_id, str(content.questions[content.current_index].id))
+	for pair in [[mark_button, marked], [discussion_button, right_mode == "discussion"]]:
+		var button: Button = pair[0]
+		button.add_theme_stylebox_override("normal", _style((Tokens.DARK_SOFT if dark else Tokens.SOFT) if pair[1] else Color.TRANSPARENT, 8))
+		button.add_theme_color_override("font_color", _accent() if pair[1] else muted_color)
+		button.add_theme_color_override("icon_normal_color", _accent() if pair[1] else muted_color)
+		_motion().bind_button(button)
+	mark_button.accessibility_name = "取消标记" if marked else "标记"
+	mark_button.disabled = content.questions.is_empty()
 
 func _sync_clock() -> void:
 	if not is_inside_tree() or not is_instance_valid(clock_timer):

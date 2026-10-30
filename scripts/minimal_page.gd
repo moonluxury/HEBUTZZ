@@ -123,6 +123,7 @@ func _build_sidebar() -> void:
 		["CollectionButton", "我的收藏", "user-round", router.go.bind("res://scenes/MyCollection.tscn")],
 		["FriendsButton", "我的好友", "user-round", router.open_friends],
 		["RechargeButton", "我要充值", "user-round", router.go.bind("res://scenes/Recharge.tscn")],
+		["SubmissionButton", "投稿", "notebook-pen", router.go.bind("res://scenes/Submissions.tscn")],
 	]
 	for index in items.size():
 		var item: Array = items[index]
@@ -149,7 +150,7 @@ func _refresh_sidebar() -> void:
 	sidebar.show()
 	sidebar.add_theme_stylebox_override("panel", _style(Color("#101724") if dark else Color("#F6F7F9"), 0))
 	sidebar.get_node("IdentityButton").configure(self, active_nav == "IdentityButton")
-	for name in ["HomeButton", "AllButton", "WrongButton", "KaiwuButton", "CollectionButton", "FriendsButton", "RechargeButton"]:
+	for name in ["HomeButton", "AllButton", "WrongButton", "KaiwuButton", "CollectionButton", "FriendsButton", "RechargeButton", "SubmissionButton"]:
 		var button: Button = sidebar.get_node(name)
 		var selected: bool = name == active_nav
 		_style_button(button)

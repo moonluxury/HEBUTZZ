@@ -20,3 +20,12 @@ func wallet_store() -> Node:
 
 func wrong_questions() -> Node:
 	return _service("WrongQuestions", preload("res://scripts/wrong_question_store.gd"))
+
+func submission_store() -> Node:
+	return _service("SubmissionStore", preload("res://scripts/submission_store.gd"))
+
+func quiz_marks() -> Node:
+	return _service("QuizMarks", preload("res://scripts/quiz_marks.gd"))
+
+func bank_discussions() -> Node:
+	return _service("BankDiscussions", preload("res://scripts/bank_discussion_store.gd"))

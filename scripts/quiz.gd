@@ -187,6 +187,9 @@ func _jump_to(index: int) -> void:
 	_show_question()
 
 func consume_back_action() -> bool:
+	if is_instance_valid(minimal_view) and minimal_view.right_mode != "numbers":
+		minimal_view.show_right_pane("numbers")
+		return true
 	if is_instance_valid(minimal_view) and minimal_view.canvas.size.x < 1400 and minimal_view.compact_rail_open:
 		minimal_view._toggle_rail()
 		return true

@@ -52,13 +52,6 @@ class CloseGlyph extends Control:
 		draw_line(center + Vector2(-7, -7), center + Vector2(7, 7), ink, 1.8, true)
 		draw_line(center + Vector2(-7, 7), center + Vector2(7, -7), ink, 1.8, true)
 
-class ActionFocusCue extends Control:
-	var button: Button
-	var ink := Color.WHITE
-	func _draw() -> void:
-		if button.has_focus():
-			draw_line(Vector2(size.x * 0.5 - 9, size.y - 5), Vector2(size.x * 0.5 + 9, size.y - 5), ink, 2, true)
-
 func _ready() -> void:
 	store = get_node("/root/ProfileStore")
 	collection = get_node("/root/AppServices").collection_store()
@@ -99,9 +92,7 @@ func _ready() -> void:
 	close_glyph = CloseGlyph.new()
 	close_glyph.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	close_button.add_child(close_glyph)
-	close_glyph.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	close_glyph.position = Vector2(-12, -12)
-	close_glyph.size = Vector2(24, 24)
+	close_glyph.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	scroll_box = ScrollContainer.new()
 	scroll_box.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -193,20 +184,8 @@ func _action(parent: Node, caption: String, callback: Callable, primary := false
 	var button: Button = page._button(parent, "AvatarAction", caption, callback)
 	button.set_meta("avatar_primary", primary)
 	button.custom_minimum_size = Vector2(88, 46)
-	button.focus_entered.connect(_action_focus.bind(button))
-	if not caption.is_empty():
-		var cue := ActionFocusCue.new()
-		cue.name = "AvatarKeyboardFocus"
-		cue.button = button
-		cue.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		button.add_child(cue)
-		cue.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		button.focus_entered.connect(cue.queue_redraw)
-		button.focus_exited.connect(cue.queue_redraw)
-	return button
-
-func _action_focus(button: Button) -> void:
 	Styles.apply_focus(button)
+	return button
 
 func _add_choice(id: String, caption: String, group: ButtonGroup) -> void:
 	var button := Choice.new()
@@ -220,7 +199,7 @@ func _add_choice(id: String, caption: String, group: ButtonGroup) -> void:
 	avatar_choices[id] = {"button": button, "picture": button.picture, "name": caption}
 
 func refresh_theme() -> void:
-	panel.add_theme_stylebox_override("panel", page._style(page.surface, 12, page.border))
+	panel.add_theme_stylebox_override("panel", Styles.dialog_panel(self, panel, page.surface, 12))
 	for label in column.find_children("*", "Label", true, false):
 		label.add_theme_color_override("font_color", page.muted_color if label in secondary else page.text_color)
 	for line in lines: line.color = page.border
@@ -228,11 +207,6 @@ func refresh_theme() -> void:
 		var primary: bool = button.get_meta("avatar_primary", false)
 		page._style_button(button, page.BLUE if primary else Color.TRANSPARENT, primary)
 		button.add_theme_font_size_override("font_size", 18)
-		var cue: Control = button.get_node_or_null("AvatarKeyboardFocus")
-		if cue != null:
-			cue.ink = Color.WHITE if primary else page._accent()
-			cue.queue_redraw()
-		if button.has_focus(): _action_focus.call_deferred(button)
 		if button == cancel_button:
 			for state in ["normal", "hover", "pressed", "disabled"]:
 				button.add_theme_stylebox_override(state, page._style(Color.TRANSPARENT, 7, page.border))

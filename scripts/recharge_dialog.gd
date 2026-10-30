@@ -1,4 +1,5 @@
 extends Window
+const Styles = preload("res://scripts/ui_styles.gd")
 ## Exclusive window contains keyboard focus and leaves the selected package intact.
 signal closed
 var page: Control
@@ -34,7 +35,7 @@ func _ready() -> void:
 	page.add_child(shade)
 	panel = PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var frame: StyleBoxFlat = page._style(page.surface, 8, page.border)
+	var frame := Styles.dialog_panel(self, panel, page.surface)
 	frame.set_content_margin_all(28)
 	panel.add_theme_stylebox_override("panel", frame)
 	add_child(panel)

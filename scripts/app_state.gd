@@ -139,6 +139,10 @@ func _exit_tree() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed and event.keycode == KEY_ESCAPE:
+			# An active composition in the embedded writer owns its first Escape.
+			var page := get_tree().current_scene
+			if is_instance_valid(page) and page.has_method("_ensure_browser") and not DisplayServer.ime_get_text().is_empty():
+				return
 			# A real popup owns Escape; an ordinary focused text field
 			# must not swallow the page's back action just to release its focus.
 			if _escape_owned_by_popup():

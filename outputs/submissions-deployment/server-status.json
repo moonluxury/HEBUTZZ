@@ -1,0 +1,21 @@
+{
+  "service": "active",
+  "nginx": "active",
+  "release_hashes_ok": true,
+  "db": {
+    "users": 1,
+    "test_accounts": 0,
+    "submissions": 0,
+    "assets": 0,
+    "articles": 0,
+    "reward_events": 0,
+    "reviewers": 0,
+    "schema": [
+      1,
+      2,
+      3
+    ]
+  },
+  "publication_settings_present": {},
+  "backup": "/var/backups/hegong/submissions-20261030T013320Z"
+}

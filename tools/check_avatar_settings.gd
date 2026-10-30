@@ -101,6 +101,28 @@ func capture_double_scale() -> void:
 	viewport.queue_free()
 	await frames()
 
+func check_rendered_decoration() -> void:
+	if DisplayServer.get_name() == "headless": return
+	var dialog: Window = page.dialog
+	var candidate: Button = dialog.avatar_choices[""].button
+	dialog.close_button.grab_focus()
+	await frames()
+	await RenderingServer.frame_post_draw
+	var before := dialog.get_texture().get_image()
+	var pixels := Vector2(before.get_size()) / dialog.get_visible_rect().size
+	var bounds := candidate.get_global_rect()
+	var region := Rect2i(bounds.position * pixels, bounds.size * pixels)
+	candidate.focus_mode = Control.FOCUS_ALL
+	candidate.grab_focus()
+	await frames()
+	await RenderingServer.frame_post_draw
+	var after := dialog.get_texture().get_image()
+	check(candidate.has_focus() and before.get_region(region).get_data() == after.get_region(region).get_data(), "Focusing an unselected avatar adds no visible ring or decoration")
+	for corner in [Vector2i.ZERO, Vector2i(after.get_width() - 1, 0), Vector2i(0, after.get_height() - 1), after.get_size() - Vector2i.ONE]:
+		check(after.get_pixelv(corner).a < 0.01, "Rounded popup corners are transparent: " + str(corner))
+	check(after.get_pixel(after.get_width() / 2, 20).a > 0.99, "The popup surface remains opaque inside the rounded panel")
+	check(dialog.avatar_choices["0002"].button.selected and not candidate.selected, "Keyboard focus leaves the selected avatar marker unchanged")
+
 func check_project_resolution() -> void:
 	var dialog: Window = page.dialog
 	var old_base := root.content_scale_size
@@ -135,6 +157,7 @@ func _run() -> void:
 	root.mode = Window.MODE_WINDOWED
 	root.content_scale_size = Vector2i(1600, 1000)
 	root.size = Vector2i(1600, 1000)
+	if DisplayServer.get_name() != "headless": root.position = Vector2i(-10000, -10000)
 	root.get_node("UiMotion").set_enabled(false)
 	DirAccess.make_dir_recursive_absolute(captures)
 	store = root.get_node("ProfileStore")
@@ -159,6 +182,7 @@ func _run() -> void:
 	check(dialog.avatar_grid.find_children("*", "Label", true, false).is_empty(), "Candidate grid has no visible names or availability captions")
 	dialog._select_card_avatar("0002")
 	check(dialog.avatar_preview.texture == dialog.avatar_choices["0002"].picture.texture and store.profile.is_empty() and backend.saves == 0, "Selecting only updates the draft preview")
+	await check_rendered_decoration()
 	await capture("01-signed-out-preview")
 	dialog._confirm()
 	await frames()
@@ -346,7 +370,7 @@ func _run() -> void:
 	dialog._select_card_avatar("0002")
 	dialog._confirm()
 	await frames()
-	check(is_instance_valid(adapter.active_dialog) and adapter.active_dialog.get_parent() == dialog, "Existing account login opens inside the avatar modal")
+	check(is_instance_valid(adapter.active_dialog) and adapter.active_dialog.get_parent() == root and not dialog.visible and not dialog.shade.visible, "Account login replaces the visible avatar modal without losing its draft")
 	adapter.active_dialog.username.text = "avatar_test"
 	adapter.active_dialog.password.text = "123456"
 	adapter.active_dialog._submit()

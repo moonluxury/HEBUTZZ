@@ -330,10 +330,7 @@ func _layout_content(width: float) -> void:
 	if not right.minimum_size_changed.is_connected(_layout): right.minimum_size_changed.connect(_layout)
 
 func _publication() -> void:
-	# Reuse a host's existing entry, never invent an editor or publish from this client.
-	if store.available() and store.rules.get("publication", {}).get("entry_enabled", false) and store.provider.has_method("open_publication"):
-		store.provider.open_publication()
-	else: show_panel("publication")
+	get_node("/root/PageRouter").go("res://scenes/Submissions.tscn")
 
 func _help() -> void:
 	if not store.current_order.is_empty(): _resume()

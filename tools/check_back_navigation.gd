@@ -128,10 +128,11 @@ func _run() -> void:
 	root.size = Vector2i(1100, 820)
 	root.content_scale_size = Vector2i(1100, 820)
 	await frames()
+	quiz.minimal_view._toggle_rail() # Hide the default reserved rail, then explicitly reopen.
 	quiz.minimal_view._toggle_rail()
-	check(quiz.minimal_view.compact_rail_open, "The compact question drawer is open")
+	check(quiz.minimal_view.compact_rail_open, "The compact question rail is explicitly reopened")
 	await escape()
-	check(current_scene == quiz and not quiz.minimal_view.compact_rail_open, "Escape closes an overlaid question drawer first")
+	check(current_scene == quiz and not quiz.minimal_view.compact_rail_open, "Escape closes an explicitly reopened compact rail first")
 	await escape()
 	check(at("SubjectSelect"), "The next Escape leaves the quiz for its bank")
 	root.size = Vector2i(1600, 984)

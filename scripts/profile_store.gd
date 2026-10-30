@@ -17,6 +17,8 @@ var error := ""
 var epoch := 0
 var _read := 0
 var avatar_pending: Dictionary = {}
+var profile_pending: Dictionary = {}
+var profile_timeout_seconds := 20.0
 var avatar_timeout_seconds := 20.0
 
 class BoundedResult extends RefCounted:
@@ -44,6 +46,7 @@ func use_provider(value: Node, session: Dictionary, collection_provider: Node = 
 	loading = false
 	saving = false
 	avatar_pending = {}
+	profile_pending = {}
 	action_busy = false
 	error = ""
 	var collection: Node = get_node("/root/AppServices").collection_store()
@@ -112,7 +115,7 @@ func validate_card_avatar(card_id: String) -> String:
 		return "尚未拥有这张卡，暂时不能用作头像。"
 	return ""
 
-func save_profile(patch: Dictionary, avatar_card_id: String, ticket: String) -> void:
+func save_profile(patch: Dictionary, avatar_card_id: String, ticket: String, request_id := "") -> void:
 	if saving:
 		return
 	if not authenticated() or not is_instance_valid(provider) or not provider.has_method("save_profile"):
@@ -131,25 +134,47 @@ func save_profile(patch: Dictionary, avatar_card_id: String, ticket: String) -> 
 		if not issue.is_empty():
 			saved.emit(ticket, {"ok": false, "message": issue})
 			return
+	var snapshot := patch.duplicate(true)
+	if not profile_pending.is_empty():
+		if snapshot != profile_pending.patch or avatar_card_id != profile_pending.avatar_card_id:
+			saved.emit(ticket, {"ok": false, "unknown": true, "message": "上一项资料保存结果待确认，请先核实原请求。"})
+			return
+		request_id = str(profile_pending.request_id)
+	elif request_id.is_empty():
+		request_id = Crypto.new().generate_random_bytes(24).hex_encode()
+	var owner := account_id
+	var generation := epoch
+	var adapter := provider
+	profile_pending = {"account_id": owner, "patch": snapshot, "avatar_card_id": avatar_card_id, "request_id": request_id}
 	saving = true
 	loading = false
 	_read += 1
-	var session_epoch := epoch
+	error = ""
 	changed.emit()
-	# The service must verify current ownership and persist the card ID atomically.
-	# A file path or a client-supplied inventory is never an avatar credential.
-	var response: Dictionary = await provider.save_profile(account_id, patch.duplicate(true), avatar_card_id)
-	if session_epoch != epoch:
-		return
-	saving = false
-	var committed := bool(response.get("ok", false)) and bool(response.get("persisted", false))
+	# Capture the account, patch and idempotency key before any await.
+	var submit: Callable = adapter.save_profile_request.bind(owner, snapshot, avatar_card_id, request_id) if adapter.has_method("save_profile_request") else adapter.save_profile.bind(owner, snapshot, avatar_card_id)
+	var response := await _bounded(submit, profile_timeout_seconds)
+	if generation != epoch or provider != adapter or account_id != owner: return
+	var committed: bool = response.get("ok", false) and response.get("persisted", false)
 	if committed and not avatar_card_id.is_empty():
 		committed = response.get("profile") is Dictionary and response.profile.get("avatar_card_id") == avatar_card_id
-	if committed:
-		committed = _apply_profile(response)
-	error = "" if committed else str(response.get("message", "未能确认资料已保存，请重试。"))
+	if committed: committed = _apply_profile(response)
+	var unknown: bool = str(response.get("code", "")) in ["unknown", "network", "invalid_response"]
+	if not committed and unknown:
+		# A lost response does not prove that the server rejected the write.
+		var current := await _bounded(adapter.request_profile.bind(owner), profile_timeout_seconds)
+		if generation != epoch or provider != adapter or account_id != owner: return
+		if current.get("ok", false) and current.get("account_id") == owner and current.get("profile") is Dictionary:
+			var matches := true
+			for field in snapshot:
+				if str(current.profile.get(field, "")) != str(snapshot[field]): matches = false
+			if not avatar_card_id.is_empty() and current.profile.get("avatar_card_id") != avatar_card_id: matches = false
+			committed = matches and _apply_profile(current)
+	if committed or not unknown: profile_pending = {}
+	saving = false
+	error = "" if committed else "保存结果尚未确认，请核实原请求后再继续。" if unknown else str(response.get("message", "未能确认资料已保存，请重试。"))
 	changed.emit()
-	saved.emit(ticket, {"ok": committed, "message": "资料已保存" if committed else error})
+	saved.emit(ticket, {"ok": committed, "unknown": unknown and not committed, "message": "资料已更新" if committed else error})
 
 func _invoke_bounded(callback: Callable, result: BoundedResult) -> void:
 	if not callback.is_valid():

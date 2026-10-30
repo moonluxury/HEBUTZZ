@@ -1,0 +1,4 @@
+<!doctype html><meta charset="utf-8"><title>投稿兼容性验证</title>
+<style>body{background:white;font:24px 'Microsoft YaHei',sans-serif;color:#1b1f28}#editor{min-height:900px;outline:none;padding:24px;border:1px solid #e4e7ec}</style>
+<div id="editor" contenteditable="true"><h1>中文正文与沉浸式编辑</h1><p>这是一段可以直接编辑的中文正文。</p></div>
+<script>addEventListener('load',()=>window.sendIpcMessage(JSON.stringify({kind:'ready',text:document.querySelector('#editor').textContent,width:innerWidth,height:innerHeight})));</script>

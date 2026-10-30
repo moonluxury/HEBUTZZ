@@ -38,7 +38,7 @@ func _run() -> void:
 	if not is_instance_valid(dialog):
 		quit(1)
 		return
-	dialog.auth_mode.select(1)
+
 	dialog._mode_changed(1)
 	dialog.username.text = username
 	dialog.password.text = password

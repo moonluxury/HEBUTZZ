@@ -12,6 +12,11 @@ var switch_queued := false
 var identity_login_requested := false
 var friends_notifications_requested := false
 
+func _ready() -> void:
+	# Optional desktop deep entry; the normal startup route remains Workbench.
+	if "--open-submissions" in OS.get_cmdline_user_args():
+		go.call_deferred("res://scenes/Submissions.tscn")
+
 
 
 
@@ -61,17 +66,19 @@ func back() -> void:
 		"Quiz":
 			# Keep the current all/wrong mode and the cached bank's filters/scroll.
 			go("res://scenes/SubjectSelect.tscn")
-		"HegongKaiwuDetail":
+		"HegongKaiwuDetail", "SubmissionArticle":
 			go("res://scenes/HegongKaiwu.tscn")
 		_:
 			go("res://scenes/Workbench.tscn")
 
 func _switch() -> void:
-	switch_queued = false
-	var path := pending
 	var tree := get_tree()
-	var key := key_for(path, get_node("/root/AppState").quiz_mode)
 	var previous := tree.current_scene
+	if is_instance_valid(previous) and previous.has_method("prepare_navigation"):
+		if not await previous.prepare_navigation(): switch_queued = false; return
+	var path := pending
+	var key := key_for(path, get_node("/root/AppState").quiz_mode)
+	switch_queued = false
 	if is_instance_valid(previous) and previous.get_meta("route_key", "") == key and _cacheable(previous):
 		previous.page_activated()
 		tree.scene_changed.emit()
