@@ -154,6 +154,7 @@ func _message(raw: String) -> void:
 		"save": result = await store.save()
 		"submit": result = await store.submit()
 		"transition": result = await store.transition(str(params.get("action", "")))
+		"delete_draft": result = await store.delete_draft(str(params.get("id", "")), str(params.get("key", "")))
 		"open_draft":
 			result = await store.open_draft(str(params.get("id", "")), str(params.get("key", "")))
 			if result.get("ok", false) and public_mode: get_node("/root/PageRouter").go("res://scenes/Submissions.tscn")

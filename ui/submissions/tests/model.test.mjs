@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {normalizeDocument,countText,headings,imageIds,safeLink} from '../src/model.js';
+import {normalizeDocument,countText,headings,imageIds,safeLink,canDeleteDraft} from '../src/model.js';
 
 test('persistence removes transient image URLs while preserving editable source',()=>{
   const source={type:'doc',content:[{type:'image',attrs:{asset_id:'abc',src:'blob:temporary',width:400.2,alt:'图'}},{type:'mathBlock',attrs:{latex:'\\frac{a}{b}'}}]};
@@ -22,4 +22,9 @@ test('character count excludes formula commands and whitespace',()=>{
 test('untrusted links cannot open script, local files or credential-bearing URLs',()=>{
   for(const url of ['javascript:alert(1)','file:///C:/secret','data:text/html,test','https://user:secret@example.com'])assert.equal(safeLink(url),null);
   assert.equal(safeLink('https://example.org/lesson'),'https://example.org/lesson');
+});
+test('delete is offered only for unpublished editable or rejected drafts',()=>{
+  for(const state of ['draft','returned','rejected'])assert.equal(canDeleteDraft({state,article_id:null}),true);
+  for(const state of ['pending','approved','published','archived'])assert.equal(canDeleteDraft({state}),false);
+  assert.equal(canDeleteDraft({state:'draft',article_id:'existing-public-article'}),false);
 });

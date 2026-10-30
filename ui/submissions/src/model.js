@@ -1,5 +1,6 @@
 export const emptyDocument=()=>({type:'doc',content:[{type:'paragraph',content:[]}]});
 export const states={draft:'草稿',pending:'待审核',approved:'待发表',returned:'被退回',rejected:'不予采用',published:'已发表',archived:'已下架'};
+export const canDeleteDraft=item=>['draft','returned','rejected'].includes(item?.state)&&!item?.article_id;
 export function normalizeDocument(node){
   const out={type:node.type};
   if(node.text!==undefined)out.text=node.text;

@@ -128,3 +128,7 @@ CEF Windows x64 运行时约 386 MB，不进入 Git；发布时必须随 EXE 携
 验证使用 GUI 版 Godot，以 DETACHED_PROCESS 启动，不重定向 stdout/stderr，也不以 CREATE_NO_WINDOW 隐藏应用。旧版本在同样条件下出现 conhost；新版本 `tools/check_submission_console.py` 检查编辑器就绪及其进程树，0 个控制台进程。完整投稿链路（含 Word 导入/导出）再次通过，0 失败。
 
 源码 GUI 与独立 release EXE 的无控制台检查均通过，记录见 outputs/submissions-validation/console-audit-debug.json 和 console-audit-release.json。新打包候选目录为 .godot_appdata/submission-no-console/，该目录无 .console.exe 启动器。
+
+## 列表删除按钮（2026-10-30）
+
+我的投稿在未发表的草稿、退回稿和不予采用稿件右侧直接显示删除按钮。确认弹窗显示实际标题，取消保留稿件；请求执行期间禁用重复操作。删除使用已有服务端接口，成功后留在列表并刷新数量；目标稿件读取失败不会误删此前打开的其他稿件。待审需先撤回，已发表版本不显示删除入口。隔离客户端集成检查及 5 项文档模型检查通过，截图见 outputs/submissions-validation/11-delete-confirmation.png。

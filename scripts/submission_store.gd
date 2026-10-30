@@ -132,20 +132,21 @@ func switch_view(mode: String) -> void:
 	changed.emit("view")
 	if mode == "mine": refresh_mine()
 
-func load_local(key: String) -> bool:
+func load_local(key: String, keep_view := false) -> bool:
 	if key.length() != 32 or not key.is_valid_hex_number(): return false
 	var data: Variant = JsonStore.read(_path(key))
 	if not data is Dictionary or data.get("account_id") != account_id: return false
 	current = data.draft; assets = data.get("assets", {}); dirty = data.get("dirty", false); pending = data.get("pending", {})
 	pending_action = data.get("pending_action", {})
-	sequence = int(data.get("sequence", 0)); conflict = {}; view = "settings"
+	sequence = int(data.get("sequence", 0)); conflict = {}
+	if not keep_view: view = "settings"
 	changed.emit("open")
 	return true
 
-func open_draft(id: String, key := "") -> Dictionary:
+func open_draft(id: String, key := "", keep_view := false) -> Dictionary:
 	if busy: return {"ok":false,"message":"正在保存，请稍后切换稿件。"}
 	if not persist(): return {"ok":false,"message":error}
-	if id.is_empty() and load_local(key): return {"ok":true}
+	if id.is_empty() and load_local(key, keep_view): return {"ok":true}
 	var generation := epoch
 	var result := await _request_rpc("submission_get", {"submission_id":id})
 	if generation != epoch: return {"ok":false}
@@ -153,16 +154,27 @@ func open_draft(id: String, key := "") -> Dictionary:
 		var remote: Dictionary = result.submission
 		var local: Variant = JsonStore.read(_path(str(remote.client_key)))
 		if local is Dictionary and local.get("account_id") == account_id and (local.get("dirty", false) or not local.get("pending_action", {}).is_empty()):
-			load_local(str(remote.client_key))
+			load_local(str(remote.client_key), keep_view)
 			if int(current.revision) != int(remote.revision): conflict = remote
 		else:
 			current = remote; assets = local.get("assets", {}) if local is Dictionary else {}; dirty = false; sequence = 0; pending = {}; pending_action = {}; conflict = {}
 			if local is Dictionary and local.get("account_id") == account_id:
 				current.ui = local.get("draft", {}).get("ui", {}).duplicate(true)
-		view = "settings" if current.state in ["draft","returned"] else "preview"
+		if not keep_view: view = "settings" if current.state in ["draft","returned"] else "preview"
 		status = "本机修改待同步" if dirty else "草稿已同步" if current.state in ["draft", "returned"] else "当前版本已保存"
 		error = ""; changed.emit("open")
 	return result
+
+func delete_draft(id: String, key: String) -> Dictionary:
+	# Load the exact selected row without leaving the list. Never fall through
+	# to deleting whichever draft was previously open when this lookup fails.
+	var opened := await open_draft(id, key, true)
+	if not opened.get("ok", false): return opened
+	if str(current.get("id", "")) != id or str(current.get("client_key", "")) != key:
+		return {"ok":false,"message":"稿件信息已变化，请重新打开列表后再试。"}
+	if current.get("state") not in ["draft", "returned", "rejected"] or current.get("article_id") not in [null, ""]:
+		return {"ok":false,"message":"只能删除未发表的草稿或退回稿；待审核稿件请先撤回。"}
+	return await transition("submission_delete")
 
 func save() -> Dictionary:
 	if busy: return {"ok":false,"message":"正在保存，请稍候。"}
