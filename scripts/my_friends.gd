@@ -3,6 +3,7 @@ const CardArtwork = preload("res://scripts/card_artwork.gd")
 const Avatar = preload("res://scripts/profile_avatar.gd")
 const Composer = preload("res://scripts/social_composer.gd")
 const Dialog = preload("res://scripts/social_dialog.gd")
+const ConversationActionsDialog = preload("res://scripts/conversation_actions_dialog.gd")
 const GiftDialog = preload("res://scripts/collection_gift_dialog.gd")
 const TradeDialog = preload("res://scripts/trade_dialog.gd")
 var store: Node
@@ -36,7 +37,7 @@ var connection: Label
 var bell: Button
 var add_button: Button
 var separator: ColorRect
-var dialog: Window
+var dialog: Node
 var gift_dialog: Window
 var _dialog_focus: WeakRef
 var _shown := ""
@@ -73,6 +74,7 @@ func _exit_tree() -> void:
 	_save_position()
 	if is_instance_valid(dialog):
 		dialog.dismiss()
+		if is_instance_valid(dialog) and dialog.get_script() == ConversationActionsDialog: dialog._finish_close()
 	if is_instance_valid(gift_dialog):
 		gift_dialog.dismiss()
 
@@ -599,13 +601,18 @@ func _peer_panel(mode: String) -> void:
 	show_panel(mode, {"peer": item.get("peer", {}), "conversation": item})
 
 func show_panel(mode: String, context: Dictionary = {}) -> void:
+	if mode == "peer_menu":
+		var current: Dictionary = store.conversation(str(context.get("conversation", {}).get("id", "")))
+		if current.is_empty() or current.get("kind") == "system" or str(current.get("peer", {}).get("id", "")).is_empty(): return
+		context = {"peer": current.peer.duplicate(true), "conversation": current.duplicate(true)}
+	if is_instance_valid(dialog) and dialog.get_script() == ConversationActionsDialog and dialog.closing: dialog._finish_close()
 	if is_instance_valid(dialog) and dialog.get_script() == TradeDialog and dialog.closing: dialog._finish_close()
 	if is_instance_valid(gift_dialog) and gift_dialog.closing: gift_dialog._finish_close()
 	if is_instance_valid(dialog) or is_instance_valid(gift_dialog):
 		return
 	var focus := get_viewport().gui_get_focus_owner()
-	_dialog_focus = weakref(focus) if focus != null else null
-	dialog = TradeDialog.new() if mode in ["exchange", "trade_review", "trade_detail", "trade_cancel", "trade_reject"] else Dialog.new()
+	_dialog_focus = weakref(more_button) if mode == "peer_menu" else weakref(focus) if focus != null else null
+	dialog = ConversationActionsDialog.new() if mode == "peer_menu" else TradeDialog.new() if mode in ["exchange", "trade_review", "trade_detail", "trade_cancel", "trade_reject"] else Dialog.new()
 	dialog.page = self
 	dialog.store = store
 	dialog.panel_mode = mode
@@ -615,11 +622,12 @@ func show_panel(mode: String, context: Dictionary = {}) -> void:
 	dialog.present()
 
 func _dialog_closed() -> void:
+	var from_conversation: bool = is_instance_valid(dialog) and dialog.get_script() == ConversationActionsDialog
 	dialog = null
-	var focus: Control = _dialog_focus.get_ref() if _dialog_focus != null else null
-	if is_instance_valid(focus) and focus.is_inside_tree():
+	var focus: Control = more_button if from_conversation else _dialog_focus.get_ref() if _dialog_focus != null else null
+	if is_instance_valid(focus) and focus.is_inside_tree() and focus.is_visible_in_tree():
 		focus.grab_focus()
-	elif is_inside_tree():
+	elif is_instance_valid(add_button) and add_button.is_inside_tree():
 		add_button.grab_focus()
 
 func open_gift(id: String, person: Dictionary) -> void:

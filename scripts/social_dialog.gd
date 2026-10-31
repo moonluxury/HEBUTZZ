@@ -112,7 +112,6 @@ func _build() -> void:
 			action(content, "全部标为已读", _mutate.bind("mark_all_read", {}, "done"))
 			action(content, "换卡记录", _navigate.bind("records", {}))
 			action(content, "黑名单", _navigate.bind("blacklist", {}))
-		"peer_menu": _peer_menu()
 		"profile":
 			var person: Dictionary = context.get("peer", {})
 			text(content, "昵称：" + str(person.get("name", "")))
@@ -364,24 +363,6 @@ func _requests() -> void:
 	if not store.error.is_empty():
 		status.text = store.error
 		action(content, "重新连接", store.refresh)
-
-func _peer_menu() -> void:
-	var conv: Dictionary = context.get("conversation", {})
-	var friendly: bool = conv.get("is_friend", false)
-	action(content, "查看资料", _navigate.bind("profile", context))
-	action(content, "修改备注", _navigate.bind("remark", context))
-	if friendly:
-		action(content, "赠送卡牌", _navigate.bind("gift", context))
-		action(content, "与此好友的记录", _navigate.bind("records", context))
-	action(content, "取消免打扰" if conv.get("muted", false) else "消息免打扰", _mutate.bind("preferences", {"peer_id": context.peer.id, "muted": not conv.get("muted", false)}, "done"))
-	text(content, "关系与安全")
-	if friendly:
-		action(content, "删除好友", _navigate.bind("remove", context))
-	if conv.get("blocked_by_me", false):
-		action(content, "解除拉黑", _mutate.bind("relationship", {"peer_id": context.peer.id, "operation": "unblock"}, "done"))
-	else:
-		action(content, "拉黑", _navigate.bind("block", context))
-	action(content, "举报", _navigate.bind("report", context))
 
 func _remark() -> void:
 	_mutate("preferences", {"peer_id": context.peer.id, "remark": query.text}, "done")
