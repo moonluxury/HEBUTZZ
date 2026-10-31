@@ -84,13 +84,13 @@ func _build_content() -> void:
 	rewards.name = "RewardEntries"
 	rewards.add_theme_constant_override("separation", 22)
 	left.add_child(rewards)
-	_reward_row(rewards, "reward-quiz", "答题得电池", "答对题目，按规则获得", "去答题 →", _open_subjects.bind("all"))
+	_reward_row(rewards, "reward-quiz", "答题得电池", "每题 1 电池，结束练习后结算", "去答题 →", _open_subjects.bind("all"))
 	var reward_divider := ColorRect.new()
 	reward_divider.color = border
 	reward_divider.custom_minimum_size.x = 1
 	reward_divider.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	rewards.add_child(reward_divider)
-	_reward_row(rewards, "reward-publication", "投稿得电池", "审核通过并发表后获得", "去投稿 →", _publication)
+	_reward_row(rewards, "reward-publication", "投稿得电池", "上架得 50 电池，销售提成 20%", "去投稿 →", _publication)
 	footer = _text(left, "", 14, muted_color)
 	separator = _line(body, Rect2())
 	right = VBoxContainer.new()

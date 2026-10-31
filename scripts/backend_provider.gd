@@ -74,7 +74,7 @@ func _normalize_numbers(value: Variant) -> Variant:
 	if value is Dictionary:
 		var result: Dictionary = value.duplicate(true)
 		for key in result:
-			if key in ["quantity", "terms_version", "through_seq", "limit", "expected_version", "expected_revision", "level", "start", "colspan", "rowspan", "width", "height"] and result[key] is float and result[key] == floor(result[key]):
+			if key in ["quantity", "terms_version", "through_seq", "limit", "expected_version", "expected_revision", "level", "start", "colspan", "rowspan", "width", "height", "price_batteries", "expected_price"] and result[key] is float and result[key] == floor(result[key]):
 				result[key] = int(result[key])
 			else:
 				result[key] = _normalize_numbers(result[key])
@@ -141,6 +141,12 @@ func save_avatar(owner: String, avatar_card_id: String, request_id: String) -> D
 
 func request_account(_owner: String) -> Dictionary:
 	return await social_request("account", {})
+
+func wallet_request(action: String, payload: Dictionary) -> Dictionary:
+	return await _request("/v1/wallet", {"version": 1, "action": action, "payload": _normalize_numbers(payload)})
+
+func open_publication() -> void:
+	get_node("/root/PageRouter").go("res://scenes/Submissions.tscn")
 
 func request_snapshot(_owner: String) -> Dictionary:
 	return await social_request("snapshot", {})

@@ -1,0 +1,51 @@
+{
+  "status": "activated",
+  "backup": "/var/backups/hegong/battery-economy-20261031T091206Z",
+  "files": [
+    "app.py",
+    "migrations/005_battery_economy.sql",
+    "ops/settle_battery_commissions.py",
+    "question_banks/questions.json",
+    "question_banks/questions_cpp.json",
+    "question_banks/questions_mao.json",
+    "question_banks/questions_marxism.json",
+    "question_banks/questions_matlab.json",
+    "question_banks/questions_python.json",
+    "quiz_rewards.py",
+    "submission_service.py",
+    "wallet_service.py"
+  ],
+  "schema_version": 5,
+  "settlement": {
+    "period_days": 3,
+    "timezone": "Asia/Shanghai",
+    "epoch": "2026-10-31T00:00:00+08:00",
+    "first_period_due": "2026-11-03T00:05:00+08:00",
+    "timer": "hegong-battery-commissions.timer"
+  },
+  "https": {
+    "checks_passed": 16,
+    "checks": [
+      "TLS and backend health",
+      "Disposable account a",
+      "Disposable account b",
+      "One-battery batch reward rule",
+      "Publication and commission rules",
+      "No invented opening balance",
+      "Starting a practice never credits batteries",
+      "Practice belongs to authenticated account",
+      "Explicit Finish credits the verified answer",
+      "Lost receipt replay is idempotent",
+      "One authoritative ledger row",
+      "Client cannot choose reward amount",
+      "Free or 200-500 battery pricing",
+      "Publication reward is connected",
+      "Existing public article list",
+      "Existing bank discussion API"
+    ],
+    "cleanup": {
+      "ok": true,
+      "temporary_accounts_removed": 2
+    }
+  }
+}

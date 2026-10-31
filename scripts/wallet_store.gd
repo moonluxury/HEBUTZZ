@@ -43,6 +43,7 @@ var _storage_error := false
 var _recovering := false
 var _watched_order := ""
 var _payment_window: WeakRef
+var _balance_updated_at := 0
 
 func _ready() -> void:
 	get_node("/root/ProfileStore").changed.connect(_session_changed)
@@ -140,6 +141,7 @@ func refresh_balance() -> void:
 	_balance_busy = false
 	balance_loading = false
 	if response.get("ok", false) and Amount.integer(response.get("balance")) and Amount.integer(response.get("revision")):
+		_balance_updated_at = Time.get_ticks_msec()
 		if int(response.revision) >= balance_revision:
 			balance = int(response.balance)
 			balance_revision = int(response.revision)
@@ -151,6 +153,20 @@ func refresh_balance() -> void:
 	if _balance_again:
 		_balance_again = false
 		refresh_balance.call_deferred()
+
+func adopt_balance(response: Dictionary) -> bool:
+	if response.get("account_id") != account_id or not Amount.integer(response.get("balance")) or not Amount.integer(response.get("revision")): return false
+	if int(response.revision) >= balance_revision:
+		balance = int(response.balance)
+		balance_revision = int(response.revision)
+		balance_error = ""
+		_balance_updated_at = Time.get_ticks_msec()
+		changed.emit()
+	return true
+
+func refresh_if_stale() -> void:
+	if available() and not _balance_busy and Time.get_ticks_msec() - _balance_updated_at > 300000:
+		refresh_balance()
 
 func refresh_catalog() -> void:
 	if catalog_loading or not available(): return

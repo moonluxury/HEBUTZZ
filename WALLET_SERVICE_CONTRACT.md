@@ -1,6 +1,6 @@
 # 电池与充值服务接入契约 v1
 
-这是现有 Godot 客户端的服务边界，不是已部署服务。仓库没有正式认证后端、商户产品、钱包数据库、正式价格或奖励策略。`tools/fixtures/wallet_service.py` 只允许创建在 `workbench-check-*` 目录中的隔离 SQLite 库；它的 HMAC 是虚构测试渠道，不能用于微信或支付宝验签。
+2026-10-31：答题批量奖励、50 电池上架奖励、稿件购买和 20% 三天提成已接入现有 PostgreSQL/HTTPS 服务，当前接口和规则见 [电池奖励实现](BATTERY_REWARDS_IMPLEMENTATION.md)。下文逐题 attempt 契约保留供旧测试兼容，新客户端使用 `practice_begin` / `practice_finish`；商户充值部分仍未开放。`tools/fixtures/wallet_service.py` 只允许创建在 `workbench-check-*` 目录中的隔离 SQLite 库，其 HMAC 仅用于虚构测试渠道。
 
 ## 接入现有认证
 

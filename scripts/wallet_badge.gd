@@ -9,9 +9,12 @@ func configure(page: Control) -> void:
 	wallet = get_node("/root/AppServices").wallet_store()
 	wallet.changed.connect(refresh)
 	refresh()
+	wallet.refresh_if_stale()
 
 func _enter_tree() -> void:
-	if is_instance_valid(wallet) and is_instance_valid(number): refresh()
+	if is_instance_valid(wallet) and is_instance_valid(number):
+		refresh()
+		wallet.refresh_if_stale()
 
 func refresh() -> void:
 	if not is_inside_tree() or not is_instance_valid(number): return

@@ -1,0 +1,15 @@
+{
+  "hegong-backend": "active",
+  "nginx": "active",
+  "postgresql": "active",
+  "hegong-battery-commissions.timer": "active",
+  "settlement_result": "Result=success\nExecMainStatus=0",
+  "temporary_accounts_remaining": 0,
+  "schema_versions": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+  ]
+}

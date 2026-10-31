@@ -16,6 +16,8 @@ var ledger: Array = []
 var calls: Array = []
 var attempts: Dictionary = {}
 var quiz_enabled := false
+var practices: Dictionary = {}
+var lose_practice_finish := false
 var nickname := "禹浩"
 var package_rows: Array = []
 var channel_rows := [{"id": "test-wechat", "label": "微信支付 · 测试", "brand": "wechat-pay", "enabled": true}, {"id": "test-alipay", "label": "支付宝 · 测试", "brand": "alipay", "enabled": true}]
@@ -38,6 +40,9 @@ func wallet_request(action: String, payload: Dictionary) -> Dictionary:
 	if action == "create_order" and lose_create:
 		lose_create = false
 		return {"ok": false, "account_id": account, "code": "unknown"}
+	if action == "practice_finish" and lose_practice_finish:
+		lose_practice_finish = false
+		return {"ok": false, "account_id": account, "code": "unknown"}
 	if corrupt_owner: response.account_id = "not-this-user"
 	if corrupt_created_price and action == "create_order" and response.get("order") is Dictionary:
 		response.order.price_cents += 1
@@ -51,7 +56,7 @@ func execute(account: String, action: String, p: Dictionary) -> Dictionary:
 			data.merge({"balance": wallet[account], "revision": revisions[account]})
 		"catalog":
 			if fail_catalog: return fail(account, "unknown")
-			data.merge({"packages": package_rows.duplicate(true), "channels": channel_rows.duplicate(true), "preview": true, "recharge_enabled": true, "default_package_id": "preview-600", "rules": {"summary": "充值档位与兑换比例仅作设计示意", "description": "隔离预览：¥1 = 100 电池，不用于真实收款。", "quiz": {"enabled": quiz_enabled, "trusted_attempts": quiz_enabled, "types": ["single", "multiple", "judge"], "bank_versions": {"marxism": "fixture-v1"}}, "publication": {"entry_enabled": false}}})
+			data.merge({"packages": package_rows.duplicate(true), "channels": channel_rows.duplicate(true), "preview": true, "recharge_enabled": true, "default_package_id": "preview-600", "rules": {"summary": "充值档位与兑换比例仅作设计示意", "description": "隔离预览：¥1 = 100 电池，不用于真实收款。", "quiz": {"enabled": quiz_enabled, "trusted_attempts": quiz_enabled, "practice_batches": quiz_enabled, "types": ["single", "multiple", "judge"], "bank_versions": {"marxism": "fixture-v1"}}, "publication": {"entry_enabled": false}}})
 		"create_order":
 			var key := account + ":" + str(p.get("request_id", ""))
 			if intents.has(key):
@@ -86,6 +91,31 @@ func execute(account: String, action: String, p: Dictionary) -> Dictionary:
 			var id := "ATTEMPT-" + str(p.request_id)
 			attempts[id] = {"account_id": account, "question_id": p.question_id, "subject_id": p.subject_id, "reward": {}}
 			data.attempt_id = id
+		"practice_begin":
+			if not quiz_enabled: return fail(account, "disabled")
+			var id := "PRACTICE-" + str(p.request_id)
+			if not practices.has(id): practices[id] = {"account_id":account,"subject_id":p.subject_id,"receipt":{},"answers":[]}
+			data.practice_id = id
+		"practice_finish":
+			var practice: Dictionary = practices.get(str(p.get("practice_id", "")), {})
+			if practice.is_empty() or practice.account_id != account: return fail(account, "forbidden")
+			if not practice.receipt.is_empty():
+				return practice.receipt.duplicate(true) if practice.answers == p.answers else fail(account,"conflict")
+			var bank: Array = get_node("/root/StudyStats").banks.get(practice.subject_id, [])
+			var count := 0
+			var seen: Dictionary = {}
+			for answer in p.answers:
+				if seen.has(answer.question_id): return fail(account,"conflict")
+				seen[answer.question_id] = true
+				for question in bank:
+					if str(int(question.id)) == str(answer.question_id) and preload("res://scripts/quiz_grader.gd").correct(question, answer.selected_keys, answer.entered_answers): count += 1
+			var lid := "TEST-PRACTICE-" + str(ledger.size())
+			if count > 0:
+				wallet[account] += count; revisions[account] += 1
+				ledger.append({"id":lid,"account_id":account,"source":"quiz","delta":count,"reference":p.practice_id,"created_at":"2026-10-31 16:00"})
+			data.merge({"reward":{"status":"credited" if count else "ineligible","amount":count,"ledger_id":lid if count else ""},"balance":wallet[account],"revision":revisions[account]})
+			practice.answers = p.answers.duplicate(true)
+			practice.receipt = data.duplicate(true)
 		"quiz_submit":
 			var attempt: Dictionary = attempts.get(str(p.get("attempt_id", "")), {})
 			if attempt.is_empty() or attempt.account_id != account: return fail(account, "forbidden")

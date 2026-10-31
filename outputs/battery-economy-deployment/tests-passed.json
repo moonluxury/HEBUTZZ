@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "database": "hegong_battery_20261031_r2_test",
+  "manifest_sha256": "f699f5af2d9bfee837ce1cb86572aae803685c57a43e9e3795807bf17a7bb940",
+  "summary": "69 passed, 1 warning in 47.83s"
+}

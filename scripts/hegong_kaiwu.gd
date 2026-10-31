@@ -35,7 +35,7 @@ func _publication_changed(reason: String) -> void:
 	if reason != "public" or not is_inside_tree(): return
 	entries = entries.filter(func(item: Dictionary): return not item.has("article_id"))
 	for item in submissions.public_items:
-		entries.append({"id":"article_" + str(item.id),"article_id":item.id,"title":item.data.title,"category":"优秀文章","type":"已发表文章","summary":item.data.get("course", ""),"keywords":item.data.get("tags", [])})
+		entries.append({"id":"article_" + str(item.id),"article_id":item.id,"title":item.data.title,"category":"优秀文章","type":"免费阅读" if int(item.get("price_batteries",0)) == 0 else "%d 电池" % int(item.price_batteries),"summary":item.data.get("course", ""),"keywords":item.data.get("tags", [])})
 	for index in 4:
 		var category: String = (["全部资源"] + CONTENT_CATEGORIES)[index]
 		var count: int = entries.size() if index == 0 else entries.filter(func(entry: Dictionary): return entry.get("category", "") == category).size()

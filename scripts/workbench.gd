@@ -10,10 +10,14 @@ var trend_chart: Control
 var separator: Control
 var divider: Control
 var detail_return_focus: WeakRef
+var reward_store: Node
+var reward_notice: Label
 
 func _ready() -> void:
+	reward_store = get_node("/root/AppServices").practice_rewards()
 	super._ready()
 	_stats().changed.connect(_refresh_data)
+	reward_store.changed.connect(_refresh_rewards)
 
 func _build_content() -> void:
 	data = _stats().summary()
@@ -21,7 +25,8 @@ func _build_content() -> void:
 	_label(body, "工作台", TITLE_SIZE, text_color, Rect2(0, 0, 300, 55), true)
 	hero = _display_panel(body, "StudyHero")
 	_label(hero, "让每一次练习，都有收获", 42, text_color, Rect2(0, 0, 1000, 68), true)
-	_label(hero, "坚持学习，遇见更好的自己", 24, muted_color, Rect2(0, 77, 950, 44))
+	reward_notice = _label(hero, "坚持学习，遇见更好的自己", 24, muted_color, Rect2(0, 77, 950, 44))
+	_refresh_rewards()
 	var items := [
 		["TodayCard", "今日学习", str(data.today), "题"],
 		["ProgressCard", "学习进度", _percent(float(data.percent)), "%"],
@@ -80,6 +85,11 @@ func _refresh_data() -> void:
 
 func _refresh_cached_content() -> void:
 	_refresh_data()
+	_refresh_rewards()
+
+func _refresh_rewards() -> void:
+	if not is_instance_valid(reward_notice) or not is_instance_valid(reward_store): return
+	reward_notice.text = reward_store.last_message if not reward_store.last_message.is_empty() else "坚持学习，遇见更好的自己"
 
 func _layout_content(width: float) -> void:
 	_rect(hero, Rect2(0, 114, width, 140))

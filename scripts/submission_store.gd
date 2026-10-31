@@ -2,7 +2,7 @@ extends Node
 ## One account-scoped working document for settings, writing and private preview.
 signal changed(reason: String)
 const JsonStore = preload("res://scripts/local_json_store.gd")
-const EMPTY := {"title":"", "category_id":"", "course":"", "tags":[], "cover_asset_id":"", "sources":"", "document":{"type":"doc","content":[{"type":"paragraph","content":[]}]}}
+const EMPTY := {"title":"", "category_id":"", "course":"", "tags":[], "cover_asset_id":"", "sources":"", "price_batteries":0, "document":{"type":"doc","content":[{"type":"paragraph","content":[]}]}}
 const ROOT := "user://submissions_v1"
 var profile: Node
 var provider: Node
@@ -26,6 +26,8 @@ var pending_action: Dictionary = {}
 var assets: Dictionary = {}
 var _timer: Timer
 var _last_key := ""
+var purchase_busy := false
+var _public_loading := false
 var _public_request := 0
 
 func _ready() -> void:
@@ -47,6 +49,7 @@ func _session_changed() -> void:
 	current = {}; records = []; counts = {}; assets = {}; article = {}; public_items = []; config = {}; conflict = {}; pending = {}; pending_action = {}
 	_public_request += 1
 	busy = false; dirty = false; sequence = 0; error = ""; status = ""; view = "mine"
+	purchase_busy = false; _public_loading = false
 	_last_key = ""
 	_timer.stop()
 	changed.emit("account")
@@ -56,7 +59,8 @@ func _path(key: String) -> String: return _directory().path_join(key + ".json")
 func _key() -> String: return Crypto.new().generate_random_bytes(16).hex_encode()
 
 func state() -> Dictionary:
-	return {"epoch":epoch,"authenticated":not account_id.is_empty(),"view":view,"draft":current,"items":records,"counts":counts,"config":config,"article":article,"status":status,"error":error,"busy":busy,"dirty":dirty,"conflict":conflict,"pending_action":pending_action,"local_items":local_records()}
+	var wallet: Node = get_node("/root/AppServices").wallet_store()
+	return {"epoch":epoch,"authenticated":not account_id.is_empty(),"view":view,"draft":current,"items":records,"counts":counts,"config":config,"article":article,"status":status,"error":error,"busy":busy,"dirty":dirty,"conflict":conflict,"pending_action":pending_action,"local_items":local_records(),"balance":wallet.balance,"purchase_busy":purchase_busy,"purchase_pending":_purchase_requests().has(str(article.get("id", "")))}
 
 func local_records() -> Array:
 	var result: Array = []
@@ -277,6 +281,8 @@ func transition(action: String) -> Dictionary:
 
 func refresh_mine() -> void:
 	var generation := epoch
+	var previous: Dictionary = {}
+	for item in records: previous[str(item.id)] = str(item.state)
 	var cursor := ""
 	var loaded: Dictionary = {}
 	for page_index in 200:
@@ -288,6 +294,10 @@ func refresh_mine() -> void:
 		cursor = str(result.get("next_cursor", ""))
 		if cursor.is_empty(): break
 	records = loaded.values()
+	for item in records:
+		if previous.has(str(item.id)) and previous[str(item.id)] != "published" and item.state == "published":
+			get_node("/root/AppServices").wallet_store().refresh_balance()
+			break
 	changed.emit("list")
 
 func open_article(id: String) -> Dictionary:
@@ -303,8 +313,10 @@ func open_article(id: String) -> Dictionary:
 	return result
 
 func refresh_public() -> void:
+	if _public_loading: return
 	var api: Node = profile.provider
 	if not is_instance_valid(api) or not api.has_method("submission_get"): return
+	_public_loading = true
 	_public_request += 1
 	var ticket := _public_request
 	var generation := epoch
@@ -313,11 +325,47 @@ func refresh_public() -> void:
 	for page_index in 200:
 		var result: Dictionary = await api.submission_get("/v1/articles" + ("?cursor=" + cursor.uri_encode() if not cursor.is_empty() else ""))
 		if ticket != _public_request or generation != epoch: return
-		if not result.get("ok", false): return
+		if not result.get("ok", false):
+			_public_loading = false
+			return
 		for item in result.items: loaded[str(item.id)] = item
 		cursor = str(result.get("next_cursor", ""))
 		if cursor.is_empty(): break
+	_public_loading = false
 	public_items = loaded.values(); changed.emit("public")
+
+func _purchase_requests() -> Dictionary:
+	if account_id.is_empty(): return {}
+	var saved: Variant = JsonStore.read(_directory().path_join("purchases.json"), {})
+	return saved.get("requests", {}) if saved is Dictionary and saved.get("account_id") == account_id and saved.get("requests") is Dictionary else {}
+
+func purchase_article() -> Dictionary:
+	if account_id.is_empty(): return {"ok":false,"message":"请先登录。"}
+	if article.is_empty() or purchase_busy: return {"ok":false,"message":"购买正在处理，请稍候。"}
+	var generation := epoch
+	var article_id: String = str(article.id)
+	var requests := _purchase_requests()
+	if not requests.has(article_id):
+		requests[article_id] = {"article_id":article_id,"expected_revision_id":article.revision_id,"expected_price":int(article.get("price_batteries",0)),"operation_id":_key()}
+	if JsonStore.write(_directory().path_join("purchases.json"), {"account_id":account_id,"requests":requests}) != OK:
+		return {"ok":false,"message":"购买记录无法保存，请检查磁盘空间。"}
+	purchase_busy = true; changed.emit("purchase")
+	var result := await _request_rpc("article_purchase", requests[article_id])
+	if generation != epoch: return {"ok":false}
+	purchase_busy = false
+	if result.get("ok",false):
+		get_node("/root/AppServices").wallet_store().adopt_balance(result)
+		if str(article.get("id","")) == article_id: article = result.article
+		error = ""
+	elif result.get("definitive",false):
+		error = str(result.get("message","购买未完成。"))
+	else:
+		error = "购买结果待确认，请重试原购买记录；不会重复扣除电池。"
+	if result.get("ok",false) or result.get("definitive",false):
+		requests.erase(article_id)
+		JsonStore.write(_directory().path_join("purchases.json"), {"account_id":account_id,"requests":requests})
+	changed.emit("article")
+	return result
 
 func react(kind: String, value: bool) -> Dictionary:
 	if article.is_empty(): return {"ok":false}

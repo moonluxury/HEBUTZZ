@@ -264,17 +264,20 @@ func _run() -> void:
 	page._reveal_answer()
 	await create_timer(0.85).timeout
 	backend.delay = 0
-	check(page.result_label.text.contains("获得 5 电池") and store.balance == 1285, "Actual quiz sends selected keys to an issued attempt and displays confirmed reward")
-	check(page.minimal_view.wallet_badge.number.text == "1,285", "Quiz reward also updates the shared header balance")
+	check(page.result_label.text.contains("结束练习") and store.balance == 1280, "Answering keeps batteries pending until the explicit finish action")
+	check(page.minimal_view.wallet_badge.number.text == "1,280", "Unsettled answers never change the shared header balance")
 	await capture("11-header-Quiz")
 	page._refresh_answer_feedback()
-	check(page.result_label.text.count("获得 5 电池") == 1, "Repainting the answer retains one confirmed reward message")
-	var aid: String = page.wallet_bridge.attempt_id
-	var answer: Dictionary = page.wallet_bridge.pending_answer
-	await store.submit_quiz(aid, answer)
-	check(store.balance == 1285, "Retrying the same server-issued attempt does not repeat the reward")
-	var forged: Dictionary = await store.request("quiz_submit", {"attempt_id": "fabricated", "correct": true, "amount": 999})
-	check(not forged.ok and store.balance == 1285, "Client-reported correctness is not a reward path")
+	check(page.result_label.text.count("结束练习") == 1, "Repainting the answer retains one pending settlement message")
+	var aid: String = page.wallet_bridge.practice_id
+	page.minimal_view.finish.pressed.emit()
+	await scene_changed
+	await frames()
+	check(store.balance == 1281, "Ending a practice posts one battery for the verified correct answer")
+	await root.get_node("AppServices").practice_rewards().finish(aid)
+	check(store.balance == 1281, "Retrying the same finished practice does not repeat the reward")
+	var forged: Dictionary = await store.request("practice_finish", {"practice_id": "fabricated", "correct": true, "amount": 999})
+	check(not forged.ok and store.balance == 1281, "Client-reported correctness is not a reward path")
 	page = await visit("Recharge")
 	profile.use_provider(backend, {"state": "signed_out"})
 	await frames()

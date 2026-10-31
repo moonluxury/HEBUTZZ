@@ -18,6 +18,9 @@ func social_store() -> Node:
 func wallet_store() -> Node:
 	return _service("WalletStore", preload("res://scripts/wallet_store.gd"))
 
+func practice_rewards() -> Node:
+	return _service("PracticeRewards", preload("res://scripts/practice_rewards.gd"))
+
 func wrong_questions() -> Node:
 	return _service("WrongQuestions", preload("res://scripts/wrong_question_store.gd"))
 

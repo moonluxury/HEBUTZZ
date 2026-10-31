@@ -64,10 +64,10 @@ func _ready() -> void:
 		"rules":
 			_text(str(store.rules.get("description", "正式充值规则尚未配置，当前不提供真实收款。")))
 			if store.preview: _text("充值档位与兑换比例仅作设计示意。当前为隔离预览，不产生真实支付。")
-			_text("电池可通过答题、投稿和充值获得。投稿奖励须审核通过并发表。未到账数量不计入可用余额。")
+			_text("同次练习每题答对最多获得 1 电池，点击结束练习后统一结算。稿件审核通过并上架后获得 50 电池；按成交价获得 20% 提成，每 3 天统一到账。未结算数量不计入可用余额。")
 		"publication":
 			_text("应用内投稿入口尚未开放。现有投稿说明可在河工开物的征稿公告查看。")
-			_text("稿件须审核通过并发表后，按正式规则获得电池。当前尚未接入发表状态与电池奖励服务。")
+			_text("稿件审核通过并上架后获得 50 电池。可以免费提供，或定价 200–500 电池；销售提成 20%，每 3 天统一结算，不足 1 电池的部分累计到下一期。")
 			_action("查看现有征稿说明 →", _publication_notice)
 		"help":
 			_text("已付款或结果未知时，请从充值记录查询原订单。关闭支付窗口不代表订单已取消；请勿重复支付来尝试恢复。")
@@ -115,7 +115,7 @@ func _records() -> void:
 	if _rows.is_empty() and _loaded: _text("暂无电池明细" if panel_mode == "ledger" else "暂无充值记录")
 	for row in _rows:
 		if panel_mode == "ledger":
-			var source: String = {"recharge": "充值", "quiz": "答题奖励", "publication": "稿件发表奖励", "spend": "消费", "opening": "期初余额", "adjustment": "余额调整"}.get(str(row.get("source", "")), str(row.get("description", "电池变动")))
+			var source: String = {"recharge": "充值", "quiz": "答题奖励", "publication": "稿件上架奖励", "commission": "稿件销售提成", "spend": "消费", "opening": "期初余额", "adjustment": "余额调整"}.get(str(row.get("source", "")), str(row.get("description", "电池变动")))
 			_text("%s    %s%s 电池" % [source, "+" if int(row.delta) > 0 else "", page.Amount.grouped(int(row.delta))], true)
 			_text("%s\n业务引用：%s" % [row.get("created_at", ""), row.reference])
 			if not str(row.get("order_id", "")).is_empty(): _action("查看关联订单 →", _navigate.bind("order", str(row.order_id)))

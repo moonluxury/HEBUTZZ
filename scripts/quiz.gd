@@ -85,7 +85,7 @@ func _ready() -> void:
 	content.jump_requested.connect(_jump_to)
 	content.wrong_toggle_requested.connect(_toggle_wrong_current)
 	content.back_requested.connect(get_node("/root/PageRouter").back)
-	content.finish_requested.connect(_go_home)
+	content.finish_requested.connect(_finish_practice)
 	content.answer_edited.connect(_answer_edited)
 	content.program_draft_edited.connect(_on_program_draft_changed)
 	content.reference_changed.connect(_on_program_reference_toggled)
@@ -197,3 +197,10 @@ func consume_back_action() -> bool:
 
 func _go_home() -> void:
 	get_node("/root/PageRouter").go("res://scenes/Workbench.tscn")
+
+func _finish_practice() -> void:
+	if minimal_view.finish.disabled: return
+	minimal_view.finish.disabled = true
+	minimal_view.finish.text = "结算中…"
+	await wallet_bridge.finish()
+	if is_inside_tree(): _go_home()

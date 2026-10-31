@@ -1,73 +1,38 @@
 extends Node
-## Optional bridge: send answers to a server-issued attempt, never local correctness.
+## Collect raw answers locally. Only the explicit Finish action settles the practice.
 signal feedback_changed
 var session: RefCounted
-var store: Node
-var serial := 0
-var attempt_id := ""
-var prepared := false
-var submitted := false
-var pending_answer: Dictionary = {}
+var rewards: Node
+var practice_id := ""
+var subject_id := ""
 var session_epoch := -1
 var feedback := ""
 
 func _ready() -> void:
-	store = get_node("/root/AppServices").wallet_store()
-	store.changed.connect(_session_changed)
+	rewards = get_node("/root/AppServices").practice_rewards()
+	rewards.changed.connect(_session_changed)
 
 func _session_changed() -> void:
-	if session_epoch != store.epoch and not feedback.is_empty():
-		feedback = ""
-		feedback_changed.emit()
-
-func prepare(subject: String, question: Dictionary) -> void:
-	serial += 1
-	attempt_id = ""
-	prepared = false
-	submitted = false
-	pending_answer = {}
+	if session_epoch == rewards.epoch: return
+	practice_id = ""
 	feedback = ""
-	session_epoch = store.epoch
-	var request_serial := serial
-	# First entry into Quiz can precede the initial asynchronous catalog response.
-	# Keep the original answer if the learner submits while rules/attempt load.
-	while store.catalog_loading:
-		await store.changed
-		if request_serial != serial or session_epoch != store.epoch: return
-	var rule: Dictionary = store.rules.get("quiz", {})
-	if not store.available() or not rule.get("enabled", false) or not rule.get("trusted_attempts", false): return
-	var types: Array = rule.get("types", [])
-	if question.get("type") not in types: return
-	var response: Dictionary = await store.request("quiz_attempt", {"request_id": Crypto.new().generate_random_bytes(24).hex_encode(), "subject_id": subject, "question_id": str(question.get("id", "")), "bank_version": str(rule.get("bank_versions", {}).get(subject, ""))})
-	if request_serial != serial or session_epoch != store.epoch: return
-	prepared = true
-	if response.get("ok", false): attempt_id = str(response.get("attempt_id", ""))
-	if not pending_answer.is_empty(): _send()
+	session_epoch = rewards.epoch
+	feedback_changed.emit()
+
+func prepare(subject: String, _question: Dictionary) -> void:
+	subject_id = subject
+	session_epoch = rewards.epoch
+	feedback = ""
+	if practice_id.is_empty(): practice_id = rewards.start(subject)
 
 func submit() -> void:
-	if submitted or session_epoch != store.epoch: return
-	var keys: Array[String] = []
-	for index in session.selected_indices: keys.append(str(session.shuffled_options[index].get("key", "")))
+	if practice_id.is_empty() or session_epoch != rewards.epoch: return
+	var keys: Array = session.selected_keys()
 	keys.sort()
-	pending_answer = {"selected_keys": keys, "entered_answers": session.entered_answers.duplicate()}
-	if prepared: _send()
-
-func _send() -> void:
-	if submitted: return
-	submitted = true
-	if attempt_id.is_empty():
-		_feedback("电池奖励暂无法核实")
-		return
-	var request_serial := serial
-	var response: Dictionary = await store.submit_quiz(attempt_id, pending_answer)
-	if request_serial != serial or session_epoch != store.epoch: return
-	var reward: Dictionary = response.get("reward", {})
-	if response.get("ok", false) and reward.get("status") == "credited":
-		_feedback("获得 %s 电池" % store.Amount.grouped(int(reward.amount)))
-	elif response.get("ok", false) and reward.get("status") == "pending": _feedback("电池奖励待发放")
-	elif not response.get("ok", false): _feedback("电池奖励待核实，可查看明细")
-
-func _feedback(value: String) -> void:
-	if is_instance_valid(session) and session.has_answered:
-		feedback = value
+	rewards.record(practice_id, session.current(), keys, session.entered_answers, session.is_correct())
+	if session.is_correct():
+		feedback = "答题奖励将在结束练习后统一结算"
 		feedback_changed.emit()
+
+func finish() -> Dictionary:
+	return await rewards.finish(practice_id)

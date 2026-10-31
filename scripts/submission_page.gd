@@ -188,11 +188,15 @@ func _message(raw: String) -> void:
 			var path := await _choose_file(true, PackedStringArray(["*.docx ; Word 文档"]))
 			result = await word.export_file(path, store) if not path.is_empty() and generation == store.epoch else {"ok":false}
 		"react": result = await store.react(str(params.get("kind", "")), bool(params.get("value", false)))
+		"purchase": result = await store.purchase_article()
 		"report": result = await store.report(str(params.get("reason", "")), str(params.get("note", "")))
 		"login":
+			var login_article: String = str(store.article.get("id", ""))
 			var provider: Node = get_node("/root/ProfileStore").provider
 			result = await provider.begin_login() if is_instance_valid(provider) and provider.has_method("begin_login") else {"ok":false,"message":"登录服务暂不可用。"}
-			if result.get("ok", false): store.activate()
+			if result.get("ok", false):
+				if public_mode and not login_article.is_empty(): await store.open_article(login_article)
+				else: store.activate()
 		"open_link":
 			var url := str(params.get("url", ""))
 			if url.begins_with("https://") or url.begins_with("http://") or url.begins_with("mailto:"): OS.shell_open(url)
