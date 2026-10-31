@@ -4,6 +4,7 @@ const Avatar = preload("res://scripts/profile_avatar.gd")
 const Composer = preload("res://scripts/social_composer.gd")
 const Dialog = preload("res://scripts/social_dialog.gd")
 const GiftDialog = preload("res://scripts/collection_gift_dialog.gd")
+const TradeDialog = preload("res://scripts/trade_dialog.gd")
 var store: Node
 var collection: Node
 var search: LineEdit
@@ -598,11 +599,13 @@ func _peer_panel(mode: String) -> void:
 	show_panel(mode, {"peer": item.get("peer", {}), "conversation": item})
 
 func show_panel(mode: String, context: Dictionary = {}) -> void:
+	if is_instance_valid(dialog) and dialog.get_script() == TradeDialog and dialog.closing: dialog._finish_close()
+	if is_instance_valid(gift_dialog) and gift_dialog.closing: gift_dialog._finish_close()
 	if is_instance_valid(dialog) or is_instance_valid(gift_dialog):
 		return
 	var focus := get_viewport().gui_get_focus_owner()
 	_dialog_focus = weakref(focus) if focus != null else null
-	dialog = Dialog.new()
+	dialog = TradeDialog.new() if mode in ["exchange", "trade_review", "trade_detail", "trade_cancel", "trade_reject"] else Dialog.new()
 	dialog.page = self
 	dialog.store = store
 	dialog.panel_mode = mode
@@ -622,6 +625,8 @@ func _dialog_closed() -> void:
 func open_gift(id: String, person: Dictionary) -> void:
 	if is_instance_valid(dialog):
 		dialog.dismiss()
+		if is_instance_valid(dialog) and dialog.get_script() == TradeDialog: dialog._finish_close()
+	if is_instance_valid(gift_dialog) and gift_dialog.closing: gift_dialog._finish_close()
 	if is_instance_valid(gift_dialog):
 		return
 	var rule: Dictionary = collection.gift_rule(id)

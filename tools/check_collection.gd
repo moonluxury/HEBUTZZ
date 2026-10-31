@@ -454,7 +454,7 @@ func _run() -> void:
 	var dialog: Window = page.gift_dialog
 	check(dialog.card_art.texture.resource_path == store.card("0001").artwork, "Gift thumbnail uses unframed illustration")
 	check(dialog.friend_rows.size() == 2 and dialog.confirm.disabled, "Gift waits for real stable recipient selection")
-	check(dialog.friend_rows[0].get_node("CardAvatar").source_path == store.card("0004").artwork, "Gift recipients share the circular card-avatar identity")
+	check(dialog.friend_rows[0].get_meta("person_controls").avatar.source_path == store.card("0004").artwork, "Gift recipients share the circular card-avatar identity")
 	await key(dialog, KEY_TAB)
 	check(dialog.gui_get_focus_owner() != null and dialog.is_ancestor_of(dialog.gui_get_focus_owner()), "Gift keyboard focus stays in exclusive window")
 	dialog._search_friends("甲")
@@ -471,7 +471,7 @@ func _run() -> void:
 	# SpinBox updates its edit text on the next frame; emulate a real user pause
 	# before the next click in headless mode too (visual capture already waits).
 	await frames()
-	check(dialog.remaining.text == "送出后你将剩余 2 张（至少保留 1 张）。" and not dialog.confirm.disabled, "Gift confirmation shows remainder and retain-one rule")
+	check(dialog.remaining.text.begins_with("送出后你将剩余 2 张（至少保留 1 张）。") and dialog.remaining.text.contains("每种卡片需至少保留 1 张。") and not dialog.confirm.disabled, "Gift confirmation shows remainder and retain-one rule")
 	await capture("05-fixture-gift-confirm")
 	check(dialog.confirm.get_theme_color("font_color") == Color.WHITE, "Enabled gift confirmation retains white primary text")
 	dialog._submit()
@@ -560,7 +560,7 @@ func _run() -> void:
 	backend.friend_data.clear()
 	dialog._search_friends("")
 	await frames(10)
-	check(dialog.friend_status.text == "没有可选好友" and dialog.confirm.disabled, "No eligible friends has its own empty state")
+	check(dialog.friend_status.text == "暂无可赠送的好友" and dialog.confirm.disabled, "No eligible friends has its own empty state")
 	backend.friend_data = saved_friends
 	dialog._search_friends("甲")
 	dialog.dismiss()

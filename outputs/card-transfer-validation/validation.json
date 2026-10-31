@@ -1,0 +1,41 @@
+{
+  "visual_assertions": 32,
+  "edge_checks": {
+    "gift-light": 0,
+    "exchange-light": 0,
+    "exchange-dark": 0,
+    "gift-2560x1500": 0,
+    "gift-125-percent": 0
+  },
+  "reference_pixels": [
+    1672,
+    941
+  ],
+  "gift_modal_pixels": [
+    522,
+    781
+  ],
+  "root_viewports": [
+    [
+      1672,
+      941
+    ],
+    [
+      600,
+      680
+    ],
+    [
+      2560,
+      1500
+    ],
+    [
+      2000,
+      1250
+    ]
+  ],
+  "original_artwork_unchanged": 7,
+  "data": "isolated fixtures; no real transfers",
+  "social_assertions": 104,
+  "collection_regression": "passed",
+  "exit_animation": "live window fade; no duplicated layout"
+}

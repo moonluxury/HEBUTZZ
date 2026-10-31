@@ -700,22 +700,6 @@ func _toggle_wanted(id: String) -> void:
 	if response.ok and tiles.has(id):
 		_motion().enter(tiles[id].get_node("Wanted"), Tokens.STATE)
 
-func _retire_window(window: Window) -> void:
-	# The gift window relinquishes input/focus immediately; only its last pixels fade.
-	if not is_inside_tree() or not is_visible_in_tree() or _motion().reduced() or DisplayServer.get_name() == "headless":
-		return
-	var ghost: Control
-	if window.get_child_count() > 0 and window.get_child(0) is Control:
-		ghost = window.get_child(0).duplicate(0)
-	else:
-		return
-	ghost.set_anchors_preset(Control.PRESET_TOP_LEFT)
-	ghost.position = Vector2(window.position)
-	ghost.size = Vector2(window.size)
-	ghost.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(ghost)
-	_motion().retire(ghost)
-
 func _focused_card() -> String:
 	var focused := get_viewport().gui_get_focus_owner()
 	return str(focused.get_meta("card_id", "")) if is_instance_valid(focused) else ""
@@ -733,17 +717,26 @@ func _restore_focus(id: String) -> void:
 	else:
 		filter_buttons[filter].grab_focus()
 
+func _restore_gift_focus(id: String) -> void:
+	if not is_inside_tree() or is_instance_valid(gift_dialog): return
+	var trigger := detail_panel.get_node_or_null("Gift") if is_instance_valid(detail_panel) else null
+	if trigger is Button and trigger.is_visible_in_tree() and not trigger.disabled:
+		trigger.grab_focus()
+	else:
+		_restore_focus(id)
+
 func _open_gift(id: String) -> void:
 	if int(store.gift_rule(id).max) <= 0:
 		return
 	if is_instance_valid(gift_dialog):
-		gift_dialog.grab_focus()
-		return
+		if gift_dialog.closing: gift_dialog._finish_close()
+		else:
+			gift_dialog.grab_focus()
+			return
 	gift_dialog = GiftDialog.new()
 	gift_dialog.configure(self, store, id)
-	gift_dialog.retiring.connect(_retire_window)
 	add_child(gift_dialog)
-	gift_dialog.closed.connect(func(): gift_dialog = null; _restore_focus.call_deferred(id))
+	gift_dialog.closed.connect(func(): gift_dialog = null; _restore_gift_focus.call_deferred(id))
 	gift_dialog.present()
 
 func consume_back_action() -> bool:
