@@ -99,7 +99,7 @@ func _run() -> void:
 			await frames()
 			var prefix: String = str(configuration[0]) + ("-dark-" if dark else "-light-")
 			var page := await visit("PersonalCenter")
-			for mode in ["edit", "account", "version", "avatar"]:
+			for mode in ["edit", "account", "avatar"]:
 				page.show_panel(mode)
 				await inspect(page.dialog, prefix + mode, page.surface)
 				page.dialog.dismiss()

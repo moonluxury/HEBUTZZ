@@ -71,12 +71,14 @@ Windows 64 位版的编程编辑器支持运行 Python 代码。需要 `input()`
 
 两套表单复用 `account_dialog_ui.gd` 的局部控件与缩放逻辑，并继续使用 `DialogSurface` 的透明圆角合成。验证：`python tools/run_workbench_checks.py --godot <Godot控制台程序路径> --script check_account_dialogs.gd --visual`；另运行个人资料、头像、本地快捷登录及弹窗合成专项。截图使用隔离账户，输出在 `.godot_appdata/account-ui-validation/`。
 
+“账号与安全”沿用编辑资料的 680 基准宽度、字号、边距、关闭按钮和自适应缩放，分区展示登录账号、用户 ID、登录方式及脱敏联系方式；支持刷新、失败重试和进入既有修改密码流程。底部操作固定，内容在小窗口内滚动；未返回的联系方式显示“暂未提供”。版本信息改为个人中心内的静态文字，版本号直接跟在标签后，不再打开弹窗。
+
 
 公共侧栏左上角现为头像、显示名称和“个人中心”入口，替换原品牌区；侧栏宽度、导航坐标和第四项“河工开物”资源入口保持不变。未登录显示“登录”；存在认证服务时直接打开账号登录表单，没有服务时保留明确的不可用提示。品牌素材、应用名称和启动场景保留。收藏导航与个人中心收藏快捷入口使用同一个卡牌图标、场景路由和 `CollectionStore`，不重置收藏页缓存、筛选或分季展开状态。
 
 `scenes/PersonalCenter.tscn` / `scripts/personal_center.gd` 实现上方身份、下方左侧资料和右侧设置布局；窄窗口顺排并滚动。点击上方大头像更换头像，右侧为“账号与安全”“我的收藏”和轻量“版本信息”，底部保留退出登录。`avatar_settings_dialog.gd` 提供卡牌头像面板，`profile_dialog.gd` 提供编辑、账号、版本和不可用登录/退出局部面板（好友入口现转到下述独立模块），使用原字体、主题、工大蓝、动效和原生独占窗口焦点。`profile_identity.gd` 是可跨页面保留的身份按钮；`profile_avatar.gd` 及 `assets/profile/`、`shaders/profile_avatar.gdshader` 负责圆形等比裁切、灰度显示、失败回退和局部线性图标。
 
-`ProfileStore` 自动加载项是统一资料状态与服务适配层，不是新账号系统。仓库没有正式认证、个人资料保存、卡牌头像保存、账号绑定或退出接口，也没有正式好友服务；当前不会产生示例用户、随机 ID、虚假保存或虚假退出。头像不支持上传图片。好友模块复用收藏赠送的 `request_friends` 数据源及新增社交适配契约，当前缺少好友服务时明确提示。版本信息读取 `application/config/version`；当前项目未提供该值，显示“当前构建未提供版本号”，没有套用 Android 导出配置或引擎版本冒充桌面应用版本。
+`ProfileStore` 自动加载项是统一资料状态与服务适配层，不是新账号系统。仓库没有正式认证、个人资料保存、卡牌头像保存、账号绑定或退出接口，也没有正式好友服务；当前不会产生示例用户、随机 ID、虚假保存或虚假退出。头像不支持上传图片。好友模块复用收藏赠送的 `request_friends` 数据源及新增社交适配契约，当前缺少好友服务时明确提示。版本信息读取 `application/config/version`；当前项目未提供该值，直接显示“版本信息：未提供版本号”，没有套用 Android 导出配置或引擎版本冒充桌面应用版本。
 
 后续真实服务接入契约（服务负责身份校验、字段权限、格式验证、持久化、请求超时及现有账号流程）：
 
@@ -84,7 +86,7 @@ Windows 64 位版的编程编辑器支持运行 Python 代码。需要 `input()`
 - `request_profile(account_id)` 返回 `{ok, account_id, profile, editable_fields, message?}`。`profile` 为完整规范资料，字段为 `public_id`、`display_name`、`avatar_card_id`、`school`、`college`、`major`、`grade`、`bio`。`public_id` 必须为既有对外稳定 ID；内部账号键、昵称或令牌不会替代它。头像由 `avatar_card_id` 在公开卡牌目录中解析原画并圆形裁切；空 ID、未知卡牌或资源缺失回退默认头像，不再读取旧 `avatar` 路径。
 - `editable_fields` 只包含允许修改的字段及其现有规则，例如 `display_name: {max_length: ...}`。没有权限项即只读；提供 `avatar_card_id: {}` 表示允许选择卡牌头像，客户端另需同账号完整库存且该卡数量大于 0。`public_id`、登录身份、角色、认证状态不参与编辑。
 - `save_profile(account_id, patch, avatar_card_id)` 接收有改动的文字字段及卡牌 ID；空卡牌 ID 表示不修改头像，不接受文件路径或上传内容。正式服务须在与库存流转兼容的事务边界内校验身份、目录和当前拥有数量，再持久化并返回 `{ok: true, persisted: true, account_id, profile, editable_fields}`，其中 `profile.avatar_card_id` 必须等于此次选中的 ID。头像不消耗卡牌，拥有一张即可，不套用赠送至少保留一张的额度。失败保持原头像，允许重试；不会乐观替换已提交资料，会拦截重复提交和过期响应。已经提交的请求由统一状态层完成，不依赖窗口生存期。
-- `request_account(account_id)` 返回 `{ok, account_id, login_method?, masked_email?, masked_phone?, message?}`；只展示明确脱敏的联系方式，不读取密码或令牌。可选 `open_account_settings(account_id)` / `begin_login()` 打开宿主既有账号流程；认证结果由宿主通过 `use_provider` 同步。`logout(account_id)` 只有返回匹配账号的成功结果后才清除当前会话，失败保留状态。
+- `request_account(account_id)` 返回 `{ok, account_id, username?, login_method?, masked_email?, masked_phone?, message?}`；只展示明确脱敏的联系方式，不读取密码或令牌。可选 `open_account_settings(account_id)` / `begin_login()` 打开宿主既有账号流程；认证结果由宿主通过 `use_provider` 同步。`logout(account_id)` 只有返回匹配账号的成功结果后才清除当前会话，失败保留状态。
 - 好友入口现进入同一「我的好友」模块，见下节与 `SOCIAL_SERVICE_CONTRACT.md`；收藏仍复用既有赠送业务和想要标记，不改变题库授权与学习记录。
 
 专项验证：`python tools/run_workbench_checks.py --godot <Godot控制台程序路径> --script check_personal_center.gd --visual`。不加 `--visual` 为 headless 检查。`tools/fixtures/profile_provider.gd` 只供隔离测试，运行前拒绝正式用户存档路径，未注册到应用，也不参与发布资源。覆盖保存成功/失败/取消、权限、重复提交、头像预览与持久化、剪贴板成功/失败、好友查询时序、收藏入口缓存一致性、长文本、深色、窄窗口、焦点恢复、切换账号和离页请求。实际运行截图在 `outputs/profile-validation/`，其中 `01-current-no-service.png` 是当前未接入服务的状态，其余明确标注隔离测试资料，不代表正式账号服务已开通。

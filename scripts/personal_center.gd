@@ -138,11 +138,10 @@ func _build_content() -> void:
 	var collection := _setting("CollectionShortcut", "我的收藏", "查看卡牌收藏与想要清单", "cards")
 	collection.pressed.connect(get_node("/root/PageRouter").go.bind("res://scenes/MyCollection.tscn"))
 	_space(settings, 16)
-	var version := _button(settings, "Version", "版本信息", Callable())
-	version.custom_minimum_size = Vector2(104, 44)
-	version.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	version.add_theme_color_override("font_color", muted_color)
-	version.pressed.connect(show_panel.bind("version", version))
+	var build_version := str(ProjectSettings.get_setting("application/config/version", "")).strip_edges()
+	var version := _text(settings, "版本信息：" + (build_version if not build_version.is_empty() else "未提供版本号"), 18, muted_color)
+	version.name = "Version"
+	version.custom_minimum_size.y = 44
 	_space(column, 54)
 	_rule(column)
 	_space(column, 22)
@@ -222,6 +221,8 @@ func _copy_id() -> void:
 func show_panel(mode: String, trigger: Control = null) -> void:
 	if mode == "friends":
 		get_node("/root/PageRouter").open_friends()
+		return
+	if mode not in ["edit", "account", "avatar", "login", "logout"]:
 		return
 	if is_instance_valid(dialog):
 		return

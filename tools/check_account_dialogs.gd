@@ -13,6 +13,9 @@ class AccountFixture extends Backend:
 	var login_delay := 0.0
 	var requests := 0
 	var sent_password := ""
+	var account_fail := false
+	var account_delay := 0.0
+	var account_requests := 0
 	func remembered_account() -> Dictionary: return memory.duplicate(true)
 	func forget_remembered_account() -> bool:
 		memory = {}
@@ -20,6 +23,11 @@ class AccountFixture extends Backend:
 		return true
 	func _remember_session(_response: Dictionary) -> void: pass
 	func _request(path: String, body: Dictionary, _authenticated := true, _credential: Dictionary = {}) -> Dictionary:
+		if body.get("action") == "account":
+			account_requests += 1
+			if account_delay > 0: await get_tree().create_timer(account_delay).timeout
+			if account_fail: return {"ok": false, "account_id": account_id, "message": "隔离测试：读取失败，请重试。"}
+			return {"ok": true, "account_id": account_id, "username": "design_user", "login_method": "账号密码"}
 		if path in ["/v1/auth/login", "/v1/auth/register"]:
 			requests += 1
 			sent_password = str(body.password)
@@ -233,6 +241,48 @@ func _run() -> void:
 	check(avatar.visible and avatar.selected_avatar == "0002" and store.profile.avatar_card_id == "0001", "Successful login restores the candidate but never automatically saves the avatar")
 	avatar.dismiss()
 	await frames()
+	page.show_panel("account", page.settings.get_node("AccountSecurity"))
+	await frames(20)
+	dialog = page.dialog
+	check(dialog.account_values.username.text == "design_user" and dialog.account_values.public_id.text == "TEST-ACCOUNT" and dialog.account_values.login_method.text == "账号密码", "Account security shows the verified login identity and public profile ID")
+	check(dialog.account_values.masked_phone.text == "暂未提供" and not dialog.message.visible, "Unavailable contact data has an honest empty state and successful reads clear loading")
+	check(is_equal_approx(dialog.get_visible_rect().size.x, 680.0) and dialog.content_scale_factor >= 0.85, "Account security uses the profile editor width and shared UI scaling")
+	await capture(dialog, "05-account-security")
+	api.account_delay = 0.12
+	var reads: int = api.account_requests
+	dialog.refresh_button.pressed.emit()
+	dialog._run_action("request_account")
+	check(api.account_requests == reads + 1 and dialog.refresh_button.disabled, "Refreshing account details blocks duplicate requests")
+	await until(func(): return not dialog.busy)
+	api.account_fail = true
+	dialog.refresh_button.pressed.emit()
+	await until(func(): return not dialog.busy)
+	check(dialog.message.visible and dialog.message.text.contains("读取失败") and not dialog.refresh_button.disabled, "Account failures provide a visible retry without trapping the dialog")
+	await capture(dialog, "06-account-error")
+	api.account_fail = false
+	dialog.refresh_button.pressed.emit()
+	await until(func(): return not dialog.busy)
+	var manage: Button = dialog.find_child("ManageAccount", true, false)
+	check(manage.text == "修改密码", "The available account action describes the existing password workflow")
+	manage.pressed.emit()
+	await frames()
+	var password_dialog: Window = api.active_dialog
+	check(password_dialog.password_mode and password_dialog.visible and not dialog.visible and not dialog.shade.visible, "Changing password opens the existing form with only one modal and shade")
+	password_dialog._cancel()
+	await frames(20)
+	check(dialog.visible and dialog.shade.visible and not dialog.busy and manage.has_focus(), "Cancelling password management restores the account panel and its trigger focus")
+	root.get_node("AppState").dark_mode = true
+	root.get_node("AppState").color_mode_changed.emit(true)
+	await frames(20)
+	await capture(dialog, "07-account-dark")
+	root.content_scale_size = Vector2i(600, 740)
+	root.size = Vector2i(600, 740)
+	await frames(20)
+	check(dialog.size.x <= root.size.x and dialog.size.y <= root.size.y and dialog.confirm.get_global_rect().end.y <= dialog.get_visible_rect().size.y, "A narrow window keeps the account panel and fixed footer in bounds")
+	await capture(dialog, "08-account-compact")
+	dialog.confirm.pressed.emit()
+	await frames()
+	check(page.dialog == null, "The account footer closes the dialog")
 	print("ACCOUNT UI ASSERTIONS: ", assertions)
 	print("WORKBENCH CHECKS: %s (%d failures)" % ["PASS" if failures.is_empty() else "FAIL", failures.size()])
 	quit(0 if failures.is_empty() else 1)
