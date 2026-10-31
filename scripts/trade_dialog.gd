@@ -115,7 +115,12 @@ func _exchange() -> void:
 		preview.metadata.add_child(choice)
 		preview.metadata.move_child(choice,0)
 		Styles.button(choice,colors.surface,false,page.dark,18)
-		choice.get_popup().add_theme_font_size_override("font_size",18)
+		Styles.choice(choice,page.dark)
+		choice.custom_minimum_size.y = 40
+		choice.add_theme_icon_override("arrow",page._motion().choice_icon("arrow",colors.muted))
+		choice.add_theme_constant_override("arrow_margin",12)
+		choice.add_theme_constant_override("modulate_arrow",0)
+		page._motion().bind_button(choice)
 		for card in page.collection.cards:
 			var count := int(page.collection.inventory.get(card.id,{}).get("exchangeable_count",0))
 			if is_give and count <= 0: continue

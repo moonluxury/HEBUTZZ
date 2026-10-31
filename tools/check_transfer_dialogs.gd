@@ -40,6 +40,39 @@ func capture(name: String, window: Window) -> void:
 	var bounds := Rect2i(Vector2(window.position)*scale,Vector2(window.size)*scale)
 	screen.get_region(bounds.intersection(Rect2i(Vector2i.ZERO,screen.get_size()))).save_png(output.path_join(name+"-dialog.png"))
 
+func check_choice(window: Window, choice: OptionButton, name: String) -> void:
+	var selected := choice.selected
+	var point := Vector2(window.position) + window.get_stretch_transform() * choice.get_global_rect().get_center()
+	for pressed in [true,false]:
+		var click := InputEventMouseButton.new()
+		click.button_index = MOUSE_BUTTON_LEFT
+		click.pressed = pressed
+		click.position = point
+		click.global_position = point
+		root.push_input(click,true)
+		await process_frame
+	await frames()
+	var popup := choice.get_popup()
+	check(popup.visible,name+": the actual selector opens its native menu")
+	check(popup.get_theme_stylebox("panel").bg_color == window.colors.surface and popup.get_theme_color("font_color") == window.colors.text,name+": expanded menu follows the dialog palette")
+	check(popup.get_theme_font("font") == choice.get_theme_font("font") and popup.get_theme_font("font").oversampling >= 4.0,name+": expanded labels use the shared high-resolution font")
+	check(popup.get_theme_icon("radio_checked") is DPITexture and choice.get_theme_icon("arrow") is DPITexture,name+": selection markers and arrow use scalable vectors")
+	await capture(name,window)
+	if DisplayServer.get_name() != "headless":
+		popup.get_texture().get_image().save_png(output.path_join(name+"-menu.png"))
+		print("CHOICE: ",name," position=",popup.position," size=",popup.size," logical=",popup.get_visible_rect().size," image=",popup.get_texture().get_image().get_size()," scale=",popup.content_scale_factor)
+	popup.set_focused_item(selected)
+	for code in [KEY_DOWN,KEY_ENTER]:
+		for pressed in [true,false]:
+			var key := InputEventKey.new()
+			key.keycode = code
+			key.pressed = pressed
+			root.push_input(key)
+			await process_frame
+	await frames()
+	check(not popup.visible and choice.selected == (selected+1)%choice.item_count,name+": keyboard selection updates the card and closes the menu")
+	popup.hide()
+
 func inspect(window: Window, name: String, surface: Color) -> void:
 	if DisplayServer.get_name() == "headless": return
 	window.hide()
@@ -190,6 +223,8 @@ func _run() -> void:
 	check(trade.give_preview.art.texture.get_width()>=1000,"Exchange uses original high-resolution artwork")
 	await capture("03-exchange-select",trade)
 	await inspect(trade,"exchange-light",page.surface)
+	await check_choice(trade,trade.give,"exchange-give-dropdown-light")
+	await check_choice(trade,trade.receive,"exchange-receive-dropdown-light")
 	trade.give_amount.value=2
 	trade.receive_amount.value=3
 	trade._review_create()
@@ -205,10 +240,18 @@ func _run() -> void:
 	await frames(20)
 	await capture("05-exchange-dark",trade)
 	await inspect(trade,"exchange-dark",page.surface)
+	await check_choice(trade,trade.give,"exchange-dropdown-dark")
 	root.content_scale_size=Vector2i(600,680);root.size=Vector2i(600,680)
 	await frames(20)
 	check(trade.size.x<=600 and trade.size.y<=680 and trade.confirmation.get_global_rect().end.y<=trade.get_visible_rect().size.y,"A smaller window keeps exchange confirmation inside the fixed footer")
 	await capture("06-exchange-small",trade)
+	trade.scroll_box.scroll_vertical = 0
+	await frames()
+	await check_choice(trade,trade.give,"exchange-dropdown-small")
+	root.content_scale_size=Vector2i(1600,1000);root.size=Vector2i(2000,1250)
+	root.get_node("AppState").dark_mode=false;root.get_node("AppState").color_mode_changed.emit(false)
+	await frames(20)
+	await check_choice(trade,trade.give,"exchange-dropdown-dpi")
 	trade.dismiss();await frames()
 	root.content_scale_size=Vector2i(1672,941);root.size=Vector2i(1672,941)
 	root.get_node("AppState").dark_mode=false;root.get_node("AppState").color_mode_changed.emit(false)

@@ -34,3 +34,11 @@
 - `check_social.gd`：104 项通过，覆盖换卡视角、固定条款、权限、丢失回包和重复交割防护。使用隔离服务模型，不代表本轮重测了生产数据库。
 
 实机截图：[赠送](outputs/card-transfer-validation/gift-selected.png)、[搜索无结果](outputs/card-transfer-validation/gift-empty.png)、[换卡选择](outputs/card-transfer-validation/exchange-select.png)、[换卡核对](outputs/card-transfer-validation/exchange-review.png)、[深色](outputs/card-transfer-validation/exchange-dark.png)。完整视觉比较记录见 `design-qa.md`。
+
+## 2026-11-01 · 换卡下拉菜单补齐
+
+修复送出、换取选择框展开后仍使用 Godot 默认深灰菜单的问题。两个选择框接入已有 `UiMotion.bind_button` / `Styles.popup`，统一菜单背景、文字、边框、行距与悬停色，并使用共享字体和 DPI 矢量箭头、单选标记。保留原生键盘导航和选中行为。
+
+隔离实机 `check_transfer_dialogs.gd --visual` 的 68 项检查通过；新增展开态检查覆盖两个选择框、深色、窄窗口及 125% 缩放，实际鼠标打开、方向键选择和回车收起均正常。125% 下拉菜单 372×282 逻辑尺寸对应 465×353 像素。六组原有弹窗边缘检查均为 0 异常像素。
+
+展开态截图：[浅色](outputs/card-transfer-validation/exchange-dropdown-light.png)、[深色](outputs/card-transfer-validation/exchange-dropdown-dark.png)、[125% 缩放](outputs/card-transfer-validation/exchange-dropdown-dpi.png)。
