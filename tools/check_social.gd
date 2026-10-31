@@ -294,10 +294,12 @@ func _views(cid: String) -> void:
 	for mode in ["profile", "remark", "peer_menu", "wishlist", "gift", "exchange", "records", "report", "blacklist", "recent_menu"]:
 		var panel: Node
 		if mode == "gift":
-			page.gift_button.pressed.emit()
+			page._peer_panel("peer_menu")
 			await frames()
-			panel = page.dialog
-			check(panel.panel_mode == "gift" and panel.context.peer.id == Fixture.B, "Visible gift action opens card selection for current stable peer")
+			page.dialog.rows.gift.pressed.emit()
+			await frames()
+			panel = page.gift_dialog
+			check(panel.choose_card and panel.selected_friend.id == Fixture.B and not is_instance_valid(page.dialog), "Visible gift action opens the shared gift window for the current stable peer")
 		else:
 			panel = await dialog(mode, context)
 		check(is_instance_valid(panel) and not panel.column.get_children().is_empty(), "Interactive panel builds: " + mode)
@@ -306,9 +308,13 @@ func _views(cid: String) -> void:
 			await frames()
 			check(labels(panel).contains("发送邀请即同意"), "Create flow requires explicit fixed-term review")
 		if mode == "gift":
-			panel._gift("0001")
+			for index in panel.card_choice.item_count:
+				if panel.card_choice.get_item_metadata(index) == "0001":
+					panel.card_choice.select(index)
+					panel.card_choice.item_selected.emit(index)
+					break
 			await frames()
-			check(is_instance_valid(page.gift_dialog) and page.gift_dialog.selected_friend.id == Fixture.B, "Conversation gift uses original dialog with stable recipient preselected")
+			check(is_instance_valid(page.gift_dialog) and page.gift_dialog.card_id == "0001" and page.gift_dialog.selected_friend.id == Fixture.B, "Conversation gift changes card within the shared dialog and retains its stable recipient")
 			await capture("08-gift-confirm")
 			page.gift_dialog.dismiss()
 			await frames()
@@ -364,7 +370,7 @@ func _views(cid: String) -> void:
 	page._bell()
 	await frames()
 	check(social.selected == "system:" + Fixture.A and not page.composer.visible and page.compose_hint.text == "系统通知无需回复", "Bell prioritizes unread official channel and renders read-only footer")
-	check(not page.more_button.visible and not page.exchange_button.visible and not page.wants_button.visible and not page.gift_button.visible, "Official channel has no friend or transfer actions")
+	check(not page.more_button.visible and not page.wants_button.visible and not page.chat_head.has_node("Gift") and not page.chat_head.has_node("Exchange"), "Official channel has no friend or transfer actions")
 	await capture("02-system-notifications")
 	backend.append(cid, Fixture.B, "text", {"text": "免打扰仍应保留未读"})
 	call_as(Fixture.A, "preferences", {"peer_id": Fixture.B, "muted": true, "remark": "学习伙伴"})

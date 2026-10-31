@@ -22,8 +22,6 @@ var chat_name: Label
 var chat_id: Label
 var chat_avatar: TextureRect
 var wants_button: Button
-var gift_button: Button
-var exchange_button: Button
 var more_button: Button
 var add_peer_button: Button
 var back_list: Button
@@ -118,8 +116,6 @@ func _build_content() -> void:
 	chat_id = _label(chat_head, "", 16, muted_color)
 	chat_id.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
 	wants_button = _button(chat_head, "Wishlist", "想要清单", _peer_panel.bind("wishlist"))
-	gift_button = _button(chat_head, "Gift", "赠送", _peer_panel.bind("gift"))
-	exchange_button = _button(chat_head, "Exchange", "换卡", _peer_panel.bind("exchange"))
 	more_button = _button(chat_head, "More", "⋯", _peer_panel.bind("peer_menu"))
 	more_button.accessibility_name = "会话更多操作"
 	add_peer_button = _button(chat_head, "RequestFriend", "添加好友", _peer_panel.bind("request_friend"))
@@ -194,12 +190,10 @@ func _layout_content(width: float) -> void:
 	_rect(chat_avatar, Rect2(offset, 8, 48, 48))
 	chat_avatar.visible = not narrow and not store.conversation(store.selected).is_empty()
 	var name_x := 62.0 if not narrow else 110.0
-	var actions_width := 348.0 if wants_button.visible else 202.0 if more_button.visible else 0.0
+	var actions_width := 192.0 if wants_button.visible or add_peer_button.visible else 58.0 if more_button.visible else 0.0
 	_rect(chat_name, Rect2(name_x, 0, w - name_x - actions_width, 40))
 	_rect(chat_id, Rect2(62 if not narrow else 0, 43, w - 70, 28))
-	_rect(wants_button, Rect2(w - 332, 4, 124, 44))
-	_rect(gift_button, Rect2(w - 198, 4, 68, 44))
-	_rect(exchange_button, Rect2(w - 120, 4, 72, 44))
+	_rect(wants_button, Rect2(w - 176, 4, 124, 44))
 	_rect(more_button, Rect2(w - 42, 4, 40, 44))
 	_rect(add_peer_button, Rect2(w - 190, 4, 140, 44))
 	var input_height := 140.0 if composer.visible else 44.0
@@ -315,8 +309,6 @@ func _sync_header() -> void:
 		chat_id.text = ""
 	chat_avatar.show_profile(person)
 	wants_button.visible = friendly and not official
-	gift_button.visible = friendly and not official
-	exchange_button.visible = friendly and not official
 	more_button.visible = not item.is_empty() and not official
 	add_peer_button.visible = not item.is_empty() and not friendly and not official and not item.get("blocked_by_me", false)
 	composer.visible = not item.is_empty() and not official
@@ -528,6 +520,7 @@ func _save_position() -> void:
 		store.positions[_shown] = _anchor()
 
 func _restore_view(serial: int, id: String, anchor: Dictionary, bottom: bool) -> void:
+	if not is_inside_tree(): return
 	await get_tree().process_frame
 	if not is_inside_tree() or serial != _restore_serial or id != _shown:
 		return
@@ -612,6 +605,9 @@ func show_panel(mode: String, context: Dictionary = {}) -> void:
 		return
 	var focus := get_viewport().gui_get_focus_owner()
 	_dialog_focus = weakref(more_button) if mode == "peer_menu" else weakref(focus) if focus != null else null
+	if mode == "gift":
+		open_gift("", context.get("peer", {}))
+		return
 	dialog = ConversationActionsDialog.new() if mode == "peer_menu" else TradeDialog.new() if mode in ["exchange", "trade_review", "trade_detail", "trade_cancel", "trade_reject"] else Dialog.new()
 	dialog.page = self
 	dialog.store = store
@@ -620,6 +616,18 @@ func show_panel(mode: String, context: Dictionary = {}) -> void:
 	dialog.closed.connect(_dialog_closed)
 	add_child(dialog)
 	dialog.present()
+
+func open_conversation_transfer(action: String, conversation_id: String, peer_id: String, epoch: int) -> void:
+	# Recheck the target after the old menu's exit animation and deferred cleanup.
+	if not is_inside_tree() or get_tree().current_scene != self or store.epoch != epoch or store.selected != conversation_id: return
+	if action not in ["gift", "exchange"] or not store.available(): return
+	var current: Dictionary = store.conversation(conversation_id)
+	if current.get("kind") == "system" or not current.get("is_friend", false) or current.get("blocked_by_me", false): return
+	if str(current.get("peer", {}).get("id", "")) != peer_id or is_instance_valid(dialog) or is_instance_valid(gift_dialog): return
+	more_button.grab_focus()
+	_dialog_focus = weakref(more_button)
+	if action == "gift": open_gift("", current.peer)
+	else: show_panel("exchange", {"peer": current.peer, "conversation": current})
 
 func _dialog_closed() -> void:
 	var from_conversation: bool = is_instance_valid(dialog) and dialog.get_script() == ConversationActionsDialog
@@ -637,12 +645,13 @@ func open_gift(id: String, person: Dictionary) -> void:
 	if is_instance_valid(gift_dialog) and gift_dialog.closing: gift_dialog._finish_close()
 	if is_instance_valid(gift_dialog):
 		return
-	var rule: Dictionary = collection.gift_rule(id)
-	if int(rule.max) <= 0:
-		show_panel("notice", {"message": rule.reason})
-		return
+	if not id.is_empty():
+		var rule: Dictionary = collection.gift_rule(id)
+		if int(rule.max) <= 0:
+			show_panel("notice", {"message": rule.reason})
+			return
 	gift_dialog = GiftDialog.new()
-	gift_dialog.configure(self, collection, id, {"id": person.id, "name": person.get("name", ""), "eligible": true})
+	gift_dialog.configure(self, collection, id, person)
 	gift_dialog.closed.connect(func(): gift_dialog = null; _dialog_closed())
 	add_child(gift_dialog)
 	gift_dialog.present()

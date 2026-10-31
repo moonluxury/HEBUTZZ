@@ -13,8 +13,8 @@ static func glyph(kind: String, color: Color) -> Texture2D:
 	var paths := {
 		"profile": '<circle cx="10" cy="6" r="4"/><path d="M16 21H2v-3a6 6 0 0 1 12-1M21 5v16"/>',
 		"remark": '<path d="m12 2 3 6.5 7 1-5 5 1.2 7-6.2-3.3L5.8 21l1.2-6.5-5-5 7-1Z"/>',
-		"marks": '<path d="M13 2h8a1 1 0 0 1 1 1v8L11 22 1 12Z"/><circle cx="17.5" cy="6.5" r="1"/>',
-		"records": '<rect x="3" y="1.5" width="18" height="21" rx="2"/><path d="M7 7h10M7 12h10M7 17h5"/>',
+		"gift": '<rect x="2" y="7" width="20" height="5" rx="1"/><path d="M4 12v10h16V12M12 7v15M12 7H7a3 3 0 1 1 3-3l2 3Zm0 0h5a3 3 0 1 0-3-3l-2 3Z"/>',
+		"exchange": '<path d="M3 7h17l-4-4M21 17H4l4 4M20 7l-4 4M4 17l4-4"/>',
 		"block": '<path d="m2 2 20 20M9 3a6 6 0 0 1 9 5c0 3 0 5 3 9M6 7c0 5 0 7-3 11h13M10 21a2 2 0 0 0 4 0M11 1h2"/>',
 		"remove": '<path d="M3 5h18M9 5V2h6v3M5 5l1 17h12l1-17M10 9v9M14 9v9"/>',
 		"arrow": '<path d="m9 5 7 7-7 7"/>',

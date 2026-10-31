@@ -14,6 +14,7 @@
 
 ```text
 PublicUser = {id, public_id, name, avatar_card_id?, remark?}
+PublicProfile = PublicUser + {school, college, major, grade, bio}
 Friend = PublicUser + {conversation_id?, eligible?}
 Conversation = {
   id, kind: direct|system, peer?: PublicUser, name?, is_friend?,
@@ -48,7 +49,7 @@ Trade = {
 | --- | --- | --- |
 | sync | `{cursor}` | `{revision,cursor,friends:[Friend],conversations:[Conversation],requests:[Request],pending_requests,request_unread,capabilities,messages:[Message],trades:[Trade]}`。summary/关系/未读为当前权威快照，messages/trades 可为增量；revision 对主体单调递增。初次只返回必要的最新消息，旧消息走 history。增量游标须覆盖断线期间的持久事件，过期返回 cursor_expired；空游标重建快照时不可再次返回 cursor_expired。响应不能跨多次未完成读取跳过事件。 |
 | friends | `{query,eligible_for_gift?}` | `{friends:[Friend]}`。供收藏和社交共用；资格变化立即反映，不因无最后消息漏人。 |
-| find_user | `{public_id}` | `{state:available|not_found|self|inaccessible|friend|outgoing|incoming,user?:PublicUser}`；支持现有公开 ID，不暴露私密字段。 |
+| find_user | `{public_id}` | `{state:available|not_found|self|inaccessible|friend|outgoing|incoming,user?:PublicProfile}`；支持现有公开 ID。2026-11-01 扩展学校、学院、专业、年级、简介五项已保存的公开资料，空值返回空字符串；登录与双向屏蔽限制不变。 |
 | open_conversation | `{peer_id}` | `{conversation:Conversation,sync?}`；按双方唯一建会话，不发送招呼，不创建关系。 |
 | history | `{conversation_id,before,limit:40}` | `{messages:[Message],next_before}`；按权威 seq 排序，空游标取最新页，空 next_before 表示结束。 |
 | send_text | `{conversation_id,client_id,text}` | `{message_record:Message}`；唯一键 `(actor,client_id)` 永久绑定原会话及原文。重放原请求返回同一消息；更改文本/会话拒绝。 |

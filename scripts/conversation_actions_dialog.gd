@@ -4,16 +4,16 @@ const Row = preload("res://scripts/conversation_action_row.gd")
 const UI = preload("res://scripts/account_dialog_ui.gd")
 const Styles = preload("res://scripts/ui_styles.gd")
 const Avatar = preload("res://scripts/profile_avatar.gd")
-const TimeDisplay = preload("res://scripts/time_display.gd")
 const BASE := Vector2(455, 532)
 const INK := Color("#151922")
 const MUTED := Color("#707988")
 const BLUE := Color("#092C87")
+const PROFILE_FIELDS := {"school": "学校", "college": "学院", "major": "专业", "grade": "年级", "bio": "个人简介"}
 const ITEMS := [
 	{"id": "profile", "title": "查看资料", "subtitle": "查看对方的公开资料"},
 	{"id": "remark", "title": "修改备注", "subtitle": "设置备注名，方便识别"},
-	{"id": "marks", "title": "标记卡牌", "subtitle": "为该好友设置卡牌标记"},
-	{"id": "records", "title": "与此好友的记录", "subtitle": "查看赠送、交换等历史记录"},
+	{"id": "gift", "title": "赠送", "subtitle": "向该好友赠送卡牌"},
+	{"id": "exchange", "title": "换卡", "subtitle": "与该好友交换卡牌"},
 	{"id": "block", "title": "屏蔽此好友", "subtitle": "不再接收对方的消息"},
 	{"id": "remove", "title": "删除好友", "subtitle": "删除后将不再显示在好友列表中"}
 ]
@@ -26,6 +26,7 @@ var panel: Panel
 var shade: ColorRect
 var column: Control
 var content: VBoxContainer
+var scroll_box: ScrollContainer
 var status: Label
 var query: LineEdit
 var confirmation: Button
@@ -42,11 +43,7 @@ var _transition := 0
 var _pending: Dictionary = {}
 var _focusables: Array[Control] = []
 var _scale := 1.0
-var _record_tab := "gifts"
-var _record_data := {"gifts": [], "trades": []}
-var _cursors := {"gifts": "", "trades": ""}
-var _loaded := {"gifts": false, "trades": false}
-var _record_id := ""
+var _next_action := ""
 
 func _ready() -> void:
 	layer = 90
@@ -128,6 +125,7 @@ func _build() -> void:
 		_focusables.append(close_button)
 		return
 	var scroll := ScrollContainer.new()
+	scroll_box = scroll
 	scroll.position = Vector2(28, 74)
 	scroll.size = Vector2(399, 370)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -144,14 +142,6 @@ func _build() -> void:
 	match panel_mode:
 		"profile": _profile()
 		"remark": _remark_form()
-		"marks":
-			_text("为「%s」设置卡牌标记" % store.display_name(context.peer), 17, true)
-			_text("好友卡牌标记尚未接入，当前无法读取或保存标记。")
-			_text("此操作需要好友与卡牌的标记接口，不会更改想要清单、卡牌数量或电池余额。")
-			confirmation = _button(content, "保存标记", func(): pass, true)
-			confirmation.disabled = true
-		"records": _records_view()
-		"record_detail": _ask("gift_detail" if _record_tab == "gifts" else "trade_detail", {"record_id": _record_id}, "detail")
 		"block", "unblock", "remove": _relationship_form()
 		"notice": _text(str(context.get("notice", "当前操作不可用。")))
 	if panel_mode == "remark" and is_instance_valid(query): query.grab_focus()
@@ -160,7 +150,6 @@ func _build() -> void:
 func _title() -> String:
 	if panel_mode == "peer_menu": return "会话操作"
 	if panel_mode == "unblock": return "解除屏蔽"
-	if panel_mode == "record_detail": return "赠送详情" if _record_tab == "gifts" else "换卡详情"
 	for item in ITEMS:
 		if item.id == panel_mode: return item.title
 	return "提示"
@@ -213,6 +202,9 @@ func _activate(id: String) -> void:
 		context.notice = reason
 		_switch("notice")
 		return
+	if id in ["gift", "exchange"]:
+		dismiss(id)
+		return
 	_switch("unblock" if id == "block" and context.conversation.get("blocked_by_me", false) else id)
 
 func _permission(id: String) -> String:
@@ -220,7 +212,7 @@ func _permission(id: String) -> String:
 	var conv: Dictionary = store.conversation(_conversation_id)
 	if conv.is_empty() or conv.get("kind") == "system" or str(conv.get("peer", {}).get("id", "")) != _peer_id:
 		return "当前联系人不可执行此操作。"
-	if id in ["remark", "marks", "remove"] and not conv.get("is_friend", false): return "此操作仅适用于当前好友。"
+	if id in ["remark", "gift", "exchange", "remove"] and not conv.get("is_friend", false): return "此操作仅适用于当前好友。"
 	return ""
 
 func _switch(mode: String) -> void:
@@ -308,7 +300,7 @@ func _response(ticket: String, response: Dictionary) -> void:
 	if handler == "saved": busy = false; _lock()
 	if not response.get("ok", false):
 		status.text = str(response.get("message", "请求失败，请重试。"))
-		if handler != "saved": _button(content, "重试", _retry.bind(handler))
+		if handler != "saved": _button(content, "重试", _build)
 		return
 	status.text = ""
 	match handler:
@@ -320,85 +312,48 @@ func _response(ticket: String, response: Dictionary) -> void:
 			if str(person.get("id", "")) != _peer_id:
 				status.text = "对方的公开资料当前不可访问。"
 				return
-			var avatar := Avatar.new()
-			avatar.custom_minimum_size = Vector2(80, 80)
-			avatar.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-			content.add_child(avatar)
-			avatar.show_profile(person)
-			_text(str(person.get("name", "")), 20, true)
-			_text("公开 ID：" + str(person.get("public_id", "")))
-			# The public-user API currently exposes no school/contact/account fields.
-			_text("我的备注：" + str(person.get("remark", "未设置")))
-		"gifts", "trades": _accept_records(handler, response)
-		"detail": _detail(response)
+			_profile_details(person)
 
-func _retry(handler: String) -> void:
-	if handler in ["gifts", "trades"]: _load_records()
-	else: _build()
-
-func _records_view() -> void:
-	var tabs := HBoxContainer.new()
-	tabs.add_theme_constant_override("separation", 12)
-	content.add_child(tabs)
-	_button(tabs, "赠送记录", _choose_records.bind("gifts"), _record_tab == "gifts")
-	_button(tabs, "换卡记录", _choose_records.bind("trades"), _record_tab == "trades")
-	for record in _record_data[_record_tab]:
-		_text(("卡牌赠送" if _record_tab == "gifts" else "换卡 · " + page.trade_status(str(record.get("status", "")))) + " · " + TimeDisplay.datetime(str(record.get("time_label", ""))), 15, true)
-		_text("记录 ID：" + str(record.get("record_id", record.get("id", ""))), 13)
-		if _record_tab == "gifts": _text(str(record.get("summary", record.get("title", ""))), 14)
-		_button(content, "查看详情", _open_record.bind(str(record.get("record_id", record.get("id", "")))))
-	if not _loaded[_record_tab]: _load_records()
-	elif not str(_cursors[_record_tab]).is_empty():
-		_text("尚有更早记录，可继续加载。", 13)
-		_button(content, "继续查找更早赠送" if _record_tab == "gifts" else "加载更多换卡", _load_records)
-	elif _record_data[_record_tab].is_empty(): _text("暂无赠送记录。" if _record_tab == "gifts" else "暂无换卡记录。")
-
-func _choose_records(kind: String) -> void:
-	if closing or _switching or _record_tab == kind: return
-	_record_tab = kind
-	_build()
-
-func _load_records() -> void:
-	if closing: return
-	if _record_tab in _pending.values(): return
-	if _record_tab == "gifts":
-		_ask("history", {"conversation_id": _conversation_id, "before": _cursors.gifts, "limit": store.PAGE_SIZE}, "gifts")
-	else:
-		_ask("trade_records", {"peer_id": _peer_id, "before": _cursors.trades, "limit": store.PAGE_SIZE}, "trades")
-
-func _accept_records(kind: String, response: Dictionary) -> void:
-	for record in response.get("messages" if kind == "gifts" else "trades", []):
-		if kind == "gifts" and (record.get("type") != "gift" or str(record.get("conversation_id", "")) != _conversation_id): continue
-		if kind == "trades" and str(record.get("conversation_id", "")) != _conversation_id: continue
-		var id := str(record.get("record_id", "") if kind == "gifts" else record.get("id", ""))
-		if id.is_empty(): continue
-		var duplicate := false
-		for old in _record_data[kind]:
-			if str(old.get("record_id", old.get("id", ""))) == id: duplicate = true
-		if not duplicate: _record_data[kind].append(record.duplicate(true))
-	if kind == "gifts": _record_data[kind].sort_custom(func(a, b): return int(a.get("seq", 0)) > int(b.get("seq", 0)))
-	_cursors[kind] = str(response.get("next_before", ""))
-	_loaded[kind] = true
-	_build()
-
-func _open_record(id: String) -> void:
-	_record_id = id
-	_switch("record_detail")
-
-func _detail(response: Dictionary) -> void:
-	var record: Dictionary = response.get("gift", response.get("trade", {}))
-	if record.is_empty() or (record.has("id") and str(record.id) != _record_id) or (record.has("conversation_id") and str(record.conversation_id) != _conversation_id):
-		status.text = "服务未返回匹配的记录。"
-		return
-	_text("记录 ID：" + _record_id, 14)
-	if record.has("status"): _text("状态：" + page.trade_status(str(record.status)), 17, true)
-	_text(TimeDisplay.datetime(str(record.get("time_label", ""))))
-	if record.has("summary"): _text(str(record.summary))
-	for direction in ["give", "receive"]:
-		for line in record.get(direction, []):
-			var card: Dictionary = page.collection.card(str(line.get("card_id", "")))
-			_text(("发起方给出：" if direction == "give" else "接收方给出：") + str(card.get("name", line.get("card_id", ""))) + " ×" + str(line.get("quantity", "")))
-	_button(content, "返回记录", _switch.bind("records"))
+func _profile_details(person: Dictionary) -> void:
+	status.visible = false
+	var identity := HBoxContainer.new()
+	identity.add_theme_constant_override("separation", 16)
+	content.add_child(identity)
+	var avatar := Avatar.new()
+	avatar.custom_minimum_size = Vector2(64, 64)
+	avatar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	identity.add_child(avatar)
+	avatar.show_profile(person)
+	var name_box := VBoxContainer.new()
+	name_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_box.add_theme_constant_override("separation", 3)
+	identity.add_child(name_box)
+	UI.label(name_box, str(person.get("name", "")), 20, INK, true)
+	UI.label(name_box, "公开 ID：" + str(person.get("public_id", "")), 13, MUTED)
+	var remark := str(person.get("remark", "")).strip_edges()
+	UI.label(name_box, "我的备注：" + (remark if not remark.is_empty() else "未设置"), 13, MUTED)
+	UI.rule(content, Color("#E4E7EC"))
+	var grid := GridContainer.new()
+	grid.columns = 2
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	grid.add_theme_constant_override("h_separation", 20)
+	grid.add_theme_constant_override("v_separation", 14)
+	content.add_child(grid)
+	for field in PROFILE_FIELDS:
+		var cell := VBoxContainer.new()
+		cell.name = "Profile_" + field
+		cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		cell.add_theme_constant_override("separation", 5)
+		(content if field == "bio" else grid).add_child(cell)
+		UI.label(cell, PROFILE_FIELDS[field], 13, MUTED)
+		var raw: Variant = person.get(field)
+		var value: String = raw.strip_edges() if raw is String else ""
+		var caption := "暂未提供" if not person.has(field) else "未填写" if value.is_empty() else value
+		var label := UI.label(cell, caption, 16, INK if not value.is_empty() else MUTED)
+		label.name = "Value"
+		label.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
+	if not PROFILE_FIELDS.keys().any(func(field): return person.has(field)):
+		_text("详细资料暂未获取到，请稍后查看。", 13)
 
 func _changed() -> void:
 	if _epoch != store.epoch or store.selected != _conversation_id or not page.is_inside_tree():
@@ -435,7 +390,8 @@ func _input(event: InputEvent) -> void:
 			var index := available.find(get_viewport().gui_get_focus_owner())
 			available[posmod(index + (-1 if event.shift_pressed else 1), available.size())].grab_focus()
 
-func dismiss() -> void:
+func dismiss(next_action := "") -> void:
+	_next_action = next_action
 	if not is_inside_tree(): _finish_close(); return
 	if closing: return
 	closing = true
@@ -454,3 +410,5 @@ func _finish_close() -> void:
 	hide()
 	closed.emit()
 	queue_free()
+	if not _next_action.is_empty() and is_instance_valid(page) and page.is_inside_tree():
+		page.open_conversation_transfer.call_deferred(_next_action, _conversation_id, _peer_id, _epoch)

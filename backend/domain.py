@@ -16,6 +16,7 @@ CATALOG = json.loads(Path(os.environ.get('CATALOG_PATH', Path(__file__).with_nam
 CARDS = {c['id']: c for c in CATALOG['cards']}
 CURSOR_KEY = os.environ['CURSOR_SECRET'].encode()
 FIELDS = {'display_name': 40, 'school': 80, 'college': 80, 'major': 80, 'grade': 30, 'bio': 300}
+PUBLIC_PROFILE_FIELDS = ('school', 'college', 'major', 'grade', 'bio')
 
 
 class DomainError(Exception):
@@ -74,11 +75,16 @@ def user(conn, user_id):
     return value
 
 
-def public_user(conn, actor, user_id):
+def public_user(conn, actor, user_id, *, include_profile=False):
     u = user(conn, user_id)
     pref = one(conn, 'SELECT remark FROM preferences WHERE actor=%s AND peer=%s', (actor, user_id))
-    return {'id': u['id'], 'public_id': u['public_id'], 'name': u['profile'].get('display_name') or u['username'],
-            'avatar_card_id': u['profile'].get('avatar_card_id', ''), 'remark': pref['remark'] if pref else ''}
+    result = {'id': u['id'], 'public_id': u['public_id'], 'name': u['profile'].get('display_name') or u['username'],
+              'avatar_card_id': u['profile'].get('avatar_card_id', ''), 'remark': pref['remark'] if pref else ''}
+    if include_profile:
+        # Only the explicit profile lookup includes these public fields. Never
+        # serialize the stored profile or user row wholesale into social data.
+        result.update({field: u['profile'].get(field, '') for field in PUBLIC_PROFILE_FIELDS})
+    return result
 
 
 def relation(conn, actor, peer):
@@ -387,7 +393,7 @@ def handle(conn, actor, action, p):
             return {'state': 'inaccessible'}
         req = one(conn, "SELECT sender FROM friend_requests WHERE LEAST(sender,recipient)=%s AND GREATEST(sender,recipient)=%s AND status='pending'", tuple(sorted([actor, peer])))
         state = 'self' if peer == actor else 'friend' if r['friends'] else ('outgoing' if req['sender'] == actor else 'incoming') if req else 'available'
-        return {'state': state, 'user': public_user(conn, actor, peer)}
+        return {'state': state, 'user': public_user(conn, actor, peer, include_profile=True)}
     if action == 'open_conversation':
         require(not relation(conn, actor, p['peer_id'])['blocked'], 'inaccessible', '当前无法访问该用户。', 403)
         c = conversation(conn, actor, p['peer_id'])

@@ -304,3 +304,60 @@ def test_external_login_disabled_and_expired_sessions(client):
     with transaction() as conn:
         conn.execute("UPDATE sessions SET expires_at=now()-interval '1 day' WHERE user_id=%s", (a['account_id'],))
     assert rpc(client, a, 'profile').status_code == 401
+
+
+def test_public_profile_lookup_returns_saved_details_without_private_fields(client):
+    from psycopg.types.json import Jsonb
+
+    viewer, peer = register(client), register(client)
+    cid = befriend(client, viewer, peer)
+    details = {'school': '河北工业大学', 'college': '人工智能与数据科学学院',
+               'major': '计算机科学与技术', 'grade': '2024级', 'bio': '喜欢编程与阅读。\n一起交流学习。'}
+    assert rpc(client, peer, 'save_profile', patch=details).json()['persisted']
+    assert rpc(client, viewer, 'preferences', peer_id=peer['account_id'], remark='学习伙伴').json()['ok']
+    with transaction() as conn:
+        conn.execute('UPDATE users SET profile=profile || %s WHERE id=%s',
+                     (Jsonb({'private_note': 'must-not-leak', 'email': 'private@example.test'}), peer['account_id']))
+    result = rpc(client, viewer, 'find_user', public_id=peer['profile']['public_id']).json()
+    assert result['state'] == 'friend'
+    public = result['user']
+    assert {key: public[key] for key in details} == details
+    assert public['remark'] == '学习伙伴'
+    assert set(public) == {'id', 'public_id', 'name', 'avatar_card_id', 'remark', *details}
+    # Expanded details belong to this explicit lookup, not every polling or
+    # transaction identity object returned elsewhere in the social API.
+    friend = rpc(client, viewer, 'friends').json()['friends'][0]
+    conversation = next(c for c in rpc(client, viewer, 'sync').json()['conversations'] if c['id'] == cid)
+    assert not (set(details) & set(friend))
+    assert not (set(details) & set(conversation['peer']))
+
+
+def test_public_profile_unfilled_and_updated_details(client):
+    viewer, peer = register(client), register(client)
+    fields = {'school', 'college', 'major', 'grade', 'bio'}
+    payload = {'public_id': peer['profile']['public_id']}
+    public = rpc(client, viewer, 'find_user', **payload).json()['user']
+    assert {key: public[key] for key in fields} == dict.fromkeys(fields, '')
+    details = {'school': '校' * 80, 'college': '院' * 80, 'major': '专' * 80,
+               'grade': '级' * 30, 'bio': '介' * 300}
+    assert rpc(client, peer, 'save_profile', patch=details).json()['persisted']
+    public = rpc(client, viewer, 'find_user', **payload).json()['user']
+    assert {key: public[key] for key in fields} == details
+    assert rpc(client, peer, 'save_profile', patch=dict.fromkeys(fields, '')).json()['persisted']
+    public = rpc(client, viewer, 'find_user', **payload).json()['user']
+    assert {key: public[key] for key in fields} == dict.fromkeys(fields, '')
+
+
+def test_public_profile_requires_auth_and_respects_blocked_or_disabled_users(client):
+    viewer, peer = register(client), register(client)
+    payload = {'public_id': peer['profile']['public_id']}
+    assert client.post('/v1/rpc', json={'version': 1, 'action': 'find_user', 'payload': payload}).status_code == 401
+    assert rpc(client, viewer, 'relationship', peer_id=peer['account_id'], operation='block').json()['ok']
+    for caller, target in [(viewer, peer), (peer, viewer)]:
+        result = rpc(client, caller, 'find_user', public_id=target['profile']['public_id']).json()
+        assert result['state'] == 'inaccessible' and 'user' not in result
+    assert rpc(client, viewer, 'relationship', peer_id=peer['account_id'], operation='unblock').json()['ok']
+    with transaction() as conn:
+        conn.execute('UPDATE users SET disabled=true WHERE id=%s', (peer['account_id'],))
+    result = rpc(client, viewer, 'find_user', **payload).json()
+    assert result['state'] == 'not_found' and 'user' not in result

@@ -168,8 +168,13 @@ func _run() -> void:
 	await visit("MyFriends")
 	var peer: Dictionary = social.friends[Fixture.B] if social.friends is Dictionary else api.users[Fixture.B]
 	var original_stock: Dictionary = api.stocks[Fixture.A].duplicate(true)
-	page.gift_button.grab_focus()
-	page.show_panel("gift", {"peer":peer})
+	page._select(api.pair(Fixture.A, Fixture.B))
+	await frames()
+	page.more_button.grab_focus()
+	page._peer_panel("peer_menu")
+	await frames()
+	page.dialog.rows.gift.pressed.emit()
+	await create_timer(0.25).timeout
 	await frames()
 	gift = page.gift_dialog
 	check(is_instance_valid(gift) and not is_instance_valid(page.dialog), "Friends gift opens the shared window directly, without a separate picker popup")
@@ -191,7 +196,7 @@ func _run() -> void:
 	await collection.refresh(); await frames()
 	check(gift.card_id == "0002" and gift.confirm.disabled, "Stock loss disables the reviewed card without silently switching the gift")
 	gift.dismiss(); await frames()
-	check(not is_instance_valid(page.gift_dialog) and root.gui_get_focus_owner() == page.gift_button, "Closing restores the friend gift action focus")
+	check(not is_instance_valid(page.gift_dialog) and root.gui_get_focus_owner() == page.more_button, "Closing restores the conversation actions trigger")
 	for id in api.stocks[Fixture.A]: api.stocks[Fixture.A][id] = 1
 	await collection.refresh()
 	page.show_panel("gift", {"peer":peer}); await frames()
