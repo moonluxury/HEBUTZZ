@@ -1,5 +1,20 @@
 # 头像设置：原素材、预览与确认保存
 
+## 2026-10-31 默认头像正式上线
+
+选择第一项默认头像后，按钮显示“保存默认头像”；保存成功提示“已恢复默认头像”，个人中心、侧栏及本人缓存头像同步更新。默认头像不依赖卡牌库存，库存加载时仍可选择并保存；卡牌头像继续验证拥有资格。保存按钮加宽，完整显示默认头像和结果核实文案。
+
+线上缺少 `reset_supported` 能力声明和空头像重置处理是原先禁用提示的原因。已基于当前线上快照部署增量补丁到原 HTTPS 入口，包含默认头像能力声明、`avatar_change: true` 的显式重置，以及资料操作 ID 的幂等处理。仅更新 `domain.py` 与新增 `tests/test_avatar_reset.py`，18 个其余发布文件经哈希核对保持不变；无依赖升级、数据库迁移或真实用户资料修改。
+
+- 客户端实际 OpenGL 渲染检查：78 项通过，覆盖默认头像预览、库存加载、保存、侧栏同步、小窗口和深浅色。
+- 服务器独立 `hegong_avatar_20261031_r2_test` 数据库：53 项通过，覆盖账号、好友、评论、投稿及默认头像重置。
+- 正式 HTTPS：19 项通过，覆盖卡牌切换到默认头像、零库存重置、重新读取、4 个并发重试、操作键冲突拒绝、旧资料保存兼容及账号隔离；两个临时账号已清理。
+- 发布前数据库和原代码备份：`/var/backups/hegong/avatar-default-20261031T071857Z`；已测试发布包保留于 `/opt/hegong/releases/avatar-default-20261031-r2`。
+
+证据：[激活与 HTTPS 验证](outputs/avatar-default-deployment/activation.json)、[数据库回归](outputs/avatar-default-deployment/tests-passed.json)、[发布哈希清单](outputs/avatar-default-deployment/release.json)。当前已打开的旧弹窗关闭后重新打开，会重新读取服务能力并启用默认头像保存。
+
+## 初始实现
+
 2026-10-29。沿用 Godot 原生 Window/Control、项目主题、ProfileStore 和现有 BackendProvider。点击个人中心的大头像打开，右侧不增加独立入口。
 
 ## 最终布局
@@ -60,4 +75,4 @@
 
 运行截图在 `outputs/avatar-settings-validation/`：`01-signed-out-preview.png`、`02-authenticated-preview.png`、`03-dark-preview.png`、`04-narrow-footer.png`、`05-preview-200-percent.png`，以及反映用户实际视口比例的 `06-project-resolution-2560-page.png`。这些是 Godot 实际渲染，账户与库存为隔离测试状态；200% 图为实际控件在两倍画布中的渲染，不是把低分辨率截图放大。`scale-*` 文件仅为排查中间状态，不能当作最终效果。
 
-**服务端边界：** 本轮仅修改本地工程，没有部署服务器补丁，也没有修改真实用户资料。已有登录与选取已拥有卡牌的资料接口继续复用。默认头像重置能力声明与操作 ID 幂等扩展需随 `backend/domain.py` 更新部署后启用。相关 PostgreSQL 回归断言已补入 `backend/tests/test_backend.py`，但本机没有 PostgreSQL/该隔离数据库，未执行新增数据库用例；不能把客户端隔离验证当作真实服务端事务验证。发布前应在既有 `*_test` 数据库运行这些用例。没有验证实体显示器 DPI 切换或真实输入法候选窗口的端到端行为。
+**服务端边界：** 2026-10-29 初次实现只完成本地修改；默认头像能力已于 2026-10-31 经独立 PostgreSQL 回归和正式 HTTPS 验证后部署，见本文开头。已有登录与选取已拥有卡牌的接口继续复用，真实用户资料未被测试修改。没有验证实体显示器 DPI 切换或真实输入法候选窗口的端到端行为。

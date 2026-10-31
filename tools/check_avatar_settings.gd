@@ -228,10 +228,17 @@ func _run() -> void:
 	await frames()
 	check(not dialog.confirm.disabled and dialog.message.text.is_empty(), "Capability refresh clears the obsolete unavailable notice")
 	dialog._select_card_avatar("")
-	check(not dialog.confirm.disabled and dialog.avatar_preview.texture == Avatar.DEFAULT, "Default reset has an explicit preview and save action")
+	check(not dialog.confirm.disabled and dialog.confirm.text == "保存默认头像" and dialog.avatar_preview.texture == Avatar.DEFAULT, "Default reset has an explicit preview and save action")
+	collection.loading = true
+	dialog._sync()
+	check(not dialog.avatar_choices[""].button.disabled and not dialog.confirm.disabled and dialog.avatar_choices["0001"].button.disabled, "The default avatar remains selectable while card inventory is loading")
+	collection.loading = false
+	dialog._sync()
+	await capture("07-default-avatar-selected")
 	dialog._confirm()
 	await frames()
 	check(store.profile.avatar_card_id == "" and backend.accounts["test-account-a"].avatar_card_id == "", "Default reset persists the existing empty ID")
+	check(page.feedback.text == "已恢复默认头像" and page.avatar.texture == Avatar.DEFAULT and page.sidebar.get_node("IdentityButton").avatar.texture == Avatar.DEFAULT, "Successful reset updates the profile, sidebar and feedback together")
 	check(own_cached.texture == Avatar.DEFAULT and other_cached.source_path == Avatar.path_for_card("0004"), "Reset propagates to own cached avatar without changing another user")
 	own_cached.queue_free()
 	other_cached.queue_free()

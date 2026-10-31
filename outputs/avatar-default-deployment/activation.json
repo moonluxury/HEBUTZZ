@@ -1,0 +1,38 @@
+{
+  "status": "activated",
+  "backup": "/var/backups/hegong/avatar-default-20261031T071857Z",
+  "files": [
+    "domain.py",
+    "tests/test_avatar_reset.py"
+  ],
+  "schema_change": false,
+  "https": {
+    "checks_passed": 19,
+    "checks": [
+      "TLS and health",
+      "Disposable account registration a",
+      "Disposable account registration b",
+      "Registration advertises default reset",
+      "Profile refresh advertises default reset",
+      "Owned card avatar persists",
+      "Text-only save preserves selected avatar",
+      "Concurrent reset retries return the same result",
+      "Default avatar persists without inventory",
+      "Reset preserves profile and identity",
+      "Fresh profile read confirms default avatar",
+      "Reset replay is idempotent",
+      "Operation reuse with changed avatar is rejected",
+      "Unowned card remains forbidden",
+      "Malformed reset flag is rejected",
+      "Another account is unchanged",
+      "Default reset does not grant cards",
+      "Public articles still work",
+      "Public comments still work"
+    ],
+    "cleanup": {
+      "ok": true,
+      "action": "cleanup",
+      "accounts": 2
+    }
+  }
+}

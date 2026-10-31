@@ -1,0 +1,55 @@
+{
+  "files": {
+    "domain.py": "e5d62179afe8ce58fa679a7808fa9fc83556c723fa005825210fad2f9f11ea06",
+    "tests/test_avatar_reset.py": "1c6cd591e94a7b51a0680b03239f736413dff88098a754c336c21868e26ecfb3"
+  },
+  "baseline_sha256": {
+    "domain.py": "4083c5fae8526990b405b75d48d7708a8baa42f956670931578d0af0716c8b26",
+    "tests/test_avatar_reset.py": null
+  },
+  "guard_sha256": {
+    "app.py": "99716d7b787cc360deb92787bd07d5bb8f07cccfa1469403809a6c130ccfd6c6",
+    "collection_catalog.json": "8bf02570e00422cd45a80932adeedc35b8a05f279ced5625361e58ec76fccbc0",
+    "comment_capacity.py": "d8637366a4aa69b0be07388a3e083e0ddb32f5b03c9ad3fe5f219252cc7ddf88",
+    "comment_service.py": "2d4232d9bd9e32db46228b0c7ffdf8daca3397d705ddba40bd1f2b5eb1c81461",
+    "database.py": "2b305094125af93be8285ebfc77232142a8db07d4b0f4846e7da44bee3aa32a8",
+    "friend_note.py": "5daf167eb7231adda136f8f9f36d3e20748432f8140798a9b99ddbfa777bc6e4",
+    "publication_rewards.py": "e08141ec9fbe30603ae981dcb9768fa4584ab9ee9db2e3366225f3ddc2b4b4b3",
+    "requirements.lock": "bc48488928ab49393ec099c60d206f1da94ca82a5f7b0b418de25efe8c1336ef",
+    "requirements.txt": "694953526471343d1b270199eea8aa69e6c67c733c8a98bc7e80a9d51037b688",
+    "schema.sql": "1154b369664f892100e87213515f6ec1d95ccc66b3e3aa45c7f4d94e98337053",
+    "submission_document.py": "15909f0a0da7f033b330858456ca6f1d597ae70990032feea7bc3b05b09efa27",
+    "submission_service.py": "f8ad4e6d51e1ace69b30cdca08f89d2b666442a0efcc51517c71c7f504146aa9",
+    "migrations/002_submissions.sql": "3d0d9c4af96f534728b6bd660612e325d5426f569a18bd42ffd2b771a46b8b86",
+    "migrations/003_bank_comments.sql": "3431bccfb2fafbd470fbffb9841619c7572a68a108eac52021252be9fe868ec5",
+    "migrations/004_discussion_capacity.sql": "4eb17b47ac956bac6cd811f137a93cbb9dd0874a1d9479c07054766b4ef671cc",
+    "tests/test_backend.py": "9448c5a5ed54104603babfff3307e1e51e3ba20325bacce9fffc0228f3533e3c",
+    "tests/test_friend_note.py": "412dd55d871c3b9a21432bae2ee6b6d4120a187369eb92126bce580c813c1855",
+    "ops/deliver_comment_alerts.py": "92865c18055c9d10015d0b0d095d5477aa2188b76af4b618fc948617ef10b80f"
+  },
+  "candidate_sha256": {
+    "app.py": "99716d7b787cc360deb92787bd07d5bb8f07cccfa1469403809a6c130ccfd6c6",
+    "collection_catalog.json": "8bf02570e00422cd45a80932adeedc35b8a05f279ced5625361e58ec76fccbc0",
+    "comment_capacity.py": "d8637366a4aa69b0be07388a3e083e0ddb32f5b03c9ad3fe5f219252cc7ddf88",
+    "comment_service.py": "2d4232d9bd9e32db46228b0c7ffdf8daca3397d705ddba40bd1f2b5eb1c81461",
+    "database.py": "2b305094125af93be8285ebfc77232142a8db07d4b0f4846e7da44bee3aa32a8",
+    "domain.py": "e5d62179afe8ce58fa679a7808fa9fc83556c723fa005825210fad2f9f11ea06",
+    "friend_note.py": "5daf167eb7231adda136f8f9f36d3e20748432f8140798a9b99ddbfa777bc6e4",
+    "publication_rewards.py": "e08141ec9fbe30603ae981dcb9768fa4584ab9ee9db2e3366225f3ddc2b4b4b3",
+    "requirements.lock": "bc48488928ab49393ec099c60d206f1da94ca82a5f7b0b418de25efe8c1336ef",
+    "requirements.txt": "694953526471343d1b270199eea8aa69e6c67c733c8a98bc7e80a9d51037b688",
+    "schema.sql": "1154b369664f892100e87213515f6ec1d95ccc66b3e3aa45c7f4d94e98337053",
+    "smoke.py": "36c05485b639ae5bdc40bffc72b8bd925623cb6950da10dcba236e4af7611a7d",
+    "submission_document.py": "15909f0a0da7f033b330858456ca6f1d597ae70990032feea7bc3b05b09efa27",
+    "submission_service.py": "f8ad4e6d51e1ace69b30cdca08f89d2b666442a0efcc51517c71c7f504146aa9",
+    "migrations/002_submissions.sql": "3d0d9c4af96f534728b6bd660612e325d5426f569a18bd42ffd2b771a46b8b86",
+    "migrations/003_bank_comments.sql": "3431bccfb2fafbd470fbffb9841619c7572a68a108eac52021252be9fe868ec5",
+    "migrations/004_discussion_capacity.sql": "4eb17b47ac956bac6cd811f137a93cbb9dd0874a1d9479c07054766b4ef671cc",
+    "tests/test_avatar_reset.py": "1c6cd591e94a7b51a0680b03239f736413dff88098a754c336c21868e26ecfb3",
+    "tests/test_backend.py": "9448c5a5ed54104603babfff3307e1e51e3ba20325bacce9fffc0228f3533e3c",
+    "tests/test_comments.py": "077812195fa92ae9f81879a413cb397759f46b4937f29a15d33de37c4d6f1383",
+    "tests/test_friend_note.py": "412dd55d871c3b9a21432bae2ee6b6d4120a187369eb92126bce580c813c1855",
+    "tests/test_submissions.py": "9f4176b09292263328b0bd524981d3a3ed2fe142d5066327d02e2f3b4538ffb8",
+    "ops/deliver_comment_alerts.py": "92865c18055c9d10015d0b0d095d5477aa2188b76af4b618fc948617ef10b80f"
+  }
+}

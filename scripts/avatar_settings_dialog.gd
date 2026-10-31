@@ -141,7 +141,7 @@ func _ready() -> void:
 	footer.add_child(actions)
 	cancel_button = _action(actions, "取消", dismiss)
 	confirm = _action(actions, "保存头像", _confirm, true)
-	confirm.custom_minimum_size.x = 136
+	confirm.custom_minimum_size.x = 168
 	store.changed.connect(_session_changed)
 	store.saved.connect(_saved)
 	store.avatar_login_finished.connect(_login_finished)
@@ -287,7 +287,7 @@ func _sync() -> void:
 	for id in avatar_choices:
 		var item: Dictionary = avatar_choices[id]
 		var allowed: bool = not authenticated or id.is_empty() or (known and collection.count(id) > 0)
-		var disabled: bool = busy or store.saving or not login_flow.is_empty() or unresolved or (authenticated and (not allowed or collection.loading or not store.avatar_editable()))
+		var disabled: bool = busy or store.saving or not login_flow.is_empty() or unresolved or (authenticated and (not allowed or (not id.is_empty() and collection.loading) or not store.avatar_editable()))
 		item.button.disabled = disabled
 		item.button.configure(id == selected_avatar and (saved_known or dirty or not authenticated), authenticated and not id.is_empty() and not allowed, page._accent(), page.surface)
 		item.button.accessibility_name = str(item.name) + ("，已选中" if item.button.selected else "") + ("，不可用" if not allowed else "")
@@ -302,6 +302,8 @@ func _sync() -> void:
 		_notice("当前头像素材暂不可用，可以选择其他头像。")
 	login_hint.visible = not authenticated
 	confirm.text = "保存中…" if busy or store.saving else "正在登录…" if not login_flow.is_empty() else "核实保存结果" if unresolved else "保存头像" if authenticated else "登录后保存"
+	if authenticated and selected_avatar.is_empty() and not busy and not store.saving and login_flow.is_empty() and not unresolved:
+		confirm.text = "保存默认头像"
 	var issue: String = store.validate_card_avatar(selected_avatar) if authenticated else ""
 	if dirty and authenticated and not issue.is_empty(): _notice(issue)
 	var missing := not selected_avatar.is_empty() and avatar_preview.texture == Avatar.DEFAULT
@@ -367,7 +369,7 @@ func _saved(id: String, response: Dictionary) -> void:
 	if closing or id != ticket or session_epoch != store.epoch: return
 	busy = false
 	if response.get("ok", false):
-		page.feedback.text = "头像已更新"
+		page.feedback.text = "已恢复默认头像" if selected_avatar.is_empty() else "头像已更新"
 		dismiss()
 		return
 	message.text = str(response.get("message", "保存失败，请重试。"))
