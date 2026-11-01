@@ -1,0 +1,61 @@
+{
+  "status": "activated",
+  "backup": "/var/backups/hegong/public-profile-20261031T171549Z",
+  "files": [
+    "domain.py"
+  ],
+  "schema_change": false,
+  "before": {
+    "users": 2,
+    "schema_versions": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "after": {
+    "users": 2,
+    "schema_versions": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "guarded_files": 27,
+  "https": {
+    "checks_passed": 23,
+    "checks": [
+      "HTTPS certificate and health",
+      "Temporary identity registration a",
+      "Temporary identity registration b",
+      "Anonymous profile lookup denied",
+      "Unfilled profile returns all five empty fields",
+      "Peer saves profile through the real API",
+      "Persisted field returned: bio",
+      "Persisted field returned: college",
+      "Persisted field returned: grade",
+      "Persisted field returned: major",
+      "Persisted field returned: school",
+      "Response contains only declared public fields",
+      "Friend profile is accessible",
+      "Private remark remains scoped to the viewer",
+      "Friend list still uses compact identities",
+      "Polling does not broadcast full profiles",
+      "Updated 300-character biography is not truncated",
+      "Cleared profile returns empty fields without stale data",
+      "Blocked profile is withheld in both directions",
+      "Blocked profile is withheld in both directions",
+      "Unblock restores lookup without recreating friendship",
+      "Existing article endpoint remains healthy",
+      "Existing comment endpoint remains healthy"
+    ],
+    "cleanup": {
+      "ok": true,
+      "temporary_accounts_removed": 2
+    }
+  }
+}

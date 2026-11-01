@@ -115,7 +115,7 @@ func _records() -> void:
 	if _rows.is_empty() and _loaded: _text("暂无电池明细" if panel_mode == "ledger" else "暂无充值记录")
 	for row in _rows:
 		if panel_mode == "ledger":
-			var source: String = {"recharge": "充值", "quiz": "答题奖励", "publication": "稿件上架奖励", "commission": "稿件销售提成", "spend": "消费", "opening": "期初余额", "adjustment": "余额调整"}.get(str(row.get("source", "")), str(row.get("description", "电池变动")))
+			var source: String = {"recharge": "充值", "quiz": "答题奖励", "publication": "稿件上架奖励", "commission": "稿件销售提成", "card_draw": "获取卡牌", "spend": "消费", "opening": "期初余额", "adjustment": "余额调整"}.get(str(row.get("source", "")), str(row.get("description", "电池变动")))
 			_text("%s    %s%s 电池" % [source, "+" if int(row.delta) > 0 else "", page.Amount.grouped(int(row.delta))], true)
 			_text("%s\n业务引用：%s" % [row.get("created_at", ""), row.reference])
 			if not str(row.get("order_id", "")).is_empty(): _action("查看关联订单 →", _navigate.bind("order", str(row.order_id)))

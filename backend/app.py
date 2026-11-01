@@ -30,6 +30,9 @@ SESSION_DAYS = int(os.environ.get('SESSION_DAYS', '7'))
 async def lifespan(app):
     pool.open(wait=True)
     migrate()
+    from quiz_rewards import install as install_quiz_banks
+    with transaction() as conn:
+        install_quiz_banks(conn)
     yield
     pool.close()
 
@@ -225,6 +228,18 @@ def rpc(body: Rpc, request: Request, actor: Actor):
                             before_action=lambda: check_session_after_lock(conn, actor, request))
     except (errors.DeadlockDetected, errors.LockNotAvailable, errors.SerializationFailure):
         raise DomainError('busy', '服务正忙，请使用相同操作编号重试。', 409) from None
+
+
+@app.post('/v1/wallet')
+def wallet_rpc(body: Rpc, request: Request, actor: Actor):
+    from wallet_service import dispatch as wallet_dispatch
+    rate_limit('wallet:' + actor, 120)
+    try:
+        with transaction() as conn:
+            return wallet_dispatch(conn, actor, body.action, body.payload,
+                                   before_action=lambda: check_session_after_lock(conn, actor, request))
+    except (errors.DeadlockDetected, errors.LockNotAvailable, errors.SerializationFailure):
+        raise DomainError('busy', '结算正在处理，请重试原练习。', 409) from None
 
 
 @app.post('/v1/auth/wechat')

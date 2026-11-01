@@ -1,0 +1,26 @@
+{
+  "services": {
+    "hegong-backend": "active",
+    "nginx": "active",
+    "postgresql": "active"
+  },
+  "runtime_hashes": {
+    "card_draw_service.py": "2a73682e66b721da3152be6d9012f9efaa55c944758ef00f6985e0e200fb1414",
+    "wallet_service.py": "5483541ea2d465a2a6f0d2415775b0c6e4480f443408dbae8389ae1de5385cee"
+  },
+  "temporary_accounts": 0,
+  "users": 2,
+  "schema_versions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "external_https_health": {
+    "status": "ok",
+    "service": "hegong-backend",
+    "version": "1.0.0"
+  }
+}

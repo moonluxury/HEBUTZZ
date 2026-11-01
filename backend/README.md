@@ -1,6 +1,8 @@
 # 河工开物后端
 
-2026-11-01 代码更新（服务器待部署）：`find_user` 的可访问用户响应增加 `school`、`college`、`major`、`grade`、`bio`，供会话操作的“查看资料”显示。只返回明确允许的五个字段，不展开整个用户表或资料 JSON；好友列表、会话同步和交易身份仍是简要结构。登录、双向屏蔽、停用账号限制保持不变，不涉及数据库迁移。本次仅同步代码，正式服务需后续部署此改动。
+2026-11-02 已部署获取卡牌：既有 `/v1/wallet` 接入 `card_draw_options / card_draw / card_draw_status`。固定 200 电池，七张当前卡牌按指定概率由服务端抽取，扣费、库存和幂等回执同事务完成，失败回执也固定。只更新 `wallet_service.py` 并新增 `card_draw_service.py`，无迁移或依赖变动；服务器 43 项、正式 HTTPS 20 项和 Godot HTTPS 11 项通过。概率、备份及证据见 [获取卡牌说明](../CARD_ACQUISITION_IMPLEMENTATION.md)。
+
+2026-11-01 已部署：`find_user` 的可访问用户响应增加 `school`、`college`、`major`、`grade`、`bio`，供会话操作的“查看资料”显示。只返回明确允许的五个字段，不展开整个用户表或资料 JSON；好友列表、会话同步和交易身份仍是简要结构。登录、双向屏蔽、停用账号限制保持不变，不涉及数据库迁移。仅激活 `domain.py`，服务器独立测试 30 项、正式 HTTPS 23 项通过，临时账号已清理。备份及证据见 [公开资料部署记录](../PUBLIC_PROFILE_DEPLOYMENT.md)。
 
 2026-10-29 部署第一版。后端为 FastAPI + PostgreSQL，由 Nginx 提供 HTTPS 入口，systemd 管理进程。服务与数据库同机；代码和依赖版本已保存在此目录。`backend/.gdignore` 防止服务端文件进入 Godot 客户端资源包。
 

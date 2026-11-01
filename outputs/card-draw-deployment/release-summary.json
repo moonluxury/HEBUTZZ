@@ -1,0 +1,55 @@
+{
+  "release": "/opt/hegong/releases/card-draw-20261102-1351b24f",
+  "backup": "/var/backups/hegong/card-draw-20261101T170730Z",
+  "files": {
+    "wallet_service.py": "5483541ea2d465a2a6f0d2415775b0c6e4480f443408dbae8389ae1de5385cee",
+    "card_draw_service.py": "2a73682e66b721da3152be6d9012f9efaa55c944758ef00f6985e0e200fb1414"
+  },
+  "preserved_files": [
+    "collection_catalog.json",
+    "wishlist_service.py",
+    "schema.sql",
+    "database.py",
+    "publication_rewards.py",
+    "requirements.txt",
+    "friend_note.py",
+    "submission_document.py",
+    "domain.py",
+    "requirements.lock",
+    "submission_service.py",
+    "app.py",
+    "comment_capacity.py",
+    "comment_service.py",
+    "quiz_rewards.py",
+    "migrations/002_submissions.sql",
+    "migrations/005_battery_economy.sql",
+    "migrations/006_collection_wishlist.sql",
+    "migrations/003_bank_comments.sql",
+    "migrations/004_discussion_capacity.sql",
+    "question_banks/questions_mao.json",
+    "question_banks/questions_marxism.json",
+    "question_banks/questions_python.json",
+    "question_banks/questions.json",
+    "question_banks/questions_matlab.json",
+    "question_banks/questions_cpp.json",
+    "tests/test_friend_note.py",
+    "tests/test_backend.py",
+    "tests/test_avatar_reset.py"
+  ],
+  "protected_configurations": [
+    "/etc/hegong/backend.env",
+    "/etc/nginx/sites-available/hegong",
+    "/etc/systemd/system/hegong-backend.service"
+  ],
+  "schema_change": false,
+  "price": 200,
+  "odds": {
+    "0004": 10,
+    "0007": 10,
+    "0005": 12,
+    "0003": 14,
+    "0001": 16,
+    "0006": 18,
+    "0002": 20
+  }
+}

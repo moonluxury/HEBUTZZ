@@ -352,7 +352,7 @@ func _window_input(event: InputEvent) -> void:
 		_cancel()
 
 func _cancel() -> void:
-	_finish({"ok": false, "account_id": provider.account_id, "message": "已取消。"})
+	_finish({"ok": false, "account_id": provider.account_id, "code": "cancelled", "message": "已取消。"})
 
 func _finish(result: Dictionary) -> void:
 	if done: return
@@ -370,4 +370,4 @@ func _exit_tree() -> void:
 	if is_instance_valid(shade): shade.queue_free()
 	if not done:
 		done = true
-		finished.emit({"ok": false, "account_id": "", "message": "账号窗口已关闭。"})
+		finished.emit({"ok": false, "account_id": "", "code": "cancelled", "message": "账号窗口已关闭。"})

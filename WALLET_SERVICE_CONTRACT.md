@@ -1,5 +1,7 @@
 # 电池与充值服务接入契约 v1
 
+2026-11-02 新增获取卡牌接口 `card_draw_options / card_draw / card_draw_status`，每次 200 电池。成功和终态拒绝均绑定原操作编号，扣费及入库同事务完成，电池支出来源为 `card_draw`。完整字段与已部署证据见 [获取卡牌说明](CARD_ACQUISITION_IMPLEMENTATION.md)。
+
 2026-10-31：答题批量奖励、50 电池上架奖励、稿件购买和 20% 三天提成已接入现有 PostgreSQL/HTTPS 服务，当前接口和规则见 [电池奖励实现](BATTERY_REWARDS_IMPLEMENTATION.md)。下文逐题 attempt 契约保留供旧测试兼容，新客户端使用 `practice_begin` / `practice_finish`；商户充值部分仍未开放。`tools/fixtures/wallet_service.py` 只允许创建在 `workbench-check-*` 目录中的隔离 SQLite 库，其 HMAC 仅用于虚构测试渠道。
 
 ## 接入现有认证

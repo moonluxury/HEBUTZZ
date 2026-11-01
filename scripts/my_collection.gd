@@ -1,6 +1,7 @@
 extends "res://scripts/minimal_page.gd"
 const GiftDialog = preload("res://scripts/collection_gift_dialog.gd")
 const CardReveal = preload("res://scripts/card_reveal.gd")
+const AcquisitionDialog = preload("res://scripts/card_acquisition_dialog.gd")
 const UnownedShader = preload("res://shaders/collection_unowned.gdshader")
 var unowned_material: ShaderMaterial
 var store: Node
@@ -28,6 +29,10 @@ var _reveal_serial := 0
 var _reveal_session: Dictionary = {}
 var reveal: Control
 var _reveal_space_down := false
+var acquire_button: Button
+var acquire_price: Label
+var acquisition: CanvasLayer
+var draw_store: Node
 
 func _button(parent: Node, node_name: String, caption: String, action: Callable, color: Color = Color.TRANSPARENT) -> Button:
 	var button := super._button(parent, node_name, caption, action, color)
@@ -44,6 +49,7 @@ func _suppress_collection_focus(control: Control) -> void:
 func _ready() -> void:
 	active_nav = "CollectionButton"
 	store = get_node("/root/AppServices").collection_store()
+	draw_store = get_node("/root/AppServices").card_draw_store()
 	if selected_season.is_empty() and not store.seasons.is_empty():
 		selected_season = str(store.seasons[-1].id)
 		expanded[selected_season] = true
@@ -52,6 +58,7 @@ func _ready() -> void:
 	store.refresh()
 
 func _exit_tree() -> void:
+	if is_instance_valid(acquisition): acquisition.dismiss()
 	_reveal_space_down = false
 	if is_instance_valid(reveal):
 		reveal.cancel()
@@ -65,6 +72,10 @@ func _build_content() -> void:
 	_label(body, "我的收藏", TITLE_SIZE, text_color, Rect2(0, 0, 500, 52), true).name = "Title"
 	_label(body, "获取卡片，成为大魔法师", BODY_SIZE, muted_color, Rect2(0, 60, 650, 38)).name = "Subtitle"
 	summary_label = _label(body, "", 20, muted_color)
+	acquire_button = _primary(body, "获取卡牌", _open_acquisition, Rect2())
+	acquire_button.name = "AcquireCard"
+	acquire_price = _label(body, "200 电池/次", 16, muted_color)
+	acquire_price.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	status_label = _label(body, "", 18, muted_color)
 	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	recovery_button = _button(body, "RecoverGift", "查询赠送结果", store.recover_gift)
@@ -130,6 +141,8 @@ func _render() -> void:
 	recovery_button.disabled = store._busy or not is_instance_valid(store.provider)
 	for button in filter_buttons.values():
 		button.visible = not in_detail
+	acquire_button.visible = not in_detail
+	acquire_price.visible = not in_detail
 	if in_detail:
 		card_scroll = _detail_scroller("CardListScroll")
 		var grid := Control.new()
@@ -320,7 +333,9 @@ func _empty(parent: Control, title: String, reason: String) -> void:
 func _layout_content(width: float) -> void:
 	if not is_instance_valid(content):
 		return
-	_rect(summary_label, Rect2(maxf(0, width - 340), 12 if width > 950 else 108, 340, 36))
+	_rect(summary_label, Rect2(maxf(0, width - (660 if acquire_button.visible and width > 950 else 340)), 12 if width > 950 else 108, 340, 36))
+	_rect(acquire_button, Rect2(width - 156, 0, 156, 44))
+	_rect(acquire_price, Rect2(width - 310, 8, 140, 32))
 	var top := 126.0 if width > 950 else 160.0
 	var filter_width := minf(120, width * 0.17)
 	_rect(body.get_node("Subtitle"), Rect2(0, 60, width - filter_width * 3 - 20, 38))
@@ -615,6 +630,7 @@ func _show_selected_preview(serial: int) -> void:
 		scroll.scroll_vertical = maxi(0, roundi(content.position.y + detail_panel.position.y - 8))
 
 func _input(event: InputEvent) -> void:
+	if is_instance_valid(acquisition): return
 	if not (event is InputEventKey) or event.keycode != KEY_SPACE or event.ctrl_pressed or event.alt_pressed or event.meta_pressed:
 		return
 	if not in_detail or not is_visible_in_tree() or is_instance_valid(gift_dialog) or not is_instance_valid(reveal):
@@ -747,8 +763,21 @@ func _open_gift(id: String) -> void:
 	gift_dialog.closed.connect(func(): gift_dialog = null; _restore_gift_focus.call_deferred(id))
 	gift_dialog.present()
 
+func _open_acquisition() -> void:
+	if is_instance_valid(acquisition) or is_instance_valid(gift_dialog): return
+	acquisition = AcquisitionDialog.new()
+	acquisition.page = self
+	acquisition.store = draw_store
+	acquisition.closed.connect(func():
+		acquisition = null
+		if is_instance_valid(acquire_button) and acquire_button.is_inside_tree() and acquire_button.visible: acquire_button.grab_focus())
+	add_child(acquisition)
+	acquisition.present()
+
 func consume_back_action() -> bool:
-	if is_instance_valid(gift_dialog):
+	if is_instance_valid(acquisition):
+		acquisition.dismiss()
+	elif is_instance_valid(gift_dialog):
 		gift_dialog.dismiss()
 	elif in_detail:
 		_return_overview()

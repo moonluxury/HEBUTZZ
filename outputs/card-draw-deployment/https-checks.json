@@ -1,0 +1,30 @@
+{
+  "checks_passed": 20,
+  "checks": [
+    "HTTPS certificate and health",
+    "Register isolated account a",
+    "Register isolated account b",
+    "One card costs exactly 200 and duplicates are allowed",
+    "All seven configured probabilities match the requested distribution",
+    "Anonymous draw is rejected",
+    "Zero-balance draw is a terminal refusal",
+    "Refused draw neither charges nor grants",
+    "Old refused request cannot spend newly credited test funds",
+    "Four concurrent retries return the same draw receipt",
+    "One successful draw atomically spends 200 and grants one catalog card",
+    "Original result can be recovered without another draw",
+    "Another account cannot recover this receipt",
+    "A new deliberate draw produces exactly one additional copy",
+    "Expense ledger records the two 200-battery purchases",
+    "Exhausted balance cannot overdraw",
+    "Three different concurrent requests can spend only the available 400",
+    "Client-supplied winning card is rejected",
+    "Existing article route remains healthy",
+    "Existing comment route remains healthy"
+  ],
+  "cleanup": {
+    "ok": true,
+    "action": "cleanup",
+    "temporary_accounts": 2
+  }
+}

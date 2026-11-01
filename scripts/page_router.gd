@@ -12,6 +12,8 @@ var pending_entry_view := "mine"
 var switch_queued := false
 var identity_login_requested := false
 var friends_notifications_requested := false
+var login_guard: Node
+var _waiting_for_login := false
 
 func _ready() -> void:
 	# Optional desktop deep entry; the normal startup route remains Workbench.
@@ -43,9 +45,20 @@ func packed_scene(path: String) -> PackedScene:
 func go(path: String, entry_view := "mine") -> void:
 	pending = path
 	pending_entry_view = entry_view
+	if _login_locked():
+		_waiting_for_login = true
+		return
 	if not switch_queued:
 		switch_queued = true
 		_switch.call_deferred()
+
+func _login_locked() -> bool:
+	return is_instance_valid(login_guard) and login_guard.login_required
+
+func resume_after_login() -> void:
+	if _login_locked() or not _waiting_for_login: return
+	_waiting_for_login = false
+	go(pending, pending_entry_view)
 
 func open_subjects(mode: String) -> void:
 	var app := get_node("/root/AppState")
@@ -55,7 +68,7 @@ func open_subjects(mode: String) -> void:
 
 func back() -> void:
 	# One action closes one local layer, or navigates to this page's parent.
-	if switch_queued:
+	if switch_queued or _login_locked():
 		return
 	var page := get_tree().current_scene
 	if not is_instance_valid(page):
@@ -74,10 +87,18 @@ func back() -> void:
 			go("res://scenes/Workbench.tscn")
 
 func _switch() -> void:
+	if _login_locked():
+		_waiting_for_login = true
+		switch_queued = false
+		return
 	var tree := get_tree()
 	var previous := tree.current_scene
 	if is_instance_valid(previous) and previous.has_method("prepare_navigation"):
 		if not await previous.prepare_navigation(): switch_queued = false; return
+	if _login_locked():
+		_waiting_for_login = true
+		switch_queued = false
+		return
 	var path := pending
 	var entry_view := pending_entry_view
 	var key := key_for(path, get_node("/root/AppState").quiz_mode)

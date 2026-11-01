@@ -1,0 +1,19 @@
+Running isolated check; log: E:\zhengzhi\pc\.godot_appdata\workbench-check-aajwoz3k\check.log
+Initialize godot-rust (API v4.6.stable.official, runtime v4.6.2.stable.official, safeguards balanced)
+Godot Engine v4.6.2.stable.official.71f334935 - https://godotengine.org
+
+
+
+LIVE CARD DRAW ASSERTIONS: 11 (temporary account only)
+
+WORKBENCH CHECKS: PASS (0 failures)
+
+[VulkanHook/Windows] Installing vkCreateDevice hook...
+[VulkanHook] Queue host synchronization installed (GIPA, GDPA, loader exports)
+[VulkanHook/Windows] Hook installed successfully
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+
+   at: cleanup (core/object/object.cpp:2641)
+
+
+Isolated saves and log: E:\zhengzhi\pc\.godot_appdata\workbench-check-aajwoz3k

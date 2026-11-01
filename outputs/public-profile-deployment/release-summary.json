@@ -1,0 +1,44 @@
+{
+  "source_commit": "b4f54479228bc505dbafdffb0672c1fb5afbe00c",
+  "release": "/opt/hegong/releases/public-profile-20261101-fc60484f",
+  "backup": "/var/backups/hegong/public-profile-20261031T171549Z",
+  "files": {
+    "domain.py": "76c5327977b3cd716e074fbfcdafbf46ab7dace46d77182f71c22948a693f3dc"
+  },
+  "baseline_domain_sha256": "e5d62179afe8ce58fa679a7808fa9fc83556c723fa005825210fad2f9f11ea06",
+  "preserved_files": [
+    "collection_catalog.json",
+    "schema.sql",
+    "database.py",
+    "publication_rewards.py",
+    "requirements.txt",
+    "friend_note.py",
+    "submission_document.py",
+    "requirements.lock",
+    "wallet_service.py",
+    "submission_service.py",
+    "app.py",
+    "comment_capacity.py",
+    "comment_service.py",
+    "quiz_rewards.py",
+    "migrations/002_submissions.sql",
+    "migrations/005_battery_economy.sql",
+    "migrations/003_bank_comments.sql",
+    "migrations/004_discussion_capacity.sql",
+    "question_banks/questions_mao.json",
+    "question_banks/questions_marxism.json",
+    "question_banks/questions_python.json",
+    "question_banks/questions.json",
+    "question_banks/questions_matlab.json",
+    "question_banks/questions_cpp.json",
+    "tests/test_friend_note.py",
+    "tests/test_backend.py",
+    "tests/test_avatar_reset.py"
+  ],
+  "protected_configurations": [
+    "/etc/hegong/backend.env",
+    "/etc/nginx/sites-available/hegong",
+    "/etc/systemd/system/hegong-backend.service"
+  ],
+  "schema_change": false
+}

@@ -11,6 +11,12 @@ var auth_generation := 0
 var active_dialog: Window
 var login_store: Node
 var remember_error := ""
+var login_required := false
+var _enforce_desktop_login := false
+var _required_login_opening := false
+var _quitting := false
+var _locked_page: WeakRef
+var _locked_process_mode := Node.PROCESS_MODE_INHERIT
 
 func _ready() -> void:
 	var configured := OS.get_environment("HEGONG_API_URL").strip_edges().trim_suffix("/")
@@ -21,7 +27,71 @@ func _ready() -> void:
 	# Existing headless suites use isolated providers and must not touch live accounts.
 	if DisplayServer.get_name() == "headless" and OS.get_environment("HEGONG_BACKEND_LIVE_TEST") != "1":
 		return
+	# Tool-driven checks supply their own isolated providers. Ordinary PC launches
+	# always present the existing login form, including when an account is saved.
+	if OS.has_feature("pc") and not OS.get_cmdline_args().has("--script"):
+		enable_login_requirement()
 	attach.call_deferred()
+
+func enable_login_requirement() -> void:
+	if _enforce_desktop_login: return
+	_enforce_desktop_login = true
+	login_required = true
+	get_node("/root/PageRouter").login_guard = self
+	get_node("/root/ProfileStore").changed.connect(_check_required_login)
+	get_tree().scene_changed.connect(_lock_current_page)
+
+func _check_required_login() -> void:
+	if not _enforce_desktop_login or _quitting: return
+	var profile_store := get_node("/root/ProfileStore")
+	if profile_store.authenticated() and profile_store.provider == self:
+		login_required = false
+		_unlock_current_page()
+		get_node("/root/PageRouter").resume_after_login()
+		return
+	login_required = true
+	_lock_current_page()
+	if not _required_login_opening:
+		_required_login_opening = true
+		_open_required_login.call_deferred()
+
+func _lock_current_page() -> void:
+	if not login_required or _quitting: return
+	var page := get_tree().current_scene
+	if not is_instance_valid(page): return
+	if _locked_page != null and _locked_page.get_ref() == page: return
+	_unlock_current_page()
+	_locked_page = weakref(page)
+	_locked_process_mode = page.process_mode
+	page.process_mode = Node.PROCESS_MODE_DISABLED
+
+func _unlock_current_page() -> void:
+	var page: Node = _locked_page.get_ref() if _locked_page != null else null
+	if is_instance_valid(page): page.process_mode = _locked_process_mode
+	_locked_page = null
+
+func _open_required_login() -> void:
+	if _quitting or not login_required:
+		_required_login_opening = false
+		return
+	_lock_current_page()
+	var result: Dictionary
+	if is_instance_valid(active_dialog):
+		result = await active_dialog.finished
+		await get_tree().process_frame # The existing auth caller attaches the session.
+	else:
+		result = await begin_login()
+	_required_login_opening = false
+	if _quitting: return
+	if result.get("code") == "cancelled":
+		_quitting = true
+		auth_generation += 1
+		_quit_application()
+	else:
+		_check_required_login()
+
+func _quit_application() -> void:
+	get_tree().quit()
 
 func attach() -> void:
 	get_node("/root/ProfileStore").use_provider(self, {"state": "signed_out"})

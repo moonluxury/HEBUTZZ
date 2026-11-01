@@ -8,9 +8,12 @@
 - `StudyStats`：题库统一加载/校验/题型分组、学习记录、继续学习位置。
 - `ProfileStore`：宿主提供的账号会话与资料状态；持有资料保存快照、请求标识和待核实结果，弹窗关闭不取消已经发出的保存。
 - `AppServices`：按需创建并持有 `CollectionStore`、`SocialStore`、`WalletStore`、`WrongQuestions`。这些服务独立于页面和路由缓存生存。
+- `CardDrawStore`：同由 AppServices 持有，管理每次 200 电池获取卡牌的持久请求与结果核实；服务返回后合并 WalletStore 及 CollectionStore 的权威快照，展示控件仍只负责原有 CardReveal 动画。
 - `PageRouter`：页面切换、返回层级、缓存和公共侧栏；不再创建或持有业务 Store。
 - `UiResources`：字体、主题资源、纹理缓存和滚动条显示策略。
 - `UiMotion`：过渡动画的执行、取消、离树清理和减少动态效果设置。
+
+PC 正常启动时，`BackendProvider` 启用登录要求，显示原有账号窗口并暂停当前页面的输入处理。`PageRouter.login_guard` 将页面跳转保留到认证完成后执行；取消必需的登录直接退出进程。登录成功恢复页面处理，退出登录或会话失效重新加锁。认证请求和加密凭证仍由原提供者管理，窗口只返回带 `cancelled` 标识的取消结果；不新增说明页或退出确认框。专用工具和隔离测试不自动接入真实登录。
 
 取得业务服务使用 `/root/AppServices`，不能通过路由器或某个页面查找业务 Store。账号切换仍由 `ProfileStore` 发出会话变化，业务状态各自处理过期请求与账号分区。
 
