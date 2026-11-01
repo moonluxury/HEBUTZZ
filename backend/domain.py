@@ -310,8 +310,8 @@ def project_event(conn, t, event):
     add_message(conn, c, t['initiator'], t['kind'], record_id=t['id'], body={'summary': ('卡牌赠送' if t['kind'] == 'gift' else '卡牌交换') + ' · ' + event})
 
 
-MUTATIONS = {'open_conversation', 'send_text', 'request_friend', 'respond_request', 'preferences', 'relationship', 'mark_read', 'mark_all_read', 'mark_requests_read', 'create_trade', 'trade_action', 'report', 'save_profile', 'send_gift', 'study_save'}
-IDEMPOTENT = {'request_friend', 'respond_request', 'preferences', 'relationship', 'mark_all_read', 'create_trade', 'trade_action', 'report', 'send_gift'}
+MUTATIONS = {'open_conversation', 'send_text', 'request_friend', 'respond_request', 'preferences', 'relationship', 'mark_read', 'mark_all_read', 'mark_requests_read', 'create_trade', 'trade_action', 'report', 'save_profile', 'send_gift', 'study_save', 'wishlist_update'}
+IDEMPOTENT = {'request_friend', 'respond_request', 'preferences', 'relationship', 'mark_all_read', 'create_trade', 'trade_action', 'report', 'send_gift', 'wishlist_update'}
 
 
 def prepare_locks(conn, actor, action, p):
@@ -493,9 +493,9 @@ def handle(conn, actor, action, p):
             conn.execute('UPDATE conversation_members m SET read_seq=GREATEST(read_seq,COALESCE((SELECT max(seq) FROM messages WHERE conversation_id=m.conversation_id),0)) WHERE user_id=%s', (actor,))
         bump(conn, actor)
         return {'sync': sync(conn, actor)}
-    if action == 'wishlist':
-        require_friend(conn, actor, string(p.get('peer_id'), 64, False))
-        raise DomainError('unavailable', '收藏想要目前保存在对方设备，尚未开启云端同步。', 409)
+    if action in {'wishlist', 'wishlist_load', 'wishlist_update'}:
+        from wishlist_service import handle as wishlist_handle
+        return wishlist_handle(conn, actor, action, p)
     if action in {'create_trade', 'send_gift'}:
         peer = p['peer_id'] if action == 'create_trade' else p['friend_id']
         require_friend(conn, actor, peer)

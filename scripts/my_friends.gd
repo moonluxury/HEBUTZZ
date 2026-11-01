@@ -6,6 +6,7 @@ const Dialog = preload("res://scripts/social_dialog.gd")
 const ConversationActionsDialog = preload("res://scripts/conversation_actions_dialog.gd")
 const GiftDialog = preload("res://scripts/collection_gift_dialog.gd")
 const TradeDialog = preload("res://scripts/trade_dialog.gd")
+const WishlistDialog = preload("res://scripts/wishlist_dialog.gd")
 var store: Node
 var collection: Node
 var search: LineEdit
@@ -608,7 +609,7 @@ func show_panel(mode: String, context: Dictionary = {}) -> void:
 	if mode == "gift":
 		open_gift("", context.get("peer", {}))
 		return
-	dialog = ConversationActionsDialog.new() if mode == "peer_menu" else TradeDialog.new() if mode in ["exchange", "trade_review", "trade_detail", "trade_cancel", "trade_reject"] else Dialog.new()
+	dialog = WishlistDialog.new() if mode == "wishlist" else ConversationActionsDialog.new() if mode == "peer_menu" else TradeDialog.new() if mode in ["exchange", "trade_review", "trade_detail", "trade_cancel", "trade_reject"] else Dialog.new()
 	dialog.page = self
 	dialog.store = store
 	dialog.panel_mode = mode

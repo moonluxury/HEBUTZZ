@@ -20,6 +20,7 @@ var filter_buttons: Dictionary = {}
 var summary_label: Label
 var status_label: Label
 var recovery_button: Button
+var wishlist_sync_button: Button
 var gift_dialog: Window
 var _rebuilding := false
 var _restore_ticket := 0
@@ -67,6 +68,7 @@ func _build_content() -> void:
 	status_label = _label(body, "", 18, muted_color)
 	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	recovery_button = _button(body, "RecoverGift", "查询赠送结果", store.recover_gift)
+	wishlist_sync_button = _button(body,"SyncWishlist","同步想要",store.wishlist.refresh)
 	filter_buttons.clear()
 	for item in [["owned", "已拥有"], ["all", "全部卡牌"], ["wanted", "想要"]]:
 		filter_buttons[item[0]] = _button(body, "Filter_" + item[0], item[1], _set_filter.bind(item[0]))
@@ -120,6 +122,10 @@ func _render() -> void:
 	var totals: Dictionary = store.summary()
 	summary_label.text = "已拥有 %d 款 · 共 %d 张" % [totals.kinds, totals.total] if totals.known else "已拥有 — 款 · 共 — 张"
 	status_label.text = "正在读取收藏…" if store.loading else store.status
+	if status_label.text.is_empty() and (filter == "wanted" or not store.wishlist.error.is_empty() or store.wishlist.busy):
+		status_label.text = store.wishlist.caption()
+	wishlist_sync_button.visible = store.wishlist.available() and (filter == "wanted" or not store.wishlist.error.is_empty())
+	wishlist_sync_button.disabled = store.wishlist.busy
 	recovery_button.visible = store.pending()
 	recovery_button.disabled = store._busy or not is_instance_valid(store.provider)
 	for button in filter_buttons.values():
@@ -325,9 +331,11 @@ func _layout_content(width: float) -> void:
 	_update_filter_tabs()
 	status_label.visible = not status_label.text.is_empty()
 	var status_top := top
-	_rect(status_label, Rect2(0, status_top, width - (172 if recovery_button.visible else 0), 42))
+	var reserved := (172 if recovery_button.visible else 0) + (132 if wishlist_sync_button.visible else 0)
+	_rect(status_label, Rect2(0, status_top, width - reserved, 42))
 	_rect(recovery_button, Rect2(width - 156, status_top, 156, 42))
-	_rect(content, Rect2(0, status_top + (54.0 if status_label.visible or recovery_button.visible else 0.0), width, 100))
+	_rect(wishlist_sync_button,Rect2(width-reserved+12,status_top,120,42))
+	_rect(content, Rect2(0, status_top + (54.0 if status_label.visible or reserved > 0 else 0.0), width, 100))
 	var height := 0.0
 	var grid_top := 0.0
 	var available_height := scroll.size.y - content.position.y - grid_top - 12

@@ -22,8 +22,12 @@ var loading := false
 var _epoch := 0
 var _busy := false
 var _save_error := ""
+var wishlist: Node
 
 func _ready() -> void:
+	wishlist = preload("res://scripts/collection_wishlist_sync.gd").new()
+	wishlist.collection = self
+	add_child(wishlist)
 	var catalog = JSON.parse_string(FileAccess.get_file_as_string(CATALOG))
 	if catalog is Dictionary:
 		seasons = catalog.get("seasons", [])
@@ -44,8 +48,10 @@ func use_provider(value: Node, stable_account_id: String) -> void:
 	operation = {}
 	_save_error = ""
 	status = ""
+	wishlist.reset()
 	_load_local()
 	changed.emit()
+	wishlist.schedule()
 
 func card(id: String) -> Dictionary:
 	for item in cards:
@@ -95,15 +101,19 @@ func set_wanted(id: String, value: bool) -> Dictionary:
 	if card(id).is_empty():
 		return {"ok": false, "message": "这张卡已不在可见目录中。"}
 	var previous := wanted.duplicate()
+	var previous_sync: Dictionary = wishlist.export_state()
 	if value:
 		wanted[id] = true
 	else:
 		wanted.erase(id)
+	wishlist.queue_change(id,value)
 	# Synchronous atomic local commits serialize rapid intents, without stale replies.
 	if not _save_local():
 		wanted = previous
+		wishlist.restore(previous_sync)
 		return {"ok": false, "message": _save_error}
 	changed.emit()
+	wishlist.schedule()
 	return {"ok": true}
 
 func gift_rule(id: String) -> Dictionary:
@@ -124,6 +134,7 @@ func gift_rule(id: String) -> Dictionary:
 		"reason": str(entry.get("gift_reason", "")), "consequence": str(entry.get("gift_consequence", ""))}
 
 func refresh() -> void:
+	wishlist.refresh()
 	if not is_instance_valid(provider):
 		return
 	_epoch += 1
@@ -257,13 +268,14 @@ func _load_local() -> void:
 		_save_error = status
 		return
 	wanted = parsed.wanted
+	wishlist.restore(parsed.get("wishlist",{}))
 	operation = parsed.get("operation", {})
 	_save_error = ""
 
 func _save_local() -> bool:
 	if not _save_error.is_empty() and _save_error.contains("原文件"):
 		return false
-	if JsonStore.write(_path(), {"version": 1, "account_id": account_id, "wanted": wanted, "operation": operation}) != OK:
+	if JsonStore.write(_path(), {"version": 2, "account_id": account_id, "wanted": wanted, "operation": operation, "wishlist":wishlist.export_state()}) != OK:
 		_save_error = "保存失败，原状态已保留，请检查本机存储空间和写入权限后重试。"
 		return false
 	_save_error = ""

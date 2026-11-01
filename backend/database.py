@@ -16,6 +16,8 @@ def migrate():
     with pool.connection() as conn:
         conn.execute('SELECT pg_advisory_xact_lock(72810429)')
         conn.execute(Path(__file__).with_name('schema.sql').read_text(encoding='utf-8'))
+        for path in sorted(Path(__file__).with_name('migrations').glob('*.sql')):
+            conn.execute(path.read_text(encoding='utf-8'))
 
 
 @contextmanager

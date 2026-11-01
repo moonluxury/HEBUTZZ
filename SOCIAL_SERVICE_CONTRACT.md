@@ -62,6 +62,8 @@ Trade = {
 | mark_all_read | `{operation_id}` | `{sync,message?}`；服务捕获此次操作水位，推进本人所有会话/通知及申请提醒的已见状态，水位之后的内容仍未读；不接受申请、不确认交易。原键重试沿用原水位。 |
 | mark_requests_read | `{through_seq}` | `{sync}`；前台申请窗口实际到达的服务端申请序列，服务限制在本人可访问范围内单调推进，pending 业务计数不变。 |
 | wishlist | `{peer_id}` | `{visibility:accessible|private|inaccessible,card_ids:[string]}`。接入收藏原想要数据；不包含持有数。获卡不能删除想要。默认好友可见。 |
+| wishlist_load | `{}` | 当前登录账户的 `{card_ids,wishlist_revision,initialized}`。 |
+| wishlist_update | `{operation_id,expected_revision,changes:{card_id:boolean}}` | 原子应用逐卡修改；版本冲突重读合并，同一操作幂等。 |
 | create_trade | `{peer_id,give:[Line],receive:[Line],terms_version:1,operation_id}` | `{trade,sync?}`；校验双方关系、自己真实可转出总量、目录/季/正整数；条款固定，无默认冻结；幂等键绑定双方和全部原条款。 |
 | trade_action | `{trade_id,terms_version,decision:confirm|cancel|reject,operation_id}` | `{trade,sync?,message?}`；confirm/reject 仅接收者，cancel 仅发起者；终态返回权威原结果，无第二次转移。 |
 | trade_detail | `{record_id}` | `{trade}`；本人是交易一方才可读。 |
@@ -77,7 +79,7 @@ Trade = {
 
 赠送参数沿用 `id/account_id/card_id/friend_id/quantity/state`；业务幂等绑定 actor/card/recipient/quantity，不把客户端可变查询状态 state 作为条款。成功含匹配的 operation_id、account_id、state=succeeded 及完整新库存，失败含真实原因，响应丢失后 gift_status 查询原记录。必须在赠送的同一事务内产生唯一业务事件投影到双方会话，不能在聊天端再调用一次赠送；通知失败不得回滚已经完成的库存转移。
 
-自己的想要当前在 `CollectionStore` 的账号分区本机存档。若真实服务尚未接通收藏想要同步，wishlist 返回明确 unavailable，不能另建一份社交愿望清单或把测试 wanted 当成正式数据。后端需沿用收藏未来同步接口完成同一源的公开投影及隐私权限。
+2026-11-02 已接入云端：`CollectionStore` 保留账号分区缓存和待同步操作，`wishlist_load / wishlist_update` 维护同一份云端清单；`wishlist` 是好友只读投影。连续修改合并提交，断网保留操作，版本冲突只合并本机实际编辑的卡牌。详见 `WISHLIST_IMPLEMENTATION.md`。
 
 ## 后端必须补充和验证的持久化约束
 

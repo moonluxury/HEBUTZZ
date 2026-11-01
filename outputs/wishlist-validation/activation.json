@@ -1,0 +1,67 @@
+{
+  "status": "activated",
+  "backup": "/var/backups/hegong/wishlist-20261101T160441Z",
+  "files": [
+    "domain.py",
+    "migrations/006_collection_wishlist.sql",
+    "wishlist_service.py"
+  ],
+  "before": {
+    "users": 2,
+    "schema_versions": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "after": {
+    "users": 2,
+    "schema_versions": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  "https": {
+    "checks_passed": 28,
+    "checks": [
+      "TLS and health",
+      "Temporary registration a",
+      "Temporary registration b",
+      "wishlist_load HTTP 401",
+      "wishlist_load HTTP 200",
+      "New account has no fabricated wishes",
+      "wishlist_update HTTP 200",
+      "Add wishlist cards",
+      "wishlist_load HTTP 200",
+      "Second session reads same persisted list",
+      "wishlist_update HTTP 200",
+      "wishlist_update HTTP 200",
+      "wishlist_load HTTP 200",
+      "Old retry does not resurrect a removed card",
+      "wishlist_update HTTP 409",
+      "Stale revisions rejected",
+      "wishlist_load HTTP 200",
+      "Accounts remain isolated",
+      "wishlist HTTP 403",
+      "request_friend HTTP 200",
+      "respond_request HTTP 200",
+      "wishlist HTTP 200",
+      "Friend sees the same list without inventory disclosure",
+      "wishlist_update HTTP 400",
+      "relationship HTTP 200",
+      "wishlist HTTP 403",
+      "wishlist HTTP 403",
+      "Existing articles remain available"
+    ],
+    "cleanup": {
+      "ok": true,
+      "temporary_accounts_removed": 2
+    }
+  }
+}

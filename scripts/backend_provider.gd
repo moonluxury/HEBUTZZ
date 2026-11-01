@@ -151,6 +151,9 @@ func open_publication() -> void:
 func request_snapshot(_owner: String) -> Dictionary:
 	return await social_request("snapshot", {})
 
+func wishlist_request(action: String, payload: Dictionary) -> Dictionary:
+	return await social_request(action,payload)
+
 func request_friends(_owner: String, query: String) -> Dictionary:
 	return await social_request("friends", {"query": query, "eligible_for_gift": true})
 
