@@ -136,7 +136,7 @@ func _run() -> void:
 	page._select_card("0002")
 	page._select_card("0003")
 	await loaded(page.reveal)
-	await create_timer(1.05).timeout
+	await create_timer(Reveal.ENTRY + Reveal.REVEAL + Reveal.INFO + 0.12).timeout
 	check(page.reveal.state == "revealed" and page.reveal.session.card.id == "0003" and page.reveal.face.texture.resource_path == store.card("0003").image, "Natural playback after rapid switching ends on the last selected card")
 	serial = page._reveal_serial
 	page._toggle_wanted("0003")
