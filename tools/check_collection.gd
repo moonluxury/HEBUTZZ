@@ -151,7 +151,14 @@ func check_filter_row() -> void:
 		return
 	var subtitle: Rect2 = page.body.get_node("Subtitle").get_global_rect()
 	var first_tab: Rect2 = page.filter_buttons.owned.get_global_rect()
-	check(is_equal_approx(subtitle.get_center().y, first_tab.get_center().y) and subtitle.end.x < first_tab.position.x, "Filters align with subtitle without overlapping it")
+	var middle_tab: Rect2 = page.filter_buttons.all.get_global_rect()
+	var last_tab: Rect2 = page.filter_buttons.wanted.get_global_rect()
+	check(is_equal_approx(page.content.get_global_rect().end.x, last_tab.end.x) and is_equal_approx(subtitle.get_center().y, first_tab.get_center().y) and subtitle.end.x < first_tab.position.x, "Subtitle and right-aligned filters share one row without overlapping")
+	check(is_equal_approx(middle_tab.position.x - first_tab.end.x, last_tab.position.x - middle_tab.end.x), "Filter labels have equal visible gaps despite different text lengths")
+	var title: Rect2 = page.body.get_node("Title").get_global_rect()
+	var action: Rect2 = page.acquire_button.get_global_rect()
+	var price: Rect2 = page.acquire_price.get_global_rect()
+	check(is_equal_approx(title.get_center().y, action.get_center().y) and is_equal_approx(action.get_center().y, price.get_center().y), "Title, price and acquisition button share a header baseline")
 
 func check_name_count(title: Label, quantity: Label) -> void:
 	check(is_equal_approx(title.get_rect().get_center().y, quantity.get_rect().get_center().y), "Quantity shares the card-name row")
@@ -232,10 +239,10 @@ func _run() -> void:
 	check(not page.has_node("SeasonNavigation") and store.seasons[0].id == "season-001", "Season dropdown removed without changing catalogue identity")
 	check(not page.status_label.visible and page.status_label.text.is_empty(), "Permanent integration banner removed")
 	check(not store.inventory_known and page.tiles.is_empty(), "Missing inventory never fabricates holdings")
-	check(page.summary_label.text.contains("—"), "Unavailable totals are explicit")
+	check(page.groups["season-001"].get_node("Count").text.contains("待查询"), "Unknown ownership remains explicit in its season row")
 	check_filter_row()
 	check(not page.has_node("ReturnCollection") and not page.body.has_node("CollectionToolbar"), "Return-to-collection button is removed")
-	check(not page.body.has_node("CollectionToolbar") and is_equal_approx(page.content.position.y, 126), "Overview removes the empty toolbar row and moves its contents upward")
+	check(not page.body.has_node("CollectionToolbar") and is_equal_approx(page.content.position.y, page.filter_buttons.owned.position.y + 76), "Overview follows the shared subtitle and filter row")
 	await capture("01-live-empty", false)
 	page._set_filter("all")
 	await frames()
@@ -564,6 +571,7 @@ func _run() -> void:
 	backend.friend_data = saved_friends
 	dialog._search_friends("甲")
 	dialog.dismiss()
+	await create_timer(preload("res://scripts/ui_tokens.gd").EXIT + 0.05).timeout
 	await frames(10)
 	check(page.gift_dialog == null, "Closing during friend search leaves no suspended UI")
 	backend.snapshot_fail = true

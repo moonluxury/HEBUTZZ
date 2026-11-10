@@ -46,6 +46,8 @@ func _run() -> void:
 		await create_timer(0.1).timeout
 	if not FileAccess.file_exists(control_dir.path_join("ready")): printerr("Private bank setup timed out"); quit(1); return
 	var a: Node = clients[0]; var b: Node = clients[1]
+	var saved_college: Dictionary = await a.social_request("save_profile", {"patch":{"college":"能源与环境工程学院"},"avatar_card_id":""})
+	check(saved_college.get("persisted", false), "college saved in real account profile")
 	var guest := API.new(); root.add_child(guest)
 	for subject in root.get_node("AppState").SUBJECTS:
 		var response: Dictionary = await guest.comment_request("comment_list", {"target_type":"bank", "target_id":subject, "sort":"latest", "limit":20})
@@ -55,6 +57,7 @@ func _run() -> void:
 	var operation := Crypto.new().generate_random_bytes(16).hex_encode()
 	var created := await _rpc(a, "comment_create", {"body":"私有接口验收记录", "parent_id":"", "operation_id":operation})
 	check(created.get("ok", false), "publish persisted")
+	check(created.get("comment", {}).get("author", {}).get("college") == "能源与环境工程学院", "college returned with comment author")
 	var id := str(created.get("comment", {}).get("id", ""))
 	if id.is_empty(): quit(1); return
 	var repeated := await _rpc(a, "comment_create", {"body":"私有接口验收记录", "parent_id":"", "operation_id":operation})
@@ -85,6 +88,15 @@ func _run() -> void:
 	check(not forbidden_write.get("ok", false), "anonymous writes rejected")
 	var invalid := await guest.comment_request("comment_list", {"target_type":"bank","target_id":"marxism","sort":[]})
 	check(invalid.get("http_status") == 400, "malformed input returns 400")
+	# Shared capacity includes the retained reply; clear it before the exact-boundary check.
+	await _rpc(b, "comment_delete", {"comment_id":reply.get("comment", {}).get("id", "")})
+	var long_body := "学".repeat(1000000)
+	var million := await _rpc(a, "comment_create", {"body":long_body,"parent_id":""})
+	check(million.get("ok", false) and str(million.get("comment", {}).get("body", "")).length() == 1000000, "one million Chinese characters pass HTTPS upload and response limits")
+	var full := await _rpc(b, "comment_create", {"body":"再"})
+	check(full.get("http_status") == 409 and full.get("code") == "discussion_full" and str(full.get("message", "")).is_empty(), "capacity enforced without user-facing capacity notice")
+	var release := await _rpc(a, "comment_delete", {"comment_id":million.get("comment", {}).get("id", "")})
+	check(release.get("ok", false), "deleting own comment releases shared capacity")
 	for api in clients:
 		var logout: Dictionary = await api._request("/v1/auth/logout", {})
 		check(logout.get("ok", false), "temporary session revoked")

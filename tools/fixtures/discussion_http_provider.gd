@@ -2,6 +2,7 @@ extends "res://scripts/backend_provider.gd"
 ## Loopback exception exists only in this isolated test provider.
 var requests: Array = []
 var fail_next := false
+var fail_code := "network"
 var response_delay := 0.0
 var read_delay := 0.0
 
@@ -19,7 +20,9 @@ func comment_request(action: String, payload: Dictionary) -> Dictionary:
 	if fail_next:
 		fail_next = false
 		await get_tree().create_timer(0.08).timeout
-		return {"ok": false, "code": "network", "message": "隔离测试：网络连接失败，输入已保留。"}
+		var code := fail_code
+		fail_code = "network"
+		return {"ok": false, "code": code, "message": "" if code == "discussion_full" else "隔离测试：网络连接失败，输入已保留。"}
 	var delay := response_delay + (read_delay if action in ["comment_list", "comment_replies"] else 0.0)
 	var response := await super.comment_request(action, payload)
 	if delay > 0: await get_tree().create_timer(delay).timeout

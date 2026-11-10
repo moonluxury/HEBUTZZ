@@ -9,6 +9,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from psycopg.types.json import Jsonb
+from friend_note import valid_note
+from friend_request_retention import (
+    FRIEND_ACTIONS, compact_receipt, delete_expired_requests, retention_cutoff,
+)
 
 from database import one, rows, lock_users, bump
 
@@ -220,9 +224,10 @@ def sync(conn, actor, token=''):
     if token:
         last_seq = integer(cursor_decode(token, actor, 'sync'), high=2**63-1)
     convs = rows(conn, 'SELECT c.* FROM conversations c JOIN conversation_members m ON m.conversation_id=c.id WHERE m.user_id=%s', (actor,))
-    reqs = rows(conn, "SELECT * FROM friend_requests WHERE sender=%s OR recipient=%s ORDER BY seq DESC LIMIT 300", (actor, actor))
-    pending = one(conn, "SELECT count(*) n FROM friend_requests WHERE recipient=%s AND status='pending'", (actor,))['n']
-    unseen = one(conn, 'SELECT count(*) n FROM friend_requests WHERE recipient=%s AND seq>%s', (actor, u['requests_read']))['n']
+    cutoff = retention_cutoff(conn)
+    reqs = rows(conn, "SELECT * FROM friend_requests WHERE (sender=%s OR recipient=%s) AND created_at>%s ORDER BY seq DESC LIMIT 300", (actor, actor, cutoff))
+    pending = one(conn, "SELECT count(*) n FROM friend_requests WHERE recipient=%s AND status='pending' AND created_at>%s", (actor, cutoff))['n']
+    unseen = one(conn, 'SELECT count(*) n FROM friend_requests WHERE recipient=%s AND seq>%s AND created_at>%s', (actor, u['requests_read'], cutoff))['n']
     if token:
         msgs = rows(conn, 'SELECT x.* FROM messages x JOIN conversation_members m ON m.conversation_id=x.conversation_id WHERE m.user_id=%s AND x.seq>%s ORDER BY x.seq LIMIT 2000', (actor, last_seq))
         # An overflow triggers a fresh snapshot; never advance past undelivered events.
@@ -331,7 +336,7 @@ def prepare_locks(conn, actor, action, p):
         peers.append(peer_of(c, actor))
     elif action == 'respond_request':
         r = one(conn, 'SELECT * FROM friend_requests WHERE id=%s AND recipient=%s', (string(p.get('request_id'), 64, False), actor))
-        require(r is not None, 'inaccessible', '无法处理该申请。', 403)
+        require(r is not None, 'inaccessible', '申请已过期或不可用，请刷新列表。', 403)
         peers.append(r['sender'])
     elif action == 'trade_action':
         t = get_transfer(conn, actor, string(p.get('trade_id'), 64, False))
@@ -345,6 +350,12 @@ def prepare_locks(conn, actor, action, p):
 def dispatch(conn, actor, action, p, before_action=None):
     require(isinstance(p, dict))
     require(not (set(p) & {'account_id', 'actor_id', 'sender_id', 'type', 'status'}), message='身份和业务类型必须由服务器确定。')
+    if action.startswith('comment_'):
+        from comment_service import dispatch as comment_dispatch
+        return comment_dispatch(conn, actor, action, p, before_action)
+    if action.startswith(('submission_', 'article_')) or action == 'publication_review':
+        from submission_service import dispatch as submission_dispatch
+        return submission_dispatch(conn, actor, action, p, before_action)
     prepare_locks(conn, actor, action, p)
     if before_action:
         before_action()
@@ -355,6 +366,8 @@ def dispatch(conn, actor, action, p, before_action=None):
         previous = one(conn, 'SELECT * FROM operations WHERE actor=%s AND operation_id=%s', (actor, operation_id))
         if previous:
             require(previous['action'] == action and previous['request_hash'] == request_hash, 'idempotency_conflict', '操作编号已经用于不同的请求。', 409)
+            if action in FRIEND_ACTIONS:
+                return replay_friend_operation(conn, actor, action, p, previous['response'])
             return previous['response']
     try:
         with conn.transaction():
@@ -366,8 +379,26 @@ def dispatch(conn, actor, action, p, before_action=None):
                   'operation_id': p['operation_id'], 'state': 'failed', 'definitive': True}
     result = {'ok': True, 'account_id': actor, **result}
     if operation_id:
-        conn.execute('INSERT INTO operations(actor,operation_id,action,request_hash,response) VALUES (%s,%s,%s,%s,%s)', (actor, operation_id, action, request_hash, Jsonb(result)))
+        conn.execute('INSERT INTO operations(actor,operation_id,action,request_hash,response) VALUES (%s,%s,%s,%s,%s)', (actor, operation_id, action, request_hash, Jsonb(compact_receipt(action, result))))
     return result
+
+
+def replay_friend_operation(conn, actor, action, p, response):
+    receipt = compact_receipt(action, response)
+    if action == 'request_friend' and receipt.get('already_friend'):
+        require(relation(conn, actor, p['peer_id'])['friends'],
+                'request_expired', '申请已过期或不可用，请刷新列表。', 410)
+        return {'ok': True, 'account_id': actor, 'state': 'friend', 'message': '你们已经是好友。'}
+    request_id = receipt.get('request_id', '') if action == 'request_friend' else p['request_id']
+    request = one(conn, 'SELECT * FROM friend_requests WHERE id=%s AND (sender=%s OR recipient=%s)',
+                  (request_id, actor, actor))
+    require(request is not None and request['created_at'] > retention_cutoff(conn),
+            'request_expired', '申请已过期或不可用，请刷新列表。', 410)
+    if action == 'request_friend':
+        result = {'request': request_view(conn, actor, request), 'message': '已有待处理的好友申请。'}
+    else:
+        result = {'sync': sync(conn, actor), 'message': '申请处理完成。'}
+    return {'ok': True, 'account_id': actor, **result}
 
 
 def handle(conn, actor, action, p):
@@ -391,7 +422,7 @@ def handle(conn, actor, action, p):
         r = relation(conn, actor, peer)
         if r['blocked']:
             return {'state': 'inaccessible'}
-        req = one(conn, "SELECT sender FROM friend_requests WHERE LEAST(sender,recipient)=%s AND GREATEST(sender,recipient)=%s AND status='pending'", tuple(sorted([actor, peer])))
+        req = one(conn, "SELECT sender FROM friend_requests WHERE LEAST(sender,recipient)=%s AND GREATEST(sender,recipient)=%s AND status='pending' AND created_at>%s", (*sorted([actor, peer]), retention_cutoff(conn)))
         state = 'self' if peer == actor else 'friend' if r['friends'] else ('outgoing' if req['sender'] == actor else 'incoming') if req else 'available'
         return {'state': state, 'user': public_user(conn, actor, peer, include_profile=True)}
     if action == 'open_conversation':
@@ -423,11 +454,17 @@ def handle(conn, actor, action, p):
         return {'message_record': message_view(m)}
     if action == 'request_friend':
         peer = p['peer_id']
-        note = string(p.get('note', ''), 120)
+        note = p.get('note', '')
+        require(valid_note(note), 'invalid_note', '申请附言最多 100 个字符。')
         r = relation(conn, actor, peer)
         require(not r['blocked'], 'inaccessible', '当前无法向该用户申请好友。', 403)
         if r['friends']:
-            return {'message': '你们已经是好友。'}
+            return {'state': 'friend', 'message': '你们已经是好友。'}
+        # Both accounts are locked. Free an expired pending pair before inserting;
+        # this also works when the scheduled cleanup has not run yet.
+        cutoff = retention_cutoff(conn)
+        expired = rows(conn, "SELECT id,sender,recipient FROM friend_requests WHERE LEAST(sender,recipient)=%s AND GREATEST(sender,recipient)=%s AND status='pending' AND created_at<=%s", (*sorted([actor, peer]), cutoff))
+        delete_expired_requests(conn, expired, cutoff)
         existing = one(conn, "SELECT * FROM friend_requests WHERE LEAST(sender,recipient)=%s AND GREATEST(sender,recipient)=%s AND status='pending'", tuple(sorted([actor, peer])))
         if not existing:
             existing = one(conn, "INSERT INTO friend_requests(id,sender,recipient,note,status) VALUES (%s,%s,%s,%s,'pending') RETURNING *", (uid(), actor, peer, note))
@@ -438,6 +475,8 @@ def handle(conn, actor, action, p):
         decision = p.get('decision')
         require(decision in {'accept', 'ignore'})
         r = one(conn, 'SELECT * FROM friend_requests WHERE id=%s AND recipient=%s', (p['request_id'], actor))
+        require(r is not None and r['created_at'] > retention_cutoff(conn),
+                'request_expired', '申请已过期或不可用，请刷新列表。', 410)
         if r['status'] == 'pending':
             require(not relation(conn, actor, r['sender'])['blocked'], 'forbidden', '当前无法处理该申请。', 403)
             conn.execute('UPDATE friend_requests SET status=%s WHERE id=%s', ('accepted' if decision == 'accept' else 'ignored', r['id']))

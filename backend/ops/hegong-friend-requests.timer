@@ -1,0 +1,11 @@
+[Unit]
+Description=Check expired Hegong friend requests every 30 minutes
+
+[Timer]
+OnBootSec=3min
+OnCalendar=*-*-* *:00/30:00 UTC
+Persistent=true
+Unit=hegong-friend-requests.service
+
+[Install]
+WantedBy=timers.target

@@ -20,7 +20,7 @@ func state(bank: String) -> Dictionary:
 	if not banks.has(bank):
 		banks[bank] = {"items": [], "sort": "latest", "cursor": "", "loaded": false, "loading": false,
 			"error": "", "notice": "", "draft": "", "reply_id": "", "reply_name": "", "scroll": 0,
-			"replies": {}, "expanded": {}, "reply_loading": {}, "reply_serial": {}, "busy": {}, "pending": {}, "serial": 0}
+			"replies": {}, "expanded": {}, "reply_loading": {}, "reply_serial": {}, "busy": {}, "pending": {}, "serial": 0, "publish_blocked": false}
 	return banks[bank]
 
 func _request(action: String, payload: Dictionary) -> Dictionary:
@@ -30,7 +30,7 @@ func _request(action: String, payload: Dictionary) -> Dictionary:
 
 func activate(bank: String) -> void:
 	var s := state(bank)
-	if not s.loaded and not s.loading: load_page(bank)
+	if (not s.loaded or s.publish_blocked) and not s.loading: load_page(bank)
 
 func load_page(bank: String, more := false) -> void:
 	var s := state(bank)
@@ -44,6 +44,7 @@ func load_page(bank: String, more := false) -> void:
 	if generation != epoch or serial != state(bank).serial: return
 	s.loading = false
 	if result.get("ok", false):
+		s.publish_blocked = not result.get("can_publish", true)
 		if not more: s.items = []
 		for item in result.get("items", []):
 			var found := false
@@ -92,7 +93,7 @@ func load_replies(bank: String, parent: String, more := false) -> void:
 func publish(bank: String) -> void:
 	var s := state(bank)
 	var body := str(s.draft).strip_edges()
-	if body.is_empty() or body.length() > 2000: s.error = "请输入 1–2000 字评论。"; changed.emit(bank, "status"); return
+	if body.is_empty(): s.error = "请输入评论内容。"; changed.emit(bank, "status"); return
 	await mutate(bank, "comment_create", {"body": body, "parent_id": s.reply_id}, "publish")
 
 func mutate(bank: String, action: String, values: Dictionary, key: String) -> void:
@@ -113,6 +114,9 @@ func mutate(bank: String, action: String, values: Dictionary, key: String) -> vo
 	if generation != epoch: return
 	s.busy.erase(key)
 	if not result.get("ok", false):
+		if result.get("code") == "discussion_full":
+			s.publish_blocked = true; s.error = ""; s.notice = ""
+			changed.emit(bank, "status"); return
 		s.error = str(result.get("message", "操作失败，请重试；输入内容已保留。"))
 		changed.emit(bank, "status"); return
 	s.pending.erase(fingerprint)

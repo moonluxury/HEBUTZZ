@@ -90,13 +90,13 @@ func _run() -> void:
 	page._select_card("0001")
 	check(page._reveal_serial == serial and page.reveal.get_instance_id() == instance, "Repeated selection during playback does not restart")
 	page.reveal._kill_tween()
-	page.reveal._set_elapsed(Reveal.ENTRY + 0.79)
+	page.reveal._set_elapsed(Reveal.ENTRY + Reveal.REVEAL * 0.36875 - 0.002)
 	var before: float = page.reveal.flip_material.get_shader_parameter("turn")
-	page.reveal._set_elapsed(Reveal.ENTRY + 0.80)
+	page.reveal._set_elapsed(Reveal.ENTRY + Reveal.REVEAL * 0.36875)
 	var middle: float = page.reveal.flip_material.get_shader_parameter("turn")
-	page.reveal._set_elapsed(Reveal.ENTRY + 0.81)
+	page.reveal._set_elapsed(Reveal.ENTRY + Reveal.REVEAL * 0.36875 + 0.002)
 	var after: float = page.reveal.flip_material.get_shader_parameter("turn")
-	check(before < PI / 2 and is_equal_approx(middle, PI / 2) and after > middle and absf((middle - before) - (after - middle)) < 0.005, "Turn crosses 90 degrees continuously at 800 ms")
+	check(before < PI / 2 and absf(middle - PI / 2) < 0.002 and after > middle and absf((middle - before) - (after - middle)) < 0.005, "Turn crosses 90 degrees continuously with the specified cubic easing")
 	var elapsed: float = page._reveal_session.elapsed
 	page._on_data_changed()
 	await loaded(page.reveal)
@@ -136,7 +136,7 @@ func _run() -> void:
 	page._select_card("0002")
 	page._select_card("0003")
 	await loaded(page.reveal)
-	await create_timer(2.25).timeout
+	await create_timer(1.05).timeout
 	check(page.reveal.state == "revealed" and page.reveal.session.card.id == "0003" and page.reveal.face.texture.resource_path == store.card("0003").image, "Natural playback after rapid switching ends on the last selected card")
 	serial = page._reveal_serial
 	page._toggle_wanted("0003")
@@ -163,13 +163,13 @@ func _run() -> void:
 	page._select_card("0006")
 	await loaded(page.reveal)
 	check(page.reveal.session.reduced and page.reveal.orbit_alpha == 0, "Reduced-motion uses the short fade without orbit")
-	await create_timer(0.22).timeout
+	await create_timer(0.50).timeout
 	check(page.reveal.state == "revealed" and page.reveal.detail_offset == 0, "Reduced-motion fade finishes with full actions")
 	motion.set_enabled(true)
 	page._select_card("0007")
 	await loaded(page.reveal)
 	motion.set_enabled(false)
-	await create_timer(0.22).timeout
+	await create_timer(0.50).timeout
 	check(page.reveal.state == "revealed" and page.reveal.sparkle_progress == 0, "Changing preference mid-turn settles the same card")
 	motion.set_enabled(true)
 	await _loading_and_errors()
@@ -244,9 +244,9 @@ func _visual_cards() -> void:
 		page._select_card(str(card.id))
 		await loaded(page.reveal)
 		page.reveal._kill_tween()
-		page.reveal._set_elapsed(Reveal.ENTRY + 0.28)
-		await capture(str(card.number) + "-back-orbit", index, 0)
-		page.reveal._set_elapsed(Reveal.ENTRY + 0.91)
+		page.reveal._set_elapsed(Reveal.ENTRY + 0.04)
+		await capture(str(card.number) + "-back", index, 0)
+		page.reveal._set_elapsed(Reveal.ENTRY + 0.23)
 		await capture(str(card.number) + "-turn", index, 1)
 		page.reveal.skip()
 		await capture(str(card.number) + "-front", index, 2)

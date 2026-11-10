@@ -1,6 +1,6 @@
 # 社交服务适配契约 v1
 
-本文件定义当前客户端已经调用的接口；不是已经部署的服务。沿用既有 ProfileStore/CollectionStore 账户与卡牌 ID。服务可映射到已有路由，不强制采用本文件命名的数据库表或新技术栈。
+本文件定义当前客户端调用的接口；具体上线情况以对应部署记录为准。2026-11-01 的公开资料扩展已上线，见 [部署记录](PUBLIC_PROFILE_DEPLOYMENT.md)。沿用既有 ProfileStore/CollectionStore 账户与卡牌 ID。服务可映射到已有路由，不强制采用本文件命名的数据库表或新技术栈。
 
 ## 身份、封装和错误
 
@@ -53,7 +53,7 @@ Trade = {
 | open_conversation | `{peer_id}` | `{conversation:Conversation,sync?}`；按双方唯一建会话，不发送招呼，不创建关系。 |
 | history | `{conversation_id,before,limit:40}` | `{messages:[Message],next_before}`；按权威 seq 排序，空游标取最新页，空 next_before 表示结束。 |
 | send_text | `{conversation_id,client_id,text}` | `{message_record:Message}`；唯一键 `(actor,client_id)` 永久绑定原会话及原文。重放原请求返回同一消息；更改文本/会话拒绝。 |
-| request_friend | `{peer_id,note,operation_id}` | `{request?,sync?,message?}`；同对用户一个有效 pending，交叉返回原申请，禁止静默互加。 |
+| request_friend | `{peer_id,note,operation_id}` | `{request?,sync?,state?,message?}`；同对用户一个有效 pending，交叉返回原申请，禁止静默互加。附言可空、原样保留空白，最多 100 个 Unicode 可见字符（grapheme clusters）；已有好友返回 `state:friend`。 |
 | respond_request | `{request_id,decision:accept|ignore,operation_id}` | `{sync,message?}`；仅接收者，接受时一次建立双向关系，对已处理请求重复调用返回一致结果。 |
 | preferences | `{peer_id,remark? ,muted?,operation_id}` | `{sync,message?}`；备注与免打扰为当前主体私有设置，不改变对方昵称/阅读状态。 |
 | relationship | `{peer_id,operation:remove|block|unblock,operation_id}` | `{sync,message?}`；关系/拉黑与待处理交换失效必须和交割采用同一并发边界；解除不恢复好友。 |

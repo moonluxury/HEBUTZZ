@@ -16,6 +16,9 @@ var line: ColorRect
 var rendering := false
 var rendered_sort := ""
 var liked_states: Dictionary = {}
+var text_pages: Dictionary = {}
+const TEXT_PREVIEW := 400
+const TEXT_PAGE := 4000
 
 func configure(owner_view: Control, service: Node, bank_id: String) -> void:
 	host = owner_view; store = service; bank = bank_id
@@ -47,7 +50,7 @@ func configure(owner_view: Control, service: Node, bank_id: String) -> void:
 	var style: StyleBoxFlat = host._style(host.surface, 8, host.border)
 	style.content_margin_left = 12; style.content_margin_top = 8; style.content_margin_right = 12; style.content_margin_bottom = 8
 	for key in ["normal", "focus", "read_only"]: composer.add_theme_stylebox_override(key, style)
-	composer.text_changed.connect(func(): store.state(bank).draft = composer.text; _status())
+	composer.text_changed.connect(func(): store.state(bank).draft = composer.text; store.state(bank).publish_blocked = false; _status())
 	composer.focus_entered.connect(func(): host.right_panes.focus_memory["discussion"] = weakref(composer))
 	add_child(composer)
 	publish = _action(self, "发布", _publish)
@@ -84,7 +87,7 @@ func _layout() -> void:
 func _changed(target: String, reason: String) -> void:
 	if not is_inside_tree(): return
 	if target != bank and reason != "account": return
-	if reason == "account": liked_states.clear(); rendered_sort = ""
+	if reason == "account": liked_states.clear(); text_pages.clear(); rendered_sort = ""
 	if reason in ["items", "status", "account"]: _render()
 	else: _status()
 	if reason == "account" and host.right_mode == "discussion": store.activate(bank)
@@ -95,9 +98,9 @@ func _status() -> void:
 	composer.editable = not busy
 	if composer.text != s.draft: composer.text = s.draft
 	publish.text = "发布中…" if busy else "发布" if store.profile.authenticated() else "登录"
-	publish.disabled = busy or (store.profile.authenticated() and (str(s.draft).strip_edges().is_empty() or str(s.draft).length() > 2000))
+	publish.disabled = busy or (store.profile.authenticated() and (str(s.draft).strip_edges().is_empty() or s.publish_blocked))
 	reply_cancel.visible = not str(s.reply_id).is_empty()
-	status.text = s.error if not str(s.error).is_empty() else s.notice if not str(s.notice).is_empty() else "回复 " + str(s.reply_name) if reply_cancel.visible else "参与这门课程的讨论 · 最多 2000 字"
+	status.text = s.error if not str(s.error).is_empty() else s.notice if not str(s.notice).is_empty() else "回复 " + str(s.reply_name) if reply_cancel.visible else "参与这门课程的讨论"
 	for pair in [[latest, "latest"], [hot, "hot"]]:
 		pair[0].add_theme_color_override("font_color", host._accent() if s.sort == pair[1] else host.muted_color)
 		host._motion().bind_button(pair[0])
@@ -133,7 +136,7 @@ func _restore_scroll(value: int) -> void:
 	rendering = false
 
 func _comment(parent: Node, item: Dictionary, reply := false) -> void:
-	var row := HBoxContainer.new(); row.add_theme_constant_override("separation", 14); parent.add_child(row)
+	var row := HBoxContainer.new(); row.name = "Comment_" + str(item.id); row.add_theme_constant_override("separation", 14); parent.add_child(row)
 	var avatar := Avatar.new(); avatar.custom_minimum_size = Vector2(32, 32) if reply else Vector2(42, 42)
 	avatar.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	avatar.show_profile(item.get("author", {})); row.add_child(avatar)
@@ -141,10 +144,19 @@ func _comment(parent: Node, item: Dictionary, reply := false) -> void:
 	var heading := HBoxContainer.new(); heading.add_theme_constant_override("separation", 10); body.add_child(heading)
 	var name_label: Label = _text(heading, str(item.get("author", {}).get("name", "用户")), 16, host.text_color, true)
 	name_label.autowrap_mode = TextServer.AUTOWRAP_OFF; name_label.clip_text = true; name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	var time_label: Label = host._label(heading, _time(str(item.get("created_at", ""))), 12, host.muted_color)
-	time_label.custom_minimum_size.x = 55
+	var college := str(item.get("author", {}).get("college", "")).strip_edges()
+	if not college.is_empty():
+		name_label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		name_label.custom_minimum_size.x = minf(120, name_label.get_theme_font("font").get_string_size(name_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x)
+		var college_label := _text(heading, college, 12, host.muted_color.lightened(0.12) if not host.dark else host.muted_color)
+		college_label.name = "AuthorCollege"
+		college_label.accessibility_name = "学院：" + college
+	_text(body, _time(str(item.get("created_at", ""))), 12, host.muted_color)
 	var state := str(item.get("status", "published"))
-	_text(body, "该评论已删除" if state == "deleted" else "该评论已隐藏" if state == "hidden" else str(item.get("body", "")), 16 if not reply else 14, host.text_color)
+	if state in ["deleted", "hidden"]:
+		_text(body, "该评论已删除" if state == "deleted" else "该评论已隐藏", 16 if not reply else 14, host.text_color)
+	else:
+		_comment_text(body, item, 16 if not reply else 14)
 	if state == "pending": _text(body, "待审核 · 仅自己可见", 12, host.muted_color)
 	var actions := HFlowContainer.new(); actions.add_theme_constant_override("h_separation", 6); body.add_child(actions)
 	if state == "published":
@@ -165,13 +177,31 @@ func _comment(parent: Node, item: Dictionary, reply := false) -> void:
 	if not reply and int(item.get("reply_count", 0)) > 0:
 		_action(body, ("收起回复" if store.state(bank).expanded.get(item.id, false) else "查看 %d 条回复" % int(item.reply_count)), func(): store.load_replies(bank, str(item.id)))
 
+func _comment_text(parent: Node, item: Dictionary, font_size: int) -> void:
+	var full_text := str(item.get("body", ""))
+	var id := str(item.id)
+	if full_text.length() <= TEXT_PREVIEW:
+		_text(parent, full_text, font_size, host.text_color); return
+	if not text_pages.has(id):
+		_text(parent, full_text.left(TEXT_PREVIEW) + "…", font_size, host.text_color)
+		_action(parent, "展开全文", _show_text_page.bind(id, 0))
+		return
+	var offset: int = text_pages[id]
+	_text(parent, full_text.substr(offset, TEXT_PAGE), font_size, host.text_color)
+	var navigation := HFlowContainer.new(); parent.add_child(navigation)
+	if offset > 0: _action(navigation, "上一段", _show_text_page.bind(id, maxi(0, offset - TEXT_PAGE)))
+	if offset + TEXT_PAGE < full_text.length(): _action(navigation, "下一段", _show_text_page.bind(id, offset + TEXT_PAGE))
+	_action(navigation, "收起", _show_text_page.bind(id, -1))
+
+func _show_text_page(id: String, offset: int) -> void:
+	var row := list.get_node_or_null("Comment_" + id) as Control
+	if row != null: store.state(bank).scroll = int(row.position.y)
+	if offset < 0: text_pages.erase(id)
+	else: text_pages[id] = offset
+	_render()
+
 func _time(value: String) -> String:
-	if value.is_empty(): return ""
-	var seconds := int(Time.get_unix_time_from_system()) - Time.get_unix_time_from_datetime_string(value.left(19))
-	if seconds < 60: return "刚刚"
-	if seconds < 3600: return "%d分钟前" % (seconds / 60)
-	if seconds < 86400: return "%d小时前" % (seconds / 3600)
-	return value.left(10)
+	return preload("res://scripts/time_display.gd").relative(value)
 
 func _publish() -> void:
 	if not store.profile.authenticated(): store.profile.run_action("begin_login", "discussion")

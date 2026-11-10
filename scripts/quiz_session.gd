@@ -1,5 +1,6 @@
 extends RefCounted
 ## One practice session. Owns answers and retries independently of any scene.
+const Collection = preload("res://scripts/manual_question_collection.gd")
 const Grader = preload("res://scripts/quiz_grader.gd")
 var all_questions: Array = []
 var questions: Array = []
@@ -21,7 +22,7 @@ func configure(bank: Array, wrongs: Dictionary, wrong_mode: bool, start: int) ->
 	has_answered = false
 	all_questions = bank
 	wrong_ids = wrongs
-	questions = bank.filter(func(question: Dictionary): return wrongs.has(str(question.id))) if wrong_mode else bank.duplicate()
+	questions = Collection.questions(bank, wrongs) if wrong_mode else bank.duplicate()
 	current_index = clampi(start, 0, maxi(0, questions.size() - 1))
 
 func current() -> Dictionary:

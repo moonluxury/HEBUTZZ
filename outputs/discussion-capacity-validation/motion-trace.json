@@ -1,0 +1,482 @@
+[
+  {
+    "direction": "open",
+    "discussion_alpha": 0.83812952041626,
+    "discussion_x": 3.88489151000977,
+    "elapsed_ms": 63,
+    "frame": 0,
+    "numbers_alpha": 0.16187047958374,
+    "numbers_x": -20.1151084899902,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 0.908825278282166,
+    "discussion_x": 2.18819332122803,
+    "elapsed_ms": 76,
+    "frame": 1,
+    "numbers_alpha": 0.0911747217178345,
+    "numbers_x": -21.8118057250977,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 0.927675426006317,
+    "discussion_x": 1.73578977584839,
+    "elapsed_ms": 89,
+    "frame": 2,
+    "numbers_alpha": 0.0723245739936829,
+    "numbers_x": -22.2642097473145,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 0.954155743122101,
+    "discussion_x": 1.10026216506958,
+    "elapsed_ms": 102,
+    "frame": 3,
+    "numbers_alpha": 0.0458442568778992,
+    "numbers_x": -22.8997383117676,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 0.977540254592896,
+    "discussion_x": 0.539033889770508,
+    "elapsed_ms": 208,
+    "frame": 4,
+    "numbers_alpha": 0.0224597454071045,
+    "numbers_x": -23.4609661102295,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 247,
+    "frame": 5,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 262,
+    "frame": 6,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 280,
+    "frame": 7,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 296,
+    "frame": 8,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 312,
+    "frame": 9,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 327,
+    "frame": 10,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 340,
+    "frame": 11,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 355,
+    "frame": 12,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 371,
+    "frame": 13,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 387,
+    "frame": 14,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 405,
+    "frame": 15,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 420,
+    "frame": 16,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 435,
+    "frame": 17,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 450,
+    "frame": 18,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 466,
+    "frame": 19,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 482,
+    "frame": 20,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 497,
+    "frame": 21,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 513,
+    "frame": 22,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "open",
+    "discussion_alpha": 1.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 527,
+    "frame": 23,
+    "numbers_alpha": 0.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.459866642951965,
+    "discussion_x": 12.9632005691528,
+    "elapsed_ms": 15,
+    "frame": 0,
+    "numbers_alpha": 0.540133357048035,
+    "numbers_x": -11.0367994308472,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.337316572666168,
+    "discussion_x": 15.9044017791748,
+    "elapsed_ms": 28,
+    "frame": 1,
+    "numbers_alpha": 0.662683427333832,
+    "numbers_x": -8.0955982208252,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.238737106323242,
+    "discussion_x": 18.2703094482422,
+    "elapsed_ms": 42,
+    "frame": 2,
+    "numbers_alpha": 0.761262893676758,
+    "numbers_x": -5.72969055175781,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.161519765853882,
+    "discussion_x": 20.1235256195068,
+    "elapsed_ms": 57,
+    "frame": 3,
+    "numbers_alpha": 0.838480234146118,
+    "numbers_x": -3.87647438049316,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.103055775165558,
+    "discussion_x": 21.5266609191895,
+    "elapsed_ms": 72,
+    "frame": 4,
+    "numbers_alpha": 0.896944224834442,
+    "numbers_x": -2.47333860397339,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.060736358165741,
+    "discussion_x": 22.5423278808594,
+    "elapsed_ms": 87,
+    "frame": 5,
+    "numbers_alpha": 0.939263641834259,
+    "numbers_x": -1.45767259597778,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0319528579711914,
+    "discussion_x": 23.2331314086914,
+    "elapsed_ms": 102,
+    "frame": 6,
+    "numbers_alpha": 0.968047142028809,
+    "numbers_x": -0.766868591308594,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0140964984893799,
+    "discussion_x": 23.6616840362549,
+    "elapsed_ms": 116,
+    "frame": 7,
+    "numbers_alpha": 0.98590350151062,
+    "numbers_x": -0.338315963745117,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.00628834962844849,
+    "discussion_x": 23.8490791320801,
+    "elapsed_ms": 129,
+    "frame": 8,
+    "numbers_alpha": 0.993711650371552,
+    "numbers_x": -0.150920391082764,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.00208580493927002,
+    "discussion_x": 23.9499397277832,
+    "elapsed_ms": 143,
+    "frame": 9,
+    "numbers_alpha": 0.99791419506073,
+    "numbers_x": -0.0500593185424805,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.000198423862457275,
+    "discussion_x": 23.9952373504639,
+    "elapsed_ms": 157,
+    "frame": 10,
+    "numbers_alpha": 0.999801576137543,
+    "numbers_x": -0.00476217269897461,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 181,
+    "frame": 11,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 196,
+    "frame": 12,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 213,
+    "frame": 13,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 229,
+    "frame": 14,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 244,
+    "frame": 15,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 259,
+    "frame": 16,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 276,
+    "frame": 17,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 292,
+    "frame": 18,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 307,
+    "frame": 19,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 322,
+    "frame": 20,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 338,
+    "frame": 21,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 354,
+    "frame": 22,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  },
+  {
+    "direction": "close",
+    "discussion_alpha": 0.0,
+    "discussion_x": 0.0,
+    "elapsed_ms": 370,
+    "frame": 23,
+    "numbers_alpha": 1.0,
+    "numbers_x": 0.0,
+    "reduced": false
+  }
+]

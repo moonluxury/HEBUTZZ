@@ -1,8 +1,10 @@
 extends "res://scripts/minimal_page.gd"
+const TimeDisplay = preload("res://scripts/time_display.gd")
 const CardArtwork = preload("res://scripts/card_artwork.gd")
 const Avatar = preload("res://scripts/profile_avatar.gd")
 const Composer = preload("res://scripts/social_composer.gd")
 const Dialog = preload("res://scripts/social_dialog.gd")
+const FriendDialog = preload("res://scripts/friend_dialog.gd")
 const ConversationActionsDialog = preload("res://scripts/conversation_actions_dialog.gd")
 const GiftDialog = preload("res://scripts/collection_gift_dialog.gd")
 const TradeDialog = preload("res://scripts/trade_dialog.gd")
@@ -197,10 +199,11 @@ func _layout_content(width: float) -> void:
 	_rect(wants_button, Rect2(w - 176, 4, 124, 44))
 	_rect(more_button, Rect2(w - 42, 4, 40, 44))
 	_rect(add_peer_button, Rect2(w - 190, 4, 140, 44))
-	var input_height := 140.0 if composer.visible else 44.0
+	var composer_height := 64.0
+	var input_height := composer_height + 48.0 if composer.visible else 44.0
 	_rect(transcript, Rect2(0, 96, w, maxf(70, ch - 108 - input_height)))
-	_rect(composer, Rect2(0, ch - 132, w - 108, 92))
-	_rect(send_button, Rect2(w - 96, ch - 132, 96, 92))
+	_rect(composer, Rect2(0, ch - composer_height - 40, w - 108, composer_height))
+	_rect(send_button, Rect2(w - 96, ch - composer_height - 40, 96, composer_height))
 	_rect(compose_hint, Rect2(0, ch - 34, w, 30))
 	_rect(new_messages, Rect2(w - 160, ch - input_height - 48, 156, 40))
 	for child in message_rows.get_children():
@@ -218,7 +221,10 @@ func _state_changed() -> void:
 		_narrow_chat = false
 		search.text = ""
 		if is_instance_valid(dialog):
-			dialog.dismiss()
+			# The friend form hides itself while the existing login flow is active;
+			# it will clear account-bound data and restore only its input drafts.
+			if dialog.get_script() != FriendDialog or not dialog._login_pending:
+				dialog.dismiss()
 		if is_instance_valid(gift_dialog):
 			gift_dialog.dismiss()
 	connection.text = "正在连接…" if store.loading else store.error
@@ -247,7 +253,8 @@ func _filter_changed(_query: String) -> void:
 
 func _render_contacts() -> void:
 	var rows: Array = store.list_items(search.text)
-	var fingerprint := JSON.stringify([rows, store.conversations, store.selected, store.tab, search.text, store.loading, store.error, dark]).sha256_text()
+	var display_day := int((Time.get_unix_time_from_system() + TimeDisplay.BEIJING_OFFSET) / 86400)
+	var fingerprint := JSON.stringify([rows, store.conversations, store.selected, store.tab, search.text, store.loading, store.error, dark, display_day]).sha256_text()
 	if fingerprint == _contacts_hash:
 		return
 	_contacts_hash = fingerprint
@@ -286,7 +293,8 @@ func _render_contacts() -> void:
 		var sub := _label(button, ("免打扰 · " if conversation_data.get("muted", false) else "") + summary, 16, muted_color, Rect2(70, 44, 200, 30))
 		sub.set_anchors_preset(Control.PRESET_TOP_WIDE)
 		sub.offset_right = -24
-		var stamp := _label(button, str(conversation_data.get("time_label", "")), 13, muted_color, Rect2())
+		var stamp := _label(button, TimeDisplay.recent(str(conversation_data.get("time_label", ""))), 13, muted_color, Rect2())
+		stamp.accessibility_name = TimeDisplay.datetime(str(conversation_data.get("time_label", "")))
 		stamp.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 		_rect(stamp, Rect2(-66, 9, 62, 26))
 		if int(conversation_data.get("unread", 0)) > 0:
@@ -393,7 +401,7 @@ func _render_messages() -> void:
 		_text(message_rows, "暂无系统通知" if store.conversation(_shown).get("kind") == "system" else "还没有聊天记录", 20, muted_color)
 	var last_date := ""
 	for message in rows:
-		var date := str(message.get("date_label", ""))
+		var date := TimeDisplay.date(str(message.get("time_label", "")), str(message.get("date_label", "")))
 		if date != last_date and not date.is_empty():
 			var date_label := _text(message_rows, date, 15, muted_color)
 			date_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -462,7 +470,7 @@ func _message(message: Dictionary) -> void:
 		_:
 			_text(column, "当前版本无法显示此消息，请更新客户端。", 18, muted_color)
 	var state := str(message.get("state", "sent"))
-	_text(column, str(message.get("time_label", "")) + (" · 发送中…" if state == "sending" else " · 发送失败" if state == "failed" else " · 已发送" if mine and not business else ""), 14, muted_color)
+	_text(column, TimeDisplay.clock(str(message.get("time_label", ""))) + (" · 发送中…" if state == "sending" else " · 发送失败" if state == "failed" else " · 已发送" if mine and not business else ""), 14, muted_color)
 	if state == "failed":
 		_text(column, str(message.get("error", "")), 16, muted_color)
 		_action(column, "重试发送", store.retry_text.bind(_shown, str(message.client_id)))
@@ -603,13 +611,15 @@ func show_panel(mode: String, context: Dictionary = {}) -> void:
 	if is_instance_valid(dialog) and dialog.get_script() == TradeDialog and dialog.closing: dialog._finish_close()
 	if is_instance_valid(gift_dialog) and gift_dialog.closing: gift_dialog._finish_close()
 	if is_instance_valid(dialog) or is_instance_valid(gift_dialog):
+		if is_instance_valid(dialog) and dialog.get_script() == FriendDialog and dialog.closing and mode in ["add", "requests"]:
+			dialog.reopen()
 		return
 	var focus := get_viewport().gui_get_focus_owner()
 	_dialog_focus = weakref(more_button) if mode == "peer_menu" else weakref(focus) if focus != null else null
 	if mode == "gift":
 		open_gift("", context.get("peer", {}))
 		return
-	dialog = WishlistDialog.new() if mode == "wishlist" else ConversationActionsDialog.new() if mode == "peer_menu" else TradeDialog.new() if mode in ["exchange", "trade_review", "trade_detail", "trade_cancel", "trade_reject"] else Dialog.new()
+	dialog = WishlistDialog.new() if mode == "wishlist" else ConversationActionsDialog.new() if mode == "peer_menu" else FriendDialog.new() if mode in ["add", "requests"] else TradeDialog.new() if mode in ["exchange", "trade_review", "trade_detail", "trade_cancel", "trade_reject"] else Dialog.new()
 	dialog.page = self
 	dialog.store = store
 	dialog.panel_mode = mode

@@ -167,7 +167,7 @@ func _run() -> void:
 	await process_frame
 	_expect(current_scene.scene_file_path.ends_with("MyCollection.tscn"), "Collection entry should open the new collection page")
 	_expect(current_scene.find_child("Title", true, false).text == "我的收藏", "Collection page should use the requested title")
-	_expect(current_scene.find_child("EmptyTitle", true, false).text == "暂无收藏", "Collection page should begin empty")
+	_expect(current_scene.filter == "owned" and current_scene.tiles.is_empty(), "Collection page should begin without any owned-card tiles")
 	_check_no_tooltips(current_scene)
 	await _capture("my-collection")
 	current_scene.back_button.pressed.emit()

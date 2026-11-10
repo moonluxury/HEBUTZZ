@@ -4,6 +4,14 @@
 
 2026-11-01 已部署：`find_user` 的可访问用户响应增加 `school`、`college`、`major`、`grade`、`bio`，供会话操作的“查看资料”显示。只返回明确允许的五个字段，不展开整个用户表或资料 JSON；好友列表、会话同步和交易身份仍是简要结构。登录、双向屏蔽、停用账号限制保持不变，不涉及数据库迁移。仅激活 `domain.py`，服务器独立测试 30 项、正式 HTTPS 23 项通过，临时账号已清理。备份及证据见 [公开资料部署记录](../PUBLIC_PROFILE_DEPLOYMENT.md)。
 
+2026-10-30 后续上线：评论改为每题库总计 1,000,000 字（评论和回复共用），不设个人累计额度；删除正文释放容量，昵称旁的学院由服务端返回真实资料。新增大正文写入口 `POST /v1/comments/write`、迁移 `004_discussion_capacity.sql` 和维护者邮件告警队列。服务器回归 46 项、正式 Godot HTTPS 31 项通过；QQ SMTP 认证成功，测试邮件已被 QQ 邮件服务器接受。告警仅发送给维护者，普通用户界面不显示容量上限或满额提示。详见 [交付记录](../DISCUSSION_IMPLEMENTATION.md)。
+
+2026-10-30 好友申请附言校验已部署到现有 HTTPS 入口：最多 100 个 Unicode 可见字符，保留原有空白；已有好友明确返回 `state:friend`。服务器隔离回归 46 项、正式 HTTPS 23 项通过；临时账号已清理，无数据库迁移。发布范围、备份与验证证据见 [好友后端部署记录](../FRIEND_BACKEND_DEPLOYMENT.md)。
+
+2026-10-30 投稿服务已部署到现有 HTTPS 入口，迁移版本现为 1、2、3。服务器隔离库 44 项回归和正式 HTTPS 27 项检查通过；上传/RPC 的 Nginx 请求体上限已按接口调整，临时账号和稿件已清理。备份位置、发布范围和待配置的审核员/奖励钱包见 [投稿部署记录](../SUBMISSIONS_DEPLOYMENT.md)。
+
+2026-10-30 题库评论服务**已部署到现有 HTTPS 入口**：`comment_service.py`、迁移 `003_bank_comments.sql`、`POST /v1/comments/query` 与 `comment_*` RPC。基于线上原版本制作独立评论发布包，在本机与服务器隔离 PostgreSQL 分别通过 39 项回归；Godot 客户端通过 26 项真实 HTTPS 验收，临时账号及私有讨论区已清理。接口、审核配置、运行方法与截图见 [题库讨论交付记录](../DISCUSSION_IMPLEMENTATION.md)。该次评论发布未携带投稿模块；投稿已在后续独立发布中上线。评论和点赞不发放奖励。
+
 2026-10-29 部署第一版。后端为 FastAPI + PostgreSQL，由 Nginx 提供 HTTPS 入口，systemd 管理进程。服务与数据库同机；代码和依赖版本已保存在此目录。`backend/.gdignore` 防止服务端文件进入 Godot 客户端资源包。
 
 ## 当前入口与客户端
@@ -49,11 +57,17 @@
 | `POST /v1/auth/logout` | `{}`，需要会话 |
 | `POST /v1/auth/password` | `{current_password,new_password}`，需要会话 |
 | `POST /v1/rpc` | `{version:1,action,payload}`，需要会话 |
+| `POST /v1/comments/query` | `comment_list / comment_replies`，公开题库可匿名读取 |
+| `POST /v1/comments/write` | 登录后的评论写操作；专用 16 MiB 请求上限，正文受整库剩余容量约束 |
 | `POST /v1/auth/wechat`、`/v1/auth/steam` | 当前返回 `unavailable` |
 
 RPC 的资料操作为 `profile`、`save_profile`、`account`；收藏操作为 `snapshot`、`send_gift`、`gift_status`；好友/聊天/交换操作见根目录 `SOCIAL_SERVICE_CONTRACT.md`。协议始终以认证会话确定当前用户，不接受 payload 中的 `account_id/actor_id/sender_id/type/status`。旧收藏函数中的 `id` 由适配器映射为 `operation_id`，不转发自报账户和本地状态。
 
 资料保存：`{action:"save_profile",payload:{patch:{display_name:"新名字"},avatar_card_id:""}}`。
+
+题库评论：payload 必须带 `target_type:"bank"` 和原课程 ID `target_id`。读取支持 `sort:"latest"/"hot"`、`limit:1..20` 和签名 `cursor`；写操作使用 `comment_create / comment_like / comment_delete / comment_report / comment_moderate`，必须携带唯一 `operation_id`。评论作者、点赞计数和权限由服务端确定。每个动作只接受其规定字段，错误参数返回 400；数据库暂忙返回可重试的 409。评论列表通过单次查询取得作者、计数及本人点赞状态。
+
+评论增量发布工具为 `ops/prepare_comments_release.py` 和 `ops/activate_comments_release.py`：从已下载的线上基线生成候选包、校验源文件哈希、备份数据库及覆盖文件、只激活白名单中的五个文件，并在新路由健康检查失败时回退代码。首次备份位于服务器 `/var/backups/hegong/comments-20261029T174115Z`。评论首次发布时 `schema_versions` 为 1 与 3；后续投稿发布加入迁移 2，本次评论容量更新加入迁移 4，当前已核验为 1、2、3、4。容量更新使用 `prepare_discussion_capacity_release.py` 与 `activate_discussion_capacity_release.py`。
 
 学习 API：`study_load` 的 payload 为 `{}`；`study_save` 为 `{device_id,expected_version,data}`。首次版本为 0，成功返回新版本。并发旧版本拒绝写入，按账号隔离。数据上限约 180 KB。
 

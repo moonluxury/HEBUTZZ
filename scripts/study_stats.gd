@@ -1,5 +1,7 @@
 extends Node
 const JsonStore = preload("res://scripts/local_json_store.gd")
+const Records = preload("res://scripts/study_record.gd")
+const QuestionBank = preload("res://scripts/question_bank.gd")
 ## Workbench-only records. Wrong questions and program drafts have separate persistence owners.
 
 const FillAnswer = preload("res://scripts/fill_answer.gd")
@@ -48,23 +50,7 @@ func record_review(subject: String, question: Dictionary) -> void:
 
 
 func _record(subject: String, question: Dictionary, answered: bool, correct: bool) -> void:
-	var date := Time.get_date_string_from_system()
-	var key := "%s:%s" % [subject, str(question.get("id", 0))]
-	var day: Dictionary = history.get(date, {"questions": {}, "attempts": 0, "correct": 0})
-	_ensure_subject_records(day)
-	if not day.get("questions") is Dictionary:
-		day["questions"] = {}
-	day.questions[key] = true
-	if answered:
-		day["attempts"] = int(day.get("attempts", 0)) + 1
-		day["correct"] = int(day.get("correct", 0)) + int(correct)
-		var subject_record: Dictionary = day.subjects.get(subject, {"attempts": 0, "correct": 0})
-		subject_record["attempts"] = int(subject_record.get("attempts", 0)) + 1
-		subject_record["correct"] = int(subject_record.get("correct", 0)) + int(correct)
-		day.subjects[subject] = subject_record
-	history[date] = day
-	learned[key] = true
-	last_question = {"subject": subject, "id": int(question.get("id", 0))}
+	last_question = Records.record(history, learned, subject, question, answered, correct, get_node("/root/AppState").SUBJECTS)
 	_save()
 	changed.emit()
 
@@ -74,27 +60,11 @@ func _save() -> void:
 		push_warning("学习记录保存失败，原文件已保留。")
 
 func answer_count(correct_only := false) -> int:
-	var count := 0
-	for day in history.values():
-		count += int(day.get("correct" if correct_only else "attempts", 0))
-	return count
+	return Records.answer_count(history, correct_only)
+
 
 func _ensure_subject_records(day: Dictionary) -> void:
-	if day.get("subjects") is Dictionary:
-		return
-	day["subjects"] = {}
-	# Legacy totals can be attributed only when every recorded question is in one
-	# known course. Mixed-course totals stay intact; never estimate their split.
-	var questions = day.get("questions", {})
-	if not questions is Dictionary or questions.is_empty():
-		return
-	var subject := ""
-	for key in questions:
-		var candidate := str(key).get_slice(":", 0)
-		if not get_node("/root/AppState").SUBJECTS.has(candidate) or (not subject.is_empty() and subject != candidate):
-			return
-		subject = candidate
-	day.subjects[subject] = {"attempts": int(day.get("attempts", 0)), "correct": int(day.get("correct", 0))}
+	Records.ensure_subject_records(day, get_node("/root/AppState").SUBJECTS)
 
 
 func recent_wrong_days(subject := "", count: int = 7) -> Array:
@@ -120,26 +90,15 @@ func has_unattributed_wrongs(count: int = 7) -> bool:
 
 
 func day_count(date: String) -> int:
-	var day = history.get(date, {})
-	return day.get("questions", {}).size() if day is Dictionary and day.get("questions", {}) is Dictionary else 0
+	return Records.day_count(history, date)
 
 
 func recent_days(count: int = 7) -> Array:
-	var result: Array = []
-	# Derive from local midnight so the chart follows the learner's local calendar.
-	var midnight := Time.get_unix_time_from_datetime_string(Time.get_date_string_from_system() + "T00:00:00")
-	for offset in range(count - 1, -1, -1):
-		var date := Time.get_date_string_from_unix_time(midnight - offset * 86400)
-		result.append({"date": date, "count": day_count(date)})
-	return result
+	return Records.recent_days(history, count)
 
 
 func subject_learned(subject: String) -> int:
-	var count := 0
-	for question in banks.get(subject, []):
-		if learned.has("%s:%s" % [subject, str(question.get("id", 0))]):
-			count += 1
-	return count
+	return Records.subject_learned(learned, subject, banks.get(subject, []))
 
 
 func summary() -> Dictionary:
@@ -170,77 +129,10 @@ func resume_target() -> Dictionary:
 
 
 func _load_questions_from_json(path: String) -> Array:
-	if not FileAccess.file_exists(path):
-		push_warning("题库文件不存在：%s" % path)
-		return []
-
-	var file := FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		push_warning("题库文件无法打开：%s" % path)
-		return []
-
-	var json := JSON.new()
-	var parse_error := json.parse(file.get_as_text())
-	if parse_error != OK:
-		push_warning(
-			"题库 JSON 解析失败（第 %d 行）：%s"
-			% [json.get_error_line(), json.get_error_message()],
-		)
-		return []
-
-	var parsed = json.data
-	var raw_questions: Array = []
-	if typeof(parsed) == TYPE_ARRAY:
-		raw_questions = parsed
-	elif (
-		typeof(parsed) == TYPE_DICTIONARY
-		and parsed.has("questions")
-		and typeof(parsed["questions"]) == TYPE_ARRAY
-	):
-		raw_questions = parsed["questions"]
-	else:
-		push_warning("题库 JSON 根节点必须是数组或包含 questions 数组")
-		return []
-
-	var valid_questions: Array = []
-	for raw_question in raw_questions:
-		if _is_valid_question(raw_question):
-			valid_questions.append(raw_question)
-		else:
-			push_warning("已跳过一条格式不完整的题目数据")
-	return _group_questions_by_type(valid_questions)
-
+	return QuestionBank.load_file(path)
 
 func _group_questions_by_type(questions: Array) -> Array:
-	# Group once in the shared bank so practice, search and wrong reviews agree.
-	# Keep source order within each type and preserve IDs used by existing saves.
-	var groups: Dictionary = {}
-	for kind in TYPE_ORDER:
-		groups[kind] = []
-	for question in questions:
-		var kind := str(question.get("type", "single"))
-		if not groups.has(kind):
-			groups[kind] = []
-		groups[kind].append(question)
-	var grouped: Array = []
-	for group in groups.values():
-		grouped.append_array(group)
-	return grouped
-
+	return QuestionBank.group_by_type(questions)
 
 func _is_valid_question(value: Variant) -> bool:
-	if typeof(value) != TYPE_DICTIONARY:
-		return false
-	var question: Dictionary = value
-	if question.get("type", "") == "fill":
-		return question.has("stem") and FillAnswer.is_valid(question)
-	if question.get("type", "") == "output":
-		return question.has("stem") and OutputAnswer.is_valid(question)
-	if question.get("type", "") == "program":
-		return question.has("stem") and question.has("reference_code")
-	return (
-		question.has("stem")
-		and question.has("options")
-		and typeof(question["options"]) == TYPE_ARRAY
-		and not question["options"].is_empty()
-	)
+	return QuestionBank.is_valid(value)

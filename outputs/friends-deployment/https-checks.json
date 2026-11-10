@@ -1,0 +1,32 @@
+{
+  "checks_passed": 23,
+  "checks": [
+    "HTTPS certificate and health",
+    "Temporary account registration a",
+    "Temporary account registration b",
+    "Self lookup",
+    "Missing exact ID",
+    "Existing exact ID",
+    "Self request refused",
+    "Forged sender refused",
+    "101 visible characters refused, including compound emoji",
+    "100 graphemes accepted without trimming whitespace",
+    "Identical retry returns the original receipt",
+    "Five concurrent requests share one pending record",
+    "Outgoing state",
+    "Incoming state",
+    "Recipient sees one request with the exact note",
+    "Sender cannot accept its own application",
+    "Ignore does not create friendship",
+    "Acceptance is idempotent",
+    "Acceptance updates both friend lists",
+    "Friend lookup state",
+    "Already-friend race returns an explicit state",
+    "Existing public article endpoint",
+    "Existing comment endpoint"
+  ],
+  "cleanup": {
+    "ok": true,
+    "temporary_accounts_removed": 2
+  }
+}

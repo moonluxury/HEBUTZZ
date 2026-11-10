@@ -110,9 +110,10 @@ func _request(path: String, body: Dictionary, authenticated := true, credential:
 	if authenticated:
 		headers.append("Authorization: Bearer " + request_token)
 	var http := HTTPRequest.new()
-	http.timeout = 15.0
+	var is_comment := path.begins_with("/v1/comments/")
+	http.timeout = 30.0 if is_comment else 15.0
 	http.max_redirects = 0
-	http.body_size_limit = 4194304
+	http.body_size_limit = 16777216 if is_comment else 4194304
 	add_child(http)
 	var error := http.request(base_url + path, headers, HTTPClient.METHOD_POST, JSON.stringify(body))
 	if error != OK:
@@ -162,7 +163,7 @@ func social_request(action: String, payload: Dictionary) -> Dictionary:
 func comment_request(action: String, payload: Dictionary) -> Dictionary:
 	if action in ["comment_list", "comment_replies"]:
 		return await _request("/v1/comments/query", {"version": 1, "action": action, "payload": _normalize_numbers(payload)}, not access_token.is_empty())
-	return await social_request(action, payload)
+	return await _request("/v1/comments/write", {"version": 1, "action": action, "payload": _normalize_numbers(payload)})
 
 func submission_upload(asset: Dictionary) -> Dictionary:
 	return await _request("/v1/submission-assets", asset)

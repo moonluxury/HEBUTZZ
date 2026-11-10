@@ -193,7 +193,7 @@ func _run() -> void:
 	await _capture("04-announcement")
 	page = await _open("MyCollection")
 	_common(page)
-	_expect(not page.store.inventory_known and page.tiles.is_empty() and page.summary_label.text.contains("—"), "Collection starts with unknown holdings without inventing owned cards")
+	_expect(not page.store.inventory_known and page.tiles.is_empty() and page.groups["season-001"].get_node("Count").text.contains("待查询"), "Collection starts with unknown holdings without inventing owned cards")
 	await _capture("06-collection")
 	# Check constrained layout and large text in the same native renderer.
 	root.content_scale_size = Vector2i(1100, 820)

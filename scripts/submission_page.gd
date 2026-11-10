@@ -20,6 +20,7 @@ func _ready() -> void:
 	active_nav = "KaiwuButton" if public_mode else "SubmissionButton"
 	store = get_node("/root/AppServices").submission_store()
 	store.changed.connect(_state_changed)
+	get_node("/root/UiMotion").preference_changed.connect(_push_state.bind("motion"))
 	word = Word.new()
 	add_child(word)
 	super._ready()
@@ -105,6 +106,7 @@ func _push_state(reason := "status") -> void:
 	var value: Dictionary = store.state()
 	value.dark = dark
 	value.reduced_motion = get_node("/root/UiMotion").reduced()
+	value.tab_underline_seconds = Tokens.TAB_UNDERLINE
 	value.testing = OS.get_user_data_dir().contains("workbench-check") and OS.get_environment("HEGONG_SUBMISSION_QA") == "1"
 	value.public_items = store.public_items
 	if not store.article.is_empty():

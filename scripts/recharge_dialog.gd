@@ -1,4 +1,5 @@
 extends Window
+const TimeDisplay = preload("res://scripts/time_display.gd")
 const Styles = preload("res://scripts/ui_styles.gd")
 ## Exclusive window contains keyboard focus and leaves the selected package intact.
 signal closed
@@ -117,12 +118,12 @@ func _records() -> void:
 		if panel_mode == "ledger":
 			var source: String = {"recharge": "充值", "quiz": "答题奖励", "publication": "稿件上架奖励", "commission": "稿件销售提成", "card_draw": "获取卡牌", "spend": "消费", "opening": "期初余额", "adjustment": "余额调整"}.get(str(row.get("source", "")), str(row.get("description", "电池变动")))
 			_text("%s    %s%s 电池" % [source, "+" if int(row.delta) > 0 else "", page.Amount.grouped(int(row.delta))], true)
-			_text("%s\n业务引用：%s" % [row.get("created_at", ""), row.reference])
+			_text("%s\n业务引用：%s" % [TimeDisplay.datetime(str(row.get("created_at", ""))), row.reference])
 			if not str(row.get("order_id", "")).is_empty(): _action("查看关联订单 →", _navigate.bind("order", str(row.order_id)))
 		else:
 			var canonical: Dictionary = store.orders.get(str(row.id), row)
 			_text("%s    %s 电池" % [page.Amount.money(int(canonical.price_cents)), page.Amount.grouped(int(canonical.batteries))], true)
-			_text("订单 %s\n%s · %s\n%s" % [canonical.id, canonical.get("created_at", ""), canonical.get("channel_label", canonical.channel), store.status(canonical)])
+			_text("订单 %s\n%s · %s\n%s" % [canonical.id, TimeDisplay.datetime(str(canonical.get("created_at", ""))), canonical.get("channel_label", canonical.channel), store.status(canonical)])
 			_action("查看订单 →", _navigate.bind("order", str(row.id)))
 		page._rule(content)
 	if not _cursor.is_empty() or not _loaded or not status_label.text.is_empty():
@@ -153,7 +154,7 @@ func _order() -> void:
 		amount.setup(page, "+" + page.Amount.grouped(int(value.batteries)), 36.0, 30, 18)
 		page._motion().enter(amount, page.Tokens.PANEL)
 	else: _text("到账数量：%s 电池" % page.Amount.grouped(int(value.batteries)))
-	_text("充值账户：%s\n应付金额：%s\n支付渠道：%s\n订单号：%s\n创建时间：%s" % [value.get("account_label", "当前登录账户"), page.Amount.money(int(value.price_cents)), value.get("channel_label", value.channel), value.id, value.get("created_at", "")])
+	_text("充值账户：%s\n应付金额：%s\n支付渠道：%s\n订单号：%s\n创建时间：%s" % [value.get("account_label", "当前登录账户"), page.Amount.money(int(value.price_cents)), value.get("channel_label", value.channel), value.id, TimeDisplay.datetime(str(value.get("created_at", "")))])
 	if value.payment_status == "pending":
 		var url: String = store.payment_url(order_id)
 		if not url.is_empty(): _action("前往支付", _open_payment, true)

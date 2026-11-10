@@ -1,0 +1,17 @@
+[Unit]
+Description=Clean up Hegong friend requests older than 72 hours
+After=postgresql.service hegong-backend.service
+
+[Service]
+Type=oneshot
+User=hegong
+Group=hegong
+WorkingDirectory=/opt/hegong/backend
+EnvironmentFile=/etc/hegong/backend.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/hegong/venv/bin/python /opt/hegong/backend/ops/cleanup_friend_requests.py
+TimeoutStartSec=300
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+UMask=0077
