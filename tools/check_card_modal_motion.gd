@@ -83,16 +83,17 @@ func run() -> void:
 	check(preview.state == "ready" and preview.detail_alpha == 0, "No flip or result before entry completes")
 	check(group.modulate.a > 0.99 and shade.modulate.a > 0.99, "Opacity completes before spatial entry")
 	var bounds: Rect2 = preview.card_rect
-	await pause(0.85)
+	await pause(Modal.ENTER + Reveal.REVEAL + Reveal.INFO - 0.20 + 0.12)
 	check(preview.state == "revealed" and preview.interactive, "Natural playback finishes without a second confirmation")
 	check(times.has("entry") and absf(times.entry - 320) < 85, "Entry settles near 320ms")
-	check(times.has("result") and absf(times.result - 940) < 100, "Prepared result completes near 940ms")
+	var expected_ms := (Modal.ENTER + Reveal.REVEAL + Reveal.INFO) * 1000
+	check(times.has("result") and absf(times.result - expected_ms) < 100, "Prepared result completes on the configured timeline")
 	print("MODAL TIMING ms: ", times)
 	check(preview.card_rect == bounds and preview.entry.scale == Vector2.ONE and preview.entry.rotation == 0, "Stable geometry and settled card after reveal")
 	check(preview.detail_alpha == 1 and preview.detail_offset == 0, "Text and actions settle together")
 	await teardown()
 	# Close at entry, flip and info phases: never reset the currently visible face.
-	for time in [0.08, 0.48, 0.84]:
+	for time in [0.08, Modal.ENTER + Reveal.REVEAL * 0.35, Modal.ENTER + Reveal.REVEAL + Reveal.INFO * 0.35]:
 		await setup()
 		modal.present()
 		await pause(time)
@@ -132,7 +133,7 @@ func run() -> void:
 	check(is_equal_approx(preview.flip_material.get_shader_parameter("front_aspect"), 2.0 / 3.0), "Front retains its own aspect inside the same plane")
 	var saved_rect: Rect2 = preview.card_rect
 	preview.allow_reveal(); preview._kill_tween()
-	for t in [0.0, 0.10, 0.23, 0.46, 0.62]:
+	for t in [0.0, Reveal.REVEAL * 0.22, Reveal.REVEAL * 0.5, Reveal.REVEAL, Reveal.REVEAL + Reveal.INFO]:
 		preview._set_elapsed(t)
 		check(preview.card_rect == saved_rect, "Flip does not resize the display container")
 	preview.skip()

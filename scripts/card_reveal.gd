@@ -9,8 +9,10 @@ const FlipShader = preload("res://shaders/card_reveal.gdshader")
 const GrayShader = preload("res://shaders/collection_unowned.gdshader")
 const Tokens = preload("res://scripts/ui_tokens.gd")
 const Motion = preload("res://scripts/card_modal_motion.gd")
+# Durations are seconds. Increase REVEAL to slow the flip in both collection
+# details and acquisition dialogs; entry and result timing stay independent.
 const ENTRY := 0.32
-const REVEAL := 0.46
+const REVEAL := 0.70
 const INFO := 0.16
 const REDUCED := 0.14
 const TOP_SPACE := 48.0

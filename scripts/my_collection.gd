@@ -536,6 +536,10 @@ func _apply_detail_reveal() -> void:
 				control.set_meta("reveal_disabled", control.disabled)
 			control.disabled = bool(control.get_meta("reveal_disabled")) or not reveal.interactive
 			control.focus_mode = Control.FOCUS_ALL if reveal.interactive else Control.FOCUS_NONE
+			# Refresh before the next draw; otherwise enabling Gift can leave its
+			# cached disabled gray text visible until the first hover.
+			var feedback := control.get_node_or_null("UIFeedback")
+			if feedback != null: feedback._check_disabled()
 
 func _compact_detail_text() -> void:
 	for control in detail_panel.get_children():
