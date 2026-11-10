@@ -236,7 +236,7 @@ func apply(account: String, action: String, p: Dictionary) -> Dictionary:
 		"request_friend":
 			var id := str(p.get("peer_id", ""))
 			if id == account or not users.has(id) or blocked(account, id): return failure(account, "inaccessible")
-			if str(p.get("note", "")).length() > Policy.NOTE_LIMIT: return failure(account, "invalid_note")
+			if Policy.note_length(str(p.get("note", ""))) > Policy.NOTE_LIMIT: return failure(account, "invalid_note")
 			for item in requests:
 				if pair(item.sender, item.recipient) == pair(account, id) and item.status == "pending":
 					return response(account, {"request": item, "sync": snapshot(account), "message": "已有有效申请，请接收方处理。"})

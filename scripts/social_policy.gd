@@ -1,7 +1,7 @@
 extends RefCounted
 ## Client contract defaults. Server must enforce the same limits independently.
 const TEXT_LIMIT := 2000
-const NOTE_LIMIT := 120
+const NOTE_LIMIT := 100
 const REMARK_LIMIT := 40
 const REPORT_LIMIT := 500
 const QUANTITY_LIMIT := 1000000
@@ -10,3 +10,6 @@ const EXCHANGE_DAILY_LIMIT := -1 # No extra exchange daily quota; server may con
 const INVITATIONS_RESERVE_STOCK := false
 const PAGE_SIZE := 40
 const POLL_SECONDS := 8.0
+
+static func note_length(value: String) -> int:
+	return TextServerManager.get_primary_interface().string_get_character_breaks(value).size()

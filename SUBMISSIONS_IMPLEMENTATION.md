@@ -93,6 +93,8 @@ $env:PYTHONPATH='E:\zhengzhi\backend'
 
 编辑器在 `ui/submissions` 中执行 `pnpm install --frozen-lockfile`、`pnpm build`、`pnpm test`。本轮使用现有锁定依赖和 Node 直接运行 `build.mjs` 与 `node --test tests/model.test.mjs`。
 
+投稿状态页签（全部、待审核、已发表、被退回、草稿）的下划线与课程分类一致：从中心向两侧展开，使用 `UiTokens.TAB_UNDERLINE` 的 0.70 秒时长及 cubic ease-out。Godot 将该时长和减少动态效果偏好传给内嵌界面；首次显示和数据刷新直接展示完整线，点击（含重复点击）才重播，快切移除旧动画，关闭动效立即显示最终状态。已重新生成 `dist` 并通过现有 5 项前端检查；原生 CEF 中确认了中间展开帧、最终状态、快切、重复点击和减少动态效果。
+
 运行项目：根 `project.godot`，F5，侧栏“投稿”。未登录沿用现有账号登录。正式服务器未开通投稿时明确显示服务不可用，本机恢复副本不会冒充服务器成功保存。
 
 ## 依赖、许可证和发布条件

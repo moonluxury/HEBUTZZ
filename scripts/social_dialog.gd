@@ -1,4 +1,5 @@
 extends Window
+const TimeDisplay = preload("res://scripts/time_display.gd")
 const CardArtwork = preload("res://scripts/card_artwork.gd")
 const Styles = preload("res://scripts/ui_styles.gd")
 ## All I/O lives in SocialStore; a closed window never owns an awaited request.
@@ -318,7 +319,7 @@ func _request_form(person: Dictionary) -> void:
 	action(content, "发送申请", _request_friend, true)
 
 func _request_friend() -> void:
-	if note.text.length() > store.NOTE_LIMIT:
+	if store.Policy.note_length(note.text) > store.NOTE_LIMIT:
 		status.text = "申请说明最多 %d 字。" % store.NOTE_LIMIT
 		return
 	_mutate("request_friend", {"peer_id": context.peer.id, "note": note.text}, "done")
@@ -352,7 +353,7 @@ func _requests() -> void:
 			text(row, "%s · %s" % [person.get("name", ""), person.get("public_id", "")], true)
 			text(row, str(item.get("note", "未附说明")))
 			var state := str(item.get("status", ""))
-			text(row, str(item.get("time_label", "")) + " · " + {"pending": "待处理", "accepted": "已接受", "ignored": "已忽略", "invalidated": "已失效"}.get(state, state))
+			text(row, TimeDisplay.datetime(str(item.get("time_label", ""))) + " · " + {"pending": "待处理", "accepted": "已接受", "ignored": "已忽略", "invalidated": "已失效"}.get(state, state))
 			if direction == "received" and state == "pending":
 				var actions := HBoxContainer.new()
 				row.add_child(actions)
@@ -517,7 +518,7 @@ func _detail(response: Dictionary) -> void:
 		_trade_review()
 	elif response.has("gift"):
 		text(content, str(response.gift.get("summary", "")), true)
-		text(content, str(response.gift.get("time_label", "")))
+		text(content, TimeDisplay.datetime(str(response.gift.get("time_label", ""))))
 	else:
 		text(content, "服务未返回可查看的业务记录。")
 
@@ -531,7 +532,7 @@ func _records(response: Dictionary) -> void:
 	if _record_rows.is_empty():
 		text(content, "暂无换卡记录。")
 	for trade in _record_rows:
-		text(content, "%s ↔ %s · %s · %s" % [trade.get("initiator", {}).get("name", ""), trade.get("recipient", {}).get("name", ""), page.trade_status(str(trade.status)), trade.get("time_label", "")], true)
+		text(content, "%s ↔ %s · %s · %s" % [trade.get("initiator", {}).get("name", ""), trade.get("recipient", {}).get("name", ""), page.trade_status(str(trade.status)), TimeDisplay.datetime(str(trade.get("time_label", "")))], true)
 		page._trade_terms(content, trade)
 		action(content, "查看记录", _navigate.bind("trade_detail", {"record_id": trade.id}))
 		action(content, "返回原会话", _return_conversation.bind(str(trade.get("conversation_id", ""))))

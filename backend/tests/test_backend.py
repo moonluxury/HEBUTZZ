@@ -160,6 +160,31 @@ def test_crossed_friend_requests_and_idempotency(client):
     assert len(rpc(client, a, 'friends').json()['friends']) == len(rpc(client, b, 'friends').json()['friends']) == 1
 
 
+def test_friend_note_visible_limit_whitespace_and_lookup_states(client):
+    a, b = register(client), register(client)
+    assert rpc(client, a, 'find_user', public_id=a['profile']['public_id']).json()['state'] == 'self'
+    assert rpc(client, a, 'find_user', public_id='not-a-user').json()['state'] == 'not_found'
+    assert rpc(client, a, 'find_user', public_id=b['profile']['public_id']).json()['state'] == 'available'
+    assert rpc(client, a, 'request_friend', peer_id=a['account_id']).status_code == 400
+    assert rpc(client, a, 'request_friend', peer_id=b['account_id'], sender_id=b['account_id']).status_code == 400
+    for note in ['你' * 101, '👩🏽‍💻' * 101, 'e\u0301' * 101, '\x00']:
+        assert rpc(client, a, 'request_friend', peer_id=b['account_id'], note=note).status_code == 400
+    note = '  \n' + '👩🏽‍💻' * 94 + '\n  '
+    result = rpc(client, a, 'request_friend', peer_id=b['account_id'], note=note).json()
+    assert result['request']['note'] == note
+    assert rpc(client, b, 'sync').json()['requests'][0]['note'] == note
+    assert rpc(client, a, 'find_user', public_id=b['profile']['public_id']).json()['state'] == 'outgoing'
+    assert rpc(client, b, 'find_user', public_id=a['profile']['public_id']).json()['state'] == 'incoming'
+    # Independent clients/retries still create exactly one pending row.
+    def submit(_):
+        return rpc(client, a, 'request_friend', peer_id=b['account_id'], note=note).json()['request']['id']
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        assert set(executor.map(submit, range(5))) == {result['request']['id']}
+    assert rpc(client, a, 'respond_request', request_id=result['request']['id'], decision='accept').status_code == 403
+    assert rpc(client, b, 'respond_request', request_id=result['request']['id'], decision='accept').status_code == 200
+    assert rpc(client, a, 'request_friend', peer_id=b['account_id']).json()['state'] == 'friend'
+
+
 def test_messages_greeting_history_cursor_and_system_authority(client):
     a, b, outsider = register(client), register(client), register(client)
     cid = rpc(client, a, 'open_conversation', peer_id=b['account_id']).json()['conversation']['id']

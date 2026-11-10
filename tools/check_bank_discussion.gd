@@ -1,6 +1,6 @@
 extends "res://tools/check_minimal_design.gd"
 const Provider = preload("res://tools/fixtures/discussion_http_provider.gd")
-const OUTPUT := "res://outputs/discussion-validation/"
+const OUTPUT := "res://outputs/discussion-capacity-validation/"
 var provider: Node
 var store: Node
 var bank := "marxism"
@@ -88,7 +88,23 @@ func _run() -> void:
 	await _transition(view, "discussion", "open")
 	await _idle()
 	_expect(store.state(bank).loaded and store.state(bank).items.size() >= 3, "Real backend comments loaded")
+	_expect(view.discussion_view.find_children("AuthorCollege", "Label", true, false).size() >= 3, "Author colleges are displayed beside names")
+	_expect(not view.discussion_view.status.text.contains("2000") and not view.discussion_view.status.text.contains("容量"), "No individual word limit or capacity notice is shown")
 	await _shot("02-discussion")
+	view.discussion_view.composer.text = "长评论".repeat(1000); view.discussion_view.composer.text_changed.emit()
+	_expect(not view.discussion_view.publish.disabled, "A comment beyond 2000 characters remains publishable")
+	view.discussion_view.publish.pressed.emit(); await _idle()
+	var long_item: Dictionary = store.state(bank).items[0]
+	_expect(str(long_item.body).length() == 3000, "Client publishes a real comment beyond the old limit")
+	_expect(view.discussion_view.text_pages.is_empty(), "Long comments start as a bounded preview")
+	view.discussion_view._show_text_page(str(long_item.id), 0); await _pause()
+	await _shot("10-college-long-comment")
+	store.mutate(bank, "comment_delete", {"comment_id":long_item.id}, str(long_item.id)); await _idle()
+	view.discussion_view.composer.text = "容量不足时保留的草稿"; view.discussion_view.composer.text_changed.emit()
+	provider.fail_next = true; provider.fail_code = "discussion_full"
+	view.discussion_view.publish.pressed.emit(); await _idle()
+	_expect(store.state(bank).publish_blocked and view.discussion_view.composer.text == "容量不足时保留的草稿", "Capacity refusal preserves unsent text")
+	_expect(store.state(bank).error.is_empty() and store.state(bank).notice.is_empty() and not view.discussion_view.status.text.contains("容量"), "Owner-only capacity alerts do not appear in the user interface")
 	view.discussion_view.composer.text = "尚未发布的草稿"; view.discussion_view.composer.text_changed.emit()
 	var count: int = provider.requests.size()
 	view.discussion_view.list_scroll.scroll_vertical = 40

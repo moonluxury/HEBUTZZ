@@ -6,6 +6,9 @@ const SAVE_DIR := "user://card_draw_v1"
 signal changed
 var wallet: Node
 var collection: Node
+var profile: Node
+var save_dir := SAVE_DIR
+var endpoint_key := ""
 var account_id := ""
 var epoch := -1
 var options: Dictionary = {}
@@ -17,14 +20,15 @@ var error := ""
 var _corrupt := false
 
 func _ready() -> void:
-	var services := get_node("/root/AppServices")
-	wallet = services.wallet_store()
-	collection = services.collection_store()
-	get_node("/root/ProfileStore").changed.connect(_session_changed)
+	if wallet == null or collection == null:
+		var services := get_node("/root/AppServices")
+		if wallet == null: wallet = services.wallet_store()
+		if collection == null: collection = services.collection_store()
+	if profile == null: profile = get_node("/root/ProfileStore")
+	profile.changed.connect(_session_changed)
 	_session_changed()
 
 func _session_changed() -> void:
-	var profile := get_node("/root/ProfileStore")
 	if epoch == profile.epoch: return
 	epoch = profile.epoch
 	account_id = profile.account_id if profile.authenticated() else ""
@@ -72,7 +76,7 @@ func load_options() -> void:
 	var response: Dictionary = await wallet.request("card_draw_options")
 	if generation != epoch: return
 	loading = false
-	if response.get("ok", false) and response.get("price") == PRICE and response.get("odds") is Array and not str(response.get("pool_id", "")).is_empty():
+	if response.get("ok", false) and response.get("price") == PRICE and response.get("odds") is Array and not str(response.get("pool_id", "")).is_empty() and response.get("rule_version") is String and not str(response.rule_version).is_empty():
 		options = response.duplicate(true)
 		error = ""
 	else:
@@ -89,7 +93,7 @@ func acquire() -> void:
 		if not _persist(next): changed.emit(); return
 		operation = next
 	var payload := {"operation_id": operation.id, "pool_id": operation.pool_id,
-		"rule_version": operation.rule_version, "expected_price": operation.expected_price}
+		"rule_version": operation.rule_version, "expected_price": int(operation.expected_price)}
 	_run_request("card_draw", payload)
 
 func recover() -> void:
@@ -136,7 +140,9 @@ func acknowledge() -> void:
 		error = ""
 	changed.emit()
 
-func _path() -> String: return SAVE_DIR.path_join(account_id.sha256_text() + ".json")
+func _path() -> String:
+	var key := account_id if endpoint_key.is_empty() else endpoint_key + ":" + account_id
+	return save_dir.path_join(key.sha256_text() + ".json")
 
 func _persist(value: Dictionary) -> bool:
 	if _corrupt: return false

@@ -2,18 +2,21 @@ extends Control
 ## Presentation only. A shared session survives collection/theme rebuilds.
 ## No inventory, reward, account or persistence calls belong in this control.
 signal presentation_changed
+signal geometry_changed
 signal completed(card_id: String, session_id: int)
 signal action_finished
 const FlipShader = preload("res://shaders/card_reveal.gdshader")
 const GrayShader = preload("res://shaders/collection_unowned.gdshader")
 const Tokens = preload("res://scripts/ui_tokens.gd")
-const ENTRY := 0.36
-const REVEAL := 1.8
-const REDUCED := 0.18
+const Motion = preload("res://scripts/card_modal_motion.gd")
+const ENTRY := 0.32
+const REVEAL := 0.46
+const INFO := 0.16
+const REDUCED := 0.14
 const TOP_SPACE := 48.0
 const BOTTOM_SPACE := 12.0
 const EXTRA_HEIGHT := TOP_SPACE + BOTTOM_SPACE
-const PARTICLES := 15
+const PARTICLES := 48
 var session: Dictionary = {}
 var state := "loading"
 var front_texture: Texture2D
@@ -26,7 +29,7 @@ var flip_material: ShaderMaterial
 var gray_material: ShaderMaterial
 var grayscale := false
 var detail_alpha := 0.0
-var detail_offset := 6.0
+var detail_offset := 4.0
 var interactive := false
 var card_rect := Rect2()
 var orbit_alpha := 0.0
@@ -37,11 +40,16 @@ var _tween: Tween
 var _generation := 0
 var _motion: Node
 var _pending: Array[String] = []
+var _gate_open := true
+var _external_entry := false
+var _aspect := 2.0 / 3.0
+var top_space := TOP_SPACE
+var bottom_space := BOTTOM_SPACE
 
 static func new_session(card: Dictionary, back_path: String, serial: int, animated := true) -> Dictionary:
 	return {"id": serial, "card": card.duplicate(true), "back": back_path,
 		"state": "loading", "elapsed": 0.0, "reduced": false,
-		"static": not animated, "completed": false}
+		"static": not animated, "completed": false, "external_entry": false}
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -78,13 +86,18 @@ func _ready() -> void:
 func present(value: Dictionary, gray := false) -> void:
 	_dispose()
 	session = value
+	_aspect = float(session.get("aspect", 2.0 / 3.0))
+	_external_entry = bool(session.get("external_entry", false))
+	_gate_open = not _external_entry
 	grayscale = gray
 	front_texture = null
 	back_texture = null
 	face.texture = null
 	face.material = null
+	face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	entry.modulate.a = 1.0
 	entry.scale = Vector2.ONE
+	entry.rotation = 0.0
 	orbit_alpha = 0.0
 	sparkle_progress = 0.0
 	glow_strength = 0.0
@@ -92,7 +105,7 @@ func present(value: Dictionary, gray := false) -> void:
 	status_label.text = "正在准备卡片…"
 	status_label.show()
 	detail_alpha = 0.0
-	detail_offset = 6.0
+	detail_offset = 4.0
 	interactive = false
 	accessibility_name = "正在准备收藏卡片"
 	_pending.clear()
@@ -128,6 +141,10 @@ func _poll_resources() -> void:
 		elif not session.static and not session.completed and path == str(session.back) and back_texture == null:
 			back_texture = resources.textures[path] as Texture2D
 			face.texture = back_texture
+			_aspect = float(back_texture.get_width()) / back_texture.get_height()
+			session.aspect = _aspect
+			_layout()
+			presentation_changed.emit()
 	if not loaded:
 		return
 	front_texture = resources.textures[str(session.card.image)] as Texture2D
@@ -137,21 +154,43 @@ func _poll_resources() -> void:
 	set_process(false)
 	status_label.hide()
 	if session.static or session.completed:
+		_aspect = float(session.get("aspect", float(front_texture.get_width()) / front_texture.get_height()))
+		_layout()
 		_finish(false)
 		return
 	flip_material.set_shader_parameter("front_image", front_texture)
 	flip_material.set_shader_parameter("back_image", back_texture)
 	flip_material.set_shader_parameter("grayscale", grayscale)
+	flip_material.set_shader_parameter("front_aspect", float(front_texture.get_width()) / front_texture.get_height())
+	flip_material.set_shader_parameter("back_aspect", float(back_texture.get_width()) / back_texture.get_height())
+	face.stretch_mode = TextureRect.STRETCH_SCALE
+	face.material = flip_material
+	flip_material.set_shader_parameter("turn", 0.0)
+	flip_material.set_shader_parameter("crossfade", false)
+	state = "ready"
+	session.state = state
 	if _motion.reduced() and not session.reduced:
 		session.reduced = true
 		session.elapsed = 0.0
-	_play()
+	if _gate_open: _play()
+	presentation_changed.emit()
+
+func allow_reveal() -> void:
+	_gate_open = true
+	if state == "ready": _play()
+
+func _entry_duration() -> float:
+	return 0.0 if _external_entry else REDUCED if session.reduced else ENTRY
+
+func _duration() -> float:
+	return _entry_duration() + (REDUCED if session.reduced else REVEAL) + INFO
 
 func _play() -> void:
 	_kill_tween()
-	var end := REDUCED if session.reduced else ENTRY + REVEAL
+	var end := _duration()
 	var start := clampf(float(session.elapsed), 0.0, end)
 	_set_elapsed(start)
+	if state == "revealed": return # A queued skip may finish synchronously.
 	var ticket := _generation
 	_tween = create_tween()
 	_tween.tween_method(_set_elapsed, start, end, maxf(0.001, end - start))
@@ -168,66 +207,42 @@ func _set_elapsed(value: float) -> void:
 	sparkle_progress = 0.0
 	glow_strength = 0.0
 	face.material = flip_material
+	face.stretch_mode = TextureRect.STRETCH_SCALE
 	face.texture = back_texture
 	entry.position = card_rect.position
 	entry.scale = Vector2.ONE
+	entry.rotation = 0.0
 	entry.modulate.a = 1.0
 	flip_material.set_shader_parameter("turn", 0.0)
-	flip_material.set_shader_parameter("rim", 0.0)
-	flip_material.set_shader_parameter("shine_strength", 0.0)
-	if session.reduced:
-		state = "revealing"
-		face.texture = front_texture
-		face.material = gray_material if grayscale else null
-		entry.modulate.a = _smooth(value / REDUCED)
-		detail_alpha = entry.modulate.a
-		detail_offset = 0.0
-	elif value < ENTRY:
+	flip_material.set_shader_parameter("crossfade", session.reduced)
+	flip_material.set_shader_parameter("blend_amount", 0.0)
+	var entry_time := _entry_duration()
+	var flip_time := REDUCED if session.reduced else REVEAL
+	var t := maxf(0.0, value - entry_time)
+	detail_alpha = Motion.out((t - flip_time) / INFO)
+	detail_offset = 0.0 if session.reduced else (1.0 - detail_alpha) * 4.0
+	if value < entry_time:
 		state = "ready"
-		var amount := 1.0 - pow(1.0 - value / ENTRY, 3)
-		entry.position.y += (1.0 - amount) * 18.0
-		entry.scale = Vector2.ONE * lerpf(0.95, 1.0, amount)
-		entry.modulate.a = amount
-		detail_alpha = 0.0
-		detail_offset = 6.0
+		var amount := Motion.out(value / entry_time)
+		if not session.reduced:
+			entry.position.y += (1.0 - amount) * 16.0
+			entry.scale = Vector2.ONE * lerpf(0.96, 1.0, amount)
+		entry.modulate.a = Motion.out(value / REDUCED)
 	else:
 		state = "revealing"
-		var t := value - ENTRY
-		var card_scale := 1.0
-		if t < 0.12:
-			card_scale = lerpf(1.0, 0.98, _smooth(t / 0.12))
-		elif t < 0.44:
-			card_scale = lerpf(0.98, 1.01, _smooth((t - 0.12) / 0.32))
-		elif t < 1.18:
-			card_scale = 1.01 + 0.015 * sin(PI * (t - 0.44) / 0.74)
+		var p := clampf(t / flip_time, 0.0, 1.0)
+		if session.reduced:
+			flip_material.set_shader_parameter("blend_amount", _smooth(p))
 		else:
-			card_scale = lerpf(1.01, 1.0, _smooth((t - 1.18) / 0.32))
-		entry.scale = Vector2.ONE * card_scale
-		# A single cubic Hermite curve: 90 degrees at 800 ms with a continuous slope.
-		var angle := PI
-		if t < 0.44:
-			angle = 0.0
-		elif t < 0.80:
-			var p := (t - 0.44) / 0.36
-			angle = (p * p * (3.0 - 2.0 * p) * PI * 0.5) + (p * p * (p - 1.0) * 0.36 * 6.0)
-		elif t < 1.18:
-			var p := (t - 0.80) / 0.38
-			angle = PI * 0.5 + (p * p * (3.0 - 2.0 * p) * PI * 0.5) + (p * (p - 1.0) * (p - 1.0) * 0.38 * 6.0)
-		flip_material.set_shader_parameter("turn", angle)
-		if t >= 0.12 and t < 0.65:
-			orbit_alpha = _smooth((t - 0.12) / 0.14) * (1.0 - _smooth((t - 0.44) / 0.21)) * 0.3
-			orbit_progress = clampf((t - 0.12) / 0.53, 0.0, 1.0)
-		glow_strength = _smooth((t - 0.12) / 0.32) * (1.0 - _smooth((t - 1.18) / 0.32))
-		if t >= 0.78 and t < 0.94:
-			flip_material.set_shader_parameter("rim", sin((t - 0.78) / 0.16 * PI) * 0.4)
-		if t >= 1.20 and t < 1.60:
-			var p := (t - 1.20) / 0.40
-			flip_material.set_shader_parameter("shine_position", lerpf(-0.25, 1.75, p))
-			flip_material.set_shader_parameter("shine_strength", sin(p * PI) * 0.12)
-		if t >= 1.18 and t < 1.72:
-			sparkle_progress = (t - 1.18) / 0.54
-		detail_alpha = _smooth((t - 1.50) / 0.30)
-		detail_offset = (1.0 - detail_alpha) * 6.0
+			flip_material.set_shader_parameter("turn", PI * Motion.curve(p, Vector2(0.45, 0), Vector2(0.2, 1)))
+			# One stronger pulse and a short damped shake, contained within the flip.
+			# No image-specific choreography; the pivot and layout never change.
+			var pulse := 1.0 - 0.065 * sin(PI * p / 0.38) if p < 0.38 else 1.0 + 0.075 * sin(PI * (p - 0.38) / 0.62)
+			entry.scale = Vector2.ONE * pulse
+			entry.position.x += sin(p * TAU * 3.0) * 4.0 * pow(1.0 - p, 2.0)
+			entry.rotation = deg_to_rad(1.4) * sin(p * TAU * 2.0) * pow(1.0 - p, 2.0)
+			if t > REVEAL * 0.55 and t < REVEAL + INFO:
+				sparkle_progress = (t - REVEAL * 0.55) / (REVEAL * 0.45 + INFO)
 	session.state = state
 	queue_redraw()
 	sparks.queue_redraw()
@@ -238,7 +253,7 @@ func _smooth(value: float) -> float:
 	return p * p * (3.0 - 2.0 * p)
 
 func skip() -> void:
-	if state not in ["ready", "revealing"]:
+	if state not in ["ready", "revealing"] or not _gate_open:
 		return
 	_finish(true)
 	action_finished.emit()
@@ -248,11 +263,13 @@ func _finish(notify: bool) -> void:
 	set_process(false)
 	state = "revealed"
 	session.state = state
-	session.elapsed = REDUCED if session.reduced else ENTRY + REVEAL
+	session.elapsed = _duration()
 	face.texture = front_texture
+	face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	face.material = gray_material if grayscale else null
 	entry.position = card_rect.position
 	entry.scale = Vector2.ONE
+	entry.rotation = 0.0
 	entry.modulate.a = 1.0
 	orbit_alpha = 0.0
 	sparkle_progress = 0.0
@@ -292,6 +309,11 @@ func retry() -> void:
 	present(session, grayscale)
 	action_finished.emit()
 
+func freeze() -> void:
+	# Preserve the exact projected face and particles while the outer group exits.
+	_dispose()
+	state = "exiting"
+
 func cancel() -> void:
 	_dispose()
 	state = "cancelled"
@@ -308,12 +330,12 @@ func cancel() -> void:
 func _preference_changed() -> void:
 	if not is_inside_tree() or is_queued_for_deletion() or session.is_empty() or state not in ["ready", "revealing"] or not _motion.reduced():
 		return
-	if _motion.suspended:
-		_finish(true)
-	else:
+	if not _gate_open:
 		session.reduced = true
-		session.elapsed = 0.0
-		_play()
+		return
+	# A preference change during playback must not jump back to the card back.
+	session.reduced = true
+	_finish(true)
 
 func _kill_tween() -> void:
 	if _tween != null:
@@ -334,8 +356,8 @@ func _exit_tree() -> void:
 func _layout() -> void:
 	if not is_instance_valid(face):
 		return
-	var width := minf(240.0, minf(maxf(0.0, size.x - 32.0), maxf(0.0, size.y - EXTRA_HEIGHT) / 1.5))
-	card_rect = Rect2((size.x - width) * 0.5, TOP_SPACE, width, width * 1.5)
+	var width := minf(240.0, minf(maxf(0.0, size.x - 32.0), maxf(0.0, size.y - top_space - bottom_space) * _aspect))
+	card_rect = Rect2((size.x - width) * 0.5, top_space, width, width / _aspect)
 	entry.position = card_rect.position
 	entry.size = card_rect.size
 	entry.pivot_offset = card_rect.size * 0.5
@@ -343,46 +365,22 @@ func _layout() -> void:
 	flip_material.set_shader_parameter("card_size", card_rect.size)
 	status_label.position = Vector2(0, 0)
 	status_label.size = Vector2(size.x, 44)
-	if state in ["ready", "revealing"]:
+	if state in ["ready", "revealing"] and _gate_open:
 		_set_elapsed(float(session.elapsed))
 	queue_redraw()
 	sparks.queue_redraw()
-
-func _draw() -> void:
-	if card_rect.size.x <= 0 or state in ["error", "cancelled"]:
-		return
-	var center := card_rect.get_center()
-	# Static soft ellipses, drawn behind the whole paper card, never a rectangle.
-	draw_set_transform(center, 0, Vector2(1.0, 1.15))
-	for index in range(16, 0, -1):
-		var p := float(index) / 16.0
-		draw_circle(Vector2.ZERO, card_rect.size.x * (0.40 + p * 0.22), Color(0.67, 0.80, 1.0, (0.003 + 0.003 * glow_strength) * (1.0 - p * 0.5)))
-	draw_set_transform(center + Vector2(0, card_rect.size.y * 0.49), 0, Vector2(1.0, 0.13))
-	for index in range(10, 0, -1):
-		draw_circle(Vector2.ZERO, card_rect.size.x * (0.28 + index * 0.016), Color(0.04, 0.17, 0.40, 0.006))
-	draw_set_transform(Vector2.ZERO)
-	if orbit_alpha > 0:
-		var points := PackedVector2Array()
-		for index in 97:
-			points.append(_orbit_point(TAU * index / 96.0))
-		draw_polyline(points, Color(0.55, 0.72, 0.96, orbit_alpha), 1.0, true)
-		var point := _orbit_point(PI * orbit_progress + PI * 0.08)
-		draw_circle(point, 4, Color(1.0, 0.96, 0.81, orbit_alpha * 0.35))
-		draw_circle(point, 1.8, Color(0.79, 0.69, 0.42, orbit_alpha * 2.0))
-
-func _orbit_point(angle: float) -> Vector2:
-	return card_rect.get_center() + Vector2(cos(angle) * card_rect.size.x * 0.625, sin(angle) * card_rect.size.y * 0.225).rotated(deg_to_rad(18))
+	geometry_changed.emit()
 
 func _draw_sparks() -> void:
 	if sparkle_progress <= 0 or sparkle_progress >= 1:
 		return
-	var amount := sin(sparkle_progress * PI) * 0.65 * 1.10
+	var amount := sin(sparkle_progress * PI) * 0.85
 	for index in PARTICLES:
-		var angle := TAU * index / PARTICLES + 0.17
+		var angle := TAU * index / PARTICLES + 0.17 + sin(index * 2.4) * 0.06
 		var direction := Vector2(cos(angle), sin(angle))
 		# Start beyond the rectangle, not on an ellipse that crosses the artwork.
-		var distance := minf(card_rect.size.x * 0.5 / maxf(absf(direction.x), 0.001), card_rect.size.y * 0.5 / maxf(absf(direction.y), 0.001)) + 12.0
+		var distance := minf(card_rect.size.x * 0.5 / maxf(absf(direction.x), 0.001), card_rect.size.y * 0.5 / maxf(absf(direction.y), 0.001)) + 14.0
 		var edge := direction * distance
-		var point := card_rect.get_center() + edge + direction * sparkle_progress * (20.0 + (index % 4) * 10.0)
+		var point := card_rect.get_center() + edge + direction * sparkle_progress * (18.0 + (index % 5) * 6.0)
 		var color := Color(0.79, 0.69, 0.42, amount * 0.65) if index % 3 == 0 else Color(0.65, 0.78, 0.98, amount)
 		sparks.draw_circle(point, 1.0 + (index % 3) * 0.5, color)

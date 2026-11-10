@@ -48,6 +48,10 @@ def main():
             for label in ['本机测试用户', '本机测试同学']:
                 response = client.post('/v1/auth/register', json={'username': 'comments_' + secrets.token_hex(5), 'password': secrets.token_urlsafe(20), 'display_name': label})
                 response.raise_for_status(); accounts.append(response.json())
+            for account, college in zip(accounts, ['能源与环境工程学院', '人工智能与数据科学学院']):
+                response = client.post('/v1/rpc', headers={'Authorization':'Bearer '+account['access_token']}, json={
+                    'version':1,'action':'save_profile','payload':{'patch':{'college':college},'avatar_card_id':''}})
+                response.raise_for_status()
             # Seed actual database records through authenticated API writes.
             for index, body in enumerate(['本条评论由本机隔离账号通过真实 API 发布，用于核对题库公共讨论的排版。',
                                           '切到同一题库的其他题目后，这里的讨论和未发布草稿应继续保留。',

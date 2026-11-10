@@ -1,4 +1,5 @@
 import hashlib
+import json
 import logging
 import os
 import secrets
@@ -10,7 +11,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError
 from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, ConfigDict, Field
 from psycopg import errors
@@ -67,6 +68,12 @@ class Rpc(StrictModel):
 
 @app.exception_handler(DomainError)
 async def domain_error(request, error):
+    if error.code == 'discussion_full':
+        from comment_capacity import record_rejection
+        try:
+            record_rejection(error)
+        except Exception:
+            log.exception('Could not persist discussion capacity alert')
     return JSONResponse(status_code=error.status, content={
         'ok': False, 'account_id': getattr(request.state, 'actor', ''),
         'code': error.code, 'message': error.message, 'definitive': True,
@@ -86,12 +93,25 @@ async def response_headers(request, call_next):
         length = int(request.headers.get('content-length', '0'))
     except ValueError:
         length = 999999
-    if length > 256 * 1024:
+    limit = 16 * 1024 * 1024 if request.url.path == '/v1/comments/write' else 9 * 1024 * 1024 if request.url.path == '/v1/submission-assets' else 1024 * 1024 if request.url.path in {'/v1/rpc','/v1/wallet'} else 256 * 1024
+    if length > limit:
         return JSONResponse(status_code=413, content={'ok': False, 'code': 'too_large', 'message': '请求内容过大。'})
     response = await call_next(request)
     response.headers['Cache-Control'] = 'no-store'
     response.headers['X-Content-Type-Options'] = 'nosniff'
     return response
+
+
+async def bounded_json(request, maximum):
+    chunks, size = [], 0
+    async for chunk in request.stream():
+        size += len(chunk)
+        require(size <= maximum, 'too_large', '请求内容过大。', 413)
+        chunks.append(chunk)
+    try: value = json.loads(b''.join(chunks))
+    except (ValueError, UnicodeError): raise DomainError('invalid_request','请求数据格式不正确。',400) from None
+    require(isinstance(value,dict),message='请求数据格式不正确。')
+    return value
 
 
 def rate_limit(key, limit, seconds=60):
@@ -135,6 +155,41 @@ def authenticate(request: Request, authorization: Annotated[HTTPAuthorizationCre
 
 
 Actor = Annotated[str, Depends(authenticate)]
+
+
+def optional_actor(request: Request, authorization: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)]):
+    return authenticate(request, authorization) if authorization is not None else None
+
+
+@app.post('/v1/submission-assets')
+async def upload_submission_asset(request: Request, actor: Actor):
+    from submission_service import upload
+    rate_limit('submission-upload:' + actor, 20)
+    payload = await bounded_json(request, 9 * 1024 * 1024)
+    with transaction() as conn:
+        lock_users(conn,actor)
+        check_session_after_lock(conn,actor,request)
+        return {'ok':True,'asset':upload(conn,actor,payload)}
+
+
+@app.get('/v1/submission-assets/{asset_id}')
+def read_submission_asset(asset_id: str, actor: Annotated[str | None, Depends(optional_actor)]):
+    from submission_service import asset
+    with transaction() as conn:
+        record = asset(conn,asset_id,actor)
+        return Response(content=bytes(record['data']),media_type=record['mime'],headers={'Content-Disposition':'inline','Cache-Control':'no-store'})
+
+
+@app.get('/v1/articles')
+def list_published_articles(cursor: str = ''):
+    from submission_service import public_page
+    with transaction() as conn: return {'ok':True,**public_page(conn,cursor)}
+
+
+@app.get('/v1/articles/{article_id}')
+def read_published_article(article_id: str, actor: Annotated[str | None, Depends(optional_actor)]):
+    from submission_service import public_article
+    with transaction() as conn: return {'ok':True,'article':public_article(conn,article_id,actor)}
 
 
 def check_session_after_lock(conn, actor, request):
@@ -218,6 +273,9 @@ def password_change(body: PasswordChange, request: Request, actor: Actor):
 @app.post('/v1/rpc')
 def rpc(body: Rpc, request: Request, actor: Actor):
     rate_limit('rpc:' + actor, int(os.environ.get('RPC_PER_MINUTE', '240')))
+    if body.action.startswith('comment_'):
+        rate_limit('comments:' + actor, 60)
+        if body.action == 'comment_create': rate_limit('comment-create:' + actor, 8)
     if body.action == 'send_text':
         rate_limit('message:' + actor, 40)
     if body.action in {'request_friend', 'find_user'}:
@@ -246,3 +304,23 @@ def wallet_rpc(body: Rpc, request: Request, actor: Actor):
 @app.post('/v1/auth/steam')
 def external_auth():
     raise DomainError('unavailable', '此平台登录尚未配置，当前请使用账号密码。', 503)
+
+
+@app.post('/v1/comments/query')
+def query_comments(body: Rpc, request: Request, actor: Annotated[str | None, Depends(optional_actor)]):
+    from comment_service import dispatch as comment_dispatch, READS
+    require(body.action in READS, message='此入口只支持读取讨论。')
+    rate_limit('comment-read:' + (actor or client_ip(request)), 120)
+    try:
+        with transaction() as conn:
+            return comment_dispatch(conn, actor, body.action, body.payload,
+                                    before_action=(lambda: check_session_after_lock(conn, actor, request)) if actor else None)
+    except (errors.DeadlockDetected, errors.LockNotAvailable, errors.SerializationFailure):
+        raise DomainError('busy', '服务正忙，请稍后重试。', 409) from None
+
+
+@app.post('/v1/comments/write')
+def write_comment(body: Rpc, request: Request, actor: Actor):
+    from comment_service import WRITES
+    require(body.action in WRITES, message='此入口仅支持评论操作。')
+    return rpc(body, request, actor)

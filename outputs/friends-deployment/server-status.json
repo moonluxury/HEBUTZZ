@@ -1,0 +1,42 @@
+{
+  "services": {
+    "hegong-backend": "active",
+    "nginx": "active",
+    "postgresql": "active"
+  },
+  "health": {
+    "status": "ok",
+    "service": "hegong-backend",
+    "version": "1.0.0"
+  },
+  "file_hash_checks": {
+    "domain.py": true,
+    "friend_note.py": true,
+    "requirements.txt": true,
+    "requirements.lock": true,
+    "tests/test_backend.py": true,
+    "tests/test_friend_note.py": true,
+    "app.py": true,
+    "collection_catalog.json": true,
+    "comment_service.py": true,
+    "database.py": true,
+    "publication_rewards.py": true,
+    "schema.sql": true,
+    "submission_document.py": true,
+    "submission_service.py": true,
+    "migrations/002_submissions.sql": true,
+    "migrations/003_bank_comments.sql": true
+  },
+  "nginx_unchanged": true,
+  "database": {
+    "users": 1,
+    "temporary_friend_accounts": 0,
+    "schema_versions": [
+      1,
+      2,
+      3
+    ]
+  },
+  "release": "/opt/hegong/releases/friends-20261030T092040Z-r2",
+  "backup": "/var/backups/hegong/friends-20261030T093058Z"
+}

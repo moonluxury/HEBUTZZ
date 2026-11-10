@@ -1,5 +1,6 @@
 extends Control
 ## Coordinates one session, domain services and view signals. No widget styling or grading.
+const Collection = preload("res://scripts/manual_question_collection.gd")
 const Session = preload("res://scripts/quiz_session.gd")
 const ContentView = preload("res://scripts/quiz_content_view.gd")
 const LayoutView = preload("res://scripts/minimal_quiz_view.gd")
@@ -160,10 +161,8 @@ func _question_state_key(index: int) -> String:
 
 func _toggle_wrong_current() -> void:
 	var id := str(session.current().id)
-	var next := wrong_ids.duplicate()
-	var removing := next.has(id)
-	if removing: next.erase(id)
-	else: next[id] = true
+	var removing := wrong_ids.has(id)
+	var next := Collection.toggled(wrong_ids, id)
 	if not _wrongs().save_ids(subject_id, next):
 		content.show_save_error()
 		return

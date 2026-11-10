@@ -1,0 +1,54 @@
+{
+  "files": {
+    "domain.py": "4083c5fae8526990b405b75d48d7708a8baa42f956670931578d0af0716c8b26",
+    "friend_note.py": "5daf167eb7231adda136f8f9f36d3e20748432f8140798a9b99ddbfa777bc6e4",
+    "requirements.txt": "694953526471343d1b270199eea8aa69e6c67c733c8a98bc7e80a9d51037b688",
+    "requirements.lock": "bc48488928ab49393ec099c60d206f1da94ca82a5f7b0b418de25efe8c1336ef",
+    "tests/test_backend.py": "9448c5a5ed54104603babfff3307e1e51e3ba20325bacce9fffc0228f3533e3c",
+    "tests/test_friend_note.py": "412dd55d871c3b9a21432bae2ee6b6d4120a187369eb92126bce580c813c1855"
+  },
+  "baseline_sha256": {
+    "domain.py": "91badb4e0d18209b644c4cf7c938955606fa1eabc4ccf60920e07c810b4d97d9",
+    "friend_note.py": null,
+    "requirements.txt": "21aae35047c0d6a319b449100b2a56da3d787c44613d3293abe93456d522ad58",
+    "requirements.lock": "0e443d0dc75d70bdd9411dcc443246c0968551c614e67e774e3387256ca2d85a",
+    "tests/test_backend.py": "7d6c66ebf5f18da0f070ad60622f0c6ca4aae643d23265469a5e1d82aa879c42",
+    "tests/test_friend_note.py": null
+  },
+  "guard_sha256": {
+    "app.py": "12c751fe2553dbaf0ad9bdc552e98c677602ddd35da60a3d903ecfe9b879870f",
+    "collection_catalog.json": "8bf02570e00422cd45a80932adeedc35b8a05f279ced5625361e58ec76fccbc0",
+    "comment_service.py": "a2c511c438030ca15aead72ecb50b31eb52ba07e6335c12f633b42b1cd8ed1a6",
+    "database.py": "2b305094125af93be8285ebfc77232142a8db07d4b0f4846e7da44bee3aa32a8",
+    "publication_rewards.py": "e08141ec9fbe30603ae981dcb9768fa4584ab9ee9db2e3366225f3ddc2b4b4b3",
+    "schema.sql": "1154b369664f892100e87213515f6ec1d95ccc66b3e3aa45c7f4d94e98337053",
+    "submission_document.py": "15909f0a0da7f033b330858456ca6f1d597ae70990032feea7bc3b05b09efa27",
+    "submission_service.py": "f8ad4e6d51e1ace69b30cdca08f89d2b666442a0efcc51517c71c7f504146aa9",
+    "migrations/002_submissions.sql": "3d0d9c4af96f534728b6bd660612e325d5426f569a18bd42ffd2b771a46b8b86",
+    "migrations/003_bank_comments.sql": "3431bccfb2fafbd470fbffb9841619c7572a68a108eac52021252be9fe868ec5"
+  },
+  "candidate_sha256": {
+    "app.py": "12c751fe2553dbaf0ad9bdc552e98c677602ddd35da60a3d903ecfe9b879870f",
+    "collection_catalog.json": "8bf02570e00422cd45a80932adeedc35b8a05f279ced5625361e58ec76fccbc0",
+    "comment_service.py": "a2c511c438030ca15aead72ecb50b31eb52ba07e6335c12f633b42b1cd8ed1a6",
+    "database.py": "2b305094125af93be8285ebfc77232142a8db07d4b0f4846e7da44bee3aa32a8",
+    "domain.py": "4083c5fae8526990b405b75d48d7708a8baa42f956670931578d0af0716c8b26",
+    "friend_note.py": "5daf167eb7231adda136f8f9f36d3e20748432f8140798a9b99ddbfa777bc6e4",
+    "publication_rewards.py": "e08141ec9fbe30603ae981dcb9768fa4584ab9ee9db2e3366225f3ddc2b4b4b3",
+    "requirements.lock": "bc48488928ab49393ec099c60d206f1da94ca82a5f7b0b418de25efe8c1336ef",
+    "requirements.txt": "694953526471343d1b270199eea8aa69e6c67c733c8a98bc7e80a9d51037b688",
+    "schema.sql": "1154b369664f892100e87213515f6ec1d95ccc66b3e3aa45c7f4d94e98337053",
+    "submission_document.py": "15909f0a0da7f033b330858456ca6f1d597ae70990032feea7bc3b05b09efa27",
+    "submission_service.py": "f8ad4e6d51e1ace69b30cdca08f89d2b666442a0efcc51517c71c7f504146aa9",
+    "migrations/002_submissions.sql": "3d0d9c4af96f534728b6bd660612e325d5426f569a18bd42ffd2b771a46b8b86",
+    "migrations/003_bank_comments.sql": "3431bccfb2fafbd470fbffb9841619c7572a68a108eac52021252be9fe868ec5",
+    "ops/activate_friends_release.py": "4dcd85417ef771e3e33fb44bdc8c7182a599185056a61724ea28781985c1d5aa",
+    "ops/friends_smoke_cleanup.py": "3ea39b1fd84ca0aed283730fea738b6e5fade2f8f9a0bcc35a17011373779177",
+    "ops/smoke_friends_release.py": "1a0acd63c5a0e32531a66e794943382cc8a795a1433f13cc242011d7cd740af8",
+    "tests/test_backend.py": "9448c5a5ed54104603babfff3307e1e51e3ba20325bacce9fffc0228f3533e3c",
+    "tests/test_comments.py": "672a5687f0075974861d34be03f6128847fe63160c99dc584c1dc88b0e661001",
+    "tests/test_friend_note.py": "412dd55d871c3b9a21432bae2ee6b6d4120a187369eb92126bce580c813c1855",
+    "tests/test_submissions.py": "9f4176b09292263328b0bd524981d3a3ed2fe142d5066327d02e2f3b4538ffb8"
+  },
+  "regex": "2026.9.29"
+}

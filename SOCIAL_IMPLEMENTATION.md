@@ -27,7 +27,7 @@
 | `scripts/social_dialog.gd` | 查找/申请、收到与发出申请、备注、资料、黑名单、举报、想要清单、赠送选卡、交换编辑与核对、记录分页；原生独占窗口提供焦点限制与 Esc |
 | `scripts/social_composer.gd` | 普通多行文本输入；Enter/Shift+Enter、重复键、IME 组合保护 |
 | `scripts/social_policy.gd` | 集中的长度、数量、分页及默认策略契约 |
-| `scripts/social_http_transport.gd` | 可组合进既有认证适配器的 HTTPRequest 实现；HTTPS、12 秒超时、2 MiB 响应上限、禁止重定向、无演示回退、无正文/密钥日志 |
+| `scripts/social_http_transport.gd`   | 可组合进既有认证适配器的 HTTPRequest 实现；HTTPS、12 秒超时、2 MiB 响应上限、禁止重定向、无演示回退、无正文/密钥日志 |
 | `scripts/minimal_page.gd`、`scripts/page_router.gd` | 仅新增导航和共享路由/状态服务；不改变既有页面缓存清单 |
 | `scripts/personal_center.gd`、`scripts/profile_dialog.gd` | 好友入口改到新模块，移除旧独立好友窗口，其他个人中心功能保留 |
 | `scripts/collection_store.gd` | 已有好友选择优先使用同账号社交服务；没有社交能力时仍沿用旧 `request_friends` |

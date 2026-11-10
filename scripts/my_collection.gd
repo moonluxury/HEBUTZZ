@@ -18,7 +18,6 @@ var content: Control
 var detail_panel: Control
 var card_scroll: ScrollContainer
 var filter_buttons: Dictionary = {}
-var summary_label: Label
 var status_label: Label
 var recovery_button: Button
 var wishlist_sync_button: Button
@@ -71,18 +70,20 @@ func _build_content() -> void:
 	back_button = sidebar.get_node("HomeButton")
 	_label(body, "我的收藏", TITLE_SIZE, text_color, Rect2(0, 0, 500, 52), true).name = "Title"
 	_label(body, "获取卡片，成为大魔法师", BODY_SIZE, muted_color, Rect2(0, 60, 650, 38)).name = "Subtitle"
-	summary_label = _label(body, "", 20, muted_color)
 	acquire_button = _primary(body, "获取卡牌", _open_acquisition, Rect2())
 	acquire_button.name = "AcquireCard"
+	preload("res://scripts/card_press_feedback.gd").bind(acquire_button)
 	acquire_price = _label(body, "200 电池/次", 16, muted_color)
 	acquire_price.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	status_label = _label(body, "", 18, muted_color)
 	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	recovery_button = _button(body, "RecoverGift", "查询赠送结果", store.recover_gift)
 	wishlist_sync_button = _button(body,"SyncWishlist","同步想要",store.wishlist.refresh)
+	_line(body, Rect2()).name = "FilterDivider"
 	filter_buttons.clear()
 	for item in [["owned", "已拥有"], ["all", "全部卡牌"], ["wanted", "想要"]]:
 		filter_buttons[item[0]] = _button(body, "Filter_" + item[0], item[1], _set_filter.bind(item[0]))
+		filter_buttons[item[0]].alignment = HORIZONTAL_ALIGNMENT_LEFT
 		filter_buttons[item[0]].set_meta("foreground_only_feedback", true)
 	content = Control.new()
 	content.name = "CollectionContent"
@@ -130,8 +131,6 @@ func _render() -> void:
 	groups.clear()
 	detail_panel = null
 	card_scroll = null
-	var totals: Dictionary = store.summary()
-	summary_label.text = "已拥有 %d 款 · 共 %d 张" % [totals.kinds, totals.total] if totals.known else "已拥有 — 款 · 共 — 张"
 	status_label.text = "正在读取收藏…" if store.loading else store.status
 	if status_label.text.is_empty() and (filter == "wanted" or not store.wishlist.error.is_empty() or store.wishlist.busy):
 		status_label.text = store.wishlist.caption()
@@ -176,7 +175,12 @@ func _render() -> void:
 				if store.count(item.id) > 0:
 					owned += 1
 					total += store.count(item.id)
-			_label(group, "%s · %d 款%s" % [_filter_name(), items.size(), " · 已拥有 %d 款 / %d 张" % [owned, total] if store.inventory_known else ""], 18, muted_color).name = "Count"
+			var caption := "%d 款想要" % items.size() if filter == "wanted" else "%d 款卡牌" % items.size()
+			if store.inventory_known:
+				caption = "%d 款卡牌 · %d 张" % [owned, total] if filter == "owned" else caption + " · 已拥有 %d 款 / %d 张" % [owned, total]
+			elif filter == "owned":
+				caption = "拥有数量待查询"
+			_label(group, caption, 18, muted_color).name = "Count"
 			if items.is_empty():
 				continue
 			_line(group, Rect2()).name = "Divider"
@@ -191,7 +195,7 @@ func _render() -> void:
 				previews.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				group.add_child(previews)
 				for index in mini(3, items.size()):
-					_picture(previews, items[index], Rect2(index * 36, 0, 30, 45))
+					_picture(previews, items[index], Rect2(index * 44, 0, 36, 54))
 	if store.seasons.is_empty():
 		_empty(content, "暂无已公开的卡牌", "目录接入后将按季显示。")
 	_rebuilding = false
@@ -207,15 +211,12 @@ func _detail_scroller(node_name: String) -> ScrollContainer:
 	content.add_child(scroller)
 	return scroller
 
-func _filter_name() -> String:
-	return {"owned": "已拥有", "all": "全部卡牌", "wanted": "想要"}[filter]
-
 func _update_filter_tabs(animate := false) -> void:
 	for id in filter_buttons:
 		var button: Button = filter_buttons[id]
-		var line_width := maxf(40, button.size.x - 32)
+		var line_width := button.get_theme_font("font").get_string_size(button.text, HORIZONTAL_ALIGNMENT_LEFT, -1, button.get_theme_font_size("font_size")).x
 		_tab(button, id == filter, line_width, 48, animate and id == filter)
-		button.get_node("SelectionLine").position.x = (button.size.x - line_width) * 0.5
+		button.get_node("SelectionLine").position.x = 0
 
 func _build_grid(parent: Control, items: Array) -> void:
 	if items.is_empty():
@@ -333,16 +334,34 @@ func _empty(parent: Control, title: String, reason: String) -> void:
 func _layout_content(width: float) -> void:
 	if not is_instance_valid(content):
 		return
-	_rect(summary_label, Rect2(maxf(0, width - (660 if acquire_button.visible and width > 950 else 340)), 12 if width > 950 else 108, 340, 36))
-	_rect(acquire_button, Rect2(width - 156, 0, 156, 44))
-	_rect(acquire_price, Rect2(width - 310, 8, 140, 32))
-	var top := 126.0 if width > 950 else 160.0
-	var filter_width := minf(120, width * 0.17)
-	_rect(body.get_node("Subtitle"), Rect2(0, 60, width - filter_width * 3 - 20, 38))
+	var stacked_action := acquire_button.visible and width < 680
+	var title_width := width if in_detail or stacked_action else width - 334
+	_rect(body.get_node("Title"), Rect2(0, 0, title_width, 52))
+	var action_y := 68.0 if stacked_action else 4.0
+	_rect(acquire_button, Rect2(width - 156, action_y, 156, 44))
+	_rect(acquire_price, Rect2(width - 310, action_y + 6, 140, 32))
+	# Keep the requested 50px gap even when the page canvas or window is scaled.
+	var screen_scale := maxf(0.1, absf(body.get_global_transform_with_canvas().get_scale().y * get_viewport().get_stretch_transform().get_scale().y))
+	var tabs_y := maxf(52.0, action_y + 44.0) + 50.0 / screen_scale
+	var top := 126.0 if in_detail else tabs_y + 76.0
+	var tab_widths: Array[float] = []
+	var tabs_width := 0.0
+	for button in filter_buttons.values():
+		var text_width: float = button.get_theme_font("font").get_string_size(button.text, HORIZONTAL_ALIGNMENT_LEFT, -1, button.get_theme_font_size("font_size")).x
+		var tab_width := maxf(44.0, ceilf(text_width))
+		tab_widths.append(tab_width)
+		tabs_width += tab_width
+	var tab_gap := minf(32.0, maxf(0.0, (width - tabs_width) / maxi(1, tab_widths.size() - 1)))
+	var tab_x := maxf(0.0, width - tabs_width - tab_gap * (tab_widths.size() - 1))
+	_rect(body.get_node("Subtitle"), Rect2(0, 60 if in_detail else tabs_y, width if in_detail else maxf(0, tab_x - 24), 38 if in_detail else 50))
 	var index := 0
 	for key in filter_buttons:
-		_rect(filter_buttons[key], Rect2(width - filter_width * (3 - index), 54, filter_width, 50))
+		_rect(filter_buttons[key], Rect2(tab_x, tabs_y, tab_widths[index], 50))
+		tab_x += tab_widths[index] + tab_gap
 		index += 1
+	var divider: Control = body.get_node("FilterDivider")
+	divider.visible = not in_detail
+	_rect(divider, Rect2(0, tabs_y + 50, width, 1))
 	_update_filter_tabs()
 	status_label.visible = not status_label.text.is_empty()
 	var status_top := top
@@ -381,15 +400,20 @@ func _layout_content(width: float) -> void:
 		for season in store.seasons:
 			var group: Control = groups[season.id]
 			group.position = Vector2(0, height)
-			_rect(group.get_node("Toggle"), Rect2(0, 0, width - 120, 50))
-			_rect(group.get_node("Toggle/SeasonTitle"), Rect2(36, 0, width - 156, 50))
-			_rect(group.get_node("Count"), Rect2(36, 54, width - 36, 34))
-			var group_height := 112.0
+			var preview_width := 0.0
+			if group.has_node("Previews"):
+				preview_width = group.get_node("Previews").get_child_count() * 44 - 8
+			var text_width := width - (preview_width + 24 if preview_width > 0 else 0.0)
+			_rect(group.get_node("Toggle"), Rect2(0, 0, text_width, 44))
+			_rect(group.get_node("Toggle/Chevron"), Rect2(0, 10, 24, 24))
+			_rect(group.get_node("Toggle/SeasonTitle"), Rect2(36, 0, text_width - 36, 44))
+			_rect(group.get_node("Count"), Rect2(36, 48, text_width - 36, 32))
+			var group_height := 100.0
 			if group.has_node("Grid"):
-				group.get_node("Grid").position = Vector2(0, 110)
-				group_height = 130 + _layout_grid(group.get_node("Grid"), width)
+				group.get_node("Grid").position = Vector2(0, 104)
+				group_height = 128 + _layout_grid(group.get_node("Grid"), width)
 			elif group.has_node("Previews"):
-				_rect(group.get_node("Previews"), Rect2(width - 112, 12, 110, 50))
+				_rect(group.get_node("Previews"), Rect2(width - preview_width, 13, preview_width, 54))
 			if group.has_node("Divider"):
 				_rect(group.get_node("Divider"), Rect2(0, group_height, width, 1))
 			group.size = Vector2(width, group_height)

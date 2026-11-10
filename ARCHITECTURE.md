@@ -45,6 +45,8 @@ flowchart LR
 
 `CollectionGiftDialog.configure(host, collection_store, card_id, friend)` 是统一入口。
 
+好友页传入空的 `card_id` 时，窗口在卡图摘要中提供可赠卡牌选择并预选传入好友；收藏页传入具体卡牌 ID 时仍固定该卡。两个入口共用同一表单、数量与提交逻辑，好友页不再先打开旧的文字选卡窗口。
+
 - `host` 只提供遮罩所在的普通 `Control`，不要求宿主实现任何收藏页面内部方法。
 - 卡图、比例和系列名称由 `CardArtwork` 统一生成。
 - 赠送资格、库存、请求和恢复属于 `CollectionStore`；窗口只显示状态与提交操作。
@@ -86,3 +88,8 @@ py -3 tools/run_workbench_checks.py --godot <Godot控制台程序> --script chec
 ```
 
 该检查覆盖独立会话的判题/草稿/重做、共享题库不被修改、真实临时文件写入失败保护、业务服务生命周期和场景资源解析。功能回归继续使用题型顺序、答题重做布局、页面缓存、返回导航、动效、收藏、头像、个人中心、好友、充值及订单恢复检查。
+
+
+## PC / 移动端本地学习共用核心（2026-11-04）
+
+判题、刷题会话、题库加载、手动收藏、学习计数与本地 JSON 写入由 `scripts/fill_answer.gd`、`output_answer.gd`、`quiz_grader.gd`、`quiz_session.gd`、`question_bank.gd`、`manual_question_collection.gd`、`study_record.gd`、`local_json_store.gd` 维护。PC 的 `StudyStats` 和 `WrongQuestionStore` 委托这些模块，保留原接口与数据格式。移动项目通过 `mobile/tools/sync_pc_learning.py` 同步相同源文件并记录哈希，不另写判题或计数规则。核心仅在设备本地执行，不增加服务器实例或数据库。旧 PC 包装层与新实现的题库、学习统计及收藏格式已做隔离对照验证。
