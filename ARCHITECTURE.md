@@ -8,7 +8,7 @@
 - `StudyStats`：题库统一加载/校验/题型分组、学习记录、继续学习位置。
 - `ProfileStore`：宿主提供的账号会话与资料状态；持有资料保存快照、请求标识和待核实结果，弹窗关闭不取消已经发出的保存。
 - `AppServices`：按需创建并持有 `CollectionStore`、`SocialStore`、`WalletStore`、`WrongQuestions`。这些服务独立于页面和路由缓存生存。
-- `CardDrawStore`：同由 AppServices 持有，管理每次 200 电池获取卡牌的持久请求与结果核实；服务返回后合并 WalletStore 及 CollectionStore 的权威快照，展示控件仍只负责原有 CardReveal 动画。
+- `CardDrawStore`：同由 AppServices 持有，管理每次 200 电池获取卡牌的持久请求与结果核实；服务返回后合并 WalletStore 及 CollectionStore 的权威快照。`CardAcquisitionDialog` 协调入场、卡池停中和原 `CardReveal` 揭晓，均不拥有交易生命周期。
 - `PageRouter`：页面切换、返回层级、缓存和公共侧栏；不再创建或持有业务 Store。
 - `UiResources`：字体、主题资源、纹理缓存和滚动条显示策略。
 - `UiMotion`：过渡动画的执行、取消、离树清理和减少动态效果设置。
@@ -56,6 +56,8 @@ flowchart LR
 ## 样式与动效
 
 `UiTokens` 保存品牌色和时长；`UiStyles` 保存组件样式、配色变体、按钮/输入框焦点规则、代码控件及菜单外观。
+
+PC 开卡舞台使用独立的 `CardCarouselStage` 管理卡背资源准备、圆弧位置与切线倾角、连续流转和结果交接。它不引用钱包、账号或网络服务；收到的卡牌列表会深复制，卡背背后的显示顺序仅在已确认回执后调整。任意可见卡背均可选择，命中依据实际投影、PNG 透明度和绘制层级；选中索引只决定整组卡带的停中位置，所有卡片共用一个连续相位。`CardAcquisitionDialog` 先锁定所有卡片，再调用无卡牌参数的 `CardDrawStore.acquire()`，动画完成信号只能推进显示。点击即开始整组流转到中，与请求并行；停中和真实回执分别就绪后才交接。正反面由原 `CardReveal` 加载并揭示；入场、停中、资源准备共同满足后才放行。`CardAerospaceBackdrop` 独立管理背景，关闭时取消两类新增控件的动画与帧循环，持久服务继续完成或恢复原交易。
 
 圆角弹窗统一通过 `UiStyles.dialog_panel()` 设置透明窗口底色、无系统外框和无外层描边的面板；标题与关闭操作由弹窗内容提供。主题切换同样复用该入口，避免圆角外重新露出矩形底色。嵌入窗口额外通过 `DialogSurface` 保留圆角边缘的直通 RGB/Alpha，透明像素的 Alpha 始终为 0，避免合成时重复乘透明度及缩放采样黑色形成暗线；原生窗口不应用此转换。验收使用 `check_dialog_compositing.gd --visual` 对最终主窗口合成结果与真实遮罩背景逐像素比较，不能只检查子窗口纹理的四角。
 

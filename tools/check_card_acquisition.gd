@@ -35,13 +35,15 @@ func capture(name: String) -> void:
 
 func open() -> Node:
 	page.acquire_button.pressed.emit()
-	await pause()
+	for i in 400:
+		if not is_instance_valid(page.acquisition) or page.acquisition._pool_ready or page.acquisition.state == "error": break
+		await process_frame
 	return page.acquisition
 
 func result_ready(dialog: Node) -> void:
 	for i in 300:
 		if dialog.state == "result": return
-		if dialog.state == "revealing" and dialog.preview.state in ["ready", "revealing"]:
+		if dialog.state in ["aligning", "extracting", "revealing"]:
 			key(KEY_SPACE, true)
 			key(KEY_SPACE, false)
 		await process_frame
@@ -76,7 +78,7 @@ func _run() -> void:
 	await capture("01-collection-entry")
 	var dialog := await open()
 	check(dialog.state == "ready" and api.draw_calls.is_empty() and api.balances[Fixture.A] == 1000, "Opening P2 does not spend batteries")
-	check(dialog.back.texture.resource_path == page.store.seasons[0].back_image and not dialog.preview.visible, "Waiting screen uses the current complete card back")
+	check(dialog.carousel.slots.size() == 11 and dialog.carousel.catalogue_cards.size() == page.store.cards.size() and dialog.carousel.slots.all(func(slot): return slot.texture.resource_path == page.store.seasons[0].back_image) and not dialog.preview.visible, "Waiting carousel repeats the current catalogue into eleven original complete card backs")
 	check(not dialog.details.visible, "Card identity and result controls stay hidden before opening")
 	check(dialog.title_effect.label == dialog.title_label and dialog.title_label.get_theme_font("font") == root.get_node("UiResources").bold and dialog.title_label.get_theme_font_size("font_size") == 30, "Title effect uses the original native title and bold font")
 	check(dialog.title_effect.waiting, "Waiting dialog enables only title idle scheduling")
@@ -102,8 +104,8 @@ func _run() -> void:
 	check(wallet.balance == 800 and page.store.count("0004") == 1, "Wallet badge and collection adopt the same authoritative response")
 	check(dialog.title_effect.material.get_shader_parameter("sweep_strength") == 0.0, "Title highlight is gone while the card reveals")
 	check(dialog.preview.get_script() == Reveal and not dialog.return_button.is_visible_in_tree(), "The existing reveal timeline owns the result presentation")
-	for i in 200:
-		if dialog.preview.state != "loading": break
+	for i in 400:
+		if dialog._handed_off and dialog.preview.state != "loading": break
 		await process_frame
 	dialog.preview._kill_tween()
 	dialog.preview._set_elapsed(Reveal.REVEAL * 0.52)
