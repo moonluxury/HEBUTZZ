@@ -31,17 +31,18 @@ func _run() -> void:
 	await until(func(): return not store.options.is_empty())
 	check(store.options.price == 200 and store.options.odds.size() == 7, "Godot receives the deployed price and seven-card pool")
 	var dialog: Node = page.acquisition
+	await until(func(): return not dialog.hit.disabled)
 	dialog.hit.pressed.emit()
 	await until(func(): return store.ready_result() or not store.busy)
 	check(store.ready_result(), "The real draw receipt is accepted by the client")
 	if not store.ready_result(): quit(1); return
 	var card_id: String = store.operation.receipt.card_id
 	check(wallet.balance == 200 and page.store.count(card_id) == 1 and page.store.summary().total == 1, "Real balance and inventory update together in the PC client")
-	await until(func(): return dialog.preview.state != "loading")
+	await until(func(): return dialog._handed_off and dialog.preview.state != "loading")
 	dialog.preview.skip()
 	check(dialog.state == "result" and dialog.name_label.text == page.store.card(card_id).name and dialog.return_button.is_visible_in_tree(), "The actual card uses the existing reveal and visible result controls")
 	dialog.return_button.pressed.emit()
-	await process_frame
+	await until(func(): return not is_instance_valid(page.acquisition))
 	check(not is_instance_valid(page.acquisition) and store.operation.is_empty(), "Returning to collection finishes the paid operation")
 	print("LIVE CARD DRAW ASSERTIONS: %d (temporary account only)" % assertions)
 	print("WORKBENCH CHECKS: %s (%d failures)" % ["PASS" if failures.is_empty() else "FAIL", failures.size()])
