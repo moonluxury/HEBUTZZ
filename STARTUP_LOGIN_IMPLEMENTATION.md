@@ -12,8 +12,11 @@ PC 端正常启动后直接弹出既有账号登录窗口。登录完成前，�
 
 首页仍为 Workbench，未改动移动端或后端。`HEGONG_BACKEND_DISABLED`、隔离检查及 `--script` 工具入口继续用于开发验证；正常桌面启动不会跳过登录。
 
+2026-11-11 修复点击“一键登录”后自动改高造成的灰角：问题来自分数缩放后的窗口合成矩形存在极小舍入差异，子窗口本身的透明四角检查无法发现。公共 `DialogSurface` 现会在尺寸变化后稳定该矩形；登录请求、上次账号记录、密码处理与失败重试逻辑不变。同类圆角弹窗统一覆盖。合成检查增加宽短窗口、验证中、验证失败、再次调整尺寸、注册切换和返回登录，不通过隐藏/重新显示窗口掩盖动态问题。
+
 ## 验证
 
+- `check_dialog_compositing.gd --visual`：本次 OpenGL Compatibility 与 Vulkan Forward+ 各 102 个窗口状态通过，宽短窗口、分数缩放、125% 缩放和深浅色下，最终合成边缘异常均为 0；包括登录等待/失败/重试、改高、注册切换，以及资料、头像、赠送、换卡、想要清单、好友和充值弹窗。
 - `check_startup_login.gd --visual`：18 项通过，覆盖自动弹窗、背景与跳转限制、失败重试、注册入口、快捷登录、重复提交、会话失效、关闭时清空密码及迟到结果隔离。
 - `check_account_dialogs.gd`：53 项通过。
 - `check_remembered_login.gd`：36 项通过。
@@ -23,3 +26,5 @@ PC 端正常启动后直接弹出既有账号登录窗口。登录完成前，�
 检查通过 `tools/run_workbench_checks.py --godot <Godot控制台程序> --script <检查脚本>` 运行；实际渲染增加 `--visual`。真实启动检查使用 `py -3 tools/check_startup_launch.py --godot <Godot控制台程序>`。退出场景由环境变量 `STARTUP_LOGIN_EXIT_CASE=close / busy / escape` 选择，全部使用独立 `workbench-check-*` 存档。
 
 实际截图：`outputs/startup-login-validation/01-required-login.png`、`02-authenticated-entry.png`，均使用隔离测试资料。
+
+灰角修复的等待/失败重试截图位于 `outputs/dialog-compositing-validation/`，同样使用隔离账号和模拟响应。

@@ -29,7 +29,9 @@ const LOADING_DELAY := 0.2
 const LOADING_TURN := 0.9
 # PC acquisition stage. Seconds; carousel never determines a transaction result.
 const CARD_STAGE_ENTER := 0.40
-const CARD_POOL_ENTER := 0.30
+# Total deck entrance: show the pile, then spread it from left to right.
+const CARD_POOL_ENTER := 0.45
+const CARD_POOL_STACK_APPEAR := 0.06
 # Seconds per card position: smaller = faster (e.g. 1.20 is faster than 1.60).
 const CARD_POOL_STEP := 0.30
 const CARD_POOL_SETTLE := 0.25

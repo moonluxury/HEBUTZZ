@@ -8,6 +8,15 @@ var failures: Array[String] = []
 var checked := 0
 var output := "res://.godot_appdata/dialog-compositing"
 
+class QuickLoginFixture extends LoginFixture:
+	var release_response := false
+	func remembered_account() -> Dictionary:
+		return {"username": "corner_test", "account_id": "corner-test-account", "can_resume": true}
+	func remembered_auth() -> Dictionary:
+		resume_calls += 1
+		while not release_response: await get_tree().process_frame
+		return {"ok": false, "code": "network", "message": "连接失败，请稍后重试。"}
+
 func _init() -> void:
 	_run.call_deferred()
 
@@ -25,13 +34,14 @@ func visit(scene: String) -> Node:
 	await frames()
 	return current_scene
 
-func inspect(window: Window, name: String, surface: Color) -> void:
-	window.hide()
-	await frames()
-	await RenderingServer.frame_post_draw
-	var background := root.get_texture().get_image()
-	window.show()
-	await frames()
+func inspect(window: Window, name: String, surface: Color, background: Image = null) -> void:
+	if background == null:
+		window.hide()
+		await frames()
+		await RenderingServer.frame_post_draw
+		background = root.get_texture().get_image()
+		window.show()
+		await frames()
 	await RenderingServer.frame_post_draw
 	var composed := root.get_texture().get_image()
 	var source := window.get_texture().get_image()
@@ -58,10 +68,50 @@ func inspect(window: Window, name: String, surface: Color) -> void:
 				if actual.r < minf(beneath.r, surface.r) - margin or actual.g < minf(beneath.g, surface.g) - margin or actual.b < minf(beneath.b, surface.b) - margin or actual.r > maxf(beneath.r, surface.r) + margin or actual.g > maxf(beneath.g, surface.g) + margin or actual.b > maxf(beneath.b, surface.b) + margin:
 					invalid += 1
 	check(invalid == 0, name + " has no foreign outline in the final composed image: " + str(invalid))
-	if name in ["fractional-light-avatar", "fractional-light-edit", "fractional-light-login"]:
+	if name in ["fractional-light-avatar", "fractional-light-edit", "fractional-light-login"] or name.begins_with("wide-short-light-quick-"):
 		composed.save_png(output.path_join(name + "-page.png"))
 	print(name, ": ", invalid, " edge anomalies")
 	checked += 1
+
+func inspect_quick_login(page: Node, prefix: String) -> void:
+	var api := QuickLoginFixture.new()
+	api.base_url = "https://dialog-corners.test"
+	root.add_child(api)
+	var dialog := LoginDialog.new()
+	dialog.provider = api
+	root.add_child(dialog)
+	# Capture the real shaded page once. Later samples never hide/reopen the
+	# dialog, so a resize/composition error cannot be hidden by the test itself.
+	await frames()
+	await RenderingServer.frame_post_draw
+	var background := root.get_texture().get_image()
+	dialog.present()
+	await frames(16)
+	await inspect(dialog, prefix + "quick-before", page.surface, background)
+	dialog.quick_login.pressed.emit()
+	dialog.quick_login.pressed.emit()
+	await frames(16)
+	check(dialog.busy and dialog.quick_login.disabled and api.resume_calls == 1, "Quick-login waiting disables duplicate requests")
+	check(dialog.get_stretch_transform() * dialog.get_visible_rect() == Rect2(Vector2.ZERO, Vector2(dialog.size)), "Resized rounded login covers its window exactly")
+	await inspect(dialog, prefix + "quick-busy", page.surface, background)
+	api.release_response = true
+	await frames(16)
+	check(not dialog.busy and not dialog.quick_login.disabled and dialog.status.visible and dialog.username.text == "corner_test", "Failed quick login preserves the retry action and account text")
+	await inspect(dialog, prefix + "quick-failed", page.surface, background)
+	dialog.size += Vector2i(1, 1)
+	await frames(8)
+	await inspect(dialog, prefix + "quick-resized", page.surface, background)
+	dialog._mode_changed(1)
+	await frames(16)
+	await inspect(dialog, prefix + "quick-register", page.surface, background)
+	dialog._mode_changed(0)
+	await frames(16)
+	await inspect(dialog, prefix + "quick-return", page.surface, background)
+	var shade := dialog.shade
+	dialog._cancel()
+	api.queue_free()
+	await frames()
+	check(not is_instance_valid(dialog) and not is_instance_valid(shade), "Quick-login transitions leave no window, shade, or queued correction behind")
 
 func _run() -> void:
 	if not OS.get_user_data_dir().contains("workbench-check"):
@@ -88,7 +138,7 @@ func _run() -> void:
 	login.base_url = "https://dialog-surface.test"
 	root.add_child(login)
 	await frames()
-	for configuration in [["fractional", Vector2i(2560, 1680), Vector2i(2560, 1500)], ["125-percent", Vector2i(1600, 1000), Vector2i(2000, 1250)]]:
+	for configuration in [["wide-short", Vector2i(2560, 1680), Vector2i(2560, 1032)], ["fractional", Vector2i(2560, 1680), Vector2i(2560, 1500)], ["125-percent", Vector2i(1600, 1000), Vector2i(2000, 1250)]]:
 		root.content_scale_size = configuration[1]
 		root.size = configuration[2]
 		root.position = Vector2i(-10000, -10000)
@@ -99,6 +149,7 @@ func _run() -> void:
 			await frames()
 			var prefix: String = str(configuration[0]) + ("-dark-" if dark else "-light-")
 			var page := await visit("PersonalCenter")
+			await inspect_quick_login(page, prefix)
 			for mode in ["edit", "account", "avatar"]:
 				page.show_panel(mode)
 				await inspect(page.dialog, prefix + mode, page.surface)
@@ -128,9 +179,16 @@ func _run() -> void:
 			await frames()
 			page = await visit("MyFriends")
 			page.show_panel("add")
-			await inspect(page.dialog, prefix + "friend", page.surface)
+			# The existing add/request design uses a white surface in both themes.
+			await inspect(page.dialog, prefix + "friend", page.dialog.panel.get_theme_stylebox("panel").bg_color)
 			page.dialog.dismiss()
 			await frames()
+			for mode in ["exchange", "wishlist"]:
+				page.show_panel(mode, {"peer": {"id": "test-account-b", "display_name": "圆角检查好友"}})
+				await frames(16)
+				await inspect(page.dialog, prefix + mode, page.dialog.colors.surface)
+				page.dialog.dismiss()
+				await frames()
 			page = await visit("Recharge")
 			page.show_panel("rules")
 			await inspect(page.dialog, prefix + "recharge", page.surface)
