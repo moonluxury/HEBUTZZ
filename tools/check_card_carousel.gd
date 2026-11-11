@@ -1,6 +1,7 @@
 extends "res://tools/check_card_acquisition.gd"
 const Pool = preload("res://scripts/card_carousel_stage.gd")
 const Tokens = preload("res://scripts/ui_tokens.gd")
+var entry_captures: Array[Dictionary] = []
 
 func check(ok: bool, message: String) -> void:
 	if not ok and is_instance_valid(page) and is_instance_valid(page.acquisition):
@@ -33,6 +34,22 @@ func move_to(point: Vector2) -> void:
 	event.global_position = point
 	root.push_input(event, true)
 	await process_frame
+
+func card_span(pool: Control) -> float:
+	var left := INF
+	var right := -INF
+	for slot in pool.slots:
+		var x: float = slot.position.x + slot.pivot_offset.x
+		left = minf(left, x)
+		right = maxf(right, x)
+	return right - left
+
+func capture_entry(_dialog: Node, filename: String) -> void:
+	# Capture native frames now; defer PNG compression until after entry so
+	# disk/encoder time cannot shift the short animation's later checkpoints.
+	if DisplayServer.get_name() == "headless": return
+	await RenderingServer.frame_post_draw
+	entry_captures.append({"image": root.get_texture().get_image(), "filename": filename})
 
 func _run() -> void:
 	if not OS.get_user_data_dir().contains("workbench-check"): quit(2); return
@@ -69,7 +86,26 @@ func _run() -> void:
 	check(dialog.state == "entering" and dialog.hit.disabled and api.draw_calls.is_empty(), "Entry does not dispatch a paid request")
 	await pause(0.15)
 	await capture("01-scene-entering")
+	await until(func(): return dialog.carousel.state == "entering", "The loaded deck starts its entrance after the modal")
+	await pause(Tokens.CARD_POOL_STACK_APPEAR * 0.5)
+	var initial_span := card_span(dialog.carousel)
+	check(initial_span < 26.0 and dialog.carousel.slots[0].position.x < dialog.carousel.size.x * 0.25, "All eleven backs begin together in a small pile on the left")
+	check(dialog.hit.disabled and not dialog.carousel.selection_enabled, "The pile cannot acquire before it has finished spreading")
+	var pile_card: Control = dialog.carousel.slots[0]
+	await click_at(pile_card.get_global_transform_with_canvas() * (pile_card.size * 0.5))
+	check(api.draw_calls.is_empty(), "Clicking the entering pile does not start a paid request")
+	await capture_entry(dialog, "01a-left-card-pile")
+	await pause(Tokens.CARD_POOL_ENTER * 2.0 / 9.0)
+	var middle_span := card_span(dialog.carousel)
+	check(middle_span > initial_span + 70.0 and middle_span < 1000.0, "The moving pile spreads cards progressively toward the right (span %.1f, progress %.3f)" % [middle_span, dialog.carousel.entry_progress])
+	await capture_entry(dialog, "01b-spreading-right")
+	await pause(Tokens.CARD_POOL_ENTER * 5.0 / 18.0)
+	check(card_span(dialog.carousel) > middle_span and not dialog._pool_ready, "The spread keeps widening before it unlocks selection")
+	await capture_entry(dialog, "01c-almost-unfolded")
 	await until(func(): return dialog._pool_ready, "Back textures and card entry complete")
+	check(card_span(dialog.carousel) > 1000.0 and dialog.carousel.entry_progress == 1.0, "The complete deck reaches the existing arc before flow begins")
+	for frame in entry_captures: frame.image.save_png(output.path_join(frame.filename + ".png"))
+	entry_captures.clear()
 	check(dialog.state == "ready" and dialog.carousel.catalogue_cards.size() == 7 and dialog.carousel.slots.size() == 11 and not dialog.hit.disabled, "Eleven display backs include all seven real catalogue cards")
 	check(dialog.hint.text == "从流转的卡池中，选择一张属于你的卡牌" and dialog.pool_note.text == "点击任意卡片，开启你的卡牌", "Copy explains that every card is selectable")
 	check(dialog.carousel.back_paths.all(func(path): return path == page.store.season("season-001").back_image), "The original catalogue back is reused without image substitution")
@@ -228,6 +264,7 @@ func _run() -> void:
 	await _all_presentational_targets()
 	await _all_clickable_slots()
 	await _all_rotation_paths()
+	await _entry_lifecycle()
 	check(page.store.cards == catalogue_before, "All pool exercises leave the production catalogue unchanged")
 	print("CAROUSEL ASSERTIONS: ", assertions)
 	print("WORKBENCH CHECKS: %s (%d failures)" % ["PASS" if failures.is_empty() else "FAIL", failures.size()])
@@ -258,6 +295,32 @@ func _all_presentational_targets() -> void:
 	pool.freeze()
 	pool.queue_free()
 	await pause(0.05)
+
+func _entry_lifecycle() -> void:
+	var calls_before: int = api.draw_calls.size()
+	page._open_acquisition()
+	var dialog: Node = page.acquisition
+	await until(func(): return dialog.carousel.state == "entering", "Close case reaches the spreading deck")
+	await pause(Tokens.CARD_POOL_ENTER * 2.0 / 9.0)
+	var frozen: float = dialog.carousel.entry_progress
+	var poses: Array[Vector2] = []
+	for slot in dialog.carousel.slots: poses.append(slot.position)
+	dialog.dismiss()
+	var retained: bool = dialog.carousel.entry_progress == frozen and dialog.carousel._tween == null
+	for i in poses.size(): retained = retained and dialog.carousel.slots[i].position == poses[i]
+	check(retained and dialog.carousel.state == "exiting", "Closing mid-spread freezes the current pile instead of resetting it")
+	await pause()
+	check(not is_instance_valid(page.acquisition) and api.draw_calls.size() == calls_before, "Closing a spreading deck unloads it without spending")
+	page._open_acquisition()
+	dialog = page.acquisition
+	await until(func(): return dialog.carousel.state == "entering", "Reopened modal starts one fresh deck entrance")
+	check(card_span(dialog.carousel) < 26.0, "Reopening resets the old spread to a left-hand pile")
+	await pause(Tokens.CARD_POOL_ENTER * 0.2)
+	motion.set_enabled(false)
+	check(dialog._pool_ready and card_span(dialog.carousel) > 1000.0 and dialog.carousel._tween == null and not dialog.carousel.is_processing(), "Reduced motion during spread immediately presents the complete static arc")
+	check(api.draw_calls.size() == calls_before and not dialog.hit.disabled, "Reduced mode keeps selection available without creating a request")
+	dialog.dismiss(); await pause()
+	motion.set_enabled(true)
 
 func _all_clickable_slots() -> void:
 	motion.set_enabled(false)

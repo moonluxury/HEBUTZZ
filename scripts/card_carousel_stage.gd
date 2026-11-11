@@ -170,12 +170,14 @@ func _start_entry() -> void:
 		if ticket == _generation: _entry_finished())
 
 func _set_entry(value: float) -> void:
-	entry_progress = Motion.out(value)
+	entry_progress = clampf(value, 0.0, 1.0)
 	_render_frame()
 
 func _entry_finished() -> void:
 	_tween = null
 	state = "flowing"
+	# The last laid card finishes at rest; blend into the existing flow speed.
+	speed_multiplier = 0.0
 	_update_processing()
 	entered.emit()
 
@@ -426,6 +428,12 @@ func _render_frame() -> void:
 	# come from the same circle instead of independent height/tilt curves.
 	var spacing := minf(T.CARD_POOL_SPACING, size.x / 10.0)
 	var radius := T.CARD_POOL_ARC_RADIUS
+	var spreading := entry_progress < 1.0
+	var entry_time := entry_progress * T.CARD_POOL_ENTER
+	var appear := Motion.out(entry_time / T.CARD_POOL_STACK_APPEAR) if spreading else 1.0
+	var unfold := Motion.curve((entry_time - T.CARD_POOL_STACK_APPEAR) / maxf(0.001, T.CARD_POOL_ENTER - T.CARD_POOL_STACK_APPEAR), Vector2(0.32, 0.0), Vector2(0.22, 1.0)) if spreading else 1.0
+	var left := -floorf(half)
+	var leading_distance := lerpf(left, left + cards.size() - 1.0, unfold)
 	var nearest := INF
 	for i in slots.size():
 		var distance := wrapf(float(i) - phase, -half, half)
@@ -437,16 +445,20 @@ func _render_frame() -> void:
 		var distance := wrapf(float(i) - phase, -half, half)
 		var normalized := distance / maxf(1.0, half)
 		var depth := absf(normalized)
-		var theta := distance * spacing / radius
-		var scale_value := 1.0 - 0.035 * depth * depth
+		# Unlaid cards remain together in a small traveling pile. As it crosses
+		# each final slot, that card stays behind on the same circular arc.
+		var pose_distance := minf(distance, leading_distance) if spreading else distance
+		var pile_depth := maxf(0.0, distance - leading_distance) if spreading else 0.0
+		var theta := pose_distance * spacing / radius
+		var pose_depth := absf(pose_distance / maxf(1.0, half))
+		var scale_value := 1.0 - 0.035 * pose_depth * pose_depth
 		var point := center + Vector2(radius * sin(theta), radius * (1.0 - cos(theta)))
-		point += Vector2(signf(distance) * 35, 15) * (1.0 - entry_progress)
-		scale_value *= lerpf(0.94, 1.0, entry_progress)
+		point += Vector2(1.8, 0.9) * pile_depth
 		if i == _press_index: scale_value *= press_scale
 		if not _motion.reduced():
 			point.y -= 8 * _hover_lifts[i]
 			scale_value *= 1.0 + 0.025 * _hover_lifts[i]
-		var alpha := lerpf(1.0, 0.92, depth) * entry_progress
+		var alpha := lerpf(1.0, 0.92, depth) * appear
 		# Edge fade spans 0.60 card positions; elapsed time follows the flow speed.
 		alpha *= 1.0 - smoothstep(half - 0.60, half, absf(distance))
 		var rotation_value := theta
