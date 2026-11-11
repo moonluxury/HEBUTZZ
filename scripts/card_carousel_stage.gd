@@ -503,9 +503,9 @@ func _render_frame() -> void:
 		slot.scale = Vector2.ONE * scale_value
 		slot.rotation = rotation_value
 		slot.modulate = Color(tint, alpha)
-		# Keep a committed selection readable above its neighbours while every
-		# card still follows the original shared arc and phase.
-		slot.z_index = 200 if i == _target_index and extract_progress > 0 else 180 if i == selection_feedback.active_index and selection_feedback.committed else 150 if i == focal_index else int((1-depth) * 100)
+		# Stable right-over-left stacking, including selection and extraction.
+		# The only reorder is the fully faded wrap at the ends of the ribbon.
+		slot.z_index = int((distance + half) * 10.0)
 		slot.material.set_shader_parameter("card_size", base)
 		slot.material.set_shader_parameter("yaw", yaw)
 		slot.material.set_shader_parameter("depth_blur", blur)
