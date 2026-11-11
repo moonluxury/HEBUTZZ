@@ -52,6 +52,11 @@ static func apply_focus(control: Control, base: StyleBoxFlat = null) -> void:
 	focus.shadow_size = 0
 	control.add_theme_stylebox_override("focus", focus)
 
+static func white_button_text(control: Control, style: StyleBoxFlat, primary := false, semantic := false) -> bool:
+	if primary: return true
+	if semantic or control.get_meta("state_only_feedback", false) or control.get_meta("foreground_only_feedback", false): return false
+	return style != null and style.draw_center and style.bg_color.a >= 0.95 and style.bg_color.srgb_to_linear().get_luminance() <= 0.18
+
 static func button(control: Button, color := Color.TRANSPARENT, primary := false, dark := false, font_size := 22) -> void:
 	var colors := palette(dark)
 	control.add_theme_font_size_override("font_size", font_size)
@@ -61,8 +66,15 @@ static func button(control: Button, color := Color.TRANSPARENT, primary := false
 		style.content_margin_right = 16 if primary else 0
 		control.add_theme_stylebox_override(state, style)
 	apply_focus(control)
-	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color", "font_disabled_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_focus_color", "icon_disabled_color"]:
-		control.add_theme_color_override(state, Color.WHITE if primary else colors.muted if control.disabled else colors.text)
+	# Enabled colors must not depend on the current disabled flag. Otherwise a
+	# deferred feedback binding can accidentally cache disabled gray as normal.
+	var foreground: Color = Tokens.ON_PRIMARY if white_button_text(control, control.get_theme_stylebox("normal") as StyleBoxFlat, primary) else colors.text
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
+		control.add_theme_color_override(state, foreground)
+	for state in ["icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_hover_pressed_color", "icon_focus_color"]:
+		control.add_theme_color_override(state, Tokens.ON_PRIMARY if primary else colors.text)
+	control.add_theme_color_override("font_disabled_color", Color("#657080") if primary else colors.muted)
+	control.add_theme_color_override("icon_disabled_color", Color("#657080") if primary else colors.muted)
 	control.add_theme_constant_override("icon_max_width", 28)
 	control.add_theme_constant_override("h_separation", 12)
 	control.expand_icon = true

@@ -44,6 +44,13 @@ func card_span(pool: Control) -> float:
 		right = maxf(right, x)
 	return right - left
 
+func right_over_left(pool: Control) -> bool:
+	var ordered: Array = pool.slots.duplicate()
+	ordered.sort_custom(func(a, b): return a.position.x + a.pivot_offset.x < b.position.x + b.pivot_offset.x)
+	for i in range(1, ordered.size()):
+		if ordered[i].z_index <= ordered[i - 1].z_index: return false
+	return true
+
 func capture_entry(_dialog: Node, filename: String) -> void:
 	# Capture native frames now; defer PNG compression until after entry so
 	# disk/encoder time cannot shift the short animation's later checkpoints.
@@ -107,6 +114,7 @@ func _run() -> void:
 	await capture_entry(dialog, "01c-almost-unfolded")
 	await until(func(): return dialog._pool_ready, "Back textures and card entry complete")
 	check(card_span(dialog.carousel) > 1000.0 and dialog.carousel.entry_progress == 1.0, "The complete deck reaches the existing arc before flow begins")
+	check(right_over_left(dialog.carousel), "All eleven cards consistently use right-over-left drawing order")
 	for frame in entry_captures: frame.image.save_png(output.path_join(frame.filename + ".png"))
 	entry_captures.clear()
 	check(dialog.state == "ready" and dialog.carousel.catalogue_cards.size() == 7 and dialog.carousel.slots.size() == 11 and not dialog.hit.disabled, "Eleven display backs include all seven real catalogue cards")
@@ -164,6 +172,7 @@ func _run() -> void:
 	var positions_before: Array[Vector2] = []
 	for slot in dialog.carousel.slots: positions_before.append(slot.position + slot.pivot_offset)
 	check(dialog.carousel.selected_index == selected, "The clicked outer card is selected rather than the central card")
+	check(right_over_left(dialog.carousel), "Selecting a card never raises it above its right-hand neighbours")
 	await click_at(dialog.hit.get_global_rect().get_center())
 	dialog.hit.pressed.emit(); dialog.hit.pressed.emit()
 	check(draws.busy and api.draw_calls.size() == 1 and dialog.hit.disabled and not dialog.carousel.selection_enabled, "Native outer click locks all cards before dispatch; cross-card repeated clicks spend once")
@@ -188,6 +197,7 @@ func _run() -> void:
 	check(visible_choice != "0004", "This request deliberately returned a different identity than the clicked visual position")
 	var destination: Rect2 = dialog._reveal_destination()
 	check(events.rect.position.distance_to(destination.position) < 0.01 and events.rect.size.distance_to(destination.size) < 0.01, "The extracted back exactly matches CardReveal's position and size")
+	check(right_over_left(dialog.carousel), "Centering and extraction retain the same right-over-left order")
 	check(dialog.preview.get_script() == Reveal and dialog.preview.face.texture.resource_path == page.store.card("0004").image, "The existing CardReveal displays the exact server-selected front")
 	check(dialog.metadata.text.contains("本次 +1") and dialog.metadata.text.contains("当前拥有 1 张"), "Receipt quantity and authoritative ownership are displayed")
 	check(api.grants == 1 and wallet.balance == 9800 and page.store.cards == catalogue_before, "Presentation reordering never modifies the catalogue, prize, inventory rules or price")
@@ -351,7 +361,7 @@ func _all_clickable_slots() -> void:
 	await until(func(): return pool.state == "flowing", "Overlap pool ready")
 	var center: Control = pool.slots[0]
 	var overlap := center.get_global_transform_with_canvas() * Vector2(center.size.x * 0.90, center.size.y * 0.5)
-	check(pool.pick_slot(overlap) == 0, "Overlapping cards select the rendered frontmost card")
+	check(pool.pick_slot(overlap) == 1, "Overlap selects the right-hand card, which consistently covers its left neighbour")
 	var corner := center.get_global_transform_with_canvas() * Vector2(0.01, 0.01)
 	check(pool.pick_slot(corner) != 0, "A transparent PNG corner is not an invisible hit target")
 	pool.freeze(); pool.queue_free()

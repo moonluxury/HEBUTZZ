@@ -20,6 +20,7 @@ var hover_duration := T.HOVER
 var ink := Color.WHITE
 var icon_ink := Color.WHITE
 var disabled_ink := Color("#657080")
+var disabled_icon_ink := Color("#657080")
 var foreground_color := Color.WHITE:
 	set(value):
 		foreground_color = value
@@ -59,9 +60,10 @@ func configure(is_primary: bool, keep_semantics: bool) -> void:
 		return
 	base = source.duplicate()
 	disabled_style = control.get_theme_stylebox("disabled").duplicate() if semantic else base.duplicate()
-	ink = control.get_theme_color("font_color")
+	ink = T.ON_PRIMARY if Styles.white_button_text(control, base, primary, semantic) else control.get_theme_color("font_color")
 	icon_ink = control.get_theme_color("icon_normal_color")
 	disabled_ink = control.get_theme_color("font_disabled_color") if semantic else Color("#A2ADBE") if base.bg_color.get_luminance() < 0.15 and not primary else Color("#657080")
+	disabled_icon_ink = control.get_theme_color("icon_disabled_color") if semantic else disabled_ink
 	if not semantic:
 		disabled_style.bg_color = Color("#2F3A4D") if base.bg_color.get_luminance() < 0.15 and not primary else Color("#E5E8EE") if primary else base.bg_color
 	var old := live
@@ -105,6 +107,10 @@ func _check_disabled() -> void:
 		last_disabled = control.disabled
 		pressing = false
 		update_state(0.0)
+		# Draw signals arrive after native Button commands have been recorded.
+		# Schedule a fresh draw rather than leaving the old gray commands cached
+		# until a pointer event happens to invalidate the control again.
+		control.queue_redraw.call_deferred()
 
 func update_state(duration: float) -> void:
 	if base == null or live == null:
@@ -127,7 +133,7 @@ func update_state(duration: float) -> void:
 	if control is Button:
 		control.mouse_default_cursor_shape = Control.CURSOR_ARROW if disabled else Control.CURSOR_POINTING_HAND
 		var foreground := disabled_ink if disabled else ink
-		var icon_color := control.get_theme_color("icon_disabled_color") if disabled and semantic else disabled_ink if disabled else icon_ink
+		var icon_color := disabled_icon_ink if disabled else icon_ink
 		if foreground_only:
 			if not disabled and not state_only and (over or (control.has_focus() and not control.get_meta("suppress_focus_feedback", false)) or pressing):
 				foreground = T.DARK_ACCENT if get_node("/root/AppState").dark_mode else T.PRIMARY
@@ -136,10 +142,15 @@ func update_state(duration: float) -> void:
 			_apply_foreground(foreground, icon_color)
 
 func _apply_foreground(foreground: Color, icon_color: Color) -> void:
-	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color", "font_disabled_color"]:
-		control.add_theme_color_override(state, foreground)
-	for state in ["icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_hover_pressed_color", "icon_focus_color", "icon_disabled_color"]:
-		control.add_theme_color_override(state, icon_color)
+	var enabled_ink := ink if control.disabled else foreground
+	if Styles.white_button_text(control, base, primary, semantic): enabled_ink = T.ON_PRIMARY
+	var enabled_icon := T.ON_PRIMARY if primary else icon_ink if control.disabled else icon_color
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
+		control.add_theme_color_override(state, enabled_ink)
+	for state in ["icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_hover_pressed_color", "icon_focus_color"]:
+		control.add_theme_color_override(state, enabled_icon)
+	control.add_theme_color_override("font_disabled_color", disabled_ink)
+	control.add_theme_color_override("icon_disabled_color", disabled_icon_ink)
 
 func _shade(color: Color, amount: float) -> Color:
 	if color.a < 0.01:
