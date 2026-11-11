@@ -63,6 +63,9 @@ func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(output)
 	profile = root.get_node("ProfileStore")
 	motion = root.get_node("UiMotion")
+	# Ignore OS focus changes for this isolated off-screen renderer; the suite
+	# still toggles the actual enabled preference to verify reduced motion.
+	motion.preference_changed.connect(func(): motion.system_reduced = 0; motion.suspended = false)
 	api = Fixture.new()
 	root.add_child(api)
 	await login(Fixture.A)

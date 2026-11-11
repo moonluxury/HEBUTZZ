@@ -370,7 +370,7 @@ func _card_clicked(index := -1) -> void:
 		state = "requesting"
 		_counts_before = page.store.inventory.duplicate(true)
 		title_effect.begin_opening()
-		carousel.requesting(index)
+		carousel.requesting(index, true)
 		store.acquire()
 		_sync()
 

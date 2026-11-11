@@ -16,11 +16,14 @@
 | --- | --- |
 | `scripts/card_acquisition_dialog.gd` | 总控：任意卡背选择、真实回执、卡池停中、图片就绪、揭晓、键盘与关闭；保留原返回信号和焦点恢复 |
 | `scripts/card_carousel_stage.gd`（新增） | 只负责卡池资源、弧线位置/大小/透明度/排序、流转、停中、放大与取消；不访问交易服务 |
+| `scripts/card_selection_feedback.gd` | 独立选中特效：即时亮边、按压回弹、双轨光弧、24 个航迹星点、持续选中微光及取消；不访问交易服务 |
+| `shaders/card_selection_outline.gdshader` | 使用真实卡背 PNG 的 Alpha 生成轮廓光，采用与卡背相同的轻透视投影，不绘制矩形底板 |
 | `shaders/card_carousel.gdshader`（新增） | 卡背轻透视与远侧 mip 模糊，保留 PNG 透明外角 |
 | `scripts/card_aerospace_backdrop.gd`（新增） | 地球弧面底景、原生星点/卫星/轨道线与独立入场 |
 | `assets/collection/stage/earth_horizon.webp`（新增） | 独立背景底图，导入配置随项目保存 |
 | `scripts/ui_tokens.gd` | PC 卡池时长、展示数量和悬停速度参数，见下表 |
 | `tools/check_card_carousel.gd`（新增） | 原生渲染、七卡停中、真实回执交接、跳过/关闭/减少动态效果、窗口适配的隔离检查 |
+| `tools/check_card_selection_feedback.gd` | 点击反馈专项：即时按压、取消、跟随/跨边界淡化、慢请求、跳过、关闭恢复与减少动态效果；输出四阶段原生截图 |
 | `tools/check_card_acquisition.gd` | 原有交易/恢复回归，等待新卡池和原揭晓的完成事件 |
 | `tools/check_card_draw_live.gd` | 保留原受限临时账号联调入口，等待新舞台就绪和退出完成；本轮未执行线上联调 |
 
@@ -37,6 +40,12 @@
 7. Space 可跳过已确认结果的停中/放大/揭晓；图片未就绪时只记住跳过意图。请求未确认时 Space 不生效，长按/重复按键不再次购买。
 8. Esc、关闭和返回按钮沿用统一退出：取消新增卡池 Tween 与帧循环、冻结当前可见姿态，原 200ms 退出完成后卸载并恢复入口焦点。关闭不取消业务服务，迟到回执只持久化，不重开弹层。
 9. 减少动态效果时卡池静止；停中与交接直接完成，结果仍通过原短交叉淡化显示。运行中切换偏好也保留同一回执。
+
+点击反馈与上述业务/流转并行。鼠标按下立即点亮原卡背外缘并在约 60ms 内压至 0.97；有效点击后，0–60ms 确认按压，60–180ms 展开蓝白与少量暖金轨道光弧并回弹至约 1.03，120–390ms 播放 24 个沿航迹移动的星点，320–450ms 收束为稳定薄微光。选中卡片在整组弧线轨迹中保持原中心与位置，并置于相邻卡片前方以便追踪；特效同步其倾角、缩放、透明度和绘制深度，跨越两端时一起淡出/淡入。光弧前后分层，前层避开卡片文字区域。放大交接的末段收掉微光，700ms 翻面不等待额外特效。图片、Logo、声音偏好、结果及价格不变。
+
+选中卡背本身也保持静态冷白柔光：使用原图亮度保护深色 Logo 和文字，只提亮纸面与云纹，原 PNG 的 Alpha 不变。双轨和星点消失后，卡背柔光与边缘微光继续指示同一张选中卡；在放大交接末段一同淡去。按下时先给较轻的预反馈，确认点击后达到常亮强度；其他卡片不提亮。
+
+拖出卡片后松开只取消按压反馈，不发起获卡；失败重试会淡去旧效果，跳过会立即清理，关闭冻结当前视觉并取消回调。恢复先前回执不自动播放点击反馈。减少动态效果模式保留 140ms 的短边缘提亮和持续的静态卡背柔光，取消回弹、光弧和星点；重复的偏好通知不会重新触发提亮动画。光弧与星点由 Godot 原生绘制，不需要新的位图插画或第三方素材。
 
 ### 新增 UiTokens 参数
 
@@ -57,6 +66,11 @@
 | `CARD_POOL_HOVER_RESPONSE` | `0.14` | 悬停变速响应常数；越大越柔缓 |
 | `CARD_POOL_ARC_RADIUS` | `3000.0` | 圆弧半径（逻辑 px），越大越平缓 |
 | `CARD_POOL_SPACING` | `112.0` | 沿圆弧的卡位间距（逻辑 px） |
+| `CARD_PICK_DURATION` | `0.45` | 点击选中反馈总时长；四阶段按比例同步调整，不改变卡池流速、转到中央或翻面时长 |
+| `CARD_PICK_PARTICLES` | `24` | 点击选中时的航迹星点数量，不影响翻面组件原有光点 |
+| `CARD_PICK_RELEASE` | `0.08` | 取消按压或请求失败时收掉反馈的时间 |
+| `CARD_PICK_REDUCED` | `0.14` | 减少动态效果模式的短边缘提亮时间 |
+| `CARD_PICK_BACK_LIGHT` | `0.30` | 选中卡背的常亮强度（0–1，不是时长）；调大更亮，0 关闭卡背提亮 |
 
 ### 运行与验证
 
@@ -64,6 +78,7 @@
 
 ```powershell
 python tools/run_workbench_checks.py --godot '<Godot 4.6.2 控制台程序>' --script check_card_carousel.gd --visual --timeout 110
+python tools/run_workbench_checks.py --godot '<Godot 4.6.2 控制台程序>' --script check_card_selection_feedback.gd --visual --timeout 90
 python tools/run_workbench_checks.py --godot '<Godot 4.6.2 控制台程序>' --script check_card_acquisition.gd --visual
 python tools/run_workbench_checks.py --godot '<Godot 4.6.2 控制台程序>' --script check_card_reveal.gd --visual
 ```
@@ -75,6 +90,10 @@ python tools/run_workbench_checks.py --godot '<Godot 4.6.2 控制台程序>' --s
 上述完整回归最初在 900ms 入场版执行；450ms 最终版再次通过 Vulkan 完整 221 项检查与 OpenGL 原生入场专项。截图在内存中暂存，待展开完成后再编码，避免 PNG 编码耗时干扰短动画的阶段采样。
 
 所有获卡数据使用隔离 provider 和独立 `workbench-check-*` 存档。未对正式账号扣费、未修改或重新部署后端、未导出安装包。原 CardReveal 检查退出时出现过 Godot ObjectDB 清理警告，断言通过；本轮卡池专项与原获卡回归无该警告。
+
+选中反馈与持续卡背柔光的最终版本：Vulkan Forward+ 与 OpenGL Compatibility 的 `check_card_selection_feedback.gd` 各 33 项通过，OpenGL 完整卡池回归 221 项及架构边界检查通过。检查包含即时按压、仅当前卡片常亮、双轨结束后持续亮、跨边界同步淡化、取消/跳过/关闭清理、迟到回执恢复、翻面前恢复原色，以及减少动态效果下静态保持；重复偏好通知不会重启已经结束或冻结的效果。所有业务请求均使用隔离模拟服务。
+
+特效峰值与四阶段截图在 `outputs/card-selection-validation/`，`storyboard.png` 汇总按下、轨道展开、航迹星点和收束状态，`04-settled-selection.png` 展示卡背持续常亮。
 
 ---
 
