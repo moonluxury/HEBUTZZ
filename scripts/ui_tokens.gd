@@ -46,3 +46,10 @@ const CARD_POOL_HOVER_RESPONSE := 0.14
 # One circular arc supplies both positions and tangent angles (logical UI px).
 const CARD_POOL_ARC_RADIUS := 3000.0
 const CARD_POOL_SPACING := 112.0
+# Selection feedback is parallel to the pool/request, never an extra reveal gate.
+const CARD_PICK_DURATION := 0.45
+const CARD_PICK_PARTICLES := 24
+const CARD_PICK_RELEASE := 0.08
+const CARD_PICK_REDUCED := 0.14
+# Steady card-back light after selection; 0 disables, higher is brighter.
+const CARD_PICK_BACK_LIGHT := 0.30

@@ -10,6 +10,8 @@ signal chosen(index: int)
 const T = preload("res://scripts/ui_tokens.gd")
 const Motion = preload("res://scripts/card_modal_motion.gd")
 const BackShader = preload("res://shaders/card_carousel.gdshader")
+const SelectionFeedback = preload("res://scripts/card_selection_feedback.gd")
+var selection_feedback: Node2D
 var cards: Array = []
 var catalogue_cards: Array = []
 var slots: Array[TextureRect] = []
@@ -54,6 +56,9 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_motion = get_node("/root/UiMotion")
 	_motion.preference_changed.connect(_preference_changed)
+	selection_feedback = SelectionFeedback.new()
+	add_child(selection_feedback)
+	selection_feedback.changed.connect(_render_frame)
 	resized.connect(_render_frame)
 	if get_viewport().has_signal("mouse_exited"):
 		get_viewport().connect("mouse_exited", _pointer_exited)
@@ -63,6 +68,7 @@ func configure(items: Array, season_back: String) -> void:
 	_generation += 1
 	_kill_tween()
 	_motion.cancel(self, false)
+	selection_feedback.reset()
 	for slot in slots:
 		remove_child(slot)
 		slot.queue_free()
@@ -181,9 +187,15 @@ func _entry_finished() -> void:
 	_update_processing()
 	entered.emit()
 
-func requesting(index := -1) -> void:
+func requesting(index := -1, animate_selection := false) -> void:
 	if state == "flowing":
 		selected_index = index if index >= 0 and index < slots.size() else focal_index
+		if animate_selection:
+			var start_scale := press_scale if _press_index == selected_index else 1.0
+			_motion.cancel(self, false)
+			press_scale = 1.0
+			_press_index = -1
+			selection_feedback.activate(selected_index, start_scale)
 		state = "requesting"
 		_start_rotation()
 	set_selection_enabled(false)
@@ -193,6 +205,7 @@ func requesting(index := -1) -> void:
 func resume_flow() -> void:
 	if state in ["flowing", "requesting"]:
 		if state == "requesting":
+			selection_feedback.fade_out()
 			_kill_tween()
 			_centering = false
 			_centered = false
@@ -294,8 +307,12 @@ func _update_processing() -> void:
 
 func press(down: bool, index := -1) -> void:
 	if state not in ["flowing", "requesting"]: return
-	if down: _press_index = index if index >= 0 else focal_index
-	_motion.animate(self, self, ^"press_scale", 0.98 if down and not _motion.reduced() else 1.0, T.PRESS)
+	if down and state == "flowing":
+		_press_index = index if index >= 0 else focal_index
+		selection_feedback.preview(_press_index)
+	elif not down:
+		selection_feedback.cancel_preview()
+	_motion.animate(self, self, ^"press_scale", 0.97 if down and not _motion.reduced() else 1.0, 0.06 if down else T.PRESS)
 
 func settle_to(id: String) -> bool:
 	if state not in ["flowing", "requesting"] or not has_card(id): return false
@@ -394,12 +411,14 @@ func _set_extraction(value: float) -> void:
 
 func _extraction_finished() -> void:
 	_tween = null
+	selection_feedback.reset()
 	state = "extracted"
 	extracted.emit(result_id)
 
 func finish_to(destination: Rect2) -> void:
 	if state not in ["aligning", "aligned", "extracting", "extracted"]: return
 	_kill_tween()
+	selection_feedback.reset()
 	_centering = false
 	_centered = true
 	_landing_progress = 1.0
@@ -455,6 +474,7 @@ func _render_frame() -> void:
 		var point := center + Vector2(radius * sin(theta), radius * (1.0 - cos(theta)))
 		point += Vector2(1.8, 0.9) * pile_depth
 		if i == _press_index: scale_value *= press_scale
+		if i == selection_feedback.active_index: scale_value *= selection_feedback.card_scale()
 		if not _motion.reduced():
 			point.y -= 8 * _hover_lifts[i]
 			scale_value *= 1.0 + 0.025 * _hover_lifts[i]
@@ -483,10 +503,15 @@ func _render_frame() -> void:
 		slot.scale = Vector2.ONE * scale_value
 		slot.rotation = rotation_value
 		slot.modulate = Color(tint, alpha)
-		slot.z_index = 200 if i == _target_index and extract_progress > 0 else 150 if i == focal_index else int((1-depth) * 100)
+		# Keep a committed selection readable above its neighbours while every
+		# card still follows the original shared arc and phase.
+		slot.z_index = 200 if i == _target_index and extract_progress > 0 else 180 if i == selection_feedback.active_index and selection_feedback.committed else 150 if i == focal_index else int((1-depth) * 100)
 		slot.material.set_shader_parameter("card_size", base)
 		slot.material.set_shader_parameter("yaw", yaw)
 		slot.material.set_shader_parameter("depth_blur", blur)
+		slot.material.set_shader_parameter("selection_light", selection_feedback.back_light(extract_progress) if i == selection_feedback.active_index else 0.0)
+	if selection_feedback.active_index >= 0 and selection_feedback.active_index < slots.size():
+		selection_feedback.sync_from(slots[selection_feedback.active_index], extract_progress)
 	queue_redraw()
 
 func _draw() -> void:
@@ -517,6 +542,7 @@ func _preference_changed() -> void:
 
 func freeze() -> void:
 	set_selection_enabled(false)
+	selection_feedback.freeze()
 	_centering = false
 	_generation += 1
 	_kill_tween()
